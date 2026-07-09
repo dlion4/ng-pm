@@ -1,0 +1,1245 @@
+!-- PAGE BAR -->
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb"><a href="#">Home</a> / <a href="#">Business Portal</a> / <strong>Bulk Disbursements</strong></div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 3.5 — Bulk Disbursements & Payments</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Execute, track, and manage bulk payouts to employees, suppliers, program beneficiaries, and G2P/NGO recipients.</p>
+  </div>
+  <div class="d-flex flex-wrap" style="gap:8px">
+    <button class="pm-btn" (click)="openModal('fundWalletModal')"><i class="bi bi-plus-circle"></i> Add Float</button>
+    <button class="pm-btn" (click)="openModal('beneficiaryDirectoryModal')"><i class="bi bi-people"></i> Directory</button>
+    <button class="pm-btn pm-btn-primary" (click)="openModal('newDisbursementModal')"><i class="bi bi-send-plus"></i> New Bulk Payout</button>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="pm-content">
+
+  <!-- HERO STATS ROW -->
+  <div class="row g-3">
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card pm-card-accent" style="min-height:160px">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <p class="pm-stat-label" style="color:rgba(255,255,255,.7)">AVAILABLE FLOAT</p>
+            <div class="pm-stat-value" style="margin:8px 0;color:#fff;font-size:24px">KES 14.2M</div>
+          </div>
+          <i class="bi bi-wallet2" style="font-size:24px;color:rgba(255,255,255,.5)"></i>
+        </div>
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.7)">B2C limit: <strong>KES 50M/day</strong></p>
+        <button class="pm-btn pm-btn-sm mt-3" style="background:rgba(255,255,255,.15);border:none;color:#fff" (click)="openModal('fundWalletModal')">Top-up float</button>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card" style="min-height:160px">
+        <p class="pm-stat-label" style="color:var(--pm-info)">TOTAL DISBURSED (MTD)</p>
+        <div class="pm-stat-value" style="margin:6px 0;font-size:24px">KES 84.5M</div>
+        <span class="pm-badge pm-badge-success"><i class="bi bi-graph-up-arrow"></i> +12% vs last month</span>
+        <div class="mt-3 d-flex justify-content-between text-muted" style="font-size:11px">
+          <span>M-Pesa B2C: 62%</span>
+          <span>PesaLink: 38%</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card" style="min-height:160px;border-left:3px solid var(--pm-warning)">
+        <p class="pm-stat-label" style="color:var(--pm-warning)">PENDING APPROVALS</p>
+        <div class="pm-stat-value" style="margin:6px 0;font-size:24px">3 Batches</div>
+        <span class="pm-badge pm-badge-warning"><i class="bi bi-shield-lock"></i> Requires Checker</span>
+        <div class="mt-3 text-muted" style="font-size:11px">
+          Value: <strong>KES 4.2M</strong> awaiting authorization
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card" style="min-height:160px;border-left:3px solid var(--pm-danger)">
+        <p class="pm-stat-label" style="color:var(--pm-danger)">FAILED PAYMENTS (MTD)</p>
+        <div class="pm-stat-value" style="margin:6px 0;font-size:24px">18 <span style="font-size:14px;color:var(--pm-muted);font-weight:500">/ 14,200</span></div>
+        <span class="pm-badge pm-badge-danger"><i class="bi bi-exclamation-triangle"></i> Needs Review</span>
+        <div class="mt-3 text-muted" style="font-size:11px">
+          Success Rate: <strong style="color:var(--pm-accent)">99.87%</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENTION / INTELLIGENCE / ACTIONS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="pm-card" style="height:100%">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="pm-section-title">Attention Required</h3>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('attentionActionModal')">Review all</button>
+        </div>
+        @for (item of attentionItems; track item.id) {
+          <div class="feed-item">
+            <div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor" style="font-size:12px">{{ item.iconText }}</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+            </div>
+            <button [class]="item.buttonClass" (click)="openModal(item.modalId)">{{ item.buttonLabel }}</button>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="pm-card" style="height:100%">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="pm-section-title">System Intelligence</h3>
+          <span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span>
+        </div>
+        @for (item of intelligenceItems; track item.id) {
+          <div class="feed-item">
+            <div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor" style="font-size:12px">{{ item.iconText }}</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+            </div>
+            <button [class]="item.buttonClass" (click)="openModal(item.modalId)">{{ item.buttonLabel }}</button>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="pm-card" style="height:100%">
+        <div class="mb-3"><h3 class="pm-section-title">Quick Actions</h3><p class="pm-section-sub">Frequent business operational flows</p></div>
+        <div class="quick-action-grid">
+          @for (action of quickActions; track action.id) {
+            <button class="quick-action-btn" (click)="openModal(action.modalId)">
+              <i [class]="action.iconClass" [style.color]="action.iconStyle"></i> {{ action.label }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.5.1 — Bulk Disbursement Engine -->
+  <div class="pm-card">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-engine-fill" style="color:var(--pm-primary)"></i> 3.5.1 — Bulk Disbursement Engine</h3><p class="pm-section-sub">Upload batch files, validate numbers, detect duplicates, and schedule mass payouts.</p></div>
+      <div class="d-flex" style="gap:8px">
+        <button class="pm-btn pm-btn-sm" (click)="openModal('scheduleDisbursementModal')"><i class="bi bi-clock"></i> Schedule</button>
+        <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('newDisbursementModal')"><i class="bi bi-cloud-upload"></i> New Upload</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Recent Batches & Drafts</h4>
+          <div class="table-responsive"><table class="pm-table">
+            <thead><tr><th>Batch ID</th><th>Name / Type</th><th>Count</th><th>Total Value</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              @for (batch of recentBatches; track batch.id) {
+                <tr>
+                  <td><code>{{ batch.batchId }}</code></td>
+                  <td><strong>{{ batch.name }}</strong><br><span style="font-size:11px;color:var(--pm-muted)">{{ batch.type }}</span></td>
+                  <td>{{ batch.count }}</td>
+                  <td>{{ batch.totalValue }}</td>
+                  <td><span [class]="batch.statusBadgeClass">{{ batch.statusBadge }}</span></td>
+                  <td><button class="pm-btn pm-btn-sm" (click)="openModal(batch.actionModal)">{{ batch.actionLabel }}</button></td>
+                </tr>
+              }
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Saved Templates</h4>
+          <p style="font-size:12px;color:var(--pm-ink-soft)">Use pre-configured templates for recurring payment lists.</p>
+          @for (tmpl of savedTemplates; track tmpl.id) {
+            <div class="status-row">
+              <div class="d-flex align-items-center gap-3">
+                <div class="pm-icon-circle" [style.background]="tmpl.iconBg" [style.color]="tmpl.iconColor"><i class="bi bi-file-earmark-spreadsheet"></i></div>
+                <div><strong>{{ tmpl.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ tmpl.count }}</div></div>
+              </div>
+              <button class="pm-btn pm-btn-sm" (click)="openModal(tmpl.modalId)">Use</button>
+            </div>
+          }
+          <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('beneficiaryDirectoryModal')"><i class="bi bi-list"></i> Manage Templates & Directory</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.5.2 — Approval & Execution -->
+  <div class="pm-card">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-shield-check" style="color:var(--pm-accent)"></i> 3.5.2 — Approval & Execution Queue</h3><p class="pm-section-sub">Maker-checker workflows, real-time execution tracking, and failure retry management.</p></div>
+      <button class="pm-btn pm-btn-sm" (click)="openModal('approvalWorkflowModal')"><i class="bi bi-diagram-3"></i> Approval Settings</button>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Pending Authorization</h4>
+          <div class="table-responsive"><table class="pm-table">
+            <thead><tr><th>Batch</th><th>Maker</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              @for (auth of pendingAuths; track auth.id) {
+                <tr>
+                  <td><code>{{ auth.batchId }}</code><br><span style="font-size:10px;color:var(--pm-muted)">{{ auth.batchType }}</span></td>
+                  <td>{{ auth.maker }}</td>
+                  <td>{{ auth.amount }}</td>
+                  <td><span [class]="auth.statusBadgeClass">{{ auth.statusBadge }}</span></td>
+                  <td>
+                    @if (auth.isLocked) {
+                      <button class="pm-btn pm-btn-sm" disabled>Locked</button>
+                    } @else {
+                      <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal(auth.actionModal)">{{ auth.actionLabel }}</button>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Executions</h4>
+          <div class="p-3 border rounded mb-3 table-execution-row executing">
+            <div class="d-flex justify-content-between mb-2">
+              <div><strong>BTH-9921: June Contractor Payout</strong><div style="font-size:11px;color:var(--pm-muted)">Processing via M-Pesa B2C...</div></div>
+              <div class="text-end"><strong>64%</strong><div style="font-size:11px;color:var(--pm-muted)">27 / 42 completed</div></div>
+            </div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:64%;background:var(--pm-primary)"></div></div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background:var(--pm-danger-soft)">
+            <div><strong style="color:var(--pm-danger);font-size:13px">14 Failed Transfers Detected</strong><br><span style="font-size:11px;color:#7F1D1D">From previously executed batches</span></div>
+            <button class="pm-btn pm-btn-sm pm-btn-danger" (click)="openModal('failedTransfersModal')">Retry & Resolve</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.5.3 — Disbursement Analytics -->
+  <div class="pm-card">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-bar-chart-line" style="color:var(--pm-info)"></i> 3.5.3 — Disbursement Analytics</h3><p class="pm-section-sub">Track success rates, analyze failure reasons, and view historical trends across payment methods.</p></div>
+      <button class="pm-btn pm-btn-sm" (click)="openModal('exportAnalyticsModal')"><i class="bi bi-download"></i> Export Data</button>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Volume Trend (MTD)</h4>
+          <div class="chart-bars" style="height:120px">
+            <div class="chart-bar" style="height:30%;background:var(--pm-primary-light)"><span class="bar-label">W1</span></div>
+            <div class="chart-bar" style="height:45%;background:var(--pm-primary-light)"><span class="bar-label">W2</span></div>
+            <div class="chart-bar" style="height:85%;background:var(--pm-primary)"><span class="bar-label">W3</span></div>
+            <div class="chart-bar" style="height:60%;background:var(--pm-primary-light)"><span class="bar-label">W4</span></div>
+          </div>
+          <div class="mt-3 pt-3 border-top d-flex justify-content-between text-muted" style="font-size:12px">
+            <span>Peak: Week 3 (KES 45M)</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Success vs Failure Rate</h4>
+          <div class="d-flex align-items-center gap-4">
+            <div style="position:relative;width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--pm-accent) 0 98%, var(--pm-danger) 98% 100%)">
+              <div style="position:absolute;inset:15px;background:var(--pm-surface-2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px">98%</div>
+            </div>
+            <div style="flex:1;font-size:12px">
+              <div class="d-flex justify-content-between mb-2"><span><i class="bi bi-circle-fill text-success" style="font-size:8px"></i> Success</span><strong>14,182</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span><i class="bi bi-circle-fill text-danger" style="font-size:8px"></i> Failed</span><strong>18</strong></div>
+              <div class="d-flex justify-content-between border-top pt-2 mt-2"><span>Recovery</span><strong style="color:var(--pm-info)">95%</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Top Failure Reasons</h4>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between mb-1" style="font-size:11px"><span>Invalid Account / Phone</span><span>65%</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:65%;background:var(--pm-warning)"></div></div>
+          </div>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between mb-1" style="font-size:11px"><span>Limit Exceeded (User)</span><span>20%</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:20%;background:var(--pm-info)"></div></div>
+          </div>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between mb-1" style="font-size:11px"><span>Network Timeout</span><span>10%</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:10%;background:var(--pm-purple)"></div></div>
+          </div>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between mb-1" style="font-size:11px"><span>Insufficient Float</span><span>5%</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:5%;background:var(--pm-danger)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.5.4 — Government & NGO Bulk Disbursements -->
+  <div class="pm-card pm-card-dark">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-globe-africa" style="color:var(--pm-accent)"></i> 3.5.4 — Social Protection & NGO Programs</h3><p class="pm-section-sub" style="color:rgba(255,255,255,.7)">Manage G2P/NGO disbursements, agricultural subsidies, and emergency relief with biometric verification & rapid onboarding.</p></div>
+      <button class="pm-btn pm-btn-sm pm-btn-accent" (click)="openModal('ngoProgramModal')"><i class="bi bi-plus"></i> New Program</button>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="utility-block" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+          <div class="d-flex justify-content-between align-items-center mb-2"><span class="pm-badge" style="background:rgba(255,255,255,.2);color:#fff">Inua Jamii / Elderly</span><i class="bi bi-fingerprint" style="font-size:18px;color:rgba(255,255,255,.5)"></i></div>
+          <h4 style="font-size:15px;font-weight:700;margin:0 0 8px;color:#fff">Q2 Stipend Payout</h4>
+          <div class="d-flex justify-content-between text-white-50" style="font-size:12px;margin-bottom:12px"><span>Total: KES 12.5M</span><span>4,200 Recipients</span></div>
+          <div class="pm-progress mb-2" style="background:rgba(255,255,255,.1)"><div class="pm-progress-bar" style="width:100%;background:var(--pm-accent)"></div></div>
+          <button class="pm-btn pm-btn-sm w-100" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.2)" (click)="openModal('biometricVerificationModal')">View Compliance Report</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+          <div class="d-flex justify-content-between align-items-center mb-2"><span class="pm-badge pm-badge-danger">Emergency Relief</span><i class="bi bi-water" style="font-size:18px;color:rgba(255,255,255,.5)"></i></div>
+          <h4 style="font-size:15px;font-weight:700;margin:0 0 8px;color:#fff">Flood Relief (Tana River)</h4>
+          <div class="d-flex justify-content-between text-white-50" style="font-size:12px;margin-bottom:12px"><span>Target: KES 5.0M</span><span>Actively disbursing...</span></div>
+          <div class="pm-progress mb-2" style="background:rgba(255,255,255,.1)"><div class="pm-progress-bar" style="width:45%;background:var(--pm-danger)"></div></div>
+          <button class="pm-btn pm-btn-sm w-100" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.2)" (click)="openModal('beneficiaryFeedbackModal')">Collection & Feedback</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+          <div class="d-flex justify-content-between align-items-center mb-2"><span class="pm-badge pm-badge-warning">Agri-Subsidy</span><i class="bi bi-tree" style="font-size:18px;color:rgba(255,255,255,.5)"></i></div>
+          <h4 style="font-size:15px;font-weight:700;margin:0 0 8px;color:#fff">Fertilizer e-Voucher</h4>
+          <div class="d-flex justify-content-between text-white-50" style="font-size:12px;margin-bottom:12px"><span>Vouchers Issued: 1,500</span><span>Redeemed: 840</span></div>
+          <div class="pm-progress mb-2" style="background:rgba(255,255,255,.1)"><div class="pm-progress-bar" style="width:56%;background:var(--pm-warning)"></div></div>
+          <button class="pm-btn pm-btn-sm w-100" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.2)" (click)="openModal('subsidyVoucherModal')">Manage Redemptions</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================ -->
+<!-- MODALS (25 modals) -->
+<!-- ============================================================ -->
+
+<!-- 1. New Disbursement Engine (Multi-Step) -->
+@if (activeModal === 'newDisbursementModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-send-plus text-primary me-2"></i>New Bulk Disbursement</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!newDisbursementSaved) {
+            <div class="pm-stepper">
+              @for (label of ndStepperLabels; track $index) {
+                <div class="pm-step" [class.active]="getStepState($index) === 'active'" [class.completed]="getStepState($index) === 'completed'">
+                  <div class="pm-step-num">
+                    @if (getStepState($index) === 'completed') {
+                      <i class="bi bi-check"></i>
+                    } @else {
+                      {{ $index + 1 }}
+                    }
+                  </div>
+                  <div class="pm-step-label">{{ label }}</div>
+                </div>
+                @if ($index < ndStepperLabels.length - 1) {
+                  <div class="pm-step-line"></div>
+                }
+              }
+            </div>
+
+            @if (ndStep === 1) {
+              <h6 style="font-weight:700;margin-bottom:16px">Step 1: Upload Beneficiaries or Use Template</h6>
+              <div class="row g-3">
+                <div class="col-md-7">
+                  <div class="upload-zone" (click)="simulateUpload()">
+                    <i class="bi bi-cloud-arrow-up" style="font-size:32px;color:var(--pm-primary)"></i>
+                    <div style="font-weight:600;margin-top:8px">Click to upload CSV / Excel</div>
+                    <div style="font-size:11px;color:var(--pm-muted)">Columns: Name, Phone/Account, Amount, Ref</div>
+                  </div>
+                  @if (uploadVisible) {
+                    <div style="margin-top:16px">
+                      <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Parsing data...</span><span>{{ uploadPct }}%</span></div>
+                      <div class="pm-progress"><div class="pm-progress-bar" [style.width.%]="uploadPct" style="background:var(--pm-primary)"></div></div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                  <label class="pm-form-label">Or select a saved template</label>
+                  <div class="p-2 border rounded mb-2" style="cursor:pointer;font-size:12px" (click)="selectTemplate($event)"><strong>Monthly Allowances</strong> (210 records)</div>
+                  <div class="p-2 border rounded mb-2" style="cursor:pointer;font-size:12px" (click)="selectTemplate($event)"><strong>Cleaners Wages</strong> (12 records)</div>
+                  <div class="p-2 border rounded mb-2" style="cursor:pointer;font-size:12px" (click)="selectTemplate($event)"><strong>Relief Beneficiaries</strong> (1,500 records)</div>
+                </div>
+              </div>
+            } @else if (ndStep === 2) {
+              <h6 style="font-weight:700;margin-bottom:16px">Step 2: Map Data & Validate</h6>
+              <div class="p-3 rounded mb-3" style="background:var(--pm-info-soft);font-size:13px">
+                <i class="bi bi-check-circle text-success me-1"></i> Found <strong>42 records</strong>. Please confirm column mapping.
+              </div>
+              <div class="row g-3 mb-3">
+                <div class="col-md-4"><label class="pm-form-label">Beneficiary Name</label><select class="pm-form-control"><option>Col A (Full Name)</option></select></div>
+                <div class="col-md-4"><label class="pm-form-label">Phone / Account</label><select class="pm-form-control"><option>Col B (Phone_Number)</option></select></div>
+                <div class="col-md-4"><label class="pm-form-label">Amount (KES)</label><select class="pm-form-control"><option>Col C (Amount)</option></select></div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-2"><h6 style="font-weight:700;margin:0">Validation Results</h6><span class="pm-badge pm-badge-warning">2 errors found</span></div>
+              <div class="table-responsive"><table class="pm-table"><thead><tr><th>Row</th><th>Name</th><th>Phone/Acc</th><th>Amount</th><th>Status</th></tr></thead>
+              <tbody>
+                @for (vr of validationRows; track vr.id) {
+                  <tr>
+                    <td>{{ vr.row }}</td>
+                    <td>{{ vr.name }}</td>
+                    <td>
+                      @if (vr.phoneHasError) {
+                        <span style="color:var(--pm-danger)">{{ vr.phone }}</span>
+                      } @else {
+                        {{ vr.phone }}
+                      }
+                    </td>
+                    <td>
+                      @if (vr.amountHasError) {
+                        <span style="color:var(--pm-danger)">{{ vr.amount }}</span>
+                      } @else {
+                        {{ vr.amount }}
+                      }
+                    </td>
+                    <td>
+                      @if (vr.statusHasError) {
+                        <span style="color:var(--pm-danger)">{{ vr.statusText }}</span>
+                      } 
+  
+  
+  
+  @else {
+                        <i [class]="vr.statusIcon"></i>
+                      }
+</td>
+                  </tr>
+              </tbody></table></div>
+              <button class="pm-btn pm-btn-sm pm-btn-outline mt-2">Auto-remove invalid records</button>
+            } @else if (ndStep === 3) {
+              <h6 style="font-weight:700;margin-bottom:16px">Step 3: Setup & Schedule</h6>
+              <div class="row g-3">
+                <div class="col-md-6"><label class="pm-form-label">Batch Name / Reference</label><input class="pm-form-control" value="June Contractor Payout"></div>
+                <div class="col-md-6"><label class="pm-form-label">Disbursement Type</label><select class="pm-form-control"><option>Supplier Payments</option><option>Salary/Wages</option><option>Commission</option><option>Emergency Relief</option></select></div>
+                <div class="col-md-6"><label class="pm-form-label">Payment Method</label><select class="pm-form-control"><option>M-Pesa B2C (Phone numbers)</option><option>Bank Transfer (EFT/PesaLink)</option><option>Mixed (Auto-detect)</option></select></div>
+                <div class="col-md-6"><label class="pm-form-label">Execution Time</label><select class="pm-form-control"><option>Immediate (upon approval)</option><option>Schedule for future</option><option>Drip feed (staggered)</option></select></div>
+                <div class="col-12"><label class="pm-form-label">Beneficiary SMS Notification</label><input class="pm-form-control" value="You have received KES {amount} from Safiri Ops for {batch_ref}."></div>
+              </div>
+            } @else if (ndStep === 4) {
+              <h6 style="font-weight:700;margin-bottom:16px">Step 4: Review & Submit</h6>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px;height:100%">
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Valid Records</span><strong>40</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Total Payout</span><strong>KES 1,200,000</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Est. Fees</span><strong>KES 1,320</strong></div>
+                    <hr class="pm-divider"><div class="d-flex justify-content-between"><span style="font-weight:700">Total Deduction</span><strong style="color:var(--pm-primary)">KES 1,201,320</strong></div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:13px;height:100%">
+                    <div style="font-weight:700;margin-bottom:8px">Float Check</div>
+                    <div class="d-flex justify-content-between mb-1"><span>Current Balance</span><strong>KES 14.2M</strong></div>
+                    <div class="d-flex justify-content-between mb-1"><span>Required</span><strong>KES 1.2M</strong></div>
+                    <div class="mt-2"><span class="pm-badge pm-badge-success">Sufficient Float</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4"><label class="pm-form-label">Maker PIN / OTP</label>
+                <div class="pm-pin-input"><input type="password" maxlength="1" (input)="moveFocus($event)"><input type="password" maxlength="1" (input)="moveFocus($event)"><input type="password" maxlength="1" (input)="moveFocus($event)"><input type="password" maxlength="1" (input)="moveFocus($event)"></div>
+              </div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Batch validated and sent to checker for approval.</h5>
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: BTH-9924</p>
+              <div class="d-flex justify-content-center mt-3"><button class="pm-btn pm-btn-sm" (click)="closeModal()">Done</button></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!newDisbursementSaved) {
+            <button class="pm-btn" (click)="closeModal()">Cancel</button>
+            <button class="pm-btn pm-btn-primary" (click)="nextNdStep()">
+              @if (ndStep === 4) {
+                Submit Batch <i class="bi bi-check2"></i>
+              } @else {
+                Continue <i class="bi bi-arrow-right"></i>
+              }
+            </button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 2. Approve Batch Modal -->
+@if (activeModal === 'approveBatchModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-check text-warning me-2"></i>Authorize Batch</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!approveBatchSaved) {
+            <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+              <h6 style="font-weight:700;margin:0 0 12px">Emergency Relief — BTH-9922</h6>
+              <div class="d-flex justify-content-between mb-2" style="font-size:13px"><span class="text-muted">Maker</span><strong>Sarah N. (Operations)</strong></div>
+              <div class="d-flex justify-content-between mb-2" style="font-size:13px"><span class="text-muted">Count</span><strong>245 Beneficiaries</strong></div>
+              <div class="d-flex justify-content-between mb-2" style="font-size:13px"><span class="text-muted">Total Value</span><strong style="color:var(--pm-primary)">KES 2,500,000</strong></div>
+              <div class="d-flex justify-content-between" style="font-size:13px"><span class="text-muted">Method</span><strong>M-Pesa B2C</strong></div>
+            </div>
+            <div class="d-flex gap-2 mb-3"><button class="pm-btn pm-btn-sm"><i class="bi bi-download"></i> View Beneficiary List</button><button class="pm-btn pm-btn-sm pm-btn-outline"><i class="bi bi-file-earmark-check"></i> Audit Log</button></div>
+            <label class="pm-form-label">Checker / Approver PIN</label>
+            <div class="pm-pin-input mb-2"><input type="password" maxlength="1" (input)="moveFocus($event)"><input type="password" maxlength="1" (input)="moveFocus($event)"><input type="password" maxlength="1" (input)="moveFocus($event)"><input type="password" maxlength="1" (input)="moveFocus($event)"></div>
+            <p style="font-size:11px;color:var(--pm-muted);text-align:center">By approving, the funds will be immediately disbursed.</p>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Batch approved. Execution has started.</h5>
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: BTH-9922</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!approveBatchSaved) {
+            <button class="pm-btn pm-btn-danger" (click)="processAction('approveBatchModal','Batch rejected and returned to maker.','BTH-9922')">Reject</button>
+            <button class="pm-btn pm-btn-primary" (click)="processAction('approveBatchModal','Batch approved. Execution has started.','BTH-9922')">Approve & Execute</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 3. Beneficiary Directory Modal -->
+@if (activeModal === 'beneficiaryDirectoryModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-lines-fill me-2"></i>Beneficiary Directory</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!beneficiaryDirectorySaved) {
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+              <div class="pm-header-search" style="max-width:250px"><i class="bi bi-search"></i><input type="text" placeholder="Search name, phone, group..."></div>
+              <div class="d-flex gap-2"><button class="pm-btn pm-btn-sm" (click)="openModal('addBeneficiaryModal')"><i class="bi bi-person-plus"></i> Add Single</button><button class="pm-btn pm-btn-sm"><i class="bi bi-upload"></i> Import List</button></div>
+            </div>
+            <div class="pm-tab-pills mb-3"><button class="pm-tab-pill active">All (1,482)</button><button class="pm-tab-pill">Employees (118)</button><button class="pm-tab-pill">Suppliers (42)</button><button class="pm-tab-pill">NGO/Relief (1,322)</button></div>
+            <div class="table-responsive" style="max-height:350px;overflow-y:auto">
+              <table class="pm-table"><thead><tr><th>Name</th><th>Phone/Account</th><th>Group</th><th>KYC Status</th><th>Action</th></tr></thead>
+              <tbody>
+                @for (b of beneficiaries; track b.id) {
+                  <tr>
+                    <td>{{ b.name }}</td>
+                    <td>{{ b.phone }}</td>
+                    <td>{{ b.group }}</td>
+                    <td><span [class]="b.kycBadgeClass">{{ b.kycBadge }}</span></td>
+                    <td><button class="pm-btn pm-btn-sm"><i class="bi bi-pencil"></i></button></td>
+                  </tr>
+                }
+              </tbody></table>
+            </div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Directory exported successfully.</h5>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!beneficiaryDirectorySaved) {
+            <button class="pm-btn" (click)="closeModal()">Close</button>
+            <button class="pm-btn pm-btn-primary" (click)="processAction('beneficiaryDirectoryModal','Directory exported successfully.','')"><i class="bi bi-download"></i> Export Directory</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 4. Add Single Beneficiary Modal -->
+@if (activeModal === 'addBeneficiaryModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Add Beneficiary</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!addBeneficiarySaved) {
+            <div class="row g-3">
+              <div class="col-12"><label class="pm-form-label">Full Name / Business Name</label><input class="pm-form-control" placeholder="Enter name"></div>
+              <div class="col-md-6"><label class="pm-form-label">Payment Method</label><select class="pm-form-control"><option>M-Pesa</option><option>Bank Transfer</option><option>Airtel Money</option></select></div>
+              <div class="col-md-6"><label class="pm-form-label">Account / Phone Number</label><input class="pm-form-control" placeholder="07xx xxx xxx"></div>
+              <div class="col-md-6"><label class="pm-form-label">Group / Category</label><select class="pm-form-control"><option>Employee</option><option>Supplier</option><option>NGO Beneficiary</option></select></div>
+              <div class="col-md-6"><label class="pm-form-label">ID / Registration No. (Optional)</label><input class="pm-form-control" placeholder="For KYC validation"></div>
+            </div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Beneficiary added and verified.</h5>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!addBeneficiarySaved) {
+            <button class="pm-btn" (click)="closeModal()">Cancel</button>
+            <button class="pm-btn pm-btn-primary" (click)="processAction('addBeneficiaryModal','Beneficiary added and verified.','')">Save Beneficiary</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 5. Failed Transfers Modal -->
+@if (activeModal === 'failedTransfersModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger me-2"></i>Failed Transfers Resolution</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!failedTransfersSaved) {
+            <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft);font-size:13px"><i class="bi bi-info-circle me-1"></i> 18 transfers have failed over the last 30 days. You can edit the details and retry, or cancel them and return funds to float.</div>
+            <div class="table-responsive" style="max-height:300px;overflow-y:auto">
+              <table class="pm-table"><thead><tr><th>Beneficiary</th><th>Amount</th><th>Error Reason</th><th>Action</th></tr></thead>
+              <tbody>
+                @for (ft of failedTransfers; track ft.id) {
+                  <tr>
+                    <td>{{ ft.beneficiary }}</td>
+                    <td>{{ ft.amount }}</td>
+                    <td><span [class]="ft.errorBadgeClass">{{ ft.errorBadge }}</span></td>
+                    <td><button class="pm-btn pm-btn-sm" (click)="openModal(ft.actionModal)">{{ ft.actionLabel }}</button></td>
+                  </tr>
+                }
+              </tbody></table>
+            </div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Selected failed transfers have been bulk-retried.</h5>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!failedTransfersSaved) {
+            <button class="pm-btn" (click)="closeModal()">Close</button>
+            <button class="pm-btn pm-btn-primary" (click)="processAction('failedTransfersModal','Selected failed transfers have been bulk-retried.','')">Retry All Eligible</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 6. Retry Single Transfer Modal -->
+@if (activeModal === 'retryTransferModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-clockwise me-2"></i>Retry Transfer</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!retryTransferSaved) {
+            <div class="mb-3"><label class="pm-form-label">Beneficiary Name</label><input class="pm-form-control" value="Alice Kemboi" disabled></div>
+            <div class="mb-3"><label class="pm-form-label">Amount</label><input class="pm-form-control" value="4500" disabled></div>
+            <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft);font-size:12px"><strong>Error:</strong> The destination phone number is not registered on M-Pesa.</div>
+            <div class="mb-3"><label class="pm-form-label">Update Phone / Account Number</label><input class="pm-form-control" value="0799 000 111"></div>
+            <div class="mb-3"><label class="pm-form-label">Action</label><select class="pm-form-control"><option>Update and retry immediately</option><option>Cancel transfer and return funds</option></select></div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Transfer queued for retry.</h5>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!retryTransferSaved) {
+            <button class="pm-btn" (click)="closeModal()">Cancel</button>
+            <button class="pm-btn pm-btn-primary" (click)="processAction('retryTransferModal','Transfer queued for retry.','')">Execute Action</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 7. Fund Wallet / Top-up Float Modal -->
+@if (activeModal === 'fundWalletModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-wallet2 text-success me-2"></i>Top-up Disbursement Float</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!fundWalletSaved) {
+            <div class="d-flex justify-content-between mb-3"><span style="font-size:13px;color:var(--pm-muted)">Current B2C Float</span><strong style="font-size:18px">KES 14,200,000</strong></div>
+            <div class="mb-3"><label class="pm-form-label">Top-up Amount (KES)</label><input class="pm-form-control" placeholder="e.g. 5,000,000"></div>
+            <div class="mb-3"><label class="pm-form-label">Funding Source</label>
+              <div class="p-3 border rounded mb-2 d-flex align-items-center gap-3" style="border-color:var(--pm-primary)!important;background:rgba(79,70,229,.04)" (click)="selectRadioCard($event)"><input type="radio" checked name="fpay"> <i class="bi bi-bank" style="font-size:20px;color:var(--pm-info)"></i><div><strong>Business Bank Account</strong><div style="font-size:11px;color:var(--pm-muted)">Equity ***4521 · RTGS/EFT (T+1)</div></div></div>
+              <div class="p-3 border rounded mb-2 d-flex align-items-center gap-3" (click)="selectRadioCard($event)"><input type="radio" name="fpay"> <i class="bi bi-phone" style="font-size:20px;color:var(--pm-accent)"></i><div><strong>C2B Collections Till</strong><div style="font-size:11px;color:var(--pm-muted)">Transfer from inbound collections (Instant)</div></div></div>
+            </div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Float top-up initiated. Funds will reflect based on SLA.</h5>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!fundWalletSaved) {
+            <button class="pm-btn" (click)="closeModal()">Cancel</button>
+            <button class="pm-btn pm-btn-primary" (click)="processAction('fundWalletModal','Float top-up initiated. Funds will reflect based on SLA.','')">Initiate Top-up</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 8. Schedule Disbursement Modal -->
+@if (activeModal === 'scheduleDisbursementModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-calendar-check text-warning me-2"></i>Schedule Future Batch</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!scheduleDisbursementSaved) {
+            <div class="mb-3"><label class="pm-form-label">Select Draft/Template Batch</label><select class="pm-form-control"><option>Monthly Field Allowances (210)</option><option>June Contractor Payout (Draft)</option></select></div>
+            <div class="mb-3"><label class="pm-form-label">Execution Strategy</label><select class="pm-form-control"><option>Single bulk run</option><option>Drip feed (Staggered over time)</option><option>Recurring (e.g., Weekly)</option></select></div>
+            <div class="row g-3 mb-3"><div class="col-6"><label class="pm-form-label">Start Date</label><input type="date" class="pm-form-control" value="2025-07-01"></div><div class="col-6"><label class="pm-form-label">Time</label><input type="time" class="pm-form-control" value="08:00"></div></div>
+            <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:12px"><i class="bi bi-info-circle me-1"></i> Float will be reserved at the time of checker approval. If float is insufficient on execution day, the batch will pause.</div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Batch scheduled successfully!</h5>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!scheduleDisbursementSaved) {
+            <button class="pm-btn" (click)="closeModal()">Cancel</button>
+            <button class="pm-btn pm-btn-primary" (click)="processAction('scheduleDisbursementModal','Batch scheduled successfully!','')">Schedule Batch</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 9. Export Analytics Modal -->
+@if (activeModal === 'exportAnalyticsModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-download me-2"></i>Export Disbursement Reports</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!exportAnalyticsSaved) {
+            <div class="mb-3"><label class="pm-form-label">Report Type</label><select class="pm-form-control"><option>Comprehensive Transaction Ledger</option><option>Failed & Reconciled Payments</option><option>Maker-Checker Audit Log</option><option>Beneficiary Payout Summary</option></select></div>
+            <div class="row g-3 mb-3"><div class="col-6"><label class="pm-form-label">From Date</label><input type="date" class="pm-form-control" value="2025-06-01"></div><div class="col-6"><label class="pm-form-label">To Date</label><input type="date" class="pm-form-control" value="2025-06-27"></div></div>
+            <div class="mb-3"><label class="pm-form-label">Export Format</label><select class="pm-form-control"><option>CSV Spreadsheet</option><option>Excel (.xlsx)</option><option>PDF Summary</option></select></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label" style="font-size:13px">Include full beneficiary KYC data</label></div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Report generated and downloading...</h5>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!exportAnalyticsSaved) {
+            <button class="pm-btn" (click)="closeModal()">Cancel</button>
+            <button class="pm-btn pm-btn-primary" (click)="processAction('exportAnalyticsModal','Report generated and downloading...','')">Generate Report</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 10. Batch Details Modal -->
+@if (activeModal === 'batchDetailsModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-file-earmark-text me-2"></i>Batch Execution Details</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          <div class="row g-3 mb-3">
+            <div class="col-md-4"><div class="p-3 rounded text-center" style="background:var(--pm-surface-2)"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">BATCH ID</div><div style="font-size:16px;font-weight:700">BTH-9920</div></div></div>
+            <div class="col-md-4"><div class="p-3 rounded text-center" style="background:var(--pm-surface-2)"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">VALUE</div><div style="font-size:16px;font-weight:700;color:var(--pm-primary)">KES 4.5M</div></div></div>
+            <div class="col-md-4"><div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)"><div style="font-size:11px;color:#047857;font-weight:700">STATUS</div><div style="font-size:16px;font-weight:700;color:var(--pm-accent)">100% Executed</div></div></div>
+          </div>
+          <div class="d-flex justify-content-between text-muted" style="font-size:12px;margin-bottom:8px"><span>Successful: 118</span><span>Failed: 0</span></div>
+          <div class="pm-progress mb-3"><div class="pm-progress-bar" style="width:100%;background:var(--pm-accent)"></div></div>
+          <h6 style="font-weight:700">Audit Trail</h6>
+          <div class="table-responsive"><table class="pm-table"><tbody>
+            @for (at of auditTrail; track at.id) {
+              <tr><td style="width:120px">{{ at.timestamp }}</td><td><span [class]="at.badgeClass">{{ at.badge }}</span></td><td>{{ at.description }}</td></tr>
+            }
+          </tbody></table></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal(); openModal('bulkReceiptModal')">CloseClose</button><button class="pm-btn pm-btn-primary"><i class="bi bi-receipt"></i> Get Receipt</button></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 11. NGO Program Modal -->
+@if (activeModal === 'ngoProgramModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-globe-africa text-info me-2"></i>Create Social Protection / Relief Program</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!ngoProgramSaved) {
+            <div class="row g-3">
+              <div class="col-md-6"><label class="pm-form-label">Program Name</label><input class="pm-form-control" placeholder="e.g. Drought Relief Phase 1"></div>
+              <div class="col-md-6"><label class="pm-form-label">Program Type</label><select class="pm-form-control"><option>Cash Transfer (G2P/NGO)</option><option>e-Voucher (Subsidies)</option><option>Emergency Relief</option></select></div>
+              <div class="col-md-6"><label class="pm-form-label">Total Funding Allocated (KES)</label><input class="pm-form-control" placeholder="e.g. 50,000,000"></div>
+              <div class="col-md-6"><label class="pm-form-label">Target Beneficiary Count</label><input class="pm-form-control" placeholder="e.g. 10,000"></div>
+              <div class="col-12"><label class="pm-form-label">Compliance & Security Requirements</label>
+                <div class="form-check mb-1"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Strict KYC matching (Name must match National ID)</label></div>
+                <div class="form-check mb-1"><input class="form-check-input" type="checkbox"><label class="form-check-label" style="font-size:13px">Biometric pre-verification required</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Post-disbursement feedback collection via SMS/USSD</label></div>
+              </div>
+            </div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Program created. Funding vault initialized.</h5>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!ngoProgramSaved) {
+            <button class="pm-btn" (click)="closeModal()">Cancel</button>
+            <button class="pm-btn pm-btn-primary" (click)="processAction('ngoProgramModal','Program created. Funding vault initialized.','')">Create Program</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 12. Beneficiary Feedback Modal -->
+@if (activeModal === 'beneficiaryFeedbackModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-chat-text me-2"></i>Post-Disbursement Feedback</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Monitor SMS/USSD survey responses from the "Flood Relief" campaign.</p>
+          <div class="row g-3 mb-3">
+            <div class="col-6"><div class="p-3 rounded text-center" style="background:var(--pm-surface-2)"><div style="font-size:11px;font-weight:700">SURVEY SENT</div><div style="font-size:20px;font-weight:700;color:var(--pm-primary)">1,200</div></div></div>
+            <div class="col-6"><div class="p-3 rounded text-center" style="background:var(--pm-surface-2)"><div style="font-size:11px;font-weight:700">RESPONSES</div><div style="font-size:20px;font-weight:700;color:var(--pm-accent)">842 <span style="font-size:12px;color:var(--pm-muted);font-weight:400">(70%)</span></div></div></div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>"Did you receive the funds?" (YES)</span><span>98%</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:98%;background:var(--pm-success)"></div></div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>"Did you pay a bribe/fee?" (NO)</span><span>99%</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:99%;background:var(--pm-info)"></div></div>
+          </div>
+          <div class="p-3 rounded" style="background:var(--pm-danger-soft);font-size:12px"><i class="bi bi-exclamation-triangle text-danger me-1"></i> 3 beneficiaries reported issues. <a href="#">View exceptions report</a></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary" (click)="closeModal(); openModal('exportAnalyticsModal')">Export Data</button></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 13. Approval Workflow Modal -->
+@if (activeModal === 'approvalWorkflowModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-diagram-3 me-2"></i>Maker-Checker Settings</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!approvalWorkflowSaved) {
+            <div class="mb-3"><label class="pm-form-label">Tiers & Limits</label>
+              @for (tier of workflowTiers; track tier.id) {
+                <div class="p-2 border rounded mb-2 d-flex justify-content-between align-items-center" style="font-size:13px"><div><strong>{{ tier.name }}</strong><br><span class="text-muted">{{ tier.description }}</span></div><button class="pm-btn pm-btn-sm">Edit</button></div>
+              }
+            </div>
+            <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Require OTP/MFA for all approvals</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Auto-reject unapproved batches after 48 hours</label></div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Workflow rules updated successfully.</h5>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!approvalWorkflowSaved) {
+            <button class="pm-btn" (click)="closeModal()">Cancel</button>
+            <button class="pm-btn pm-btn-primary" (click)="processAction('approvalWorkflowModal','Workflow rules updated successfully.','')">Save Settings</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 14. Disbursement Settings Modal -->
+@if (activeModal === 'disbursementSettingsModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-gear me-2"></i>Disbursement Engine Settings</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!disbursementSettingsSaved) {
+            <div class="mb-3"><label class="pm-form-label">Auto-Routing (Smart Path)</label><select class="pm-form-control"><option>Optimize for Cost (PesaLink where possible)</option><option>Optimize for Speed (B2C instant)</option><option>Strict mapping (Do not override file)</option></select></div>
+            <div class="mb-3"><label class="pm-form-label">Daily B2C Limit Warning</label><input class="pm-form-control" type="number" value="45000000" placeholder="Alert when reaching X limit"></div>
+            <div class="mb-3"><label class="pm-form-label">Duplicate Detection Window</label><select class="pm-form-control"><option>Check last 24 hours</option><option>Check last 7 days</option><option>Check current batch only</option></select></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Automatically retry 'Network Timeout' failures</label></div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Engine settings updated!</h5>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!disbursementSettingsSaved) {
+            <button class="pm-btn" (click)="closeModal()">Cancel</button>
+            <button class="pm-btn pm-btn-primary" (click)="processAction('disbursementSettingsModal','Engine settings updated!','')">Save Settings</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 15. API Integration Modal -->
+@if (activeModal === 'apiIntegrationModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-code-slash text-danger me-2"></i>API Keys & Webhooks</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          <div class="pm-tab-pills mb-3">
+            <button class="pm-tab-pill" [class.active]="activeTabs['apiTab'] === 'keys'" (click)="switchTab('apiTab','keys',$event)">API Keys</button>
+            <button class="pm-tab-pill" [class.active]="activeTabs['apiTab'] === 'webhooks'" (click)="switchTab('apiTab','webhooks',$event)">Webhooks</button>
+            <button class="pm-tab-pill" [class.active]="activeTabs['apiTab'] === 'docs'" (click)="switchTab('apiTab','docs',$event)">Docs</button>
+          </div>
+          @if (activeTabs['apiTab'] === 'keys') {
+            <div class="p-3 border rounded mb-3">
+              <div class="d-flex justify-content-between mb-2"><strong style="font-size:13px">Live Production Key</strong><span class="pm-badge pm-badge-success">Active</span></div>
+              <div class="d-flex gap-2"><input class="pm-form-control" value="pk_live_8f7d6a5...2b1c" type="password" disabled><button class="pm-btn pm-btn-sm"><i class="bi bi-clipboard"></i></button></div>
+              <div style="font-size:11px;color:var(--pm-muted);margin-top:8px">Last used: 15 minutes ago</div>
+            </div>
+            <button class="pm-btn pm-btn-sm pm-btn-danger"><i class="bi bi-arrow-clockwise"></i> Roll Key</button>
+          } @else if (activeTabs['apiTab'] === 'webhooks') {
+            <div class="mb-3"><label class="pm-form-label">Disbursement Callback URL (B2C Result)</label><input class="pm-form-control" value="https://api.safiri.com/webhooks/paymo/b2c"></div>
+            <div class="mb-3"><label class="pm-form-label">Secret Hash</label><input class="pm-form-control" value="whsec_991823719" disabled></div>
+            <button class="pm-btn pm-btn-sm pm-btn-primary">Update URL</button>
+          } @else if (activeTabs['apiTab'] === 'docs') {
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Integrate bulk disbursements directly from your ERP, HRMS, or custom software using the PayMo API.</p>
+            <button class="pm-btn pm-btn-sm pm-btn-outline"><i class="bi bi-box-arrow-up-right"></i> Open Developer Portal</button>
+          }
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 16. Audit Log Modal -->
+@if (activeModal === 'auditLogModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-xl modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-journal-text me-2"></i>Security & Action Audit Log</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <input class="pm-form-control" style="max-width:300px" placeholder="Search logs...">
+            <select class="pm-form-control" style="width:auto"><option>All Actions</option><option>Approvals</option><option>File Uploads</option><option>Settings Change</option></select>
+          </div>
+          <div class="table-responsive" style="max-height:400px;overflow-y:auto"><table class="pm-table">
+            <thead><tr><th>Timestamp</th><th>User</th><th>IP Address</th><th>Action Event</th><th>Status</th></tr></thead>
+            <tbody>
+              @for (log of auditLogs; track log.id) {
+                <tr>
+                  <td>{{ log.timestamp }}</td>
+                  <td>{{ log.user }}</td>
+                  <td>{{ log.ip }}</td>
+                  <td>{{ log.action }}</td>
+                  <td><span [class]="log.statusBadgeClass">{{ log.statusBadge }}</span></td>
+                </tr>
+              }
+            </tbody></table></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary" (click)="closeModal(); openModal('exportAnalyticsModal')">Export Logs</button></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 17. Subsidy Voucher Modal -->
+@if (activeModal === 'subsidyVoucherModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-tree text-warning me-2"></i>Agricultural e-Voucher Management</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          <div class="row g-3 mb-3">
+            <div class="col-md-4"><div class="p-3 rounded text-center" style="background:var(--pm-surface-2)"><div style="font-size:11px;font-weight:700">TOTAL ISSUED</div><div style="font-size:20px;font-weight:700;color:var(--pm-primary)">1,500</div></div></div>
+            <div class="col-md-4"><div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)"><div style="font-size:11px;color:#047857;font-weight:700">REDEEMED</div><div style="font-size:20px;font-weight:700;color:var(--pm-accent)">840</div></div></div>
+            <div class="col-md-4"><div class="p-3 rounded text-center" style="background:var(--pm-warning-soft)"><div style="font-size:11px;color:#B45309;font-weight:700">EXPIRED</div><div style="font-size:20px;font-weight:700;color:var(--pm-warning)">12</div></div></div>
+          </div>
+          <h6 style="font-weight:700">Agro-Vet Merchant Redemptions</h6>
+          <div class="table-responsive"><table class="pm-table"><thead><tr><th>Merchant / Till</th><th>Location</th><th>Redeemed Today</th><th>Status</th></tr></thead><tbody>
+            @for (vm of voucherMerchants; track vm.id) {
+              <tr><td>{{ vm.merchant }}</td><td>{{ vm.location }}</td><td>{{ vm.redeemedToday }}</td><td><span [class]="vm.statusBadgeClass">{{ vm.statusBadge }}</span></td></tr>
+            }
+          </tbody></table></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary">Generate Batch Vouchers</button></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 18. Biometric Verification Modal -->
+@if (activeModal === 'biometricVerificationModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-fingerprint text-purple me-2" style="color:var(--pm-purple)"></i>Compliance & Verification Report</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          <p style="font-size:13px;color:var(--pm-ink-soft)">For the <strong>Inua Jamii Q2 Stipend</strong>, biometric verification via IPRS and mobile agents is required.</p>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Verified & Disbursed</span><span>4,000</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:95%;background:var(--pm-success)"></div></div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Pending Field Verification</span><span>150</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:4%;background:var(--pm-warning)"></div></div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Flagged (Deceased / Invalid ID)</span><span>50</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:1%;background:var(--pm-danger)"></div></div>
+          </div>
+          <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:12px"><i class="bi bi-file-earmark-pdf me-1"></i> Funds for flagged beneficiaries have been ring-fenced and returned to the master program float.</div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary" (click)="closeModal(); openModal('exportAnalyticsModal')">Download Full Roster</button></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 19. Individual Transaction Receipt Modal -->
+@if (activeModal === 'transactionReceiptModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Disbursement Receipt</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Transfer Successful</h5>
+            <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Beneficiary</span><strong>Jane Nduta</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Account</span><strong>0712***890</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 15,000.00</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Batch Ref</span><strong>BTH-9920</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">M-Pesa ID</span><strong style="font-family:monospace;color:var(--pm-primary)">TK982LMN12</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">Date</span><strong>27 Jun 2025, 14:32 EAT</strong></div>
+            </div>
+            <div class="d-flex gap-2 justify-content-center mt-3"><button class="pm-btn pm-btn-sm"><i class="bi bi-download"></i> PDF</button><button class="pm-btn pm-btn-sm"><i class="bi bi-envelope"></i> Email</button></div>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 20. Bulk Receipt Modal -->
+@if (activeModal === 'bulkReceiptModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-receipt-cutoff me-2"></i>Batch Consolidated Receipt</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-collection-play"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Batch BTH-9920 Executed</h5>
+            <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Batch Name</span><strong>Q2 Sales Commissions</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Count</span><strong>118 successful (0 failed)</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Total Paid</span><strong>KES 4,500,000</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Fees</span><strong>KES 2,596</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">Time Completed</span><strong>27 Jun 2025, 14:34 EAT</strong></div>
+            </div>
+            <div class="d-flex gap-2 justify-content-center mt-3"><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-file-earmark-excel"></i> Download Settlement File</button></div>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 21. Dispute / Reversal Modal -->
+@if (activeModal === 'disputeDisbursementModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-counterclockwise me-2"></i>Recall / Reversal Request</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!disputeDisbursementSaved) {
+            <div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft);font-size:13px"><i class="bi bi-exclamation-triangle me-1"></i> Note: Reversals are subject to M-Pesa/Bank guidelines and availability of funds in the recipient's account.</div>
+            <div class="mb-3"><label class="pm-form-label">Transaction ID (M-Pesa/Bank Ref)</label><input class="pm-form-control" placeholder="e.g. TK982LMN12"></div>
+            <div class="mb-3"><label class="pm-form-label">Reason for Recall</label><select class="pm-form-control"><option>Sent to wrong number</option><option>Wrong amount sent</option><option>Duplicate payment</option><option>Fraud suspected</option></select></div>
+            <div class="mb-3"><label class="pm-form-label">Additional Details</label><textarea class="pm-form-control" rows="3"></textarea></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" required><label class="form-check-label" style="font-size:13px">I authorize PayMo to initiate a reversal request on my behalf.</label></div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Reversal request submitted to PSP. Track status in Audit Log.</h5>
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: REV-1192</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+          @if (!disputeDisbursementSaved) {
+            <button class="pm-btn" (click)="closeModal()">Cancel</button>
+            <button class="pm-btn pm-btn-danger" (click)="processAction('disputeDisbursementModal','Reversal request submitted to PSP. Track status in Audit Log.','REV-1192')">Submit Recall Request</button>
+          } @else {
+            <button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- 22. Attention Action Modal -->
+@if (activeModal === 'attentionActionModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>Action Center</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body" style="max-height:400px;overflow-y:auto">
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning)">AP</div><div style="flex:1"><div style="font-weight:600">Approve: Contractor Payout Batch</div><div style="font-size:12px;color:var(--pm-muted)">KES 1.2M pending your sign-off</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('approveBatchModal')">Review</button></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger)">FL</div><div style="flex:1"><div style="font-weight:600">14 Failed Transfers</div><div style="font-size:12px;color:var(--pm-muted)">Invalid numbers from last run</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('failedTransfersModal')">Resolve</button></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple)">FL</div><div style="flex:1"><div style="font-weight:600">Low Float Warning</div><div style="font-size:12px;color:var(--pm-muted)">Scheduled batches exceed current KES 14.2M float</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('fundWalletModal')">Top-up</button></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 23. Business Profile / Multi-Business Modal -->
+@if (activeModal === 'businessProfileModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-buildings me-2"></i>Business Accounts</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @if (!businessProfileSaved) {
+            <div class="p-3 border rounded mb-2 d-flex align-items-center justify-content-between" style="border-color:var(--pm-primary)!important;background:rgba(79,70,229,.04)">
+              <div class="d-flex align-items-center gap-3"><div class="pm-avatar" style="background:var(--pm-gradient-slate)">SO</div><div><strong>Safiri Operations Ltd</strong><div style="font-size:11px;color:var(--pm-muted)">PayBill: 400192</div></div></div>
+              <i class="bi bi-check-circle-fill text-success"></i>
+            </div>
+            <div class="p-3 border rounded mb-3 d-flex align-items-center justify-content-between" style="cursor:pointer" (click)="processAction('businessProfileModal','Switched to Safiri Logistics','Switch')">
+              <div class="d-flex align-items-center gap-3"><div class="pm-avatar" style="background:var(--pm-gradient-blue)">SL</div><div><strong>Safiri Logistics (Subsidiary)</strong><div style="font-size:11px;color:var(--pm-muted)">PayBill: 400193</div></div></div>
+              <i class="bi bi-arrow-right text-muted"></i>
+            </div>
+            <hr class="pm-divider">
+            <div class="d-flex gap-2"><button class="pm-btn pm-btn-sm"><i class="bi bi-plus"></i> Add New Business</button><button class="pm-btn pm-btn-sm pm-btn-outline"><i class="bi bi-person"></i> My Profile</button></div>
+          } @else {
+            <div class="pm-receipt">
+              <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Switched to Safiri Logistics</h5>
+            </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 24. Notifications Modal -->
+@if (activeModal === 'notificationsModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell me-2"></i>Alerts & Notifications</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body" style="max-height:400px;overflow-y:auto">
+          @for (ntf of notifications; track ntf.id) {
+            <div class="p-3 rounded mb-2" [style]="ntf.bgStyle" style="font-size:13px"><strong>{{ ntf.title }}</strong><div style="font-size:11px;color:var(--pm-muted);margin-top:4px">{{ ntf.description }}</div></div>
+          }
+        </div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-sm">Mark All Read</button><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 25. Health Check Modal -->
+@if (activeModal === 'healthCheckModal') {
+  <div class="modal-backdrop show"></div>
+  <div class="modal d-block" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-check text-success me-2"></i>System Health & APIs</h5><button class="btn-close" (click)="closeModal()"></button></div>
+        <div class="modal-body">
+          @for (hc of healthChecks; track hc.id) {
+            <div class="status-row"><div><strong>{{ hc.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ hc.response }}</div></div><span [class]="hc.statusBadgeClass">{{ hc.statusBadge }}</span></div>
+          }
+          <hr class="pm-divider">
+          <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:12px">All bulk disbursements targeting Airtel Money will automatically retry up to 3 times or fallback to Bank if configured.</div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+}}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}

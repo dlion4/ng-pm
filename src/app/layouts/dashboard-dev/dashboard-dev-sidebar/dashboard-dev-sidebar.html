@@ -1,0 +1,47 @@
+<!-- Sidebar Backdrop (mobile) -->
+<div class="sidebar-backdrop" [class.show]="mobileOpen" (click)="onBackdropClick()"></div>
+
+<!-- Sidebar -->
+<aside [class]="sidebarClasses" aria-label="Developer navigation">
+
+    <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="brand">
+            <div class="brand-icon" style="background:linear-gradient(135deg,#6366f1,#4338ca)">PM</div>
+            <span class="brand-text">Paymo Dev</span>
+            <span class="brand-tag" style="color:#6366f1;background:rgba(99,102,241,0.08)">v2025</span>
+        </div>
+        <button class="sidebar-toggle d-lg-none" (click)="onCloseMobile()" aria-label="Close menu">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+    <div class="flex-grow-1">
+        <ng-container *ngFor="let group of navGroups">
+            <div class="mb-2">
+                <span class="nav-group-label">{{ group.title }}</span>
+                <nav class="d-flex flex-column">
+                    <ng-container *ngFor="let item of group.items">
+                        <a [routerLink]="item.route"
+                           routerLinkActive="active"
+                           class="nav-link"
+                           [class.active]="activeSection === item.key"
+                           (click)="onNavItemClick(item)">
+                            <span class="nav-icon"><i class="bi" [ngClass]="item.icon"></i></span>
+                            <span class="nav-label">{{ item.label }}</span>
+                            <span class="nav-badge" *ngIf="item.badge">{{ item.badge }}</span>
+                        </a>
+                    </ng-container>
+                </nav>
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="sidebar-account">
+        <div class="avatar" style="background:linear-gradient(135deg,#6366f1,#4338ca)">JD</div>
+        <div class="details">
+            <div class="fw-bold text-truncate" style="font-size:0.82rem;color:var(--text)">John Dev</div>
+            <div class="text-truncate" style="font-size:0.7rem;color:var(--muted)">Tech Lead</div>
+        </div>
+    </div>
+
+</aside>

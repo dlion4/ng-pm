@@ -1,0 +1,165 @@
+<header [class]="headerClasses">
+    <div class="d-flex align-items-center gap-3">
+        <button class="sidebar-toggle" (click)="onToggleSidebar()" aria-label="Toggle sidebar">
+            <i [class]="toggleIconClass"></i>
+        </button>
+        <div class="global-search d-none d-md-block">
+            <i class="bi bi-search search-icon"></i>
+            <input type="text" placeholder="Search transfers, beneficiaries, references…" />
+        </div>
+    </div>
+
+    <div class="header-actions">
+        <div class="position-relative" data-dropdown="accountId">
+            <button class="account-id-chip" (click)="toggleDropdown('accountId', $event)"
+                [attr.aria-expanded]="isDropdownOpen('accountId')">
+                <i class="bi bi-layers"></i>
+                <span class="account-id-text">{{ accountId }}</span>
+                <i class="bi bi-chevron-down chev" style="font-size:0.7rem"></i>
+            </button>
+            <div class="dropdown-panel" [class.show]="isDropdownOpen('accountId')" data-dropdown-panel="accountId">
+                <div class="panel-header">
+                    <span class="panel-title">Account ID</span>
+                    <span class="badge bg-primary-soft text-primary">Live</span>
+                </div>
+                <div class="panel-body">
+                    <div class="p-3">
+                        <div class="d-flex align-items-center justify-content-between p-2 rounded-3 mb-2"
+                            style="background:var(--surface-2);border:1px solid var(--border)">
+                            <code class="text-primary fw-bold">{{ accountId }}</code>
+                            <button class="btn btn-sm btn-link text-decoration-none p-1" (click)="copyAccountId()"><i
+                                    class="bi bi-clipboard"></i></button>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button *ngFor="let acc of accounts"
+                                class="btn btn-light text-start d-flex justify-content-between align-items-center"
+                                (click)="onSwitchAccount(acc)">
+                                <span>
+                                    <span class="d-block fw-semibold" style="font-size:0.82rem">{{ acc.name }}</span>
+                                    <span class="text-muted" style="font-size:0.7rem">{{ acc.id }}</span>
+                                </span>
+                                <span class="badge bg-secondary-subtle text-secondary">{{ acc.role }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer d-flex justify-content-between align-items-center">
+                    <button class="btn btn-sm btn-link text-decoration-none text-muted"
+                        (click)="onOpenAside('security', $event)">
+                        <i class="bi bi-shield-check me-1"></i>Security
+                    </button>
+                    <button class="btn btn-sm btn-link text-decoration-none text-muted"
+                        (click)="onOpenAside('developers', $event)">
+                        <i class="bi bi-terminal me-1"></i>Developers
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="vr d-none d-lg-block mx-1" style="height:28px;opacity:0.15"></div>
+
+        <button class="header-action" (click)="onOpenAside('security')" aria-label="Security center" title="Security">
+            <i class="bi bi-shield-check action-icon"></i>
+        </button>
+
+        <button class="header-action" (click)="onOpenAside('developers')" aria-label="Developer tools"
+            title="Developers">
+            <i class="bi bi-code-slash action-icon"></i>
+        </button>
+
+        <div class="position-relative" data-dropdown="notifications">
+            <button class="header-action" (click)="toggleDropdown('notifications', $event)"
+                [attr.aria-expanded]="isDropdownOpen('notifications')" aria-label="Notifications">
+                <i class="bi bi-bell action-icon"></i>
+                <span class="header-badge">12</span>
+            </button>
+            <div class="dropdown-panel" [class.show]="isDropdownOpen('notifications')"
+                data-dropdown-panel="notifications">
+                <div class="panel-header">
+                    <span class="panel-title">Notifications</span>
+                    <button class="btn btn-sm btn-link text-decoration-none" style="font-size:0.75rem">Mark all
+                        read</button>
+                </div>
+                <div class="panel-body">
+                    <div class="notification-item" *ngFor="let n of notifications" [class.unread]="n.unread">
+                        <div class="notification-icon" [ngClass]="n.tone"><i class="bi {{ n.icon }}"></i></div>
+                        <div class="flex-grow-1" style="min-width:0">
+                            <div class="d-flex justify-content-between align-items-start gap-2">
+                                <span class="fw-semibold" style="font-size:0.82rem;color:var(--text)">{{ n.title
+                                    }}</span>
+                                <span class="notification-dot" *ngIf="n.unread"></span>
+                            </div>
+                            <div class="text-muted text-truncate" style="font-size:0.75rem">{{ n.desc }}</div>
+                        </div>
+                        <span class="text-muted flex-shrink-0" style="font-size:0.7rem">{{ n.time }}</span>
+                    </div>
+                </div>
+                <div class="panel-footer text-center">
+                    <button class="btn btn-sm btn-link text-decoration-none fw-semibold text-primary">View all
+                        notifications</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="position-relative" data-dropdown="user">
+            <button class="user-trigger" (click)="toggleDropdown('user', $event)"
+                [attr.aria-expanded]="isDropdownOpen('user')">
+                <div class="avatar">JK</div>
+                <div class="user-meta">
+                    <div class="user-name">Jeckonia K.</div>
+                    <div class="user-role">Account Holder</div>
+                </div>
+                <i class="bi bi-chevron-down chev" style="font-size:0.8rem"></i>
+            </button>
+            <div class="dropdown-panel" [class.show]="isDropdownOpen('user')" data-dropdown-panel="user"
+                style="width:280px">
+                <div class="p-3 d-flex align-items-center gap-3 border-bottom">
+                    <div class="avatar"
+                        style="width:46px;height:46px;font-size:1rem;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,var(--paymo-primary));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">
+                        JK</div>
+                    <div>
+                        <div class="fw-bold" style="font-size:0.9rem">Jeckonia K.</div>
+                        <div class="text-muted" style="font-size:0.75rem">jeckonia.k@paymo.co</div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="d-flex flex-column">
+                        <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i
+                                class="bi bi-person"></i> Profile</button>
+                        <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i class="bi bi-gear"></i>
+                            Settings</button>
+                        <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i
+                                class="bi bi-envelope"></i> Inbox <span class="badge bg-danger ms-auto"
+                                style="font-size:0.6rem">3</span></button>
+                        <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"
+                            (click)="onOpenAside('security', $event)"><i class="bi bi-shield-check"></i>
+                            Security</button>
+                        <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"
+                            (click)="onOpenAside('developers', $event)"><i class="bi bi-code-slash"></i>
+                            Developers</button>
+                        <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i
+                                class="bi bi-question-circle"></i> Help Center</button>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <button class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2"
+                        style="font-size:0.82rem" (click)="onLogout()">
+                        <i class="bi bi-box-arrow-right"></i> Log out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="toast-container-custom">
+    <div class="paymo-toast" *ngFor="let t of toasts" [class.leaving]="t.isLeaving">
+        <div class="toast-ic" [style.background]="t.bg" [style.color]="t.color"><i class="bi {{ t.icon }}"></i></div>
+        <div class="flex-grow-1">
+            <div class="fw-semibold" style="font-size:0.82rem">{{ t.title }}</div>
+            <div class="text-muted" style="font-size:0.75rem">{{ t.message }}</div>
+        </div>
+        <button class="btn btn-link text-muted p-0 ms-2" style="font-size:0.8rem" (click)="removeToast(t.id)"><i
+                class="bi bi-x-lg"></i></button>
+    </div>
+</div>

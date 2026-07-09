@@ -1,0 +1,1435 @@
+<!-- PayMo Compliance & AML (Transactions) — Angular Template -->
+
+<!-- ===== PAGE BAR ===== -->
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb">
+      <a href="#">Home</a> / <a href="#">Transactions Hub</a> / <strong>Compliance & AML</strong>
+    </div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 1.9 — Compliance & AML (Transactions)</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Real-time transaction monitoring, AML rules engine, sanctions & PEP screening, risk scoring, investigation case management, and automated regulatory reporting.</p>
+  </div>
+  <div class="d-flex flex-wrap" style="gap:8px">
+    <button class="btn-pm" (click)="openModal(amlHealthModal)"><i class="bi bi-heart-pulse"></i> Health Check</button>
+    <button class="btn-pm" (click)="openModal(regReportModal)"><i class="bi bi-file-earmark-text"></i> Regulatory Reports</button>
+    <button class="btn-pm" (click)="openModal(newCaseModal)"><i class="bi bi-folder-plus"></i> New Case</button>
+    <button class="btn-pm btn-pm-d" (click)="openModal(emergencyBlockModal)"><i class="bi bi-exclamation-triangle"></i> Emergency Block</button>
+  </div>
+</div>
+
+<!-- ===== CONTENT ===== -->
+<div class="pm-content">
+
+  <!-- HERO STATS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C C-accent" style="min-height:170px">
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">AML engine is live <span style="color:#86efac">●</span></p>
+        <div class="SV" style="margin:8px 0;color:#fff">{{ heroStats.monitoredToday | number }} transactions monitored today</div>
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Real-time screening across 12 payment rails. {{ heroStats.highRiskAlerts }} alerts generated. {{ heroStats.immediateAction }} cases under active investigation.</p>
+        <div class="d-flex flex-wrap mt-3" style="gap:8px">
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal(amlRulesModal)">Rules</button>
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal(sanctionsSearchModal)">Sanctions</button>
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal(riskScoringModal)">Risk Engine</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-danger)">HIGH RISK ALERTS</p>
+        <div class="SV" style="margin:6px 0">{{ heroStats.highRiskAlerts }}</div>
+        <span class="B B-d"><i class="bi bi-exclamation-triangle"></i> {{ heroStats.immediateAction }} require immediate action</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">STRs filed today: <strong>{{ heroStats.strsToday }}</strong><br>CTR threshold breaches: <strong>{{ heroStats.ctrBreaches }}</strong></div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-warning)">AML DETECTION RATE</p>
+        <div class="SV" style="margin:6px 0">{{ heroStats.detectionRate }}%</div>
+        <span class="B B-s"><i class="bi bi-graph-up-arrow"></i> +{{ heroStats.detectionChange }}% vs last month</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">False positive rate: {{ heroStats.falsePositiveRate }}%<br>Avg investigation time: {{ heroStats.avgInvestigationTime }}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4">
+      <div class="C" style="min-height:170px;border-left:3px solid var(--pm-accent)">
+        <p class="SL" style="color:var(--pm-accent)">REGULATORY FILINGS</p>
+        <div class="SV" style="margin:6px 0">{{ heroStats.regulatoryFilings }}</div>
+        <span class="B B-i"><i class="bi bi-file-earmark-check"></i> This month</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">STRs: {{ heroStats.strsMonth }} | CTRs: {{ heroStats.ctrsMonth }} | SARs: {{ heroStats.sarsMonth }}<br>Next CBK report due: <strong>{{ heroStats.nextCbkReport }}</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Attention Required</h3>
+          <button class="btn-pm btn-sm" (click)="openModal(attentionFullModal)">View all</button>
+        </div>
+        <div class="sr" *ngFor="let item of attentionItems">
+          <div class="d-flex align-items-center gap-3">
+            <div [style.width]="'36px'" [style.height]="'36px'" [style.borderRadius]="'50%'" [style.background]="item.iconBg" [style.color]="item.iconColor" style="display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi" [class]="item.icon"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+            </div>
+          </div>
+          <button class="btn-pm btn-sm" [class.btn-pm-d]="item.actionStyle === 'btn-pm-d'" (click)="openModal(item.actionModal === 'newCaseModal' ? newCaseModal : item.actionModal === 'pepDetailModal' ? pepDetailModal : item.actionModal === 'sanctionsSearchModal' ? sanctionsSearchModal : caseDetailModal)">{{ item.actionLabel }}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Smart Suggestions</h3>
+          <span class="B B-p"><i class="bi bi-stars"></i> AI</span>
+        </div>
+        <div class="sr" *ngFor="let s of suggestions">
+          <div class="d-flex align-items-center gap-3">
+            <div [style.width]="'36px'" [style.height]="'36px'" [style.borderRadius]="'50%'" [style.background]="s.iconBg" [style.color]="s.iconColor" style="display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi" [class]="s.icon"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px">{{ s.title }}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ s.subtitle }}</div>
+            </div>
+          </div>
+          <button class="btn-pm btn-sm" (click)="openModal(s.actionModal === 'amlRulesModal' ? amlRulesModal : s.actionModal === 'riskScoringModal' ? riskScoringModal : railConfigModal)">{{ s.actionLabel }}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="mb-3">
+          <h3 class="st">Quick Actions</h3>
+          <p class="ss">Frequent compliance workflows</p>
+        </div>
+        <div class="quick-grid">
+          <button class="quick-btn" *ngFor="let qa of quickActions" (click)="openModal(
+            qa.modal === 'newCaseModal' ? newCaseModal :
+            qa.modal === 'sanctionsSearchModal' ? sanctionsSearchModal :
+            qa.modal === 'amlRulesModal' ? amlRulesModal :
+            qa.modal === 'regReportModal' ? regReportModal :
+            qa.modal === 'riskScoringModal' ? riskScoringModal :
+            qa.modal === 'auditTrailModal' ? auditTrailModal :
+            qa.modal === 'bulkScreeningModal' ? bulkScreeningModal :
+            evidenceLockerModal
+          )">
+            <i class="bi" [class]="qa.icon" [class.text-danger]="qa.iconColor === 'text-danger'" [class.text-warning]="qa.iconColor === 'text-warning'" [class.text-primary]="qa.iconColor === 'text-primary'" [style.color]="qa.customColor"></i> {{ qa.label }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: Transaction Monitoring Dashboard -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-activity" style="color:var(--pm-primary)"></i> 1.9.1 — Real-Time Transaction Monitoring Dashboard</h3>
+        <p class="ss">Live feed of all bank-to-bank transactions with risk scoring, alerts, and immediate action capabilities.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(monitorSettingsModal)"><i class="bi bi-gear"></i> Settings</button>
+        <button class="btn-pm btn-sm btn-pm-p" (click)="openModal(liveAlertsModal)"><i class="bi bi-bell"></i> Live Alerts ({{ heroStats.highRiskAlerts }})</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Live Transaction Feed</h4>
+          <div class="table-responsive" style="max-height:320px;overflow-y:auto">
+            <table class="T">
+              <thead>
+                <tr><th>Time</th><th>Reference</th><th>From → To</th><th>Amount</th><th>Rail</th><th>Risk</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let txn of transactions">
+                  <td>{{ txn.time }}</td>
+                  <td>{{ txn.reference }}</td>
+                  <td>{{ txn.fromTo }}</td>
+                  <td><strong>{{ txn.amount }}</strong></td>
+                  <td>{{ txn.rail }}</td>
+                  <td><span class="B" [class.B-d]="txn.risk >= 70" [class.B-w]="txn.risk >= 40 && txn.risk < 70" [class.B-s]="txn.risk < 40">{{ txn.risk }}</span></td>
+                  <td><span class="B" [class.B-d]="txn.status === 'Alert'" [class.B-w]="txn.status === 'Hold'" [class.B-s]="txn.status === 'Cleared'">{{ txn.status }}</span></td>
+                  <td>
+                    <button class="btn-pm btn-sm" [class.btn-pm-d]="txn.status === 'Alert'" (click)="openModal(txn.status === 'Alert' ? newCaseModal : txnDetailModal)">{{ getTxnActionLabel(txn.status) }}</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Risk Distribution (Today)</h4>
+          <div *ngFor="let r of riskDistribution">
+            <div class="d-flex justify-content-between mb-2"><span>{{ r.label }}</span><strong>{{ r.count }}</strong></div>
+            <div class="pm-progress mb-3">
+              <div class="pm-progress-bar" [style.width.%]="r.width" [style.background]="r.color"></div>
+            </div>
+          </div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-danger-soft);font-size:12px">
+            <strong>{{ heroStats.immediateAction }} transactions</strong> currently flagged for immediate review. Average risk score: <strong>47.2</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: AML Rules Engine -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-sliders" style="color:var(--pm-purple)"></i> 1.9.2 — AML Rules Engine & Threshold Configuration</h3>
+        <p class="ss">Create, tune, and A/B test detection rules for structuring, velocity, round-tripping, and sanctions evasion.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(amlRulesModal)"><i class="bi bi-plus-lg"></i> New Rule</button>
+        <button class="btn-pm btn-sm" (click)="openModal(ruleTestModal)"><i class="bi bi-play"></i> Test Rules</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Detection Rules</h4>
+          <div class="sr" *ngFor="let rule of detectionRules">
+            <div>
+              <strong>{{ rule.name }}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ rule.description }}</div>
+            </div>
+            <div>
+              <span class="B" [class.B-s]="rule.status === 'Active'" [class.B-w]="rule.status === 'Paused'">{{ rule.status }}</span>
+              <span class="B B-p">{{ rule.precision }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Rule Performance (30 days)</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Rule</th><th>Alerts</th><th>Confirmed</th><th>Precision</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let rp of rulePerformance">
+                  <td>{{ rp.rule }}</td>
+                  <td>{{ rp.alerts }}</td>
+                  <td>{{ rp.confirmed }}</td>
+                  <td><strong>{{ rp.precision }}</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Sanctions & PEP Screening -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-globe" style="color:var(--pm-info)"></i> 1.9.3 — Sanctions & PEP Screening</h3>
+        <p class="ss">Real-time and batch screening against UN, OFAC, EU, UK, and local sanctions lists plus PEP databases.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(sanctionsSearchModal)"><i class="bi bi-search"></i> Search</button>
+        <button class="btn-pm btn-sm" (click)="openModal(bulkScreeningModal)"><i class="bi bi-people"></i> Bulk Screen</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-5">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Screening Summary (Today)</h4>
+          <div class="sr"><div><strong>Total Screened</strong></div><strong>{{ screeningSummary.totalScreened | number }}</strong></div>
+          <div class="sr"><div><strong>Matches Found</strong></div><strong>{{ screeningSummary.matchesFound }}</strong></div>
+          <div class="sr"><div><strong>False Positives</strong></div><strong>{{ screeningSummary.falsePositives }}</strong></div>
+          <div class="sr"><div><strong>True Matches (Confirmed)</strong></div><strong>{{ screeningSummary.trueMatches }}</strong></div>
+          <div class="sr"><div><strong>PEP Hits</strong></div><strong>{{ screeningSummary.pepHits }}</strong></div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-info-soft);font-size:12px">
+            <i class="bi bi-info-circle me-1"></i> Last full sanctions list refresh: <strong>{{ screeningSummary.lastRefresh }}</strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Recent Matches</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Entity</th><th>List</th><th>Match Score</th><th>Action</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let m of screeningMatches">
+                  <td>{{ m.entity }}</td>
+                  <td>{{ m.list }}</td>
+                  <td><span class="B" [class.B-d]="m.score >= 90" [class.B-w]="m.score >= 70 && m.score < 90">{{ m.score }}%</span></td>
+                  <td><button class="btn-pm btn-sm" (click)="openModal(pepDetailModal)">Review</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Risk Scoring -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-speedometer2" style="color:var(--pm-warning)"></i> 1.9.4 — Risk Scoring & Customer Risk Profiles</h3>
+        <p class="ss">Dynamic risk scoring engine with explainable AI, customer risk profiles, and automated risk-based controls.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(riskScoringModal)"><i class="bi bi-gear"></i> Configure</button>
+        <button class="btn-pm btn-sm" (click)="openModal(riskModelModal)"><i class="bi bi-robot"></i> AI Model</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Risk Score Distribution</h4>
+          <div *ngFor="let r of riskScoreDistribution">
+            <div class="d-flex justify-content-between mb-2"><span>{{ r.label }}</span><strong>{{ r.count }}</strong></div>
+            <div class="pm-progress mb-2">
+              <div class="pm-progress-bar" [style.width.%]="r.width" [style.background]="r.color"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Top Risk Factors (This Month)</h4>
+          <div class="sr" *ngFor="let f of riskFactors">
+            <div><strong>{{ f.name }}</strong></div><strong>{{ f.count }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Case Management -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-folder-check" style="color:var(--pm-info)"></i> 1.9.5 — Investigation Case Management</h3>
+        <p class="ss">End-to-end case lifecycle: creation, evidence gathering, collaboration, escalation, and regulatory filing.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(newCaseModal)"><i class="bi bi-folder-plus"></i> New Case</button>
+        <button class="btn-pm btn-sm" (click)="openModal(caseExportModal)"><i class="bi bi-download"></i> Export</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="T">
+        <thead>
+          <tr><th>Case ID</th><th>Type</th><th>Subject</th><th>Risk</th><th>Status</th><th>Opened</th><th>Owner</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of cases">
+            <td>{{ c.id }}</td>
+            <td>{{ c.type }}</td>
+            <td>{{ c.subject }}</td>
+            <td><span class="B" [class.B-d]="c.risk >= 70" [class.B-w]="c.risk >= 40 && c.risk < 70" [class.B-s]="c.risk < 40">{{ c.risk }}</span></td>
+            <td><span class="B" [class.B-d]="c.status === 'Investigation'" [class.B-w]="c.status === 'Escalated'" [class.B-s]="c.status === 'Under Review' || c.status === 'Closed'">{{ c.status }}</span></td>
+            <td>{{ c.opened }}</td>
+            <td>{{ c.owner }}</td>
+            <td><button class="btn-pm btn-sm" (click)="openModal(caseDetailModal)">{{ getCaseActionLabel(c.status) }}</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 6: Regulatory Reporting -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-file-earmark-text" style="color:var(--pm-purple)"></i> 1.9.6 — Regulatory Reporting (STR / CTR / SAR)</h3>
+        <p class="ss">Automated generation, review, and submission of Suspicious Transaction Reports, Currency Transaction Reports, and Suspicious Activity Reports.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(regReportModal)"><i class="bi bi-plus-lg"></i> New Filing</button>
+        <button class="btn-pm btn-sm" (click)="openModal(reportCalendarModal)"><i class="bi bi-calendar"></i> Calendar</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Recent Filings</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Report ID</th><th>Type</th><th>Subject</th><th>Filed</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let r of reports">
+                  <td>{{ r.id }}</td>
+                  <td>{{ r.type }}</td>
+                  <td>{{ r.subject }}</td>
+                  <td>{{ r.filed }}</td>
+                  <td><span class="B" [class.B-s]="r.status === 'Submitted' || r.status === 'Acknowledged'">{{ r.status }}</span></td>
+                  <td><button class="btn-pm btn-sm" (click)="openModal(reportDetailModal)">View</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Filing Deadlines</h4>
+          <div class="sr" *ngFor="let d of deadlines">
+            <div>
+              <strong>{{ d.title }}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ d.date }}</div>
+            </div>
+            <button class="btn-pm btn-sm" [class.btn-pm-d]="d.actionStyle === 'btn-pm-d'" (click)="openModal(d.actionModal === 'caseDetailModal' ? caseDetailModal : regReportModal)">{{ d.actionLabel }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: Audit Trail & Evidence -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-archive" style="color:var(--pm-muted)"></i> 1.9.7 — Audit Trail & Evidence Locker</h3>
+        <p class="ss">Immutable audit log of all compliance actions, evidence management, chain of custody, and regulatory inspection readiness.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(auditTrailModal)"><i class="bi bi-clock-history"></i> Full Log</button>
+        <button class="btn-pm btn-sm" (click)="openModal(evidenceLockerModal)"><i class="bi bi-archive"></i> Evidence Locker</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="T">
+        <thead>
+          <tr><th>Timestamp</th><th>User</th><th>Action</th><th>Entity</th><th>Evidence</th><th>IP / Device</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of auditTrail">
+            <td>{{ a.timestamp }}</td>
+            <td>{{ a.user }}</td>
+            <td>{{ a.action }}</td>
+            <td>{{ a.entity }}</td>
+            <td>{{ a.evidence }}</td>
+            <td>{{ a.ipDevice }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- pm-content -->
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!--  MODALS  — All 24+ modals with full functionality, steps, tabs         -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+
+<!-- M1: New Case (multi-step) -->
+<ng-template #newCaseModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-folder-plus text-danger me-2"></i>Create New Investigation Case</h5>
+      <button class="btn-close" (click)="modal.dismiss(); resetCaseStepper()"></button>
+    </div>
+    <div class="modal-body" style="position:relative;min-height:300px">
+      <div *ngIf="caseStepLoading" class="loading-ov">
+        <div class="spinner"></div>
+        <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+      </div>
+      <div *ngIf="actionResult.show && actionResult.message" class="receipt">
+        <div class="ri"><i class="bi bi-check-lg"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-accent)">{{ actionResult.message }}</h5>
+        <p *ngIf="actionResult.ref" style="font-size:12px;color:var(--pm-muted)">Reference: {{ actionResult.ref }}</p>
+        <div class="d-flex justify-content-center mt-3" style="gap:8px">
+          <button class="btn-pm btn-sm" (click)="resetActionResult(); resetCaseStepper()"><i class="bi bi-arrow-left"></i> Back</button>
+          <button class="btn-pm btn-sm btn-pm-p" (click)="modal.close(); resetActionResult(); resetCaseStepper()">Done</button>
+        </div>
+      </div>
+      <div class="stepper" *ngIf="!actionResult.show">
+        <ng-container *ngFor="let label of caseStepLabels; let i = index">
+          <div class="step" [class.active]="caseStepCurrent === i + 1" [class.done]="caseStepCurrent > i + 1">
+            <div class="step-n">{{ caseStepCurrent > i + 1 ? '✓' : i + 1 }}</div>
+            <div class="step-l">{{ label }}</div>
+          </div>
+          <div class="step-line" *ngIf="i < caseStepLabels.length - 1"></div>
+        </ng-container>
+      </div>
+      <div *ngIf="isCaseStepActive(1) && !actionResult.show" class="fstep active">
+        <h6 style="font-weight:700">Step 1: Case Type & Trigger</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="FL">Case Type</label>
+            <select class="FC" [(ngModel)]="caseForm.caseType">
+              <option>Structuring / Smurfing</option>
+              <option>Sanctions / PEP Hit</option>
+              <option>Round-Tripping</option>
+              <option>Adverse Media</option>
+              <option>Internal Referral</option>
+              <option>Regulatory Request</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="FL">Priority</label>
+            <select class="FC" [(ngModel)]="caseForm.priority">
+              <option>Critical — Immediate</option>
+              <option>High — 24h</option>
+              <option>Normal — 72h</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-3 mt-3">
+          <label class="FL">Triggering Transaction(s)</label>
+          <input class="FC" [(ngModel)]="caseForm.triggerTxns">
+        </div>
+      </div>
+      <div *ngIf="isCaseStepActive(2) && !actionResult.show" class="fstep active">
+        <h6 style="font-weight:700">Step 2: Subjects & Scope</h6>
+        <div class="mb-3">
+          <label class="FL">Primary Subject</label>
+          <input class="FC" [(ngModel)]="caseForm.primarySubject">
+        </div>
+        <div class="mb-3">
+          <label class="FL">Linked Entities</label>
+          <textarea class="FC" rows="2" [(ngModel)]="caseForm.linkedEntities"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="FL">Date Range</label>
+          <div class="row g-3">
+            <div class="col-6"><input type="date" class="FC" [(ngModel)]="caseForm.dateFrom"></div>
+            <div class="col-6"><input type="date" class="FC" [(ngModel)]="caseForm.dateTo"></div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isCaseStepActive(3) && !actionResult.show" class="fstep active">
+        <h6 style="font-weight:700">Step 3: Initial Actions</h6>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="caseForm.freezeAccounts">
+          <label class="form-check-label">Freeze all linked accounts</label>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="caseForm.requestStatements">
+          <label class="form-check-label">Request bank statements (last 90 days)</label>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="caseForm.submitSar">
+          <label class="form-check-label">Submit SAR to CBK within 24h</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="caseForm.assignTeam">
+          <label class="form-check-label">Assign to investigation team</label>
+        </div>
+      </div>
+      <div *ngIf="isCaseStepActive(4) && !actionResult.show" class="fstep active">
+        <div class="receipt">
+          <div class="ri"><i class="bi bi-folder-check"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">Case Created Successfully</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Case {{ caseReceipt.caseId }} has been created and assigned to Sarah M. (Lead Investigator).</p>
+          <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Case ID</span><strong>{{ caseReceipt.caseId }}</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Priority</span><span class="B B-d">{{ caseReceipt.priority }}</span></div>
+            <div class="d-flex justify-content-between"><span class="text-muted">Due</span><strong>{{ caseReceipt.due }}</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" *ngIf="!actionResult.show">
+      <button class="btn-pm" (click)="modal.dismiss(); resetCaseStepper()">Cancel</button>
+      <button class="btn-pm" *ngIf="caseStepCurrent > 1 && caseStepCurrent < caseStepTotal" (click)="prevCaseStep()"><i class="bi bi-arrow-left"></i> Back</button>
+      <button class="btn-pm btn-pm-d" (click)="nextCaseStep()">
+        {{ caseStepCurrent === caseStepTotal ? 'Done' : caseStepCurrent === caseStepTotal - 1 ? 'Create Case' : 'Continue' }} <i class="bi bi-arrow-right" *ngIf="caseStepCurrent < caseStepTotal"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M2: Case Detail (multi-tab) -->
+<ng-template #caseDetailModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-folder me-2"></i>Case AML-44892 — Structuring Investigation</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="modalActionLoading" class="loading-ov">
+        <div class="spinner"></div>
+        <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+      </div>
+      <div *ngIf="actionResult.show && actionResult.message" class="receipt">
+        <div class="ri"><i class="bi bi-check-lg"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-accent)">{{ actionResult.message }}</h5>
+        <p *ngIf="actionResult.ref" style="font-size:12px;color:var(--pm-muted)">Reference: {{ actionResult.ref }}</p>
+        <button class="btn-pm btn-pm-p mt-3" (click)="resetActionResult()">Continue</button>
+      </div>
+      <ng-container *ngIf="!actionResult.show">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="isCaseDetailTab('overview')" (click)="setCaseDetailTab('overview')">Overview</button>
+          <button class="pill" [class.active]="isCaseDetailTab('timeline')" (click)="setCaseDetailTab('timeline')">Timeline</button>
+          <button class="pill" [class.active]="isCaseDetailTab('evidence')" (click)="setCaseDetailTab('evidence')">Evidence</button>
+          <button class="pill" [class.active]="isCaseDetailTab('network')" (click)="setCaseDetailTab('network')">Network</button>
+          <button class="pill" [class.active]="isCaseDetailTab('report')" (click)="setCaseDetailTab('report')">Report</button>
+        </div>
+        <div *ngIf="isCaseDetailTab('overview')" class="tpanel active">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Status</span><span class="B B-d">Active Investigation</span></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Opened</span><strong>24 Jun 2025</strong></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Owner</span><strong>Sarah M. (Lead)</strong></div>
+                <div class="d-flex justify-content-between"><span class="text-muted">Risk Score</span><span class="B B-d">92</span></div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 rounded" style="background:var(--pm-danger-soft)">
+                <div style="font-size:11px;font-weight:700;color:#991B1B">SUBJECTS</div>
+                <div style="font-size:14px;font-weight:700;color:var(--pm-danger)">John Kamau + 7 linked entities</div>
+                <div style="font-size:12px;color:#7F1D1D">3 accounts frozen • KES 4.2M under review</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="isCaseDetailTab('timeline')" class="tpanel active">
+          <div class="sr" *ngFor="let t of caseTimeline">
+            <div><strong>{{ t.date }}</strong> — {{ t.event }}</div>
+          </div>
+        </div>
+        <div *ngIf="isCaseDetailTab('evidence')" class="tpanel active">
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>File</th><th>Type</th><th>Uploaded</th><th>Hash</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let ef of evidenceFiles">
+                  <td>{{ ef.file }}</td><td>{{ ef.type }}</td><td>{{ ef.uploaded }}</td><td>{{ ef.hash }}</td>
+                  <td><button class="btn-pm btn-sm">Download</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="isCaseDetailTab('network')" class="tpanel active">
+          <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">
+            <strong>Entity Network (8 nodes)</strong>
+            <ul class="mt-2 mb-0">
+              <li>John Kamau (Primary) → Mary Wanjiku (Spouse) → TechFlow Ltd → Global Trade EA → 4 shell entities</li>
+            </ul>
+          </div>
+        </div>
+        <div *ngIf="isCaseDetailTab('report')" class="tpanel active">
+          <div class="mb-3">
+            <label class="FL">STR Narrative (Draft)</label>
+            <textarea class="FC" rows="6" [(ngModel)]="strNarrative"></textarea>
+          </div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="strIncludeTimeline"><label class="form-check-label">Include transaction timeline</label></div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="strAttachEvidence"><label class="form-check-label">Attach evidence pack (47 files)</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="strRequestFreeze"><label class="form-check-label">Request asset freeze order</label></div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="modal-footer" *ngIf="!actionResult.show">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('caseDetailModal', 'Case updated and saved. All changes logged to audit trail.', '')">Save Changes</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M3: Sanctions Search -->
+<ng-template #sanctionsSearchModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-globe text-info me-2"></i>Sanctions & PEP Search</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="FL">Search Term</label>
+        <input class="FC" [(ngModel)]="sanctionsSearch.term" placeholder="Name, ID, Company, Passport">
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="FL">Lists to Check</label>
+          <div class="form-check mb-1"><input class="form-check-input" type="checkbox" [(ngModel)]="sanctionsSearch.lists.un"><label class="form-check-label">UN Consolidated</label></div>
+          <div class="form-check mb-1"><input class="form-check-input" type="checkbox" [(ngModel)]="sanctionsSearch.lists.ofac"><label class="form-check-label">OFAC SDN</label></div>
+          <div class="form-check mb-1"><input class="form-check-input" type="checkbox" [(ngModel)]="sanctionsSearch.lists.eu"><label class="form-check-label">EU Consolidated</label></div>
+          <div class="form-check mb-1"><input class="form-check-input" type="checkbox" [(ngModel)]="sanctionsSearch.lists.uk"><label class="form-check-label">UK Sanctions</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="sanctionsSearch.lists.pep"><label class="form-check-label">Local PEP Database</label></div>
+        </div>
+        <div class="col-md-6">
+          <label class="FL">Match Threshold</label>
+          <select class="FC" [(ngModel)]="sanctionsSearch.threshold">
+            <option>High (90%+)</option>
+            <option>Medium (70%+)</option>
+            <option>Low (50%+)</option>
+          </select>
+        </div>
+      </div>
+      <div class="p-3 rounded mt-3" style="background:var(--pm-surface-2)">
+        <div style="font-size:13px;font-weight:700">Search Results ({{ screeningMatches.length }} matches)</div>
+        <div class="sr mt-2" *ngFor="let m of screeningMatches">
+          <div>
+            <strong>{{ m.entity }}</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">{{ m.list }} — {{ m.score }}% match</div>
+          </div>
+          <span class="B" [class.B-d]="m.score >= 90" [class.B-w]="m.score >= 70 && m.score < 90">{{ m.risk }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('sanctionsSearchModal', 'Screening completed. 3 matches flagged for review.', '')">Screen Again</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M4: AML Rules Modal (multi-tab) -->
+<ng-template #amlRulesModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-sliders text-purple me-2"></i>AML Rules Engine</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="modalActionLoading" class="loading-ov">
+        <div class="spinner"></div>
+        <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+      </div>
+      <div *ngIf="actionResult.show && actionResult.message" class="receipt">
+        <div class="ri"><i class="bi bi-check-lg"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-accent)">{{ actionResult.message }}</h5>
+        <p *ngIf="actionResult.ref" style="font-size:12px;color:var(--pm-muted)">Reference: {{ actionResult.ref }}</p>
+        <button class="btn-pm btn-pm-p mt-3" (click)="resetActionResult()">Continue</button>
+      </div>
+      <ng-container *ngIf="!actionResult.show">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="isAmlRulesTab('active')" (click)="setAmlRulesTab('active')">Active Rules</button>
+          <button class="pill" [class.active]="isAmlRulesTab('create')" (click)="setAmlRulesTab('create')">Create Rule</button>
+          <button class="pill" [class.active]="isAmlRulesTab('test')" (click)="setAmlRulesTab('test')">A/B Test</button>
+        </div>
+        <div *ngIf="isAmlRulesTab('active')" class="tpanel active">
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>Rule Name</th><th>Trigger</th><th>Threshold</th><th>Precision</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let ar of activeRules">
+                  <td>{{ ar.name }}</td><td>{{ ar.trigger }}</td><td>{{ ar.threshold }}</td><td>{{ ar.precision }}</td>
+                  <td><span class="B B-s">{{ ar.status }}</span></td>
+                  <td><button class="btn-pm btn-sm" (click)="openModal(ruleTestModal)">Edit</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="isAmlRulesTab('create')" class="tpanel active">
+          <div class="row g-3">
+            <div class="col-md-6"><label class="FL">Rule Name</label><input class="FC" [(ngModel)]="newRuleForm.name"></div>
+            <div class="col-md-6"><label class="FL">Category</label>
+              <select class="FC" [(ngModel)]="newRuleForm.category">
+                <option>Velocity</option><option>Structuring</option><option>Round-Tripping</option><option>PEP</option>
+              </select>
+            </div>
+            <div class="col-md-6"><label class="FL">Time Window</label><input class="FC" [(ngModel)]="newRuleForm.timeWindow"></div>
+            <div class="col-md-6"><label class="FL">Threshold</label><input class="FC" [(ngModel)]="newRuleForm.threshold"></div>
+            <div class="col-12"><label class="FL">Rule Logic</label><textarea class="FC" rows="3" [(ngModel)]="newRuleForm.logic"></textarea></div>
+          </div>
+        </div>
+        <div *ngIf="isAmlRulesTab('test')" class="tpanel active">
+          <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:13px">
+            <strong>A/B Test Results (14 days)</strong>
+            <div class="mt-2">Rule v4.2 vs v4.3: Precision improved from 21.6% → 28.4%. False positives reduced by 31%.</div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="modal-footer" *ngIf="!actionResult.show">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('amlRulesModal', 'Rule changes saved and deployed to production.', '')">Save & Deploy</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M5: Risk Scoring Modal -->
+<ng-template #riskScoringModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-speedometer2 text-warning me-2"></i>Risk Scoring Engine</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="modalActionLoading" class="loading-ov">
+        <div class="spinner"></div>
+        <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+      </div>
+      <div *ngIf="actionResult.show && actionResult.message" class="receipt">
+        <div class="ri"><i class="bi bi-check-lg"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-accent)">{{ actionResult.message }}</h5>
+        <p *ngIf="actionResult.ref" style="font-size:12px;color:var(--pm-muted)">Reference: {{ actionResult.ref }}</p>
+        <button class="btn-pm btn-pm-p mt-3" (click)="resetActionResult()">Continue</button>
+      </div>
+      <ng-container *ngIf="!actionResult.show">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="isRiskScoringTab('factors')" (click)="setRiskScoringTab('factors')">Risk Factors</button>
+          <button class="pill" [class.active]="isRiskScoringTab('weights')" (click)="setRiskScoringTab('weights')">Weights</button>
+          <button class="pill" [class.active]="isRiskScoringTab('model')" (click)="setRiskScoringTab('model')">AI Model</button>
+        </div>
+        <div *ngIf="isRiskScoringTab('factors')" class="tpanel active">
+          <div class="mb-3">
+            <label class="FL">Factor</label>
+            <div class="form-check mb-1"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">High-risk jurisdiction (weight 25)</label></div>
+            <div class="form-check mb-1"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">PEP relationship (weight 20)</label></div>
+            <div class="form-check mb-1"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Crypto exposure (weight 15)</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Adverse media (weight 10)</label></div>
+          </div>
+        </div>
+        <div *ngIf="isRiskScoringTab('weights')" class="tpanel active">
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>Factor</th><th>Current Weight</th><th>Recommended</th><th>Impact</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let w of riskWeights">
+                  <td>{{ w.factor }}</td><td>{{ w.current }}</td><td>{{ w.recommended }}</td><td>{{ w.impact }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="isRiskScoringTab('model')" class="tpanel active">
+          <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+            <div style="font-size:13px;font-weight:700">Explainable AI Model v3.4</div>
+            <div style="font-size:12px;color:var(--pm-muted)">Last trained: 20 Jun 2025 • Accuracy: 94.2% • Features: 47</div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="modal-footer" *ngIf="!actionResult.show">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('riskScoringModal', 'Risk model weights updated. New scores will apply to future transactions.', '')">Apply Changes</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M6: Regulatory Report Modal -->
+<ng-template #regReportModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-file-earmark-text text-purple me-2"></i>File Regulatory Report</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="FL">Report Type</label>
+        <select class="FC" [(ngModel)]="regReportForm.reportType">
+          <option>STR — Suspicious Transaction Report</option>
+          <option>CTR — Currency Transaction Report</option>
+          <option>SAR — Suspicious Activity Report</option>
+          <option>Monthly CBK Summary</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="FL">Subject / Case</label>
+        <select class="FC" [(ngModel)]="regReportForm.subjectCase">
+          <option>AML-44892 — John Kamau Structuring</option>
+          <option>AML-44885 — Global Trade Ltd</option>
+          <option>AML-44871 — Hon. Peter Ochieng</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="FL">Narrative / Summary</label>
+        <textarea class="FC" rows="4" [(ngModel)]="regReportForm.narrative"></textarea>
+      </div>
+      <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="regReportForm.includeTimeline"><label class="form-check-label">Include transaction timeline</label></div>
+      <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="regReportForm.attachEvidence"><label class="form-check-label">Attach evidence pack</label></div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="regReportForm.requestFreeze"><label class="form-check-label">Request asset freeze</label></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('regReportModal', 'Report filed successfully. Confirmation received from CBK (Ref: CBK-STR-2025-0612).', 'CBK-STR-2025-0612')">Submit Report</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M7: Evidence Locker -->
+<ng-template #evidenceLockerModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-archive me-2"></i>Evidence Locker</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="FL">Case</label>
+        <select class="FC" [(ngModel)]="evidenceCase">
+          <option>AML-44892 — Structuring</option>
+          <option>AML-44885 — Sanctions</option>
+        </select>
+      </div>
+      <div class="table-responsive">
+        <table class="T">
+          <thead><tr><th>File</th><th>Type</th><th>Uploaded</th><th>Hash (SHA256)</th><th>Chain</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let ef of evidenceLockerFiles">
+              <td>{{ ef.file }}</td><td>{{ ef.type }}</td><td>{{ ef.uploaded }}</td><td>{{ ef.hash }}</td><td>{{ ef.chain }}</td>
+              <td><button class="btn-pm btn-sm">Download</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-3"><label class="FL">Upload New Evidence</label><input type="file" class="FC"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('evidenceLockerModal', 'Evidence uploaded and hashed. Chain of custody recorded.', '')">Upload</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M8: Audit Trail -->
+<ng-template #auditTrailModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Full Compliance Audit Trail</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="table-responsive" style="max-height:500px;overflow-y:auto">
+        <table class="T">
+          <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Entity</th><th>IP/Device</th><th>Signature</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let a of auditTrailFull">
+              <td>{{ a.timestamp }}</td><td>{{ a.user }}</td><td>{{ a.action }}</td><td>{{ a.entity }}</td><td>{{ a.ipDevice }}</td><td>Verified</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('auditTrailModal', 'Audit trail exported to PDF with digital signature.', '')">Export PDF</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M9: PEP Detail -->
+<ng-template #pepDetailModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-person-x text-warning me-2"></i>PEP Profile — John Kamau</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Full Name</span><strong>John Kamau</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">ID Number</span><strong>28471920</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">PEP Status</span><span class="B B-d">Active</span></div>
+            <div class="d-flex justify-content-between"><span class="text-muted">Position</span><strong>Director, Global Trade Ltd</strong></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 rounded" style="background:var(--pm-danger-soft)">
+            <div style="font-size:11px;font-weight:700;color:#991B1B">MATCHED LISTS</div>
+            <div style="font-size:14px;font-weight:700;color:var(--pm-danger)">UN Consolidated (98%)</div>
+            <div style="font-size:14px;font-weight:700;color:var(--pm-danger)">OFAC SDN (94%)</div>
+            <div style="font-size:14px;font-weight:700;color:var(--pm-warning)">Local PEP DB (72%)</div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-3">
+        <label class="FL">Risk Notes</label>
+        <textarea class="FC" rows="3" [(ngModel)]="pepNotes"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-d" (click)="modal.dismiss(); openModal(newCaseModal)">Open Investigation</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M10: Live Alerts -->
+<ng-template #liveAlertsModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-bell text-danger me-2"></i>Live AML Alerts ({{ heroStats.highRiskAlerts }})</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body" style="max-height:500px;overflow-y:auto">
+      <div class="p-3 rounded mb-2" *ngFor="let alert of liveAlerts" [style.background]="alert.bgClass">
+        <div class="d-flex justify-content-between">
+          <div>
+            <strong>{{ alert.title }}</strong>
+            <div [style.fontSize]="'11px'" [style.color]="alert.textClass">{{ alert.subtitle }}</div>
+          </div>
+          <button class="btn-pm btn-sm" [class.btn-pm-d]="alert.actionStyle === 'btn-pm-d'" (click)="openModal(alert.actionModal === 'newCaseModal' ? newCaseModal : alert.actionModal === 'pepDetailModal' ? pepDetailModal : sanctionsSearchModal)">{{ alert.actionLabel }}</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="modal.dismiss(); openModal(amlRulesModal)">Tune Alert Rules</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M11: Bulk Screening -->
+<ng-template #bulkScreeningModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-people text-warning me-2"></i>Bulk Sanctions & PEP Screening</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="FL">Upload File (CSV/Excel)</label>
+        <input type="file" class="FC">
+      </div>
+      <div class="mb-3">
+        <label class="FL">Lists to Screen Against</label>
+        <div class="form-check mb-1"><input class="form-check-input" type="checkbox" [(ngModel)]="bulkScreenLists.all"><label class="form-check-label">UN + OFAC + EU + UK</label></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="bulkScreenLists.pep"><label class="form-check-label">Local PEP Database</label></div>
+      </div>
+      <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px">
+        <i class="bi bi-info-circle me-1"></i> Estimated screening time: <strong>12–18 minutes</strong> for 50,000 records.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('bulkScreeningModal', 'Bulk screening started. You will be notified when complete. 47,291 records queued.', 'BULK-20250627-001')">Start Screening</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M12: Emergency Block -->
+<ng-template #emergencyBlockModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header" style="background:var(--pm-danger);color:#fff;border:none">
+      <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Emergency Transaction Block</h5>
+      <button class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="FL">Block Type</label>
+        <select class="FC" [(ngModel)]="emergencyBlockForm.blockType">
+          <option>Single Transaction</option>
+          <option>All Transactions from Originator</option>
+          <option>All Transactions to Beneficiary</option>
+          <option>Entire Account / Entity</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="FL">Reference / Account</label>
+        <input class="FC" [(ngModel)]="emergencyBlockForm.reference">
+      </div>
+      <div class="mb-3">
+        <label class="FL">Reason</label>
+        <textarea class="FC" rows="2" [(ngModel)]="emergencyBlockForm.reason"></textarea>
+      </div>
+      <div class="p-3 rounded" style="background:var(--pm-danger-soft);font-size:12px">
+        <i class="bi bi-shield-x me-1"></i> <strong>Warning:</strong> This action is irreversible and will be logged to the audit trail with your digital signature.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-d" (click)="doAction('emergencyBlockModal', 'Emergency block executed. 14 transactions frozen across 3 accounts. CBK notified.', 'EMB-20250627-0001')">Execute Block</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M13: Rule Test -->
+<ng-template #ruleTestModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-play text-primary me-2"></i>Test AML Rule</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="FL">Rule</label>
+        <select class="FC" [(ngModel)]="ruleTestForm.rule">
+          <option>Structuring v4.2</option>
+          <option>Velocity-INTL v3.1</option>
+          <option>RoundTrip v2.8</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="FL">Test Dataset</label>
+        <select class="FC" [(ngModel)]="ruleTestForm.dataset">
+          <option>Last 30 days (47,291 txns)</option>
+          <option>Last 7 days (12,844 txns)</option>
+          <option>Custom range</option>
+        </select>
+      </div>
+      <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px">
+        <i class="bi bi-info-circle me-1"></i> Estimated runtime: <strong>45 seconds</strong>. Results will show precision, recall, and false positive rate.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('ruleTestModal', 'Rule test completed. Precision: 28.4% (+6.8%). False positives reduced by 31%.', '')">Run Test</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M14: Report Detail -->
+<ng-template #reportDetailModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-file-earmark-text me-2"></i>STR-2025-0612 — Detailed View</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Status</span><span class="B B-s">{{ reportDetail.status }}</span></div>
+        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Filed</span><strong>{{ reportDetail.filed }}</strong></div>
+        <div class="d-flex justify-content-between"><span class="text-muted">Confirmation</span><strong>{{ reportDetail.confirmation }}</strong></div>
+      </div>
+      <div class="mb-3">
+        <label class="FL">Narrative</label>
+        <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">{{ reportDetail.narrative }}</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('reportDetailModal', 'Report downloaded with digital signature and chain of custody certificate.', '')">Download PDF</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M15: Report Calendar -->
+<ng-template #reportCalendarModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-calendar me-2"></i>Regulatory Filing Calendar</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="sr" *ngFor="let c of calendarItems">
+        <div><strong>{{ c.title }}</strong></div>
+        <span class="B" [class.B-d]="c.badgeClass === 'B-d'" [class.B-w]="c.badgeClass === 'B-w'" [class.B-i]="c.badgeClass === 'B-i'">{{ c.badgeClass === 'B-d' ? 'Critical' : c.badgeClass === 'B-w' ? 'High' : 'Normal' }}</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M16: Monitor Settings -->
+<ng-template #monitorSettingsModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-gear me-2"></i>Monitoring Settings</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="monitorSettings.realTimeEnabled">
+        <label class="form-check-label">Real-time monitoring enabled</label>
+      </div>
+      <div class="mb-3">
+        <label class="FL">Alert Threshold (Risk Score)</label>
+        <input class="FC" type="number" [(ngModel)]="monitorSettings.alertThreshold">
+      </div>
+      <div class="mb-3">
+        <label class="FL">Auto-block Threshold</label>
+        <input class="FC" type="number" [(ngModel)]="monitorSettings.autoBlockThreshold">
+      </div>
+      <div class="form-check form-switch mb-2">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="monitorSettings.autoNotifyCbk">
+        <label class="form-check-label">Auto-notify CBK on critical alerts</label>
+      </div>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="monitorSettings.aiTriage">
+        <label class="form-check-label">Enable AI-assisted triage</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('monitorSettingsModal', 'Monitoring settings saved. Changes effective immediately.', '')">Save Settings</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M17: Txn Detail -->
+<ng-template #txnDetailModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Transaction TXN-992184</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">From</span><strong>{{ txnDetail.from }}</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">To</span><strong>{{ txnDetail.to }}</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>{{ txnDetail.amount }}</strong></div>
+            <div class="d-flex justify-content-between"><span class="text-muted">Rail</span><strong>{{ txnDetail.rail }}</strong></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 rounded" style="background:var(--pm-danger-soft)">
+            <div style="font-size:11px;font-weight:700;color:#991B1B">RISK SCORE</div>
+            <div style="font-size:28px;font-weight:800;color:var(--pm-danger)">{{ txnDetail.riskScore }}</div>
+            <div style="font-size:12px;color:#7F1D1D">{{ txnDetail.riskReason }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-d" (click)="modal.dismiss(); openModal(newCaseModal)">Open Investigation</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M18: Attention Full -->
+<ng-template #attentionFullModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>All Compliance Items</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="sr" *ngFor="let item of attentionFullItems">
+        <div>
+          <strong>{{ item.title }}</strong>
+          <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+        </div>
+        <button class="btn-pm btn-sm" [class.btn-pm-d]="item.actionStyle === 'btn-pm-d'" (click)="openModal(item.actionModal === 'caseDetailModal' ? caseDetailModal : item.actionModal === 'pepDetailModal' ? pepDetailModal : regReportModal)">{{ item.actionLabel }}</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M19: AML Health -->
+<ng-template #amlHealthModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>AML System Health Check</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row g-3 mb-3">
+        <div class="col-md-3 col-6" *ngFor="let h of healthStats">
+          <div class="p-3 rounded text-center" [style.background]="h.bg">
+            <div [style.fontSize]="h.size" [style.fontWeight]="'800'" [style.color]="h.color" style="font-family:var(--pm-font-display)">{{ h.value }}</div>
+            <div [style.fontSize]="'10px'" [style.fontWeight]="'700'" [style.color]="h.textColor">{{ h.label }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">
+        <strong>System Status:</strong> All 12 payment rails connected. Sanctions lists last updated 27 Jun 06:00. AI model v3.4 running normally.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="modal.dismiss(); openModal(amlRulesModal)">Tune Rules</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M20: Case Export -->
+<ng-template #caseExportModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-download me-2"></i>Export Cases</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="FL">Export Type</label>
+        <select class="FC" [(ngModel)]="caseExportForm.exportType">
+          <option>All active cases</option>
+          <option>Closed cases (last 90 days)</option>
+          <option>Full audit log</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="FL">Format</label>
+        <select class="FC" [(ngModel)]="caseExportForm.format">
+          <option>PDF</option>
+          <option>Excel</option>
+          <option>CSV</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('caseExportModal', 'Export generated and downloading...', '')">Export</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M21: AML Notifications -->
+<ng-template #amlNotifModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-bell me-2"></i>Compliance Notifications ({{ notifications.length }})</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body" style="max-height:500px;overflow-y:auto">
+      <div class="p-3 rounded mb-2" *ngFor="let n of notifications" [style.background]="n.bgClass" style="font-size:13px">
+        <strong>{{ n.title }}</strong>
+        <div [style.fontSize]="'11px'" [style.color]="n.textClass">{{ n.subtitle }}</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss(); openModal(notifSettingsModal)">Settings</button>
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M22: Profile -->
+<ng-template #profileModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body text-center">
+      <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">AK</div>
+      <h5 style="font-weight:700;margin-bottom:2px">{{ profile.name }}</h5>
+      <p style="font-size:13px;color:var(--pm-muted)">{{ profile.email }} · {{ profile.phone }}</p>
+      <div class="row g-2 text-start mt-3" style="font-size:13px">
+        <div class="col-6">
+          <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Role</span><br><strong>{{ profile.role }}</strong></div>
+        </div>
+        <div class="col-6">
+          <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Cases Managed</span><br><strong>{{ profile.casesManaged }}</strong></div>
+        </div>
+        <div class="col-6">
+          <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Member Since</span><br><strong>{{ profile.memberSince }}</strong></div>
+        </div>
+        <div class="col-6">
+          <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Certifications</span><br><strong>{{ profile.certifications }}</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M23: Notif Settings -->
+<ng-template #notifSettingsModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-gear me-2"></i>Notification Preferences</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="table-responsive">
+        <table class="T">
+          <thead>
+            <tr><th>Alert Type</th><th>Push</th><th>SMS</th><th>Email</th><th>WhatsApp</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ns of notifSettings">
+              <td>{{ ns.type }}</td>
+              <td><input type="checkbox" [(ngModel)]="ns.push"></td>
+              <td><input type="checkbox" [(ngModel)]="ns.sms"></td>
+              <td><input type="checkbox" [(ngModel)]="ns.email"></td>
+              <td><input type="checkbox" [(ngModel)]="ns.whatsapp"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('notifSettingsModal', 'Notification preferences saved.', '')">Save Preferences</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M24: Rule Test Result -->
+<ng-template #ruleTestResultModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-check-lg text-success me-2"></i>Rule Test Results</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="p-3 rounded" style="background:var(--pm-accent-soft)">
+        <div style="font-size:13px;font-weight:700;color:#047857">{{ ruleTestResult.rule }} Test Complete</div>
+        <div class="mt-2">Precision: <strong>{{ ruleTestResult.precision }}</strong> ({{ ruleTestResult.precisionChange }})<br>Recall: <strong>{{ ruleTestResult.recall }}</strong><br>False Positive Rate: <strong>{{ ruleTestResult.fpr }}</strong> ({{ ruleTestResult.fprChange }})</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M25: Risk Model Modal (placeholder for AI Model) -->
+<ng-template #riskModelModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-robot text-primary me-2"></i>AI Model Details</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+        <div style="font-size:13px;font-weight:700">Explainable AI Model v3.4</div>
+        <div style="font-size:12px;color:var(--pm-muted)">Last trained: 20 Jun 2025 • Accuracy: 94.2% • Features: 47</div>
+        <div class="mt-3" style="font-size:13px">
+          <strong>Model Architecture:</strong> Gradient Boosting + Neural Network ensemble<br>
+          <strong>Training Data:</strong> 2.4M transactions (Jan 2023 – Jun 2025)<br>
+          <strong>Validation:</strong> 5-fold cross-validation<br>
+          <strong>Explainability:</strong> SHAP values available per prediction
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M26: Rail Config Modal (placeholder) -->
+<ng-template #railConfigModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-link-45deg text-info me-2"></i>Rail Configuration</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" checked>
+        <label class="form-check-label">Enable real-time sanctions screening on PesaLink</label>
+      </div>
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" checked>
+        <label class="form-check-label">Enable real-time sanctions screening on RTGS</label>
+      </div>
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox">
+        <label class="form-check-label">Enable real-time sanctions screening on SWIFT</label>
+      </div>
+      <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px">
+        <i class="bi bi-info-circle me-1"></i> Changes will take effect within 5 minutes. All rails will be monitored during transition.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('railConfigModal', 'Rail configuration saved. Changes effective in 5 minutes.', '')">Save</button>
+    </div>
+  </div>
+</ng-template>

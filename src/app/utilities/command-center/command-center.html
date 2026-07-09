@@ -1,0 +1,876 @@
+<div class="pm-main">
+  <!-- HEADER -->
+  <header class="pm-header">
+    <div class="pm-header-title" style="flex-shrink:0">
+      <div class="d-flex align-items-center gap-2">
+        <div class="pm-avatar" style="width:36px;height:36px;font-size:13px">MN</div>
+        <div>
+          <h1>Utilities & Essential Services</h1>
+          <p>Electricity, water, gas, internet, TV, airtime & household bills</p>
+        </div>
+      </div>
+    </div>
+    <div class="pm-header-search">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Search utilities, meters, accounts, providers..." [(ngModel)]="searchQuery">
+    </div>
+    <div class="pm-header-actions">
+      <button class="pm-header-btn" (click)="openModal('healthCheckModal')" title="Health Check"><i class="bi bi-heart-pulse"></i></button>
+      <button class="pm-header-btn" (click)="openModal('billInboxModal')" title="Bill Inbox"><i class="bi bi-envelope"></i><span class="counter">5</span></button>
+      <button class="pm-header-btn" (click)="openModal('notificationsModal')" title="Notifications"><i class="bi bi-bell"></i><span class="counter">12</span></button>
+    </div>
+  </header>
+
+  <!-- PAGE BAR -->
+  <div class="pm-page-bar">
+    <div>
+      <div class="pm-breadcrumb">
+        <span>Home</span> / <span>Utilities Hub</span> / <strong>Utilities Command Center</strong>
+      </div>
+      <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 2.1 — Utilities Command Center</h2>
+      <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Manage all utility accounts, track spending, pay bills, set auto-pay & monitor service health from one central hub.</p>
+    </div>
+    <div class="d-flex gap-8 flex-wrap" style="gap:8px">
+      <button class="pm-btn" (click)="openModal('healthCheckModal')"><i class="bi bi-heart-pulse"></i> Health Check</button>
+      <button class="pm-btn" (click)="openModal('billInboxModal')"><i class="bi bi-inbox"></i> Bill Inbox</button>
+      <button class="pm-btn" (click)="openModal('payBillQuickModal')"><i class="bi bi-credit-card"></i> Pay Bill</button>
+      <button class="pm-btn-primary pm-btn" (click)="openModal('addUtilityModal')"><i class="bi bi-plus-lg"></i> Add Utility</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT AREA -->
+  <div class="pm-content">
+
+    <!-- HERO STATS ROW -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card pm-card-accent" style="min-height:160px">
+          <div class="d-flex align-items-start justify-content-between">
+            <div>
+              <p style="margin:0;font-size:12px;color:rgba(255,255,255,.7)">Utility command center is live <span style="color:#34D399">●</span></p>
+              <div class="pm-stat-value" style="margin:8px 0;color:#fff">{{connectedServices.length}} utilities linked</div>
+              <p style="margin:0;font-size:12px;color:rgba(255,255,255,.7)">Electricity, water, gas, internet, TV, airtime & solar managed in one place.</p>
+            </div>
+          </div>
+          <div class="d-flex gap-2 mt-3" style="gap:8px">
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff" (click)="openModal('payBillQuickModal')">Pay bill</button>
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff" (click)="openModal('buyAirtimeModal')">Buy airtime</button>
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff" (click)="openModal('autoPaySetupModal')">Auto-pay</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pm-card" style="min-height:160px">
+          <p class="pm-stat-label" style="color:var(--pm-warning)">DUE IN 7 DAYS</p>
+          <div class="pm-stat-value" style="margin:6px 0">KES 38,750</div>
+          <span class="pm-badge pm-badge-warning"><i class="bi bi-clock"></i> 7 payments due</span>
+          <div class="pm-mini-bars mt-3">
+            <div class="pm-mini-bar" style="height:70%;background:var(--pm-primary)"></div>
+            <div class="pm-mini-bar" style="height:45%;background:var(--pm-primary)"></div>
+            <div class="pm-mini-bar" style="height:90%;background:var(--pm-primary)"></div>
+            <div class="pm-mini-bar" style="height:30%;background:var(--pm-info)"></div>
+            <div class="pm-mini-bar" style="height:55%;background:var(--pm-info)"></div>
+            <div class="pm-mini-bar" style="height:80%;background:var(--pm-primary)"></div>
+            <div class="pm-mini-bar" style="height:40%;background:var(--pm-info)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="pm-card" style="min-height:160px">
+          <p class="pm-stat-label" style="color:var(--pm-info)">MONTHLY UTILITY SPEND</p>
+          <div class="pm-stat-value" style="margin:6px 0">KES 67,400</div>
+          <span class="pm-badge pm-badge-success"><i class="bi bi-graph-down-arrow"></i> -8.2% vs last month</span>
+          <div class="mt-2">
+            <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)">
+              <span>Budget usage</span><span>74%</span>
+            </div>
+            <div class="pm-progress mt-1">
+              <div class="pm-progress-bar" style="width:74%;background:var(--pm-info)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <div class="pm-card" style="min-height:160px;border-left:3px solid var(--pm-accent)">
+          <p class="pm-stat-label" style="color:var(--pm-accent)">SAVINGS THIS MONTH</p>
+          <div class="pm-stat-value" style="margin:6px 0">KES 6,050</div>
+          <span class="pm-badge pm-badge-success"><i class="bi bi-piggy-bank"></i> Smart auto-pay active</span>
+          <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+            <div>Auto-pay saved: <strong>KES 3,200</strong></div>
+            <div>Bundle deals: <strong>KES 2,850</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS ROW -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="pm-section-title">Attention Required</h3>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('attentionDetailModal')">View all</button>
+          </div>
+          <div *ngFor="let item of attentionItems" class="attention-item">
+            <div class="pm-icon-circle" [style.background]="item.bgColor" [style.color]="item.textColor" style="font-size:12px">{{item.icon}}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:600;font-size:13px">{{item.title}}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{item.subtitle}}</div>
+            </div>
+            <button class="pm-btn pm-btn-sm" [ngClass]="item.isPrimary ? 'pm-btn-primary' : ''" (click)="openModal(item.modalLink)">{{item.btnText}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="pm-section-title">Smart Suggestions</h3>
+            <span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span>
+          </div>
+          <div *ngFor="let item of suggestions" class="suggestion-item">
+            <div class="pm-icon-circle" [style.background]="item.bgColor" [style.color]="item.textColor" style="font-size:12px">{{item.icon}}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:600;font-size:13px">{{item.title}}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{item.subtitle}}</div>
+            </div>
+            <button class="pm-btn pm-btn-sm" (click)="openModal(item.modalLink)">{{item.btnText}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="mb-3">
+            <h3 class="pm-section-title">Quick Actions</h3>
+            <p class="pm-section-sub">Frequent utility payment workflows</p>
+          </div>
+          <div class="quick-action-grid">
+            <button class="quick-action-btn" (click)="openModal('payElectricityModal')"><i class="bi bi-lightning-charge text-warning me-1"></i> Electricity</button>
+            <button class="quick-action-btn" (click)="openModal('payWaterModal')"><i class="bi bi-droplet text-info me-1"></i> Water</button>
+            <button class="quick-action-btn" (click)="openModal('payTVModal')"><i class="bi bi-tv me-1" style="color:var(--pm-purple)"></i> TV Subscription</button>
+            <button class="quick-action-btn" (click)="openModal('payInternetModal')"><i class="bi bi-wifi text-primary me-1"></i> Internet</button>
+            <button class="quick-action-btn" (click)="openModal('buyAirtimeModal')"><i class="bi bi-phone text-success me-1"></i> Airtime & Data</button>
+            <button class="quick-action-btn" (click)="openModal('orderGasModal')"><i class="bi bi-fire text-danger me-1"></i> Gas / LPG</button>
+            <button class="quick-action-btn" (click)="openModal('bulkPayModal')"><i class="bi bi-collection text-secondary me-1"></i> Bulk Pay</button>
+            <button class="quick-action-btn" (click)="openModal('schedulePaymentModal')"><i class="bi bi-calendar-event me-1" style="color:var(--pm-primary)"></i> Schedule</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2.1.1 — Utilities Overview Dashboard -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-grid-3x3-gap-fill" style="color:var(--pm-primary)"></i> 2.1.1 — Utilities Overview Dashboard</h3>
+          <p class="pm-section-sub">All your connected services with real-time status and quick-pay options.</p>
+        </div>
+        <div class="d-flex gap-2" style="gap:8px">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('manageUtilitiesModal')"><i class="bi bi-gear"></i> Manage</button>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('addUtilityModal')"><i class="bi bi-plus-lg"></i> Add Utility</button>
+        </div>
+      </div>
+      <div class="service-grid">
+        <div *ngFor="let service of connectedServices" class="service-card" (click)="openModal(service.modalLink)">
+          <div class="status-dot" [style.background]="service.statusColor"></div>
+          <i class="bi" [ngClass]="service.iconClass" style="font-size:24px;margin-bottom:8px;display:block"></i>
+          <div style="font-weight:600;font-size:13px">{{service.name}}</div>
+          <div style="font-size:11px;color:var(--pm-muted)">{{service.provider}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2.1.2 — Connected Services & Status Monitor -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-plug" style="color:var(--pm-accent)"></i> 2.1.2 — Connected Services & Status Monitor</h3>
+          <p class="pm-section-sub">Monitor, onboard, edit, pause or manage all your connected utility accounts.</p>
+        </div>
+        <div class="pm-tab-pills">
+          <button *ngFor="let tab of serviceTabs" class="pm-tab-pill" [ngClass]="{'active': activeServiceTab === tab.key}" (click)="filterServices(tab.key)">{{tab.label}}</button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="pm-table">
+          <thead>
+            <tr>
+              <th>Service</th><th>Provider</th><th>Account / Meter</th><th>Status</th><th>Last Payment</th><th>Next Due</th><th>Amount</th><th>Auto-Pay</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of filteredServices">
+              <td><i class="bi me-1" [ngClass]="row.iconClass"></i> {{row.serviceType}}</td>
+              <td>{{row.provider}}</td>
+              <td style="font-family:monospace;font-size:12px">{{row.account}}</td>
+              <td><span class="pm-badge" [ngClass]="row.statusClass">{{row.status}}</span></td>
+              <td>{{row.lastPayment}}</td>
+              <td>{{row.nextDue}}</td>
+              <td><strong>{{row.amount}}</strong></td>
+              <td><span class="pm-badge" [ngClass]="row.autoPay ? 'pm-badge-success' : 'pm-badge-warning'">{{row.autoPay ? 'Active' : 'Off'}}</span></td>
+              <td>
+                <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal(row.modalLink)">Pay</button>
+                <button class="pm-btn pm-btn-sm" (click)="openModal('manageUtilitiesModal')">Edit</button>
+              </td>
+            </tr>
+            <tr *ngIf="filteredServices.length === 0">
+              <td colspan="9" style="text-align:center;color:var(--pm-muted);padding:24px">No services found for this filter.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 2.1.3 — Utility Spending Analytics & Budget Tracker -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-bar-chart-line" style="color:var(--pm-info)"></i> 2.1.3 — Utility Spending Analytics & Budget Tracker</h3>
+          <p class="pm-section-sub">Track spending trends, set budgets, and discover cost-saving opportunities.</p>
+        </div>
+        <div class="d-flex gap-2" style="gap:8px">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('budgetSettingsModal')"><i class="bi bi-sliders"></i> Budget Settings</button>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('exportReportModal')"><i class="bi bi-download"></i> Export Report</button>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-5">
+          <div style="background:var(--pm-surface-2);border-radius:var(--pm-r-md);padding:16px">
+            <h4 style="font-size:14px;font-weight:600;margin:0 0 12px">Monthly Spend by Category</h4>
+            <div class="pm-chart-bar-group" style="height:120px;margin-bottom:24px">
+              <div *ngFor="let cat of spendCategories" class="pm-chart-bar" [style.height]="cat.height" [style.background]="cat.color" (click)="openModal('spendDetailModal')"><span class="bar-label">{{cat.label}}</span></div>
+            </div>
+            <div class="d-flex flex-wrap gap-2 mt-2" style="gap:12px;font-size:12px">
+              <span *ngFor="let cat of spendCategories"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px" [style.background]="cat.color"></span>{{cat.label}} {{cat.amount}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div style="background:var(--pm-surface-2);border-radius:var(--pm-r-md);padding:16px">
+            <h4 style="font-size:14px;font-weight:600;margin:0 0 12px">Budget vs Actual</h4>
+            <div *ngFor="let bud of budgets" class="mb-3">
+              <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>{{bud.name}}</span><span>{{bud.actual}} / {{bud.limit}}</span></div>
+              <div class="pm-progress"><div class="pm-progress-bar" [style.width]="bud.percentage" [style.background]="bud.color"></div></div>
+            </div>
+            <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('budgetSettingsModal')"><i class="bi bi-pencil"></i> Edit Budgets</button>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div style="background:var(--pm-surface-2);border-radius:var(--pm-r-md);padding:16px">
+            <h4 style="font-size:14px;font-weight:600;margin:0 0 12px">6-Month Trend</h4>
+            <div class="pm-chart-bar-group" style="height:80px;margin-bottom:24px">
+              <div *ngFor="let m of monthlyTrends" class="pm-chart-bar" [style.height]="m.height" [style.background]="m.color"><span class="bar-label">{{m.label}}</span></div>
+            </div>
+            <hr class="pm-divider">
+            <h4 style="font-size:13px;font-weight:600;margin:0 0 8px"><i class="bi bi-lightbulb text-warning"></i> Tips</h4>
+            <ul style="font-size:12px;color:var(--pm-ink-soft);padding-left:16px;margin:0">
+              <li>Off-peak electricity usage can save up to 15%</li>
+              <li>Bundle DSTV + Showmax for KES 500 less</li>
+              <li>Switch to solar for daytime power needs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2.1.4 — Smart Automation & Household Management -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-cpu" style="color:var(--pm-purple)"></i> 2.1.4 — Smart Automation & Household Management</h3>
+          <p class="pm-section-sub">Auto-pay configurations, scheduled payments, household members, and notification preferences.</p>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-4">
+          <div style="background:var(--pm-surface-2);border-radius:var(--pm-r-md);padding:16px">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 style="font-size:14px;font-weight:600;margin:0"><i class="bi bi-arrow-repeat text-primary me-1"></i> Auto-Pay Rules</h4>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('autoPaySetupModal')"><i class="bi bi-plus"></i> Add</button>
+            </div>
+            <div *ngFor="let rule of autoPayRules" class="onboarded-service">
+              <div>
+                <div style="font-weight:600;font-size:13px">{{rule.name}}</div>
+                <div style="font-size:11px;color:var(--pm-muted)">{{rule.details}}</div>
+              </div>
+              <span class="pm-badge pm-badge-success">Active</span>
+            </div>
+            <div *ngIf="autoPayRules.length === 0" style="text-align:center;padding:20px;color:var(--pm-muted);font-size:13px">No auto-pay rules set.</div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div style="background:var(--pm-surface-2);border-radius:var(--pm-r-md);padding:16px">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 style="font-size:14px;font-weight:600;margin:0"><i class="bi bi-calendar-check text-success me-1"></i> Upcoming Payments</h4>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('schedulePaymentModal')"><i class="bi bi-plus"></i> Schedule</button>
+            </div>
+            <div *ngFor="let sched of scheduledPayments" class="onboarded-service">
+              <div>
+                <div style="font-weight:600;font-size:13px">{{sched.name}}</div>
+                <div style="font-size:11px;color:var(--pm-muted)">{{sched.date}} · {{sched.amount}}</div>
+              </div>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('payBillQuickModal')">Pay Now</button>
+            </div>
+            <div *ngIf="scheduledPayments.length === 0" style="text-align:center;padding:20px;color:var(--pm-muted);font-size:13px">No scheduled payments.</div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div style="background:var(--pm-surface-2);border-radius:var(--pm-r-md);padding:16px">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 style="font-size:14px;font-weight:600;margin:0"><i class="bi bi-people me-1" style="color:var(--pm-purple)"></i> Household Members</h4>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('addMemberModal')"><i class="bi bi-plus"></i> Add</button>
+            </div>
+            <div *ngFor="let mem of householdMembers" class="onboarded-service">
+              <div class="d-flex align-items-center gap-2">
+                <div class="pm-avatar" style="width:28px;height:28px;font-size:10px">{{mem.initials}}</div>
+                <div>
+                  <div style="font-weight:600;font-size:13px">{{mem.name}}</div>
+                  <div style="font-size:11px;color:var(--pm-muted)">{{mem.role}}</div>
+                </div>
+              </div>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('manageUtilitiesModal')">Manage</button>
+            </div>
+            <div *ngIf="householdMembers.length === 0" style="text-align:center;padding:20px;color:var(--pm-muted);font-size:13px">No members added.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="pm-section-title"><i class="bi bi-clock-history" style="color:var(--pm-muted)"></i> Recent Utility Transactions</h3>
+        <button class="pm-btn pm-btn-sm" (click)="openModal('transactionHistoryModal')">View All</button>
+      </div>
+      <div class="table-responsive">
+        <table class="pm-table">
+          <thead>
+            <tr><th>Date</th><th>Utility</th><th>Provider</th><th>Account</th><th>Amount</th><th>Method</th><th>Status</th><th>Receipt</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tx of recentTransactions">
+              <td>{{tx.date}}</td>
+              <td><i class="bi me-1" [ngClass]="tx.iconClass"></i> {{tx.utility}}</td>
+              <td>{{tx.provider}}</td>
+              <td>{{tx.account}}</td>
+              <td><strong>{{tx.amount}}</strong></td>
+              <td>{{tx.method}}</td>
+              <td><span class="pm-badge" [ngClass]="tx.statusClass">{{tx.status}}</span></td>
+              <td><button class="pm-btn pm-btn-sm" (click)="openModal(tx.status === 'Pending' ? 'disputeModal' : 'receiptModal')"><i class="bi" [ngClass]="tx.status === 'Pending' ? 'bi-exclamation-triangle' : 'bi-receipt'"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODALS -->
+<!-- Modal Wrapper Logic -->
+<div *ngIf="activeModal" class="modal-backdrop show" style="position:fixed;inset:0;z-index:1040" (click)="closeModal()"></div>
+
+<!-- MODAL 1: Pay Electricity (Multi-step) -->
+<div class="modal" [class.show]="activeModal === 'payElectricityModal'" [style.display]="activeModal === 'payElectricityModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-lightning-charge text-warning me-2"></i>Pay Electricity Bill</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [ngClass]="{'active': elecStep===1, 'completed': elecStep>1}"><div class="pm-step-num">1</div><span class="pm-step-label">Meter</span></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [ngClass]="{'active': elecStep===2, 'completed': elecStep>2}"><div class="pm-step-num">2</div><span class="pm-step-label">Payment</span></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [ngClass]="{'active': elecStep===3, 'completed': elecStep>3}"><div class="pm-step-num">3</div><span class="pm-step-label">Confirm</span></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [ngClass]="{'active': elecStep===4, 'completed': elecStep>4}"><div class="pm-step-num">4</div><span class="pm-step-label">Receipt</span></div>
+        </div>
+
+        <div [ngClass]="{'fade-step': true, 'active': elecStep === 1}">
+          <h6 style="font-weight:700;margin-bottom:16px">Step 1: Select Meter & Type</h6>
+          <div class="pm-tab-pills mb-3">
+            <button class="pm-tab-pill" [ngClass]="{'active': elecType==='prepaid'}" (click)="elecType='prepaid'">Prepaid Token</button>
+            <button class="pm-tab-pill" [ngClass]="{'active': elecType==='postpaid'}" (click)="elecType='postpaid'">Postpaid Bill</button>
+          </div>
+          <div class="mb-3">
+            <label class="pm-form-label">Meter Number</label>
+            <select class="pm-form-control" [(ngModel)]="elecMeter">
+              <option value="14825739">14825739 — Home (Kilimani)</option>
+              <option value="22901847">22901847 — Office (Westlands)</option>
+              <option value="33741092">33741092 — Rental Unit A</option>
+              <option value="new">+ Add new meter</option>
+            </select>
+          </div>
+          <div>
+            <label class="pm-form-label">Amount (KES)</label>
+            <div class="pm-amount-chips mb-2">
+              <span *ngFor="let a of [500,1000,2000,3000,5000]" class="pm-amount-chip" [ngClass]="{'active': elecAmount===a}" (click)="elecAmount=a">{{a | number}}</span>
+            </div>
+            <input type="number" class="pm-form-control" [(ngModel)]="elecAmount" placeholder="Or enter custom amount">
+            <div class="mt-2 p-2 rounded" style="background:var(--pm-accent-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Estimated units: <strong>~{{(elecAmount / 14.1) | number:'1.0-0'}} kWh</strong> at current tariff KES 14.1/kWh</div>
+          </div>
+        </div>
+
+        <div [ngClass]="{'fade-step': true, 'active': elecStep === 2}">
+          <h6 style="font-weight:700;margin-bottom:16px">Step 2: Payment Method</h6>
+          <div class="mb-3">
+            <div *ngFor="let m of payMethods" class="pm-pay-option" [ngClass]="{'selected': selectedPayMethod === m.id}" (click)="selectedPayMethod = m.id">
+              <input type="radio" [checked]="selectedPayMethod === m.id" name="elecPay">
+              <i class="bi" [ngClass]="m.icon" style="font-size:20px" [style.color]="m.color"></i>
+              <div>
+                <div style="font-weight:600">{{m.name}}</div>
+                <div style="font-size:11px;color:var(--pm-muted)">{{m.details}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+            <div class="d-flex justify-content-between mb-1"><span>Amount</span><strong>KES {{elecAmount | number}}</strong></div>
+            <div class="d-flex justify-content-between mb-1"><span>Fee</span><strong>KES 0</strong></div>
+            <hr class="pm-divider"><div class="d-flex justify-content-between"><span style="font-weight:700">Total</span><strong style="font-size:18px;color:var(--pm-primary)">KES {{elecAmount | number}}</strong></div>
+          </div>
+        </div>
+
+        <div [ngClass]="{'fade-step': true, 'active': elecStep === 3}">
+          <h6 style="font-weight:700;margin-bottom:16px">Step 3: Confirm & Authorize</h6>
+          <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+            <div class="row" style="font-size:13px">
+              <div class="col-6 mb-2"><span class="text-muted">Meter</span><br><strong>{{elecMeter}}</strong></div>
+              <div class="col-6 mb-2"><span class="text-muted">Type</span><br><strong>Prepaid Token</strong></div>
+              <div class="col-6 mb-2"><span class="text-muted">Amount</span><br><strong>KES {{elecAmount | number}}</strong></div>
+              <div class="col-6 mb-2"><span class="text-muted">Method</span><br><strong>{{payMethods.find(p=>p.id===selectedPayMethod)?.name}}</strong></div>
+            </div>
+          </div>
+          <label class="pm-form-label">Enter PIN to confirm</label>
+          <div class="pm-pin-input">
+            <input *ngFor="let i of [0,1,2,3]" type="password" maxlength="1" (input)="moveFocus($event, i)">
+          </div>
+          <p style="font-size:11px;color:var(--pm-muted);text-align:center;margin-top:8px">An STK Push will be sent to your phone</p>
+        </div>
+
+        <div [ngClass]="{'fade-step': true, 'active': elecStep === 4}">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Payment Successful!</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Your KPLC prepaid token has been generated</p>
+            <div class="p-3 rounded mb-3" style="background:#fff;text-align:left;font-size:13px">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Token Number</span><strong style="font-family:monospace;color:var(--pm-primary)">4729-8301-5624-9173-8402</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Units</span><strong>{{(elecAmount / 14.1) | number:'1.1-1'}} kWh</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount Paid</span><strong>KES {{elecAmount | number}}.00</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">Date</span><strong>27 Jun 2025, 14:32</strong></div>
+            </div>
+            <div class="d-flex gap-2 justify-content-center" style="gap:8px">
+              <button class="pm-btn pm-btn-sm" (click)="openModal('receiptModal')"><i class="bi bi-download"></i> Receipt PDF</button>
+              <button class="pm-btn pm-btn-sm" (click)="closeModal()">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="elecStep < 4">
+        <button class="pm-btn" *ngIf="elecStep > 1" (click)="elecStep = elecStep - 1"><i class="bi bi-arrow-left"></i> Back</button>
+        <div style="flex:1"></div>
+        <button class="pm-btn pm-btn-primary" *ngIf="elecStep < 3" (click)="elecStep = elecStep + 1">Continue <i class="bi bi-arrow-right"></i></button>
+        <button class="pm-btn pm-btn-accent" *ngIf="elecStep === 3" (click)="elecStep = 4"><i class="bi bi-lock"></i> Confirm & Pay</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 2: Pay Water -->
+<div class="modal" [class.show]="activeModal === 'payWaterModal'" [style.display]="activeModal === 'payWaterModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-droplet text-info me-2"></i>Pay Water Bill</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Account Number</label><select class="pm-form-control"><option>290081 — NCWSC Home</option><option>410293 — NCWSC Rental</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input type="number" class="pm-form-control" value="3200"></div>
+        <div class="mb-3"><label class="pm-form-label">Payment Method</label><select class="pm-form-control"><option>M-Pesa</option><option>PayMo Wallet</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="openModal('receiptModal')">Pay KES 3,200</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 3: Pay TV -->
+<div class="modal" [class.show]="activeModal === 'payTVModal'" [style.display]="activeModal === 'payTVModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-tv me-2" style="color:var(--pm-purple)"></i>Renew TV Subscription</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Provider & Package</label><select class="pm-form-control"><option>DSTV Compact Plus - KES 11,500</option><option>DSTV Compact - KES 7,500</option><option>GOtv Max - KES 3,500</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Smart Card Number</label><input type="text" class="pm-form-control" value="20491867421"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="openModal('receiptModal')">Renew</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 4: Pay Internet -->
+<div class="modal" [class.show]="activeModal === 'payInternetModal'" [style.display]="activeModal === 'payInternetModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-wifi text-primary me-2"></i>Pay Internet Bill</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Account Number</label><input type="text" class="pm-form-control" value="SF-40812"></div>
+        <div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input type="number" class="pm-form-control" value="5999"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="openModal('receiptModal')">Pay</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 5: Buy Airtime -->
+<div class="modal" [class.show]="activeModal === 'buyAirtimeModal'" [style.display]="activeModal === 'buyAirtimeModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-phone text-success me-2"></i>Buy Airtime & Data</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="pm-tab-pills mb-3">
+          <button class="pm-tab-pill active">Airtime</button>
+          <button class="pm-tab-pill">Data Bundle</button>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">Phone Number</label><input type="text" class="pm-form-control" value="0712345890"></div>
+        <div class="mb-3">
+          <label class="pm-form-label">Amount</label>
+          <div class="pm-amount-chips mb-2">
+            <span class="pm-amount-chip">100</span><span class="pm-amount-chip">250</span><span class="pm-amount-chip active">500</span><span class="pm-amount-chip">1000</span>
+          </div>
+          <input type="number" class="pm-form-control" value="500">
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-accent">Buy Airtime</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 6: Order Gas -->
+<div class="modal" [class.show]="activeModal === 'orderGasModal'" [style.display]="activeModal === 'orderGasModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-fire text-danger me-2"></i>Order Gas / LPG</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Size</label><select class="pm-form-control"><option>13kg Cylinder</option><option>6kg Cylinder</option><option>50kg Cylinder</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Delivery Address</label><input type="text" class="pm-form-control" value="Kilimani, Nairobi"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Order Now</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 7: Bulk Pay -->
+<div class="modal" [class.show]="activeModal === 'bulkPayModal'" [style.display]="activeModal === 'bulkPayModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-collection text-secondary me-2"></i>Bulk Pay Utilities</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Select multiple utilities to pay at once.</p>
+        <div class="onboarded-service"><div><input type="checkbox" checked> <strong>KPLC Prepaid</strong> - KES 4,850</div></div>
+        <div class="onboarded-service"><div><input type="checkbox" checked> <strong>NCWSC Water</strong> - KES 3,200</div></div>
+        <div class="onboarded-service"><div><input type="checkbox"> <strong>DSTV</strong> - KES 11,500</div></div>
+        <div class="p-3 mt-3 rounded" style="background:var(--pm-surface-2)"><div class="d-flex justify-content-between"><strong>Total Selected</strong><strong style="color:var(--pm-primary);font-size:18px">KES 8,050</strong></div></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="openModal('receiptModal')">Pay KES 8,050</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 8: Schedule Payment -->
+<div class="modal" [class.show]="activeModal === 'schedulePaymentModal'" [style.display]="activeModal === 'schedulePaymentModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-calendar-event me-2" style="color:var(--pm-primary)"></i>Schedule Payment</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Utility</label><select class="pm-form-control"><option>KPLC Prepaid</option><option>NCWSC Water</option><option>DSTV</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Amount</label><input type="number" class="pm-form-control" value="5000"></div>
+        <div class="mb-3"><label class="pm-form-label">Schedule Date</label><input type="date" class="pm-form-control"></div>
+        <div class="mb-3"><label class="pm-form-label">Repeat</label><select class="pm-form-control"><option>One-time</option><option>Monthly</option><option>Weekly</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Save Schedule</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 9: Auto-Pay Setup -->
+<div class="modal" [class.show]="activeModal === 'autoPaySetupModal'" [style.display]="activeModal === 'autoPaySetupModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-repeat text-primary me-2"></i>Setup Auto-Pay</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Select Utility</label><select class="pm-form-control"><option>KPLC Prepaid</option><option>NCWSC Water</option><option>Safaricom Fibre</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Pay Method</label><select class="pm-form-control"><option>M-Pesa (Auto)</option><option>PayMo Wallet</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Trigger</label><select class="pm-form-control"><option>On Due Date</option><option>3 Days Before Due</option><option>When Bill Arrives</option></select></div>
+        <div class="mb-3 form-check"><input type="checkbox" class="form-check-input" checked><label class="form-check-label" style="font-size:13px">Cap at KES 20,000/month</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-accent">Activate Auto-Pay</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 10: Add Utility -->
+<div class="modal" [class.show]="activeModal === 'addUtilityModal'" [style.display]="activeModal === 'addUtilityModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Add Utility Account</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="service-grid mb-3">
+          <div class="service-card" style="border-color:var(--pm-primary)"><i class="bi bi-lightning-charge text-warning" style="font-size:24px"></i><div style="font-size:12px;margin-top:4px">Electricity</div></div>
+          <div class="service-card"><i class="bi bi-droplet text-info" style="font-size:24px"></i><div style="font-size:12px;margin-top:4px">Water</div></div>
+          <div class="service-card"><i class="bi bi-tv" style="font-size:24px;color:var(--pm-purple)"></i><div style="font-size:12px;margin-top:4px">TV</div></div>
+          <div class="service-card"><i class="bi bi-wifi text-primary" style="font-size:24px"></i><div style="font-size:12px;margin-top:4px">Internet</div></div>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">Account / Meter Number</label><input type="text" class="pm-form-control" placeholder="Enter number"></div>
+        <div class="mb-3"><label class="pm-form-label">Nickname (Optional)</label><input type="text" class="pm-form-control" placeholder="e.g. Home, Office"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Link Account</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 11: Health Check -->
+<div class="modal" [class.show]="activeModal === 'healthCheckModal'" [style.display]="activeModal === 'healthCheckModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>Service Health Check</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="onboarded-service"><div><strong>KPLC API</strong><br><span style="font-size:11px;color:var(--pm-accent)">Operational</span></div><span class="pm-badge pm-badge-success">Healthy</span></div>
+        <div class="onboarded-service"><div><strong>NCWSC Portal</strong><br><span style="font-size:11px;color:var(--pm-accent)">Operational</span></div><span class="pm-badge pm-badge-success">Healthy</span></div>
+        <div class="onboarded-service"><div><strong>DSTV API</strong><br><span style="font-size:11px;color:var(--pm-warning)">Degraded Performance</span></div><span class="pm-badge pm-badge-warning">Slow</span></div>
+        <div class="onboarded-service"><div><strong>Safaricom STK</strong><br><span style="font-size:11px;color:var(--pm-accent)">Operational</span></div><span class="pm-badge pm-badge-success">Healthy</span></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 12: Bill Inbox -->
+<div class="modal" [class.show]="activeModal === 'billInboxModal'" [style.display]="activeModal === 'billInboxModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-envelope text-primary me-2"></i>Bill Inbox</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="attention-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i class="bi bi-file-earmark-text"></i></div><div style="flex:1"><div style="font-weight:600">KPLC Bill June</div><div style="font-size:11px;color:var(--pm-muted)">Due 30 Jun · KES 4,850</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('payElectricityModal')">Pay</button></div>
+        <div class="attention-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info)"><i class="bi bi-file-earmark-text"></i></div><div style="flex:1"><div style="font-weight:600">NCWSC Bill June</div><div style="font-size:11px;color:var(--pm-muted)">Due 28 Jun · KES 3,200</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('payWaterModal')">Pay</button></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 13: Notifications -->
+<div class="modal" [class.show]="activeModal === 'notificationsModal'" [style.display]="activeModal === 'notificationsModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell text-warning me-2"></i>Notifications</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="attention-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger)"><i class="bi bi-exclamation-triangle"></i></div><div style="flex:1"><div style="font-weight:600">KPLC Overdue</div><div style="font-size:11px;color:var(--pm-muted)">2 hours ago</div></div></div>
+        <div class="attention-item"><div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent)"><i class="bi bi-check-circle"></i></div><div style="flex:1"><div style="font-weight:600">Water Bill Paid</div><div style="font-size:11px;color:var(--pm-muted)">Yesterday</div></div></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Mark all read</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 14: Attention Detail -->
+<div class="modal" [class.show]="activeModal === 'attentionDetailModal'" [style.display]="activeModal === 'attentionDetailModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>All Attention Items</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Consolidated list of all utilities requiring immediate action.</p>
+        <div *ngFor="let item of attentionItems" class="onboarded-service">
+          <div><strong>{{item.title}}</strong><br><span style="font-size:11px;color:var(--pm-muted)">{{item.subtitle}}</span></div>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal(item.modalLink)">{{item.btnText}}</button>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 15: Service Comparison -->
+<div class="modal" [class.show]="activeModal === 'serviceComparisonModal'" [style.display]="activeModal === 'serviceComparisonModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-left-right text-info me-2"></i>Compare Internet Plans</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-4"><div class="pm-card" style="text-align:center"><h5>Zuku</h5><div class="pm-stat-value">KES 4,999</div><p style="font-size:12px">20Mbps</p><button class="pm-btn pm-btn-sm pm-btn-outline w-100">Current</button></div></div>
+          <div class="col-md-4"><div class="pm-card" style="text-align:center;border-color:var(--pm-primary)"><h5>Faiba</h5><div class="pm-stat-value" style="color:var(--pm-primary)">KES 3,499</div><p style="font-size:12px">40Mbps</p><button class="pm-btn pm-btn-sm pm-btn-primary w-100">Switch & Save</button></div></div>
+          <div class="col-md-4"><div class="pm-card" style="text-align:center"><h5>Safaricom</h5><div class="pm-stat-value">KES 5,999</div><p style="font-size:12px">40Mbps</p><button class="pm-btn pm-btn-sm pm-btn-outline w-100">View</button></div></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 16: Buy Token -->
+<div class="modal" [class.show]="activeModal === 'buyTokenModal'" [style.display]="activeModal === 'buyTokenModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-lightning-charge text-warning me-2"></i>Bulk Token Purchase</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Meter</label><select class="pm-form-control"><option>14825739</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Bulk Amount (KES)</label><input type="number" class="pm-form-control" value="5000"></div>
+        <div class="p-2 rounded" style="background:var(--pm-accent-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> You save 3% on tariff with bulk purchase!</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="openModal('payElectricityModal')">Proceed to Pay</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 17: Manage Utilities -->
+<div class="modal" [class.show]="activeModal === 'manageUtilitiesModal'" [style.display]="activeModal === 'manageUtilitiesModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-gear me-2"></i>Manage Utilities</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div *ngFor="let s of connectedServices" class="onboarded-service">
+          <div class="d-flex align-items-center gap-2"><i class="bi" [ngClass]="s.iconClass"></i> <strong>{{s.name}}</strong> <span style="font-size:11px;color:var(--pm-muted)">({{s.provider}})</span></div>
+          <div class="d-flex gap-1"><button class="pm-btn pm-btn-sm">Edit</button><button class="pm-btn pm-btn-sm pm-btn-danger">Remove</button></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 18: Budget Settings -->
+<div class="modal" [class.show]="activeModal === 'budgetSettingsModal'" [style.display]="activeModal === 'budgetSettingsModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-sliders me-2"></i>Budget Settings</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div *ngFor="let bud of budgets" class="mb-3">
+          <label class="pm-form-label">{{bud.name}} Limit (KES)</label>
+          <input type="number" class="pm-form-control" [value]="bud.limitRaw">
+        </div>
+        <div class="form-check mb-3"><input type="checkbox" class="form-check-input" checked><label class="form-check-label" style="font-size:13px">Alert me when 80% budget is reached</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Save Budgets</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 19: Export Report -->
+<div class="modal" [class.show]="activeModal === 'exportReportModal'" [style.display]="activeModal === 'exportReportModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-download me-2"></i>Export Report</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Period</label><select class="pm-form-control"><option>Last 30 Days</option><option>Last 3 Months</option><option>Year to Date</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Format</label><select class="pm-form-control"><option>PDF</option><option>Excel (CSV)</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Download</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 20: Spend Detail -->
+<div class="modal" [class.show]="activeModal === 'spendDetailModal'" [style.display]="activeModal === 'spendDetailModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-pie-chart me-2"></i>Spending Detail</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Breakdown of your utility spending for this month.</p>
+        <div *ngFor="let cat of spendCategories" class="d-flex justify-content-between mb-2" style="font-size:13px">
+          <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px" [style.background]="cat.color"></span>{{cat.label}}</span>
+          <strong>{{cat.amount}}</strong>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 21: Add Member -->
+<div class="modal" [class.show]="activeModal === 'addMemberModal'" [style.display]="activeModal === 'addMemberModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Add Household Member</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Name</label><input type="text" class="pm-form-control" placeholder="Full name"></div>
+        <div class="mb-3"><label class="pm-form-label">Phone / Email</label><input type="text" class="pm-form-control" placeholder="Contact info"></div>
+        <div class="mb-3"><label class="pm-form-label">Role</label><select class="pm-form-control"><option>Admin</option><option>Member (View & Pay)</option><option>Viewer Only</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Send Invite</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 22: Transaction History -->
+<div class="modal" [class.show]="activeModal === 'transactionHistoryModal'" [style.display]="activeModal === 'transactionHistoryModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Full Transaction History</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead><tr><th>Date</th><th>Utility</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let tx of recentTransactions">
+                <td>{{tx.date}}</td><td>{{tx.utility}}</td><td>{{tx.amount}}</td>
+                <td><span class="pm-badge" [ngClass]="tx.statusClass">{{tx.status}}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 23: Receipt -->
+<div class="modal" [class.show]="activeModal === 'receiptModal'" [style.display]="activeModal === 'receiptModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Payment Receipt</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="pm-receipt">
+          <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">Payment Successful</h5>
+          <div class="p-3 rounded mt-3" style="background:#fff;text-align:left;font-size:13px">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Transaction ID</span><strong>TXN-PM-20250627-8834</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 2,000.00</strong></div>
+            <div class="d-flex justify-content-between"><span class="text-muted">Date</span><strong>27 Jun 2025, 14:32</strong></div>
+          </div>
+          <div class="d-flex gap-2 justify-content-center mt-3" style="gap:8px">
+            <button class="pm-btn pm-btn-sm"><i class="bi bi-download"></i> PDF</button>
+            <button class="pm-btn pm-btn-sm"><i class="bi bi-whatsapp"></i> Share</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 24: Dispute -->
+<div class="modal" [class.show]="activeModal === 'disputeModal'" [style.display]="activeModal === 'disputeModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>Report Issue</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Issue Type</label><select class="pm-form-control"><option>Payment Pending</option><option>Wrong Amount Charged</option><option>Service Not Activated</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Description</label><textarea class="pm-form-control" rows="3" placeholder="Describe the issue..."></textarea></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-danger">Submit Dispute</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 25: Pay Bill Quick -->
+<div class="modal" [class.show]="activeModal === 'payBillQuickModal'" [style.display]="activeModal === 'payBillQuickModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-credit-card text-primary me-2"></i>Quick Pay</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Select Linked Utility</label><select class="pm-form-control"><option>KPLC - 14825739</option><option>NCWSC - 290081</option><option>DSTV - 20491867421</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input type="number" class="pm-form-control" placeholder="Enter amount"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="openModal('receiptModal')">Pay Now</button></div>
+    </div>
+  </div>
+</div>

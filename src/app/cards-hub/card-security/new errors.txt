@@ -1,0 +1,943 @@
+ [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:602:20:
+      602 │                     </div>
+          ╵                     ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:603:17:
+      603 │                 }}
+          ╵                  ^
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:604:16:
+      604 │                 }
+          ╵                 ^
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:616:4:
+      616 │     </div>
+          ╵     ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:617:2:
+      617 │   </div>
+          ╵   ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:618:0:
+      618 │ </div>
+          ╵ ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:619:0:
+      619 │ }
+          ╵ ^
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:773:16:
+      773 │                 </div>
+          ╵                 ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. Did you forget to close the <div> element? If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:778:6:
+      778 │       }
+          ╵       ^
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:791:4:
+      791 │     </div>
+          ╵     ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:792:2:
+      792 │   </div>
+          ╵   ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:793:0:
+      793 │ </div>
+          ╵ ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:794:0:
+      794 │ }
+          ╵ ^
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1614:16:
+      1614 │                 </div>
+           ╵                 ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. Did you forget to close the <div> element? If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1619:6:
+      1619 │       } @else {
+           ╵       ^
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1631:4:
+      1631 │     </div>
+           ╵     ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1632:2:
+      1632 │   </div>
+           ╵   ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1633:0:
+      1633 │ </div>
+           ╵ ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1634:0:
+      1634 │ }
+           ╵ ^
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG2008: Could not find template file './card-admin.component.html'. [plugin angular-compiler]
+
+    src/app/cards-hub/card-admin/card-admin.ts:349:15:
+      349 │   templateUrl: './card-admin.component.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:315:10:
+      315 │           </div>
+          ╵           ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:329:8:
+      329 │         </div>
+          ╵         ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:337:6:
+      337 │       </div>
+          ╵       ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:469:6:
+      469 │       </div>
+          ╵       ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. Did you forget to close the <div> element? If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:472:2:
+      472 │   }
+          ╵   ^
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:1698:0:
+      1698 │ </div>
+           ╵ ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:393:4:
+      393 │     </div><!-- pm-app -->
+          ╵     ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. Did you forget to close the <div> element? If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:434:21:
+      434 │                     }}
+          ╵                      ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:435:20:
+      435 │                     }
+          ╵                     ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:449:21:
+      449 │                     }}
+          ╵                      ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:450:20:
+      450 │                     }
+          ╵                     ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:465:20:
+      465 │                     </div>
+          ╵                     ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:466:17:
+      466 │                 }}
+          ╵                  ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:467:16:
+      467 │                 }
+          ╵                 ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:471:4:
+      471 │     </div>
+          ╵     ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:472:2:
+      472 │   </div>
+          ╵   ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:473:0:
+      473 │ </div>
+          ╵ ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:474:0:
+      474 │ }
+          ╵ ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. Did you forget to close the <div> element? If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:565:21:
+      565 │                     }}
+          ╵                      ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:566:20:
+      566 │                     }
+          ╵                     ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:587:21:
+      587 │                     }}
+          ╵                      ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:588:20:
+      588 │                     }
+          ╵                     ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:600:21:
+      600 │                     }}
+          ╵                      ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:601:20:
+      601 │                     }
+          ╵                     ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:622:20:
+      622 │                     </div>
+          ╵                     ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:623:17:
+      623 │                 }}
+          ╵                  ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:624:16:
+      624 │                 }
+          ╵                 ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:628:4:
+      628 │     </div>
+          ╵     ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:629:2:
+      629 │   </div>
+          ╵   ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:630:0:
+      630 │ </div>
+          ╵ ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:631:0:
+      631 │ }
+          ╵ ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. Did you forget to close the <div> element? If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1092:21:
+      1092 │                     }}
+           ╵                      ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1093:20:
+      1093 │                     }
+           ╵                     ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1109:21:
+      1109 │                     }}
+           ╵                      ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1110:20:
+      1110 │                     }
+           ╵                     ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1129:20:
+      1129 │                     </div>
+           ╵                     ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1130:17:
+      1130 │                 }}
+           ╵                  ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1131:16:
+      1131 │                 }
+           ╵                 ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1135:4:
+      1135 │     </div>
+           ╵     ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1136:2:
+      1136 │   </div>
+           ╵   ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1137:0:
+      1137 │ </div>
+           ╵ ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1138:0:
+      1138 │ }
+           ╵ ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. Did you forget to close the <div> element? If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1283:21:
+      1283 │                     }}
+           ╵                      ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1284:20:
+      1284 │                     }
+           ╵                     ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1310:21:
+      1310 │                     }}
+           ╵                      ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1311:20:
+      1311 │                     }
+           ╵                     ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1323:20:
+      1323 │                     </div>
+           ╵                     ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1324:17:
+      1324 │                 }}
+           ╵                  ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1325:16:
+      1325 │                 }
+           ╵                 ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1329:4:
+      1329 │     </div>
+           ╵     ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1330:2:
+      1330 │   </div>
+           ╵   ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1331:0:
+      1331 │ </div>
+           ╵ ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:1332:0:
+      1332 │ }
+           ╵ ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+

@@ -1,0 +1,1622 @@
+<!-- Page Bar -->
+<div class="pm-page-bar">
+    <div>
+        <div class="pm-breadcrumb"><a href="javascript:void(0)">Home</a> / <a href="javascript:void(0)">Card Center</a>
+            / <strong>Physical Debit Cards</strong></div>
+        <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 5.2 —
+            Physical Debit Card Management</h2>
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Order, activate, control limits, set geo-fencing,
+            manage PINs, and handle replacements for physical debit cards.</p>
+    </div>
+    <div class="d-flex flex-wrap" style="gap:8px">
+        <button class="pm-btn" (click)="openModal('cardDeliveryModal')"><i class="bi bi-box-seam"></i> Track
+            Delivery</button>
+        <button class="pm-btn" (click)="openModal('activateCardModal')"><i class="bi bi-upc-scan"></i> Activate
+            Card</button>
+        <button class="pm-btn" (click)="openModal('freezeCardModal')"><i class="bi bi-snow"></i> Freeze All</button>
+        <button class="pm-btn pm-btn-primary" (click)="openModal('orderCardModal')"><i class="bi bi-plus-lg"></i> Order
+            New Card</button>
+    </div>
+</div>
+
+<div class="pm-content">
+
+    <!-- Top Stat Row -->
+    <div class="row g-3">
+        @for (stat of heroStats(); track stat.id) {
+        <div [class]="stat.colClass">
+            @if (stat.isAccent) {
+            <div class="pm-card pm-card-accent" [style]="stat.cardStyle">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">{{ stat.accentStatus }}
+                            <span [style.color]="stat.accentDotColor">●</span>
+                        </p>
+                        <div class="pm-stat-value" style="margin:8px 0;color:#fff">{{ stat.balance }}</div>
+                        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">{{ stat.walletInfo }}</p>
+                    </div>
+                    <div class="text-end">
+                        <div class="pm-debit-card pm-dc-standard"
+                            style="width:160px;padding:12px;border-radius:8px;aspect-ratio:1.586;box-shadow:none;border:1px solid rgba(255,255,255,0.2);transform:none">
+                            <div class="card-logo" style="font-size:12px">PayMo</div>
+                            <div class="card-number" style="font-size:10px;margin:8px 0 4px">**** **** **** {{
+                                stat.miniCard!.last4 }}</div>
+                            <div class="card-name" style="font-size:10px;margin:0">{{ stat.miniCard!.holderName }}</div>
+                            <div class="card-visa" style="font-size:12px;bottom:10px;right:10px">{{ stat.miniCard!.brand
+                                }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap mt-3" style="gap:8px">
+                    @for (btn of stat.buttons; track btn.label) {
+                    <button class="pm-btn pm-btn-sm" [style]="btn.style!" (click)="openModal(btn.modal)">{{ btn.label
+                        }}</button>
+                    }
+                </div>
+            </div>
+            } @else {
+            <div class="pm-card" [style]="stat.cardStyle">
+                <p class="pm-stat-label" [style.color]="stat.labelColor">{{ stat.label }}</p>
+                <div class="pm-stat-value" style="margin:6px 0">{{ stat.value }}</div>
+                @if (stat.badgeText) {
+                <span [class]="stat.badgeClass!"><i [class]="stat.badgeIcon!"></i> {{ stat.badgeText }}</span>
+                }
+                @if (stat.breakdowns) {
+                <div class="mt-3" style="font-size:12px;color:var(--pm-muted)">
+                    @for (b of stat.breakdowns; track b.label) {
+                    <div class="d-flex justify-content-between mb-1"><span>{{ b.label }}</span><span>{{ b.value
+                            }}</span></div>
+                    }
+                </div>
+                }
+                @if (stat.pct !== null && stat.pct !== undefined) {
+                <div class="pm-progress mt-3">
+                    <div class="pm-progress-bar" [style.width.%]="stat.pct" [style.background]="stat.progressColor">
+                    </div>
+                </div>
+                }
+                @if (stat.infoLines) {
+                <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+                    @for (line of stat.infoLines; track $index) {
+                    <div [innerHTML]="line"></div>
+                    }
+                </div>
+                }
+                @if (stat.buttons && stat.buttons.length > 0) {
+                <button class="pm-btn pm-btn-sm mt-3 w-100" (click)="openModal(stat.buttons![0].modal)">{{
+                    stat.buttons[0].label }}</button>
+                }
+            </div>
+            }
+        </div>
+        }
+    </div>
+
+    <!-- Main Action Sections -->
+    <div class="row g-3">
+        <div class="col-lg-4">
+            <div class="pm-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="pm-section-title">Attention & Tracking</h3><button class="pm-btn pm-btn-sm"
+                        (click)="openModal('cardDeliveryModal')">Track All</button>
+                </div>
+                @for (item of feedItems(); track $index) {
+                <div class="feed-item">
+                    <div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor"
+                        style="font-size:12px">{{ item.iconText }}</div>
+                    <div style="flex:1">
+                        <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+                        <div style="font-size:11px;color:var(--pm-muted)">{{ item.desc }}</div>
+                    </div><button [class]="item.btnClass" (click)="openModal(item.btnModal)">{{ item.btnLabel
+                        }}</button>
+                </div>
+                }
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="pm-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="pm-section-title">Card Portfolio</h3><button class="pm-btn pm-btn-sm"
+                        (click)="openModal('portfolioModal')">Manage</button>
+                </div>
+                @for (card of portfolioCards(); track card.last4) {
+                <div class="feed-item">
+                    <div [class]="'pm-debit-card ' + getTierClass(card.tier)"
+                        style="width:60px;height:40px;padding:4px;border-radius:4px;display:flex;align-items:flex-end;justify-content:flex-end"
+                        [style.filter]="card.filterStyle">
+                        <span style="font-family:monospace;font-size:8px">{{ card.last4 }}</span>
+                    </div>
+                    <div style="flex:1">
+                        <div style="font-weight:600;font-size:13px">{{ card.typeLabel }}</div>
+                        <div style="font-size:11px;color:var(--pm-muted)" [innerHTML]="card.statusLabel"></div>
+                    </div><button class="pm-btn pm-btn-sm" (click)="openModal(card.btnModal)">{{ card.btnLabel
+                        }}</button>
+                </div>
+                }
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="pm-card">
+                <div class="mb-3">
+                    <h3 class="pm-section-title">Card Controls & Actions</h3>
+                    <p class="pm-section-sub">Section 5.2.2 & 5.2.3 operations</p>
+                </div>
+                <div class="quick-action-grid">
+                    @for (action of quickActions(); track $index) {
+                    <button class="quick-action-btn" (click)="openModal(action.modalId)"><i
+                            [class]="action.iconClass + ' ' + (action.iconColorClass || '') + ' me-1'"
+                            [style.color]="action.iconColorStyle"></i> {{ action.label }}</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5.2.1 — Card Issuance & Ordering -->
+    <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+            <div>
+                <h3 class="pm-section-title"><i class="bi bi-credit-card-2-front-fill"
+                        style="color:var(--pm-primary)"></i> 5.2.1 — Card Issuance, Ordering & Tracking</h3>
+                <p class="pm-section-sub">Order new personal or corporate debit cards, customize designs, and track
+                    courier delivery in real-time.</p>
+            </div>
+            <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"
+                    (click)="openModal('bulkOrderModal')"><i class="bi bi-layers"></i> Bulk Order
+                    (Corporate)</button><button class="pm-btn pm-btn-sm pm-btn-primary"
+                    (click)="openModal('orderCardModal')"><i class="bi bi-plus-lg"></i> Order New Card</button></div>
+        </div>
+        <div class="row g-3">
+            <div class="col-lg-7">
+                <div class="utility-block">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Deliveries</h4>
+                    <div class="p-3 border rounded mb-3" style="border-left:3px solid var(--pm-warning)!important">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div><span style="font-weight:600;font-size:14px">Premium Travel Debit</span> <span
+                                    class="pm-badge pm-badge-warning ms-2">Dispatched</span></div>
+                            <button class="pm-btn pm-btn-sm" (click)="openModal('cardDeliveryModal')">View
+                                Tracker</button>
+                        </div>
+                        <div class="pm-stepper mb-2 mt-3" style="margin-bottom:12px!important">
+                            <div class="pm-step completed">
+                                <div class="pm-step-num"><i class="bi bi-check"></i></div>
+                                <div class="pm-step-label">Approved</div>
+                            </div>
+                            <div class="pm-step-line" style="background:var(--pm-accent)"></div>
+                            <div class="pm-step completed">
+                                <div class="pm-step-num"><i class="bi bi-check"></i></div>
+                                <div class="pm-step-label">Printed</div>
+                            </div>
+                            <div class="pm-step-line" style="background:var(--pm-accent)"></div>
+                            <div class="pm-step active">
+                                <div class="pm-step-num">3</div>
+                                <div class="pm-step-label">Courier</div>
+                            </div>
+                            <div class="pm-step-line"></div>
+                            <div class="pm-step">
+                                <div class="pm-step-num">4</div>
+                                <div class="pm-step-label">Delivered</div>
+                            </div>
+                        </div>
+                        <div style="font-size:12px;color:var(--pm-ink-soft)"><i class="bi bi-truck me-1"></i> Fargo
+                            Courier (TRK-9921448). Expected delivery: <strong>Tomorrow, 2:00 PM - 5:00 PM</strong> at
+                            Kilimani Office.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="utility-block">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Available Card Designs</h4>
+                    <div class="d-flex flex-wrap gap-2">
+                        @for (design of cardDesigns(); track design.tier) {
+                        <div class="border rounded p-2 text-center" style="width:120px;cursor:pointer"
+                            (click)="openModal('orderCardModal')">
+                            <div [class]="'pm-debit-card ' + design.cssClass + ' mb-2'"
+                                style="width:100%;padding:8px;border-radius:6px">
+                                <div class="card-logo" style="font-size:8px">{{ design.logo }}</div>
+                            </div>
+                            <div style="font-size:11px;font-weight:600">{{ design.name }}</div>
+                            <div style="font-size:10px;color:var(--pm-muted)">{{ design.price }}</div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5.2.2 & 5.2.3 — Card Controls & PIN Management -->
+    <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+            <div>
+                <h3 class="pm-section-title"><i class="bi bi-sliders" style="color:var(--pm-info)"></i> 5.2.2 & 5.2.3 —
+                    Physical Card Controls & PIN Management</h3>
+                <p class="pm-section-sub">Configure daily limits, geographic scopes, MCC blocking, contactless caps, and
+                    manage card PINs.</p>
+            </div>
+            <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"
+                    (click)="openModal('merchantControlsModal')"><i class="bi bi-shop"></i> Merchant
+                    Blocks</button><button class="pm-btn pm-btn-sm" (click)="openModal('cardLimitsModal')"><i
+                        class="bi bi-speedometer2"></i> Setup Limits</button></div>
+        </div>
+        <div class="row g-3">
+            <div class="col-lg-4">
+                <div class="utility-block">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Transaction Toggles</h4>
+                    @for (item of toggleItems(); track item.toggleKey) {
+                    <div class="status-row">
+                        <div><strong>{{ item.label }}</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">{{ item.desc }}</div>
+                        </div>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox"
+                                [checked]="getToggleValue(item.toggleKey)" (change)="handleToggle(item.toggleKey)">
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="utility-block">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Security & PIN</h4>
+                    <div class="status-row">
+                        <div><strong>Change Card PIN</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">Requires old PIN</div>
+                        </div><button class="pm-btn pm-btn-sm" (click)="openModal('pinManagementModal')">Change</button>
+                    </div>
+                    <div class="status-row">
+                        <div><strong>Reset Forgotten PIN</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">Requires OTP + Auth</div>
+                        </div><button class="pm-btn pm-btn-sm" (click)="openModal('resetPinModal')">Reset</button>
+                    </div>
+                    <div class="status-row">
+                        <div><strong>Geo-Fencing</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">Restrict by location</div>
+                        </div><button class="pm-btn pm-btn-sm" (click)="openModal('geoFencingModal')">Manage</button>
+                    </div>
+                    <div class="status-row">
+                        <div><strong>Travel Mode</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">Pre-declare travel</div>
+                        </div><button class="pm-btn pm-btn-sm" (click)="openModal('travelModeModal')">Setup</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="utility-block">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Limits (Standard Debit)</h4>
+                    @for (lim of limitItems(); track lim.id) {
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>{{ lim.label
+                                }}</span><span>{{ lim.value }}</span></div>
+                        @if (lim.pct !== null) {
+                        <div class="pm-progress">
+                            <div class="pm-progress-bar" [style.width.%]="lim.pct"
+                                [style.background]="lim.progressColor"></div>
+                        </div>
+                        }
+                    </div>
+                    }
+                    <button class="pm-btn pm-btn-sm w-100" (click)="openModal('cardLimitsModal')">Adjust All
+                        Limits</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5.2.4 — Card Replacement & Cancellation -->
+    <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+            <div>
+                <h3 class="pm-section-title"><i class="bi bi-shield-x" style="color:var(--pm-danger)"></i> 5.2.4 — Card
+                    Replacement, Freeze & Cancellation</h3>
+                <p class="pm-section-sub">Handle lost/stolen cards, temporary freezes, damaged card replacements, and
+                    permanent account closures securely.</p>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="pm-table">
+                <thead>
+                    <tr>
+                        <th>Action Type</th>
+                        <th>Description</th>
+                        <th>Impact</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Temporary Freeze</strong></td>
+                        <td>Misplaced card but not stolen.</td>
+                        <td>Blocks new authorizations instantly. Can be unfrozen anytime.</td>
+                        <td><button class="pm-btn pm-btn-sm" style="background:var(--pm-warning);color:#fff;border:none"
+                                (click)="openModal('freezeCardModal')">Freeze Card</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Report Lost/Stolen</strong></td>
+                        <td>Card is definitely lost or stolen.</td>
+                        <td>Permanent block. Reissues a new PAN. Stops fraud.</td>
+                        <td><button class="pm-btn pm-btn-sm pm-btn-danger" (click)="openModal('reportLostModal')">Report
+                                Lost</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Replace Damaged</strong></td>
+                        <td>Chip/Magstripe broken. Same card number.</td>
+                        <td>Old card works until new card is activated.</td>
+                        <td><button class="pm-btn pm-btn-sm" (click)="openModal('replaceCardModal')">Replace</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cancel Card</strong></td>
+                        <td>Close debit card permanently.</td>
+                        <td>Permanent closure. Balance returned to wallet.</td>
+                        <td><button class="pm-btn pm-btn-sm" (click)="openModal('cancelCardModal')">Cancel</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Toast -->
+@if (toastVisible()) {
+<div class="pm-toast"><i class="bi bi-check-circle-fill" style="color:var(--pm-accent);font-size:18px"></i> {{
+    toastMsg() }}</div>
+}
+
+<!-- ====================== MODAL 1: Order New Card (4 steps) ====================== -->
+@if (activeModal() === 'orderCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('orderCardModal')">
+    <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Order Physical Debit Card
+                </h5><button class="btn-close" (click)="closeModal('orderCardModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-stepper">
+                    <div class="pm-step" [class.active]="orderStep()===1" [class.completed]="orderStep()>1">
+                        <div class="pm-step-num">@if (orderStep()>1){<i class="bi bi-check"></i>} @else {1}</div>
+                        <div class="pm-step-label">Tier</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="orderStep()>1?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="orderStep()===2" [class.completed]="orderStep()>2">
+                        <div class="pm-step-num">@if (orderStep()>2){<i class="bi bi-check"></i>} @else {2}</div>
+                        <div class="pm-step-label">Details</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="orderStep()>2?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="orderStep()===3" [class.completed]="orderStep()>3">
+                        <div class="pm-step-num">@if (orderStep()>3){<i class="bi bi-check"></i>} @else {3}</div>
+                        <div class="pm-step-label">Delivery</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="orderStep()>3?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="orderStep()===4">
+                        <div class="pm-step-num">4</div>
+                        <div class="pm-step-label">Review</div>
+                    </div>
+                </div>
+                @if (orderStep() === 1) {
+                <h6 style="font-weight:700">Select Card Tier</h6>
+                <div class="row g-3 mt-1">
+                    <div class="col-md-4">
+                        <div class="p-3 border rounded text-center" style="cursor:pointer"
+                            [style.borderColor]="selectedTier()==='standard'?'var(--pm-primary)':''"
+                            [style.background]="selectedTier()==='standard'?'rgba(79,70,229,.04)':''"
+                            (click)="selectCardTier('standard')">
+                            <div class="pm-debit-card pm-dc-standard mx-auto mb-2"
+                                style="width:100px;padding:8px;min-height:60px">
+                                <div class="card-logo" style="font-size:8px">PayMo</div>
+                            </div><strong>Standard Debit</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">Free issuance</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 border rounded text-center" style="cursor:pointer"
+                            [style.borderColor]="selectedTier()==='premium'?'var(--pm-primary)':''"
+                            [style.background]="selectedTier()==='premium'?'rgba(79,70,229,.04)':''"
+                            (click)="selectCardTier('premium')">
+                            <div class="pm-debit-card pm-dc-premium mx-auto mb-2"
+                                style="width:100px;padding:8px;min-height:60px">
+                                <div class="card-logo" style="font-size:8px">PayMo</div>
+                            </div><strong>Premium Travel</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">KES 1,000 fee</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 border rounded text-center" style="cursor:pointer"
+                            [style.borderColor]="selectedTier()==='business'?'var(--pm-primary)':''"
+                            [style.background]="selectedTier()==='business'?'rgba(79,70,229,.04)':''"
+                            (click)="selectCardTier('business')">
+                            <div class="pm-debit-card pm-dc-business mx-auto mb-2"
+                                style="width:100px;padding:8px;min-height:60px">
+                                <div class="card-logo" style="font-size:8px">PayMo Biz</div>
+                            </div><strong>SME Business</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">Linked to Biz Wallet</div>
+                        </div>
+                    </div>
+                </div>
+                }
+                @if (orderStep() === 2) {
+                <h6 style="font-weight:700">Personalization</h6>
+                <div class="mb-3"><label class="pm-form-label">Name on Card</label><input class="pm-form-control"
+                        [value]="cardName()" (input)="cardName.set($any($event.target).value)" maxlength="21">
+                    <div style="font-size:11px;color:var(--pm-muted);margin-top:4px">Max 21 characters</div>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">Linked Account</label><select class="pm-form-control"
+                        [value]="linkedAccount()" (change)="linkedAccount.set($any($event.target).value)">
+                        <option value="primary">Primary PayMo Wallet (KES 24,500)</option>
+                        <option value="business">Business Wallet (KES 105,000)</option>
+                    </select></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" [checked]="enableContactless()"
+                        (change)="enableContactless.set($any($event.target).checked)"><label
+                        class="form-check-label">Enable Contactless (NFC)</label></div>
+                }
+                @if (orderStep() === 3) {
+                <h6 style="font-weight:700">Delivery Details</h6>
+                <div class="mb-3"><label class="pm-form-label">Delivery Method</label><select class="pm-form-control"
+                        [value]="deliveryMethod()" (change)="deliveryMethod.set($any($event.target).value)">
+                        <option value="express">Express Courier (1-2 days) - KES 300</option>
+                        <option value="standard">Standard Mail (5-7 days) - Free</option>
+                        <option value="pickup">Branch Pickup (Same day) - Free</option>
+                    </select></div>
+                <div class="mb-3"><label class="pm-form-label">Delivery Address</label><textarea class="pm-form-control"
+                        rows="2" [value]="deliveryAddress()"
+                        (input)="deliveryAddress.set($any($event.target).value)">Apt 4B, Kilimani Heights, Argwings Kodhek Rd, Nairobi</textarea>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">Contact Number</label><input class="pm-form-control"
+                        [value]="contactNumber()" (input)="contactNumber.set($any($event.target).value)"></div>
+                }
+                @if (orderStep() === 4) {
+                <h6 style="font-weight:700">Review & Payment</h6>
+                <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+                    <div class="d-flex justify-content-between mb-1"><span>Card Tier</span><strong>{{ selectedTier() ===
+                            'premium' ? 'Premium Travel' : selectedTier() === 'business' ? 'SME Business' : 'Standard
+                            Debit' }}</strong></div>
+                    <div class="d-flex justify-content-between mb-1"><span>Issuance Fee</span><strong>{{ selectedTier()
+                            === 'premium' ? 'KES 1,000' : 'Free' }}</strong></div>
+                    <div class="d-flex justify-content-between mb-1"><span>Delivery Fee</span><strong>{{
+                            deliveryMethod() === 'express' ? 'KES 300' : 'Free' }}</strong></div>
+                    <hr class="pm-divider">
+                    <div class="d-flex justify-content-between"><span style="font-weight:700">Total to Pay</span><strong
+                            style="font-size:18px;color:var(--pm-primary)">{{ selectedTier() === 'premium' &&
+                            deliveryMethod() === 'express' ? 'KES 1,300' : selectedTier() === 'premium' ? 'KES 1,000' :
+                            deliveryMethod() === 'express' ? 'KES 300' : 'Free' }}</strong></div>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">Pay From</label><select class="pm-form-control"
+                        [value]="payFrom()" (change)="payFrom.set($any($event.target).value)">
+                        <option value="wallet">PayMo Wallet (KES 24,500)</option>
+                        <option value="mpesa">M-Pesa STK</option>
+                    </select></div>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (orderStep() > 1) {<button class="pm-btn" (click)="prevOrderStep()"><i class="bi bi-arrow-left"></i>
+                    Back</button>}
+                <button class="pm-btn" (click)="closeModal('orderCardModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="nextOrderStep()">@if (orderStep() < 4) { Continue <i
+                        class="bi bi-arrow-right"></i> } @else { Place Order <i class="bi bi-check-lg"></i> }</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 2: Card Delivery Tracker ====================== -->
+@if (activeModal() === 'cardDeliveryModal') {
+<div class="pm-modal-overlay" (click)="closeModal('cardDeliveryModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-truck me-2"></i>Track Card Delivery</h5><button
+                    class="btn-close" (click)="closeModal('cardDeliveryModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="p-3 rounded mb-4" style="background:var(--pm-surface-2)">
+                    <div class="d-flex justify-content-between mb-2"><span>Tracking ID</span><strong
+                            style="color:var(--pm-primary)">TRK-9921448</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Courier</span><strong>Fargo Courier
+                            Express</strong></div>
+                    <div class="d-flex justify-content-between"><span>Est. Delivery</span><strong>Tomorrow, 2:00
+                            PM</strong></div>
+                </div>
+                <div class="pm-stepper flex-column align-items-start" style="gap:16px">
+                    <div class="d-flex gap-3 w-100">
+                        <div class="pm-icon-circle"
+                            style="background:var(--pm-accent);color:#fff;width:24px;height:24px;font-size:12px"><i
+                                class="bi bi-check"></i></div>
+                        <div>
+                            <div style="font-weight:600">Application Approved</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">25 Jun, 10:00 AM</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 w-100">
+                        <div class="pm-icon-circle"
+                            style="background:var(--pm-accent);color:#fff;width:24px;height:24px;font-size:12px"><i
+                                class="bi bi-check"></i></div>
+                        <div>
+                            <div style="font-weight:600">Card Personalized & Printed</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">26 Jun, 09:15 AM</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 w-100">
+                        <div class="pm-icon-circle"
+                            style="background:var(--pm-primary);color:#fff;width:24px;height:24px;font-size:12px">3
+                        </div>
+                        <div>
+                            <div style="font-weight:600;color:var(--pm-primary)">Dispatched to Courier</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">26 Jun, 14:30 PM — Hub Nairobi</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 w-100" style="opacity:0.5">
+                        <div class="pm-icon-circle"
+                            style="background:var(--pm-border);color:var(--pm-muted);width:24px;height:24px;font-size:12px">
+                            4</div>
+                        <div>
+                            <div style="font-weight:600">Out for Delivery</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">Pending</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 w-100" style="opacity:0.5">
+                        <div class="pm-icon-circle"
+                            style="background:var(--pm-border);color:var(--pm-muted);width:24px;height:24px;font-size:12px">
+                            5</div>
+                        <div>
+                            <div style="font-weight:600">Delivered</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">Pending signature</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3 rounded mt-4" style="background:var(--pm-warning-soft);font-size:12px"><i
+                        class="bi bi-shield-lock me-1"></i> You must provide the 4-digit Delivery OTP
+                    <strong>(8812)</strong> to the rider to receive your card.
+                </div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn"
+                    (click)="closeModal('cardDeliveryModal')">Close</button><button class="pm-btn pm-btn-primary"
+                    (click)="showToast('Delivery address update requested. Courier will be notified.','cardDeliveryModal')">Update
+                    Address</button></div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 3: Activate Card ====================== -->
+@if (activeModal() === 'activateCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('activateCardModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-upc-scan text-primary me-2"></i>Activate Physical Card</h5>
+                <button class="btn-close" (click)="closeModal('activateCardModal')"></button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:13px;color:var(--pm-ink-soft)">Scan the QR code on the card carrier document or
+                    enter the details manually.</p>
+                <div class="text-center p-4 border rounded mb-3 border-dashed"
+                    style="background:var(--pm-surface-2);cursor:pointer"
+                    (click)="showToast('Camera permission required. Please allow camera access to scan QR code.')">
+                    <i class="bi bi-qr-code-scan" style="font-size:48px;color:var(--pm-primary)"></i>
+                    <div class="mt-2" style="font-weight:600">Tap to scan QR Code</div>
+                </div>
+                <div class="text-center mb-3 text-muted" style="font-size:12px">OR ENTER MANUALLY</div>
+                <div class="mb-3"><label class="pm-form-label">Last 4 digits of Card</label><input
+                        class="pm-form-control" placeholder="e.g. 5591" maxlength="4"></div>
+                <div class="mb-3"><label class="pm-form-label">CVV (3 digits on back)</label><input
+                        class="pm-form-control" type="password" maxlength="3"></div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn"
+                    (click)="closeModal('activateCardModal')">Cancel</button><button class="pm-btn pm-btn-primary"
+                    (click)="closeModal('activateCardModal');openModal('pinManagementModal')">Activate & Set
+                    PIN</button></div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 4: PIN Management ====================== -->
+@if (activeModal() === 'pinManagementModal') {
+<div class="pm-modal-overlay" (click)="closeModal('pinManagementModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-asterisk text-warning me-2"></i>Set / Change Card PIN</h5>
+                <button class="btn-close" (click)="closeModal('pinManagementModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3"><label class="pm-form-label">Select Card</label><select class="pm-form-control">
+                        <option>Standard Debit (**** 8422)</option>
+                        <option>Business Debit (**** 1102)</option>
+                    </select></div>
+                <div class="mb-3"><label class="pm-form-label">Current PIN (Leave blank if new activation)</label>
+                    <div class="pm-pin-input"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"></div>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">New 4-Digit PIN</label>
+                    <div class="pm-pin-input"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"></div>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">Confirm New PIN</label>
+                    <div class="pm-pin-input"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"></div>
+                </div>
+                <div class="p-3 rounded" style="background:var(--pm-danger-soft);font-size:12px;color:#991B1B"><i
+                        class="bi bi-exclamation-circle me-1"></i> Do not use sequential numbers (1234) or repeated
+                    digits (1111).</div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn"
+                    (click)="closeModal('pinManagementModal')">Cancel</button><button class="pm-btn pm-btn-primary"
+                    (click)="showToast('PIN updated successfully.','pinManagementModal')">Update PIN</button></div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 5: Reset PIN (2 steps) ====================== -->
+@if (activeModal() === 'resetPinModal') {
+<div class="pm-modal-overlay" (click)="closeModal('resetPinModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-key text-warning me-2"></i>Reset Forgotten PIN</h5><button
+                    class="btn-close" (click)="closeModal('resetPinModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-stepper">
+                    <div class="pm-step" [class.active]="resetPinStep()===1" [class.completed]="resetPinStep()>1">
+                        <div class="pm-step-num">@if (resetPinStep()>1){<i class="bi bi-check"></i>} @else {1}</div>
+                        <div class="pm-step-label">Verify</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="resetPinStep()>1?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="resetPinStep()===2">
+                        <div class="pm-step-num">2</div>
+                        <div class="pm-step-label">New PIN</div>
+                    </div>
+                </div>
+                @if (resetPinStep() === 1) {
+                <p style="font-size:13px;color:var(--pm-ink-soft)">We will send a one-time OTP to your registered phone
+                    number.</p>
+                <div class="mb-3"><label class="pm-form-label">Registered Phone</label><input class="pm-form-control"
+                        value="0712 345 890" readonly></div>
+                <div class="mb-3"><label class="pm-form-label">Enter OTP</label>
+                    <div class="pm-pin-input"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"></div>
+                </div>
+                <button class="pm-btn pm-btn-sm" (click)="showToast('OTP resent to 0712 345 890')"><i
+                        class="bi bi-arrow-repeat"></i> Resend OTP</button>
+                }
+                @if (resetPinStep() === 2) {
+                <div class="mb-3"><label class="pm-form-label">New 4-Digit PIN</label>
+                    <div class="pm-pin-input"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"></div>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">Confirm New PIN</label>
+                    <div class="pm-pin-input"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="password" maxlength="1"
+                            (input)="moveFocus($any($event.target))"></div>
+                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (resetPinStep() > 1) {<button class="pm-btn" (click)="resetPinStep.set(1)"><i
+                        class="bi bi-arrow-left"></i> Back</button>}
+                <button class="pm-btn" (click)="closeModal('resetPinModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="nextResetPinStep()">@if (resetPinStep() < 2) { Verify OTP
+                        } @else { Reset PIN }</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 6: Card Limits ====================== -->
+@if (activeModal() === 'cardLimitsModal') {
+<div class="pm-modal-overlay" (click)="closeModal('cardLimitsModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-speedometer2 text-info me-2"></i>Adjust Card Limits</h5><button
+                    class="btn-close" (click)="closeModal('cardLimitsModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3"><label class="pm-form-label">Daily POS Limit (KES)</label><input
+                        class="pm-form-control" type="number" [value]="dailyPosLimit()"
+                        (input)="dailyPosLimit.set(+$any($event.target).value)">
+                    <div class="d-flex justify-content-between mt-1" style="font-size:11px;color:var(--pm-muted)">
+                        <span>Min: KES 1,000</span><span>Max: KES 500,000</span>
+                    </div>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">Daily ATM Limit (KES)</label><input
+                        class="pm-form-control" type="number" [value]="dailyAtmLimit()"
+                        (input)="dailyAtmLimit.set(+$any($event.target).value)">
+                    <div class="d-flex justify-content-between mt-1" style="font-size:11px;color:var(--pm-muted)">
+                        <span>Min: KES 0</span><span>Max: KES 200,000</span>
+                    </div>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">Daily Online Limit (KES)</label><input
+                        class="pm-form-control" type="number" [value]="dailyOnlineLimit()"
+                        (input)="dailyOnlineLimit.set(+$any($event.target).value)"></div>
+                <div class="mb-3"><label class="pm-form-label">Contactless Cap Per Tap (KES)</label><input
+                        class="pm-form-control" type="number" [value]="contactlessCap()"
+                        (input)="contactlessCap.set(+$any($event.target).value)"></div>
+                <div class="mb-3"><label class="pm-form-label">Monthly Spend Limit (KES)</label><input
+                        class="pm-form-control" type="number" [value]="monthlyLimit()"
+                        (input)="monthlyLimit.set(+$any($event.target).value)"></div>
+                <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px;color:#1E40AF"><i
+                        class="bi bi-info-circle me-1"></i> Limit changes take effect within 5 minutes. You will receive
+                    an SMS confirmation.</div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn"
+                    (click)="closeModal('cardLimitsModal')">Cancel</button><button class="pm-btn pm-btn-primary"
+                    (click)="saveLimits()">Save Limits</button></div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 7: Geo-Fencing ====================== -->
+@if (activeModal() === 'geoFencingModal') {
+<div class="pm-modal-overlay" (click)="closeModal('geoFencingModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-globe-americas text-success me-2"></i>Geo-Fencing Settings</h5>
+                <button class="btn-close" (click)="closeModal('geoFencingModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="pm-form-label">Geographic Scope</label>
+                    <div class="d-flex flex-column gap-2 mt-1">
+                        <div class="p-3 border rounded"
+                            [style.borderColor]="geoMode()==='kenya_only'?'var(--pm-primary)':''"
+                            [style.background]="geoMode()==='kenya_only'?'rgba(79,70,229,.04)':''"
+                            style="cursor:pointer" (click)="geoMode.set('kenya_only')">
+                            <div class="form-check"><input class="form-check-input" type="radio" name="geoMode"
+                                    [checked]="geoMode()==='kenya_only'" (change)="geoMode.set('kenya_only')"><label
+                                    class="form-check-label"><strong>Kenya Only</strong>
+                                    <div style="font-size:11px;color:var(--pm-muted)">Block all transactions outside
+                                        Kenya</div>
+                                </label></div>
+                        </div>
+                        <div class="p-3 border rounded"
+                            [style.borderColor]="geoMode()==='east_africa'?'var(--pm-primary)':''"
+                            [style.background]="geoMode()==='east_africa'?'rgba(79,70,229,.04)':''"
+                            style="cursor:pointer" (click)="geoMode.set('east_africa')">
+                            <div class="form-check"><input class="form-check-input" type="radio" name="geoMode"
+                                    [checked]="geoMode()==='east_africa'" (change)="geoMode.set('east_africa')"><label
+                                    class="form-check-label"><strong>East Africa Region</strong>
+                                    <div style="font-size:11px;color:var(--pm-muted)">Kenya, Uganda, Tanzania, Rwanda
+                                    </div>
+                                </label></div>
+                        </div>
+                        <div class="p-3 border rounded"
+                            [style.borderColor]="geoMode()==='international'?'var(--pm-primary)':''"
+                            [style.background]="geoMode()==='international'?'rgba(79,70,229,.04)':''"
+                            style="cursor:pointer" (click)="geoMode.set('international')">
+                            <div class="form-check"><input class="form-check-input" type="radio" name="geoMode"
+                                    [checked]="geoMode()==='international'"
+                                    (change)="geoMode.set('international')"><label
+                                    class="form-check-label"><strong>International (All Countries)</strong>
+                                    <div style="font-size:11px;color:var(--pm-muted)">No geographic restrictions</div>
+                                </label></div>
+                        </div>
+                        <div class="p-3 border rounded"
+                            [style.borderColor]="geoMode()==='custom'?'var(--pm-primary)':''"
+                            [style.background]="geoMode()==='custom'?'rgba(79,70,229,.04)':''" style="cursor:pointer"
+                            (click)="geoMode.set('custom')">
+                            <div class="form-check"><input class="form-check-input" type="radio" name="geoMode"
+                                    [checked]="geoMode()==='custom'" (change)="geoMode.set('custom')"><label
+                                    class="form-check-label"><strong>Custom Countries</strong>
+                                    <div style="font-size:11px;color:var(--pm-muted)">Select specific allowed countries
+                                    </div>
+                                </label></div>
+                        </div>
+                    </div>
+                </div>
+                @if (geoMode() === 'custom') {
+                <div class="mb-3"><label class="pm-form-label">Allowed Countries</label><input class="pm-form-control"
+                        placeholder="e.g. Kenya, Uganda, South Africa" [value]="geoCountries().join(', ')"
+                        (input)="geoCountries.set($any($event.target).value.split(',').map((c)=>c.trim()).filter((c)=>c))">
+                </div>
+                }
+            </div>
+            <div class="modal-footer"><button class="pm-btn"
+                    (click)="closeModal('geoFencingModal')">Cancel</button><button class="pm-btn pm-btn-primary"
+                    (click)="saveGeoFencing()">Save Settings</button></div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 8: Merchant Controls ====================== -->
+@if (activeModal() === 'merchantControlsModal') {
+<div class="pm-modal-overlay" (click)="closeModal('merchantControlsModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-shop me-2" style="color:var(--pm-purple)"></i>Merchant Category
+                    Controls</h5><button class="btn-close" (click)="closeModal('merchantControlsModal')"></button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:13px;color:var(--pm-ink-soft)">Block specific merchant categories (MCC codes) to
+                    prevent unauthorized spending.</p>
+                @for (cat of merchantCategories(); track cat.code) {
+                <div class="status-row">
+                    <div><strong>{{ cat.name }}</strong>
+                        <div style="font-size:11px;color:var(--pm-muted)">MCC: {{ cat.code }}</div>
+                    </div>
+                    <div class="form-check form-switch"><input class="form-check-input" type="checkbox"
+                            [checked]="blockedMccs().includes(cat.code)" (change)="toggleMcc(cat.code)"></div>
+                </div>
+                }
+                <div class="p-3 rounded mt-3" style="background:var(--pm-purple-soft);font-size:12px;color:#5B21B6"><i
+                        class="bi bi-info-circle me-1"></i> Blocked categories will decline all transactions at matching
+                    merchants.</div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn"
+                    (click)="closeModal('merchantControlsModal')">Cancel</button><button class="pm-btn pm-btn-primary"
+                    (click)="saveMerchantControls()">Save Blocks</button></div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 9: Freeze Card (2 steps) ====================== -->
+@if (activeModal() === 'freezeCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('freezeCardModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-snow text-primary me-2"></i>Freeze / Unfreeze Card</h5><button
+                    class="btn-close" (click)="closeModal('freezeCardModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-stepper">
+                    <div class="pm-step" [class.active]="freezeStep()===1" [class.completed]="freezeStep()>1">
+                        <div class="pm-step-num">@if (freezeStep()>1){<i class="bi bi-check"></i>} @else {1}</div>
+                        <div class="pm-step-label">Select</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="freezeStep()>1?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="freezeStep()===2">
+                        <div class="pm-step-num">2</div>
+                        <div class="pm-step-label">Confirm</div>
+                    </div>
+                </div>
+                @if (freezeStep() === 1) {
+                <p style="font-size:13px;color:var(--pm-ink-soft)">Select the card you want to freeze. Frozen cards will
+                    decline all transactions.</p>
+                @for (card of cards(); track card.id) {
+                <div class="p-3 border rounded mb-2"
+                    [style.borderColor]="freezeCardId()===card.id?'var(--pm-primary)':''"
+                    [style.background]="freezeCardId()===card.id?'rgba(79,70,229,.04)':''" style="cursor:pointer"
+                    (click)="freezeCardId.set(card.id)">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="form-check"><input class="form-check-input" type="radio" name="freezeCard"
+                                [checked]="freezeCardId()===card.id" (change)="freezeCardId.set(card.id)"></div>
+                        <div class="pm-debit-card" [class]="getTierClass(card.tier)"
+                            style="width:50px;height:32px;padding:3px;border-radius:4px;display:flex;align-items:flex-end;justify-content:flex-end">
+                            <span style="font-family:monospace;font-size:7px">{{ card.last4 }}</span>
+                        </div>
+                        <div><strong style="font-size:13px">{{ card.type }}</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">**** {{ card.last4 }} · {{
+                                getStatusBadge(card.status).label }}</div>
+                        </div>
+                    </div>
+                </div>
+                }
+                }
+                @if (freezeStep() === 2) {
+                <div class="text-center p-4">
+                    <div class="pm-icon-circle mx-auto mb-3"
+                        style="width:64px;height:64px;font-size:28px;background:var(--pm-info-soft);color:var(--pm-info)">
+                        <i class="bi bi-snow"></i>
+                    </div>
+                    <h6 style="font-weight:700">Confirm Card Freeze</h6>
+                    <p style="font-size:13px;color:var(--pm-ink-soft)">This will immediately block all new transactions
+                        on the selected card. You can unfreeze anytime.</p>
+                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (freezeStep() > 1) {<button class="pm-btn" (click)="freezeStep.set(1)"><i
+                        class="bi bi-arrow-left"></i> Back</button>}
+                <button class="pm-btn" (click)="closeModal('freezeCardModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="nextFreezeStep()">@if (freezeStep() < 2) { Continue }
+                        @else { Confirm Freeze }</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 10: Report Lost (3 steps) ====================== -->
+@if (activeModal() === 'reportLostModal') {
+<div class="pm-modal-overlay" (click)="closeModal('reportLostModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-shield-exclamation text-danger me-2"></i>Report Lost / Stolen
+                    Card</h5><button class="btn-close" (click)="closeModal('reportLostModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-stepper">
+                    <div class="pm-step" [class.active]="reportLostStep()===1" [class.completed]="reportLostStep()>1">
+                        <div class="pm-step-num">@if (reportLostStep()>1){<i class="bi bi-check"></i>} @else {1}</div>
+                        <div class="pm-step-label">Details</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="reportLostStep()>1?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="reportLostStep()===2" [class.completed]="reportLostStep()>2">
+                        <div class="pm-step-num">@if (reportLostStep()>2){<i class="bi bi-check"></i>} @else {2}</div>
+                        <div class="pm-step-label">Verify</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="reportLostStep()>2?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="reportLostStep()===3">
+                        <div class="pm-step-num">3</div>
+                        <div class="pm-step-label">Confirm</div>
+                    </div>
+                </div>
+                @if (reportLostStep() === 1) {
+                <div class="mb-3"><label class="pm-form-label">Select Card</label><select class="pm-form-control"
+                        [value]="lostCardId()" (change)="lostCardId.set($any($event.target).value)">
+                        <option value="">-- Choose card --</option>@for (c of cards(); track c.id) {<option
+                            [value]="c.id">{{ c.type }} (**** {{ c.last4 }})</option>}
+                    </select></div>
+                <div class="mb-3"><label class="pm-form-label">Reason</label><select class="pm-form-control"
+                        [value]="lostReason()" (change)="lostReason.set($any($event.target).value)">
+                        <option value="">-- Select reason --</option>
+                        <option value="lost">Lost / Misplaced</option>
+                        <option value="stolen">Stolen</option>
+                        <option value="compromised">Suspected Compromise</option>
+                    </select></div>
+                <div class="mb-3"><label class="pm-form-label">Additional Details</label><textarea
+                        class="pm-form-control" rows="2"
+                        placeholder="When and where did you last use the card?"></textarea></div>
+                }
+                @if (reportLostStep() === 2) {
+                <p style="font-size:13px;color:var(--pm-ink-soft)">Verify your identity with the OTP sent to your
+                    registered phone.</p>
+                <div class="mb-3"><label class="pm-form-label">Enter OTP sent to 0712 345 890</label>
+                    <div class="pm-pin-input"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"><input type="text" maxlength="1"
+                            (input)="moveFocus($any($event.target))"></div>
+                </div>
+                <button class="pm-btn pm-btn-sm" (click)="showToast('OTP resent to 0712 345 890')"><i
+                        class="bi bi-arrow-repeat"></i> Resend OTP</button>
+                }
+                @if (reportLostStep() === 3) {
+                <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft)">
+                    <h6 style="color:#991B1B;font-weight:700"><i class="bi bi-exclamation-triangle me-1"></i> Final
+                        Confirmation</h6>
+                    <p style="font-size:13px;color:#991B1B;margin:8px 0 0">This action will <strong>permanently
+                            block</strong> the card. A replacement card with a new number will be issued. Any pending
+                        transactions will be declined.</p>
+                </div>
+                <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">
+                    <div class="d-flex justify-content-between mb-1"><span>Card</span><strong>Standard Debit (****
+                            8422)</strong></div>
+                    <div class="d-flex justify-content-between"><span>Reason</span><strong>Lost / Misplaced</strong>
+                    </div>
+                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (reportLostStep() > 1) {<button class="pm-btn" (click)="reportLostStep.set(reportLostStep()-1)"><i
+                        class="bi bi-arrow-left"></i> Back</button>}
+                <button class="pm-btn" (click)="closeModal('reportLostModal')">Cancel</button>
+                <button class="pm-btn pm-btn-danger" (click)="nextReportLostStep()">@if (reportLostStep() < 3) {
+                        Continue } @else { Confirm Report }</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 11: Cancel Card (3 steps) ====================== -->
+@if (activeModal() === 'cancelCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('cancelCardModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-x-circle text-danger me-2"></i>Cancel Card Permanently</h5>
+                <button class="btn-close" (click)="closeModal('cancelCardModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-stepper">
+                    <div class="pm-step" [class.active]="cancelStep()===1" [class.completed]="cancelStep()>1">
+                        <div class="pm-step-num">@if (cancelStep()>1){<i class="bi bi-check"></i>} @else {1}</div>
+                        <div class="pm-step-label">Warning</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="cancelStep()>1?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="cancelStep()===2" [class.completed]="cancelStep()>2">
+                        <div class="pm-step-num">@if (cancelStep()>2){<i class="bi bi-check"></i>} @else {2}</div>
+                        <div class="pm-step-label">Verify</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="cancelStep()>2?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="cancelStep()===3">
+                        <div class="pm-step-num">3</div>
+                        <div class="pm-step-label">Confirm</div>
+                    </div>
+                </div>
+                @if (cancelStep() === 1) {
+                <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft)">
+                    <h6 style="color:#991B1B;font-weight:700"><i class="bi bi-exclamation-triangle me-1"></i> Important
+                        Warning</h6>
+                    <p style="font-size:13px;color:#991B1B;margin:8px 0 0">Cancelling your card is <strong>permanent and
+                            irreversible</strong>. Your card balance will be returned to your linked wallet. Any
+                        recurring payments linked to this card will fail.</p>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">Select Card to Cancel</label><select
+                        class="pm-form-control" [value]="cancelCardId()"
+                        (change)="cancelCardId.set($any($event.target).value)">
+                        <option value="">-- Choose card --</option>@for (c of cards(); track c.id) {<option
+                            [value]="c.id">{{ c.type }} (**** {{ c.last4 }})</option>}
+                    </select></div>
+                }
+                @if (cancelStep() === 2) {
+                <p style="font-size:13px;color:var(--pm-ink-soft)">Enter your account password to confirm this action.
+                </p>
+                <div class="mb-3"><label class="pm-form-label">Account Password</label><input class="pm-form-control"
+                        type="password" placeholder="Enter your PayMo password"></div>
+                }
+                @if (cancelStep() === 3) {
+                <div class="pm-receipt">
+                    <div class="receipt-icon"><i class="bi bi-x-circle"></i></div>
+                    <h6 style="font-weight:700">Final Confirmation</h6>
+                    <p style="font-size:13px;color:var(--pm-ink-soft)">Card <strong>Standard Debit (**** 8422)</strong>
+                        will be permanently cancelled. Balance of <strong>KES 145,200</strong> will be returned to
+                        Primary Wallet.</p>
+                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (cancelStep() > 1) {<button class="pm-btn" (click)="cancelStep.set(cancelStep()-1)"><i
+                        class="bi bi-arrow-left"></i> Back</button>}
+                <button class="pm-btn" (click)="closeModal('cancelCardModal')">Cancel</button>
+                <button class="pm-btn pm-btn-danger" (click)="nextCancelStep()">@if (cancelStep() < 3) { Continue }
+                        @else { Permanently Cancel }</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 12: Replace Card (3 steps) ====================== -->
+@if (activeModal() === 'replaceCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('replaceCardModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-arrow-repeat text-info me-2"></i>Replace Damaged Card</h5>
+                <button class="btn-close" (click)="closeModal('replaceCardModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-stepper">
+                    <div class="pm-step" [class.active]="replaceStep()===1" [class.completed]="replaceStep()>1">
+                        <div class="pm-step-num">@if (replaceStep()>1){<i class="bi bi-check"></i>} @else {1}</div>
+                        <div class="pm-step-label">Details</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="replaceStep()>1?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="replaceStep()===2" [class.completed]="replaceStep()>2">
+                        <div class="pm-step-num">@if (replaceStep()>2){<i class="bi bi-check"></i>} @else {2}</div>
+                        <div class="pm-step-label">Delivery</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="replaceStep()>2?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="replaceStep()===3">
+                        <div class="pm-step-num">3</div>
+                        <div class="pm-step-label">Confirm</div>
+                    </div>
+                </div>
+                @if (replaceStep() === 1) {
+                <div class="mb-3"><label class="pm-form-label">Card to Replace</label><select class="pm-form-control"
+                        [value]="replaceCardId()" (change)="replaceCardId.set($any($event.target).value)">
+                        <option value="">-- Choose card --</option>@for (c of cards(); track c.id) {<option
+                            [value]="c.id">{{ c.type }} (**** {{ c.last4 }})</option>}
+                    </select></div>
+                <div class="mb-3"><label class="pm-form-label">Reason for Replacement</label><select
+                        class="pm-form-control" [value]="replaceReason()"
+                        (change)="replaceReason.set($any($event.target).value)">
+                        <option value="damaged">Damaged (Chip/Magstripe)</option>
+                        <option value="worn">Worn Out</option>
+                        <option value="malfunction">Card Malfunction</option>
+                        <option value="other">Other</option>
+                    </select></div>
+                <div class="mb-3"><label class="pm-form-label">Additional Notes</label><textarea class="pm-form-control"
+                        rows="2" placeholder="Describe the damage..."></textarea></div>
+                }
+                @if (replaceStep() === 2) {
+                <div class="mb-3"><label class="pm-form-label">Delivery Method</label><select class="pm-form-control">
+                        <option>Express Courier (1-2 days) - KES 300</option>
+                        <option>Standard Mail (5-7 days) - Free</option>
+                        <option>Branch Pickup (Same day) - Free</option>
+                    </select></div>
+                <div class="mb-3"><label class="pm-form-label">Delivery Address</label><textarea class="pm-form-control"
+                        rows="2">Apt 4B, Kilimani Heights, Argwings Kodhek Rd, Nairobi</textarea></div>
+                }
+                @if (replaceStep() === 3) {
+                <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                    <div class="d-flex justify-content-between mb-1"><span>Card</span><strong>Legacy Debit (****
+                            9421)</strong></div>
+                    <div class="d-flex justify-content-between mb-1"><span>Reason</span><strong>Damaged
+                            (Chip/Magstripe)</strong></div>
+                    <div class="d-flex justify-content-between mb-1"><span>Delivery</span><strong>Express
+                            Courier</strong></div>
+                    <div class="d-flex justify-content-between"><span>Fee</span><strong>KES 300</strong></div>
+                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (replaceStep() > 1) {<button class="pm-btn" (click)="replaceStep.set(replaceStep()-1)"><i
+                        class="bi bi-arrow-left"></i> Back</button>}
+                <button class="pm-btn" (click)="closeModal('replaceCardModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="nextReplaceStep()">@if (replaceStep() < 3) { Continue }
+                        @else { Confirm Replacement }</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 13: Renew Card (2 steps) ====================== -->
+@if (activeModal() === 'renewCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('renewCardModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-arrow-clockwise text-warning me-2"></i>Renew Expiring Card</h5>
+                <button class="btn-close" (click)="closeModal('renewCardModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-stepper">
+                    <div class="pm-step" [class.active]="renewStep()===1" [class.completed]="renewStep()>1">
+                        <div class="pm-step-num">@if (renewStep()>1){<i class="bi bi-check"></i>} @else {1}</div>
+                        <div class="pm-step-label">Card Info</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="renewStep()>1?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="renewStep()===2">
+                        <div class="pm-step-num">2</div>
+                        <div class="pm-step-label">Confirm</div>
+                    </div>
+                </div>
+                @if (renewStep() === 1) {
+                <div class="p-3 border rounded mb-3" style="border-left:3px solid var(--pm-warning)!important">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="pm-debit-card pm-dc-standard"
+                            style="width:60px;height:40px;padding:4px;border-radius:4px;display:flex;align-items:flex-end;justify-content:flex-end;filter:grayscale(1)">
+                            <span style="font-family:monospace;font-size:8px">9421</span>
+                        </div>
+                        <div><strong>Legacy Debit Card (**** 9421)</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">Expires: 08/24 · 45 days remaining</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">Delivery Method</label><select class="pm-form-control">
+                        <option>Express Courier (1-2 days) - KES 300</option>
+                        <option>Standard Mail (5-7 days) - Free</option>
+                        <option>Branch Pickup (Same day) - Free</option>
+                    </select></div>
+                <div class="mb-3"><label class="pm-form-label">Delivery Address</label><textarea class="pm-form-control"
+                        rows="2">Apt 4B, Kilimani Heights, Argwings Kodhek Rd, Nairobi</textarea></div>
+                }
+                @if (renewStep() === 2) {
+                <div class="pm-receipt">
+                    <div class="receipt-icon"><i class="bi bi-arrow-clockwise"></i></div>
+                    <h6 style="font-weight:700">Confirm Card Renewal</h6>
+                    <p style="font-size:13px;color:var(--pm-ink-soft)">A new card with the same number but updated
+                        expiry will be issued. Your old card remains active until the new one is activated.</p>
+                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (renewStep() > 1) {<button class="pm-btn" (click)="renewStep.set(1)"><i
+                        class="bi bi-arrow-left"></i> Back</button>}
+                <button class="pm-btn" (click)="closeModal('renewCardModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="nextRenewStep()">@if (renewStep() < 2) { Continue } @else
+                        { Confirm Renewal }</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 14: Card Health ====================== -->
+@if (activeModal() === 'cardHealthModal') {
+<div class="pm-modal-overlay" (click)="closeModal('cardHealthModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-shield-check text-success me-2"></i>Card Security Audit</h5>
+                <button class="btn-close" (click)="closeModal('cardHealthModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <div class="pm-icon-circle mx-auto mb-2"
+                        style="width:72px;height:72px;font-size:28px;background:var(--pm-accent-soft);color:var(--pm-accent)">
+                        94</div>
+                    <h5 style="font-weight:700;margin:0">Security Score: 94/100</h5>
+                    <span class="pm-badge pm-badge-success mt-1"><i class="bi bi-shield-check"></i> Excellent</span>
+                </div>
+                @for (item of healthItems(); track item.label) {
+                <div class="status-row">
+                    <div class="d-flex align-items-center gap-2"><i class="bi"
+                            [class]="item.status==='pass'?'bi-check-circle-fill text-success':'bi-exclamation-circle-fill text-warning'"></i>
+                        <div><strong style="font-size:13px">{{ item.label }}</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">+{{ item.score }} points</div>
+                        </div>
+                    </div>
+                    <span class="pm-badge" [class.pm-badge-success]="item.status==='pass'"
+                        [class.pm-badge-warning]="item.status==='warn'">{{ item.status === 'pass' ? 'Pass' : 'Warning'
+                        }}</span>
+                </div>
+                }
+                <div class="p-3 rounded mt-3" style="background:var(--pm-accent-soft);font-size:12px;color:#047857"><i
+                        class="bi bi-lightbulb me-1"></i> Tip: Renew your expiring card to achieve a perfect 100/100
+                    score.</div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn"
+                    (click)="closeModal('cardHealthModal')">Close</button><button class="pm-btn pm-btn-primary"
+                    (click)="closeModal('cardHealthModal');openModal('renewCardModal')">Renew Expiring Card</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 15: Notifications ====================== -->
+@if (activeModal() === 'cardNotificationsModal') {
+<div class="pm-modal-overlay" (click)="closeModal('cardNotificationsModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-bell me-2"></i>Card Notifications</h5><button class="btn-close"
+                    (click)="closeModal('cardNotificationsModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between align-items-center mb-3"><span
+                        style="font-size:13px;color:var(--pm-ink-soft)">{{ unreadCount }} unread</span><button
+                        class="pm-btn pm-btn-sm" (click)="markAllRead()"><i class="bi bi-check2-all"></i> Mark All
+                        Read</button></div>
+                @for (n of notifications(); track n.id) {
+                <div class="d-flex gap-3 p-3 border rounded mb-2"
+                    [style.background]="!n.read?'var(--pm-surface-2)':'#fff'">
+                    <div class="pm-icon-circle" [style.background]="n.iconBg" [style.color]="n.iconColor"
+                        style="font-size:12px;width:36px;height:36px;min-width:36px">{{ n.icon }}</div>
+                    <div style="flex:1">
+                        <div style="font-weight:600;font-size:13px">{{ n.title }} @if (!n.read) {<span
+                                style="display:inline-block;width:8px;height:8px;background:var(--pm-primary);border-radius:50%;margin-left:6px"></span>}
+                        </div>
+                        <div style="font-size:11px;color:var(--pm-muted)">{{ n.desc }}</div>
+                        <div style="font-size:10px;color:var(--pm-muted);margin-top:4px">{{ n.time }}</div>
+                    </div>
+                </div>
+                }
+            </div>
+            <div class="modal-footer"><button class="pm-btn"
+                    (click)="closeModal('cardNotificationsModal')">Close</button></div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 16: Bulk Order (3 steps) ====================== -->
+@if (activeModal() === 'bulkOrderModal') {
+<div class="pm-modal-overlay" (click)="closeModal('bulkOrderModal')">
+    <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-layers text-primary me-2"></i>Bulk Card Order (Corporate)</h5>
+                <button class="btn-close" (click)="closeModal('bulkOrderModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-stepper">
+                    <div class="pm-step" [class.active]="bulkStep()===1" [class.completed]="bulkStep()>1">
+                        <div class="pm-step-num">@if (bulkStep()>1){<i class="bi bi-check"></i>} @else {1}</div>
+                        <div class="pm-step-label">Employees</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="bulkStep()>1?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="bulkStep()===2" [class.completed]="bulkStep()>2">
+                        <div class="pm-step-num">@if (bulkStep()>2){<i class="bi bi-check"></i>} @else {2}</div>
+                        <div class="pm-step-label">Config</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="bulkStep()>2?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="bulkStep()===3">
+                        <div class="pm-step-num">3</div>
+                        <div class="pm-step-label">Review</div>
+                    </div>
+                </div>
+                @if (bulkStep() === 1) {
+                <div class="mb-3"><label class="pm-form-label">Number of Cards</label><input class="pm-form-control"
+                        type="number" value="10" min="1" max="500"></div>
+                <div class="mb-3"><label class="pm-form-label">Upload Employee List (CSV)</label>
+                    <div class="p-4 border rounded border-dashed text-center"
+                        style="cursor:pointer;background:var(--pm-surface-2)"
+                        (click)="showToast('File upload dialog would open here')"><i class="bi bi-cloud-upload"
+                            style="font-size:32px;color:var(--pm-primary)"></i>
+                        <div class="mt-2" style="font-weight:600;font-size:13px">Drop CSV file or click to browse</div>
+                        <div style="font-size:11px;color:var(--pm-muted)">Name, Phone, Email, Department</div>
+                    </div>
+                </div>
+                }
+                @if (bulkStep() === 2) {
+                <div class="mb-3"><label class="pm-form-label">Card Tier for All</label><select class="pm-form-control">
+                        <option>Standard Debit (Free)</option>
+                        <option>Business Debit (Free for SMEs)</option>
+                        <option>Premium Travel (KES 1,000 each)</option>
+                    </select></div>
+                <div class="mb-3"><label class="pm-form-label">Individual POS Limits (KES)</label><input
+                        class="pm-form-control" type="number" value="50000"></div>
+                <div class="mb-3"><label class="pm-form-label">Delivery Address</label><textarea class="pm-form-control"
+                        rows="2">Company HQ, Westlands, Nairobi</textarea></div>
+                }
+                @if (bulkStep() === 3) {
+                <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                    <div class="d-flex justify-content-between mb-1"><span>Number of Cards</span><strong>10</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1"><span>Tier</span><strong>Standard Debit</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1"><span>Issuance Fee</span><strong>Free</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1"><span>Delivery</span><strong>Standard Mail
+                            (Free)</strong></div>
+                    <hr class="pm-divider">
+                    <div class="d-flex justify-content-between"><span style="font-weight:700">Total Cost</span><strong
+                            style="font-size:18px;color:var(--pm-accent)">Free</strong></div>
+                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (bulkStep() > 1) {<button class="pm-btn" (click)="bulkStep.set(bulkStep()-1)"><i
+                        class="bi bi-arrow-left"></i> Back</button>}
+                <button class="pm-btn" (click)="closeModal('bulkOrderModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="nextBulkStep()">@if (bulkStep() < 3) { Continue } @else {
+                        Submit Bulk Order }</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 17: Toggle Confirm ====================== -->
+@if (activeModal() === 'toggleConfirmModal') {
+<div class="pm-modal-overlay" (click)="closeModal('toggleConfirmModal')">
+    <div class="modal-dialog" style="max-width:420px" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-toggle-on text-primary me-2"></i>Confirm Control Change</h5>
+                <button class="btn-close" (click)="closeModal('toggleConfirmModal')"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="pm-icon-circle mx-auto mb-3"
+                    style="width:56px;height:56px;font-size:24px;background:var(--pm-warning-soft);color:var(--pm-warning)">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>
+                <h6 style="font-weight:700">Are you sure?</h6>
+                <p style="font-size:13px;color:var(--pm-ink-soft)">Changing this transaction control will take effect
+                    immediately. This may block or allow certain transaction types on your card.</p>
+            </div>
+            <div class="modal-footer"><button class="pm-btn" (click)="cancelToggle()">Keep Current</button><button
+                    class="pm-btn pm-btn-primary" (click)="confirmToggle()">Apply Change</button></div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 18: Portfolio ====================== -->
+@if (activeModal() === 'portfolioModal') {
+<div class="pm-modal-overlay" (click)="closeModal('portfolioModal')">
+    <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-wallet2 me-2"></i>Card Portfolio</h5><button class="btn-close"
+                    (click)="closeModal('portfolioModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-tab-pills mb-3">
+                    <button class="pm-tab-pill active">All Cards</button>
+                    <button class="pm-tab-pill">Active</button>
+                    <button class="pm-tab-pill">Frozen</button>
+                    <button class="pm-tab-pill">In Transit</button>
+                </div>
+                @for (card of cards(); track card.id) {
+                <div class="p-3 border rounded mb-3">
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <div class="pm-debit-card" [class]="getTierClass(card.tier)"
+                            [class.card-locked]="card.status==='frozen'"
+                            style="width:120px;min-height:76px;padding:8px;border-radius:8px">
+                            <div class="card-logo" style="font-size:10px">PayMo</div>
+                            <div class="card-number" style="font-size:9px;margin:6px 0 2px">**** **** **** {{ card.last4
+                                }}</div>
+                            <div class="card-name" style="font-size:8px;margin:0">{{ card.holderName }}</div>
+                        </div>
+                        <div style="flex:1;min-width:150px">
+                            <div class="d-flex align-items-center gap-2 mb-1"><strong style="font-size:14px">{{
+                                    card.type }}</strong><span class="pm-badge"
+                                    [class]="getStatusBadge(card.status).class">{{ getStatusBadge(card.status).label
+                                    }}</span></div>
+                            <div style="font-size:12px;color:var(--pm-ink-soft)">Wallet: {{ card.wallet }}</div>
+                            <div style="font-size:12px;color:var(--pm-ink-soft)">Expiry: {{ card.expiryDate }}</div>
+                        </div>
+                        <div class="d-flex flex-wrap" style="gap:6px">
+                            @if (card.status === 'active') {<button class="pm-btn pm-btn-sm"
+                                (click)="closeModal('portfolioModal');openModal('viewCardDetailsModal')">Details</button><button
+                                class="pm-btn pm-btn-sm"
+                                (click)="closeModal('portfolioModal');openModal('cardLimitsModal')">Limits</button>}
+                            @if (card.status === 'needs_pin') {<button class="pm-btn pm-btn-sm pm-btn-primary"
+                                (click)="closeModal('portfolioModal');openModal('pinManagementModal')">Set PIN</button>}
+                            @if (card.status === 'in_transit') {<button class="pm-btn pm-btn-sm"
+                                (click)="closeModal('portfolioModal');openModal('cardDeliveryModal')">Track</button>}
+                            @if (card.status === 'frozen') {<button class="pm-btn pm-btn-sm"
+                                (click)="closeModal('portfolioModal');openModal('replaceCardModal')">Replace</button>}
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            <div class="modal-footer"><button class="pm-btn"
+                    (click)="closeModal('portfolioModal')">Close</button><button class="pm-btn pm-btn-primary"
+                    (click)="closeModal('portfolioModal');openModal('orderCardModal')"><i class="bi bi-plus-lg"></i> Add
+                    New Card</button></div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 19: Travel Mode (2 steps) ====================== -->
+@if (activeModal() === 'travelModeModal') {
+<div class="pm-modal-overlay" (click)="closeModal('travelModeModal')">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-airplane text-info me-2"></i>Travel Mode Setup</h5><button
+                    class="btn-close" (click)="closeModal('travelModeModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-stepper">
+                    <div class="pm-step" [class.active]="travelStep()===1" [class.completed]="travelStep()>1">
+                        <div class="pm-step-num">@if (travelStep()>1){<i class="bi bi-check"></i>} @else {1}</div>
+                        <div class="pm-step-label">Trip Details</div>
+                    </div>
+                    <div class="pm-step-line" [style.background]="travelStep()>1?'var(--pm-accent)':''"></div>
+                    <div class="pm-step" [class.active]="travelStep()===2">
+                        <div class="pm-step-num">2</div>
+                        <div class="pm-step-label">Confirm</div>
+                    </div>
+                </div>
+                @if (travelStep() === 1) {
+                <div class="mb-3"><label class="pm-form-label">Destination Countries</label><input
+                        class="pm-form-control" placeholder="e.g. Uganda, Tanzania, South Africa"></div>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="mb-3"><label class="pm-form-label">Travel Start Date</label><input
+                                class="pm-form-control" type="date"></div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3"><label class="pm-form-label">Travel End Date</label><input
+                                class="pm-form-control" type="date"></div>
+                    </div>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">Select Card</label><select class="pm-form-control">
+                        <option>Standard Debit (**** 8422)</option>
+                        <option>Premium Travel (**** 5591)</option>
+                    </select></div>
+                <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px;color:#1E40AF"><i
+                        class="bi bi-info-circle me-1"></i> Travel mode temporarily enables international transactions
+                    for selected countries during your trip dates.</div>
+                }
+                @if (travelStep() === 2) {
+                <div class="pm-receipt">
+                    <div class="receipt-icon"><i class="bi bi-airplane"></i></div>
+                    <h6 style="font-weight:700">Confirm Travel Mode</h6>
+                    <p style="font-size:13px;color:var(--pm-ink-soft)">International transactions will be enabled for
+                        your selected countries during the trip period. Geo-fencing will automatically revert after the
+                        end date.</p>
+                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (travelStep() > 1) {<button class="pm-btn" (click)="travelStep.set(1)"><i
+                        class="bi bi-arrow-left"></i> Back</button>}
+                <button class="pm-btn" (click)="closeModal('travelModeModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="nextTravelStep()">@if (travelStep() < 2) { Continue }
+                        @else { Activate Travel Mode }</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ====================== MODAL 20: View Card Details ====================== -->
+@if (activeModal() === 'viewCardDetailsModal') {
+<div class="pm-modal-overlay" (click)="closeModal('viewCardDetailsModal')">
+    <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-credit-card-2-front-fill text-primary me-2"></i>Card Details
+                </h5><button class="btn-close" (click)="closeModal('viewCardDetailsModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-md-5">
+                        <div class="pm-debit-card pm-dc-standard mx-auto" style="max-width:280px">
+                            <div class="card-logo">PayMo</div>
+                            <div class="card-chip"></div>
+                            <div class="card-number">**** **** **** 8422</div>
+                            <div class="card-info">
+                                <div>
+                                    <div>Card Holder</div>
+                                    <div class="card-name">JAMES KAMAU</div>
+                                </div>
+                                <div>
+                                    <div>Expires</div>
+                                    <div>12/26</div>
+                                </div>
+                            </div>
+                            <div class="card-visa">VISA</div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="utility-block mb-3">
+                            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Card Information</h4>
+                            <div class="status-row"><span style="font-size:13px;color:var(--pm-muted)">Card
+                                    Type</span><strong style="font-size:13px">Personal Standard Debit</strong></div>
+                            <div class="status-row"><span style="font-size:13px;color:var(--pm-muted)">Card
+                                    Number</span><strong style="font-size:13px">**** **** **** 8422</strong></div>
+                            <div class="status-row"><span
+                                    style="font-size:13px;color:var(--pm-muted)">Status</span><span
+                                    class="pm-badge pm-badge-success">Active</span></div>
+                            <div class="status-row"><span style="font-size:13px;color:var(--pm-muted)">Linked
+                                    Wallet</span><strong style="font-size:13px">Primary PayMo Wallet</strong></div>
+                            <div class="status-row"><span style="font-size:13px;color:var(--pm-muted)">Available
+                                    Balance</span><strong style="font-size:13px;color:var(--pm-accent)">KES
+                                    145,200.00</strong></div>
+                            <div class="status-row"><span style="font-size:13px;color:var(--pm-muted)">Expiry
+                                    Date</span><strong style="font-size:13px">12/2026</strong></div>
+                            <div class="status-row"><span style="font-size:13px;color:var(--pm-muted)">Issue
+                                    Date</span><strong style="font-size:13px">12/2023</strong></div>
+                            <div class="status-row"><span
+                                    style="font-size:13px;color:var(--pm-muted)">Contactless</span><strong
+                                    style="font-size:13px">Enabled (Cap: KES 5,000)</strong></div>
+                        </div>
+                        <div class="d-flex flex-wrap" style="gap:6px">
+                            <button class="pm-btn pm-btn-sm"
+                                (click)="closeModal('viewCardDetailsModal');openModal('pinManagementModal')"><i
+                                    class="bi bi-asterisk"></i> Change PIN</button>
+                            <button class="pm-btn pm-btn-sm"
+                                (click)="closeModal('viewCardDetailsModal');openModal('cardLimitsModal')"><i
+                                    class="bi bi-speedometer2"></i> Limits</button>
+                            <button class="pm-btn pm-btn-sm"
+                                (click)="closeModal('viewCardDetailsModal');openModal('geoFencingModal')"><i
+                                    class="bi bi-globe-americas"></i> Geo-Fence</button>
+                            <button class="pm-btn pm-btn-sm"
+                                (click)="closeModal('viewCardDetailsModal');openModal('freezeCardModal')"><i
+                                    class="bi bi-snow"></i> Freeze</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn" (click)="closeModal('viewCardDetailsModal')">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+}

@@ -1,0 +1,77 @@
+<!-- Aside Backdrop -->
+<div class="aside-backdrop" [class.show]="openPanel !== null" (click)="onClose()"></div>
+
+<aside class="right-aside" [class.open]="openPanel !== null" aria-label="Context panel">
+
+    <!-- Auto-Pay Panel -->
+    <div class="aside-panel-content" [class.active]="openPanel === 'autoPay'">
+        <div class="aside-header">
+            <span class="aside-title"><i class="bi bi-calendar-check text-primary"></i> Auto-Pay Manager</span>
+            <button class="aside-close" (click)="onClose()"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="aside-body">
+            <div class="aside-card">
+                <h6>Active Auto-Pay</h6>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div><div class="fw-semibold" style="font-size:0.85rem">KPLC Prepaid</div><div class="text-muted" style="font-size:0.72rem">KES 3,000 · Monthly</div></div>
+                    <div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked></div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div><div class="fw-semibold" style="font-size:0.85rem">Safaricom Fiber</div><div class="text-muted" style="font-size:0.72rem">KES 5,999 · Monthly</div></div>
+                    <div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked></div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div><div class="fw-semibold" style="font-size:0.85rem">DSTV Premium</div><div class="text-muted" style="font-size:0.72rem">KES 9,500 · Monthly</div></div>
+                    <div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked></div>
+                </div>
+            </div>
+            <div class="aside-card">
+                <h6>Upcoming Payments</h6>
+                <div class="status-row"><span style="font-size:0.82rem">KPLC Prepaid</span><span class="fw-bold" style="font-size:0.82rem">15 Jul 2026</span></div>
+                <div class="status-row"><span style="font-size:0.82rem">Safaricom Fiber</span><span class="fw-bold" style="font-size:0.82rem">20 Jul 2026</span></div>
+            </div>
+            <button class="btn btn-primary w-100" (click)="onToast('Auto-pay settings saved','success')">Save Settings</button>
+        </div>
+    </div>
+
+    <!-- Bill Payment Panel -->
+    <div class="aside-panel-content" [class.active]="openPanel === 'payBill'">
+        <div class="aside-header">
+            <span class="aside-title"><i class="bi bi-lightning text-primary"></i> Pay Utility Bill</span>
+            <button class="aside-close" (click)="onClose()"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="aside-body">
+            <div class="aside-card">
+                <h6>Payment Details</h6>
+                <div class="mb-3"><label class="form-label fw-semibold" style="font-size:0.82rem">Provider</label>
+                    <select class="form-select form-select-sm"><option>KPLC — Electricity</option><option>NCWSC — Water</option><option>Safaricom — Fiber</option><option>DSTV — Cable TV</option></select>
+                </div>
+                <div class="mb-3"><label class="form-label fw-semibold" style="font-size:0.82rem">Account / Meter Number</label><input type="text" class="form-control form-control-sm" placeholder="Enter account number"></div>
+                <div class="mb-3"><label class="form-label fw-semibold" style="font-size:0.82rem">Amount (KES)</label><input type="text" class="form-control form-control-sm" placeholder="0.00"></div>
+                <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="enableAutoPay"><label class="form-check-label" style="font-size:0.82rem" for="enableAutoPay">Enable auto-pay for this bill</label></div>
+            </div>
+            <button class="btn btn-primary w-100" (click)="onToast('Payment processing…','success')"><i class="bi bi-lightning me-2"></i>Pay Now</button>
+        </div>
+    </div>
+
+    <!-- Saved Accounts Panel -->
+    <div class="aside-panel-content" [class.active]="openPanel === 'savedAccounts'">
+        <div class="aside-header">
+            <span class="aside-title"><i class="bi bi-bookmark text-primary"></i> Saved Accounts</span>
+            <button class="aside-close" (click)="onClose()"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="aside-body">
+            <div class="aside-card" *ngFor="let acc of savedAccounts">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fw-semibold" style="font-size:0.85rem">{{ acc.name }}</div>
+                        <div class="text-muted" style="font-size:0.72rem">{{ acc.provider }}: {{ acc.number }}</div>
+                    </div>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                </div>
+            </div>
+            <button class="btn btn-outline-primary w-100 mt-2"><i class="bi bi-plus me-2"></i>Add New Account</button>
+        </div>
+    </div>
+
+</aside>

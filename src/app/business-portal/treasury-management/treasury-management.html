@@ -1,0 +1,211 @@
+<div class="pm-app">
+<div class="pm-main">
+
+<div class="pm-page-bar">
+<div>
+<div class="pm-breadcrumb"><a role="button" tabindex="0">Business Portal</a> / <a role="button" tabindex="0">Operations</a> / <strong>Treasury &amp; Forex</strong></div>
+<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 3.7 — Treasury, Cash Management &amp; Forex</h2>
+<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Centralized liquidity control, automated cross-account sweeps, real-time FX trading, cross-border payments, and cash flow forecasting.</p>
+</div>
+<div class="d-flex flex-wrap" style="gap:8px">
+<button class="pm-btn" (click)="openModal('approvalQueueModal')"><i class="bi bi-ui-checks"></i> Pending Approvals</button>
+<button class="pm-btn" (click)="openModal('cashflowForecastModal')"><i class="bi bi-graph-up"></i> Forecast</button>
+<button class="pm-btn" (click)="openModal('transferFundsModal')"><i class="bi bi-arrow-left-right"></i> Internal Transfer</button>
+<button class="pm-btn pm-btn-primary" (click)="openModal('bookFXModal')"><i class="bi bi-currency-exchange"></i> Book FX Trade</button>
+</div>
+</div>
+
+<div class="pm-content">
+
+<!-- HERO STATS ROW -->
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="pm-card pm-card-accent" style="min-height:170px">
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Global consolidated liquidity <span style="color:#86efac">●</span></p>
+<div class="pm-stat-value" style="margin:8px 0;color:#fff">KES 48.2M <span style="font-size:14px;font-weight:500;opacity:.8">equiv.</span></div>
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Across 6 bank accounts, PayMo corporate wallets, and M-Pesa Tills/Paybills.</p>
+<div class="d-flex flex-wrap mt-3" style="gap:8px">
+<button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('multiAccountModal')">View accounts</button>
+<button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('transferFundsModal')">Move funds</button>
+<button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('reconciliationModal')">Reconcile</button>
+</div>
+</div>
+</div>
+<div class="col-lg-2 col-md-4 col-6">
+<div class="pm-card" style="min-height:170px">
+<p class="pm-stat-label" style="color:var(--pm-info)">NET CASH FLOW (30D)</p>
+<div class="pm-stat-value" style="margin:6px 0">+ KES 4.1M</div>
+<span class="pm-badge pm-badge-success"><i class="bi bi-arrow-up-right"></i> Positive</span>
+<div class="pm-mini-bars mt-3"><div class="pm-mini-bar" style="height:40%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:60%;background:var(--pm-info)"></div><div class="pm-mini-bar" style="height:55%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:85%;background:var(--pm-accent)"></div><div class="pm-mini-bar" style="height:45%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:90%;background:var(--pm-accent)"></div></div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4 col-6">
+<div class="pm-card" style="min-height:170px">
+<p class="pm-stat-label" style="color:var(--pm-purple)">ACTIVE INVESTMENTS</p>
+<div class="pm-stat-value" style="margin:6px 0">KES 18.5M</div>
+<span class="pm-badge pm-badge-purple"><i class="bi bi-piggy-bank"></i> Yielding 11.2% p.a.</span>
+<div class="mt-2"><div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>T-Bills / MMF allocation</span><span>38% of liquidity</span></div><div class="pm-progress mt-1"><div class="pm-progress-bar" style="width:38%;background:var(--pm-purple)"></div></div></div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4">
+<div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-warning)">
+<p class="pm-stat-label" style="color:var(--pm-warning)">FX EXPOSURE (USD)</p>
+<div class="pm-stat-value" style="margin:6px 0">$ 42,500</div>
+<span class="pm-badge pm-badge-warning"><i class="bi bi-globe"></i> Payables next 14D</span>
+<div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)"><div>Current Rate: <strong>129.40 KES</strong></div><div>Target Hedged: <strong>60% covered</strong></div></div>
+</div>
+</div>
+</div>
+
+<div class="row g-3">
+<!-- Attention Required -->
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Treasury Action Items</h3><button class="pm-btn pm-btn-sm" (click)="openModal('attentionModal')">View all</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">AP</div><div style="flex:1"><div style="font-weight:600;font-size:13px">3 Sweeps require approval</div><div style="font-size:11px;color:var(--pm-muted)">KES 4.2M target balancing transfers</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('approvalQueueModal')">Review</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">FX</div><div style="flex:1"><div style="font-weight:600;font-size:13px">USD/KES dropped to 129.10</div><div style="font-size:11px;color:var(--pm-muted)">Hit target alert for vendor payment</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('bookFXModal')">Trade</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple);font-size:12px">MM</div><div style="flex:1"><div style="font-weight:600;font-size:13px">T-Bill maturity tomorrow</div><div style="font-size:11px;color:var(--pm-muted)">KES 5.0M principal + interest</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('investmentPortfolioModal')">Action</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">RC</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Unreconciled bank statement</div><div style="font-size:11px;color:var(--pm-muted)">Equity Bank main op account (2 days)</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('reconciliationModal')">Fix</button></div>
+</div>
+</div>
+<!-- Smart Suggestions -->
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Liquidity Insights</h3><span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent);font-size:12px">ID</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Invest idle KES 2.5M</div><div style="font-size:11px;color:var(--pm-muted)">Not needed for 14 days based on forecast</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('investCashModal')">Invest</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">SW</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Setup Till-to-Bank sweep</div><div style="font-size:11px;color:var(--pm-muted)">Prevent manual transfer delays daily</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('sweepRuleModal')">Config</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">HG</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Hedge upcoming EUR invoice</div><div style="font-size:11px;color:var(--pm-muted)">EUR/KES volatility risk detected (3.2%)</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('fxRiskModal')">Hedge</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">ST</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Shortfall predicted on 28th</div><div style="font-size:11px;color:var(--pm-muted)">Payroll run exceeds operating balance</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('cashflowForecastModal')">Model</button></div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="mb-3"><h3 class="pm-section-title">Treasury Actions</h3><p class="pm-section-sub">Frequent cash management workflows</p></div>
+<div class="quick-action-grid">
+<button class="quick-action-btn" (click)="openModal('addAccountModal')"><i class="bi bi-bank text-primary me-1"></i> Add Account</button>
+<button class="quick-action-btn" (click)="openModal('transferFundsModal')"><i class="bi bi-arrow-left-right text-success me-1"></i> Internal Transfer</button>
+<button class="quick-action-btn" (click)="openModal('bookFXModal')"><i class="bi bi-currency-exchange text-warning me-1"></i> FX Trade</button>
+<button class="quick-action-btn" (click)="openModal('crossBorderModal')"><i class="bi bi-globe me-1" style="color:var(--pm-purple)"></i> Cross-Border</button>
+<button class="quick-action-btn" (click)="openModal('investCashModal')"><i class="bi bi-graph-up-arrow text-info me-1"></i> Invest Cash</button>
+<button class="quick-action-btn" (click)="openModal('sweepRuleModal')"><i class="bi bi-arrow-repeat text-secondary me-1"></i> Auto-Sweeps</button>
+<button class="quick-action-btn" (click)="openModal('fxAlertModal')"><i class="bi bi-bell me-1" style="color:var(--pm-accent)"></i> FX Alerts</button>
+<button class="quick-action-btn" (click)="openModal('treasuryReportModal')"><i class="bi bi-file-earmark-pdf text-danger me-1"></i> Reports</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 3.7.1 & 3.7.2 -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-bank" style="color:var(--pm-primary)"></i> 3.7.1 &amp; 3.7.2 — Multi-Account Liquidity &amp; Auto-Sweeps</h3><p class="pm-section-sub">Consolidated view of all corporate bank accounts, mobile money tills, and automated zero/target balance sweep rules.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-clock-history"></i> Sweep Log</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-plus-lg"></i> Connect Bank</button></div><div (click)="openModal('sweepHistoryModal'); openModal('addAccountModal')">
+<div class="row g-3">
+<div class="col-lg-8">
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Account Balances</h4><button class="pm-btn pm-btn-sm" (click)="openModal('multiAccountModal')">Manage Accounts</button></div>
+<div class="table-responsive"><table class="pm-table"><thead><tr><th>Institution</th><th>Account Name</th><th>Currency</th><th>Balance</th><th>Status</th><th>Auto-Sweep</th></tr></thead><tbody>
+<tr><td><div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:24px;height:24px;background:var(--pm-info-soft);color:var(--pm-info);font-size:12px"><i class="bi bi-bank"></i></div>Equity Bank</div></td><td>Main Operations</td><td>KES</td><td><strong>14,250,000</strong></td><td><span class="pm-badge pm-badge-success">Syncing</span></td><td>Target KES 5M</td></tr>
+<tr><td><div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:24px;height:24px;background:var(--pm-success-soft);color:#10B981;font-size:12px"><i class="bi bi-bank"></i></div>KCB Bank</div></td><td>Payroll Acct</td><td>KES</td><td><strong>3,800,000</strong></td><td><span class="pm-badge pm-badge-success">Syncing</span></td><td>Zero Balance</td></tr>
+<tr><td><div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:24px;height:24px;background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px"><i class="bi bi-currency-dollar"></i></div>StanChart</div></td><td>USD Receipts</td><td>USD</td><td><strong>$ 45,200</strong></td><td><span class="pm-badge pm-badge-success">Syncing</span></td><td>Manual</td></tr>
+<tr><td><div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:24px;height:24px;background:var(--pm-accent-soft);color:var(--pm-accent);font-size:12px"><i class="bi bi-phone"></i></div>Safaricom</div></td><td>HQ Till Number</td><td>KES</td><td><strong>1,450,200</strong></td><td><span class="pm-badge pm-badge-success">Live API</span></td><td>Daily to Equity</td></tr>
+<tr><td><div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:24px;height:24px;background:var(--pm-primary-soft);color:var(--pm-primary);font-size:12px">P</div>PayMo Wallet</div></td><td>Disbursement Fund</td><td>KES</td><td><strong>4,200,000</strong></td><td><span class="pm-badge pm-badge-success">Native</span></td><td>Manual</td></tr>
+</tbody></table></div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="utility-block">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Sweep Rules</h4>
+<div class="status-row"><div><strong>End of Day Till Sweep</strong><div style="font-size:11px;color:var(--pm-muted)">HQ Till → Equity Main</div></div><span class="pm-badge pm-badge-success">Active</span></div>
+<div class="status-row"><div><strong>Payroll Funding</strong><div style="font-size:11px;color:var(--pm-muted)">Equity Main → KCB (Target 4M on 25th)</div></div><span class="pm-badge pm-badge-success">Active</span></div>
+<div class="status-row"><div><strong>Excess Cash to MMF</strong><div style="font-size:11px;color:var(--pm-muted)">Equity Main > 10M → PayMo Yield</div></div><span class="pm-badge pm-badge-warning">Paused</span></div>
+<button class="pm-btn pm-btn-sm w-100 mt-3" (click)="openModal('sweepRuleModal')"><i class="bi bi-gear"></i> Configure Sweeps</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 3.7.3 -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-globe" style="color:var(--pm-warning)"></i> 3.7.3 — Foreign Exchange &amp; Cross-Border Payments</h3><p class="pm-section-sub">Live interbank FX rates, spot/forward trades, multi-currency wallets, and international SWIFT/RTGS transfers.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-graph-up-arrow"></i> Live Rates</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-send"></i> Global Transfer</button></div><div (click)="openModal('fxRatesModal'); openModal('crossBorderModal')">
+<div class="row g-3">
+<div class="col-lg-3">
+<div class="utility-block text-center">
+<div style="font-size:11px;color:var(--pm-muted);font-weight:700;margin-bottom:8px">USD / KES SPOT</div>
+<div style="font-size:32px;font-weight:800;color:var(--pm-ink);font-family:var(--pm-font-display)">129.40</div>
+<div style="font-size:12px;color:var(--pm-accent);font-weight:600"><i class="bi bi-arrow-down"></i> -0.15 (0.12%) today</div>
+<div class="mt-4"><button class="pm-btn pm-btn-sm">Buy USD</button> <button class="pm-btn pm-btn-sm pm-btn-outline">Sell USD</button></div>
+</div>
+</div>
+<div class="col-lg-3">
+<div class="utility-block text-center">
+<div style="font-size:11px;color:var(--pm-muted);font-weight:700;margin-bottom:8px">EUR / KES SPOT</div>
+<div style="font-size:32px;font-weight:800;color:var(--pm-ink);font-family:var(--pm-font-display)">140.85</div>
+<div style="font-size:12px;color:var(--pm-danger);font-weight:600"><i class="bi bi-arrow-up"></i> +0.45 (0.32%) today</div>
+<div class="mt-4"><button class="pm-btn pm-btn-sm">Buy EUR</button> <button class="pm-btn pm-btn-sm pm-btn-outline">Sell EUR</button></div>
+</div>
+</div>
+<div class="col-lg-6">
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Recent Cross-Border Activity</h4><button class="pm-btn pm-btn-sm" (click)="openModal('fxRiskModal')">Exposure</button></div>
+<div class="table-responsive"><table class="pm-table"><thead><tr><th>Date</th><th>Beneficiary</th><th>Currency</th><th>Amount</th><th>Rate</th><th>Status</th></tr></thead><tbody>
+<tr><td>26 Jun</td><td>Alibaba Cloud</td><td>USD</td><td>$ 4,500</td><td>129.55</td><td><span class="pm-badge pm-badge-success">Settled</span></td></tr>
+<tr><td>24 Jun</td><td>Guangzhou Mfg Ltd</td><td>USD</td><td>$ 18,200</td><td>129.80</td><td><span class="pm-badge pm-badge-info">In Transit</span></td></tr>
+<tr><td>21 Jun</td><td>EuroTech Supplies</td><td>EUR</td><td>€ 12,000</td><td>140.20</td><td><span class="pm-badge pm-badge-success">Settled</span></td></tr>
+</tbody></table></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 3.7.4 & 3.7.5 -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-piggy-bank" style="color:var(--pm-purple)"></i> 3.7.4 &amp; 3.7.5 — Yield Management &amp; Cash Flow Forecasting</h3><p class="pm-section-sub">Invest excess liquidity in Money Market Funds (MMF) or T-Bills, and model future 30/60/90 day cash flows.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-graph-up"></i> Forecast Model</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-arrow-up-right-circle"></i> Place Investment</button></div><div (click)="openModal('cashflowForecastModal'); openModal('investCashModal')">
+<div class="row g-3">
+<div class="col-lg-6">
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Investment Portfolio</h4><button class="pm-btn pm-btn-sm" (click)="openModal('investmentPortfolioModal')">Manage</button></div>
+<div class="status-row"><div><div class="d-flex align-items-center gap-2"><i class="bi bi-shield-check text-success"></i> <strong>PayMo Corporate MMF</strong></div><div style="font-size:11px;color:var(--pm-muted)">Yield: 11.2% p.a. · Liquid in 24h</div></div><div class="text-end"><strong>KES 8,500,000</strong><br><button class="pm-btn pm-btn-sm mt-1" (click)="openModal('liquidateInvestModal')">Withdraw</button></div></div>
+<div class="status-row"><div><div class="d-flex align-items-center gap-2"><i class="bi bi-bank text-info"></i> <strong>91-Day Treasury Bill</strong></div><div style="font-size:11px;color:var(--pm-muted)">Yield: 15.4% p.a. · Matures: 12 Aug</div></div><div class="text-end"><strong>KES 10,000,000</strong><br><span class="pm-badge pm-badge-info mt-1">Locked</span></div></div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-purple-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Total interest earned YTD: <strong>KES 842,500</strong>. View <span style="cursor:pointer;color:var(--pm-primary)" (click)="openModal('yieldAnalyticsModal')">Yield Analytics</span>.</div>
+</div>
+</div>
+<div class="col-lg-6">
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">30-Day Liquidity Forecast</h4><button class="pm-btn pm-btn-sm" (click)="openModal('cashflowForecastModal')">Scenarios</button></div>
+<div class="chart-bars" style="height:120px">
+<div class="chart-bar" style="height:40%;background:var(--pm-info)"><span class="bar-label">W1</span></div>
+<div class="chart-bar" style="height:65%;background:var(--pm-info)"><span class="bar-label">W2</span></div>
+<div class="chart-bar" style="height:85%;background:var(--pm-primary)"><span class="bar-label">W3</span></div>
+<div class="chart-bar" style="height:35%;background:var(--pm-warning)"><span class="bar-label">W4 (Payroll)</span></div>
+</div>
+<div class="d-flex justify-content-between mt-3" style="font-size:12px">
+<div>Expected Inflows: <strong style="color:var(--pm-accent)">+ KES 18.2M</strong></div>
+<div>Expected Outflows: <strong style="color:var(--pm-danger)">- KES 14.8M</strong></div>
+</div>
+<div class="d-flex justify-content-between mt-1" style="font-size:12px">
+<div>Net Position (30D): <strong>+ KES 3.4M</strong></div>
+<div>Lowest Point: <strong style="color:var(--pm-warning)">KES 2.1M buffer (W4)</strong></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<!-- Compile-safe generic modal host replacing corrupted generated modal blocks -->
+<div class="pm-modal-backdrop" [style.display]="activeModal ? 'block' : 'none'" (click)="closeModal()">
+    <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Treasury Action</h5>
+          <button class="btn-close" type="button" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size:13px;color:var(--pm-muted);margin:0">{{ activeModal }} is ready. Use the action buttons on this page to continue treasury workflows.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="pm-btn" type="button" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

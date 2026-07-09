@@ -1,0 +1,1380 @@
+<!-- kra-government.component.html -->
+<!-- All modals, steps, sections, and functionality preserved exactly -->
+
+<div class="pm-page">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="pm-header">
+    <div class="pm-header-title" style="flex-shrink:0">
+      <div class="d-flex align-items-center gap-2">
+        <div class="pm-avatar" style="width:36px;height:36px;font-size:13px">MN</div>
+        <div>
+          <h1>KRA & Government Integration</h1>
+          <p>iTax, eCitizen, County Revenue, Land & Public Service Payments</p>
+        </div>
+      </div>
+    </div>
+    <div class="pm-header-search">
+      <i class="bi bi-search"></i>
+      <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" placeholder="Search tax types, KRA PIN, eCitizen services, county permits...">
+    </div>
+    <div class="pm-header-actions">
+      <button class="pm-header-btn" (click)="openModal('complianceHealthModal')">
+        <i class="bi bi-shield-check"></i>
+      </button>
+      <button class="pm-header-btn" (click)="openModal('govNotifModal')">
+        <i class="bi bi-bell"></i>
+        <span class="counter">9</span>
+      </button>
+      <div class="pm-profile-btn" (click)="openModal('profileModal')">
+        <div class="pm-avatar">{{ profile.initials }}</div>
+        <div>
+          <div class="pm-name">{{ profile.name }}</div>
+          <div class="pm-role">Tax & Compliance Manager</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== PAGE BAR ==================== -->
+  <div class="pm-page-bar">
+    <div>
+      <div class="pm-breadcrumb">
+        <a href="#/">Home</a> / <a href="#/services">Services Hub</a> / <strong>KRA & Government</strong>
+      </div>
+      <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 1.12 — KRA & Government Integration</h2>
+      <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Manage iTax obligations, file returns, pay national & county government fees, handle land services via Ardhisasa, and maintain full compliance from a single hub.</p>
+    </div>
+    <div class="d-flex flex-wrap" style="gap:8px">
+      <button class="btn-pm" (click)="openModal('complianceHealthModal')"><i class="bi bi-heart-pulse"></i> Compliance Health</button>
+      <button class="btn-pm" (click)="openModal('bulkTaxModal')"><i class="bi bi-collection"></i> Bulk File</button>
+      <button class="btn-pm" (click)="openModal('payKRAModal')"><i class="bi bi-credit-card"></i> Pay Tax</button>
+      <button class="btn-pm btn-pm-p" (click)="openModal('addKRAModal')"><i class="bi bi-plus-lg"></i> Link KRA PIN</button>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <div class="pm-content">
+
+    <!-- HERO STATS -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="C C-accent" style="min-height:170px">
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">KRA integration live <span style="color:#86efac">●</span></p>
+          <div class="SV" style="margin:8px 0;color:#fff">{{ heroStats.linkedPins }} KRA PINs linked</div>
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Personal, business, rental portfolio and investment company obligations managed with real-time iTax sync.</p>
+          <div class="d-flex flex-wrap mt-3" style="gap:8px">
+            <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('payKRAModal')">Pay Tax</button>
+            <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('fileReturnModal')">File Return</button>
+            <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('complianceHealthModal')">Health Check</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="C" style="min-height:170px">
+          <p class="SL" style="color:var(--pm-danger)">DUE IN 7 DAYS</p>
+          <div class="SV" style="margin:6px 0">{{ formatAmount(heroStats.dueAmount) }}</div>
+          <span class="B B-d"><i class="bi bi-clock"></i> {{ heroStats.dueCount }} obligations</span>
+          <div class="mt-2">
+            <div class="pm-progress">
+              <div class="pm-progress-bar" style="width:65%;background:var(--pm-danger)"></div>
+            </div>
+            <div style="font-size:11px;color:var(--pm-muted);margin-top:4px">PAYE, VAT, TOT, CGT, SHIF</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="C" style="min-height:170px">
+          <p class="SL" style="color:var(--pm-info)">COMPLIANCE SCORE</p>
+          <div class="SV" style="margin:6px 0">{{ heroStats.complianceScore }}<span style="font-size:14px;color:var(--pm-muted)">/100</span></div>
+          <span class="B B-s"><i class="bi bi-shield-check"></i> Excellent</span>
+          <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">All returns filed on time<br>Zero penalties in 18 months</div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <div class="C" style="min-height:170px;border-left:3px solid var(--pm-accent)">
+          <p class="SL" style="color:var(--pm-accent)">SAVINGS THIS YEAR</p>
+          <div class="SV" style="margin:6px 0">{{ formatAmount(heroStats.savings) }}</div>
+          <span class="B B-s"><i class="bi bi-piggy-bank"></i> Via early filing + reliefs</span>
+          <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">PAYE relief: {{ formatAmount(heroStats.payeRelief) }}<br>Investment deductions: {{ formatAmount(heroStats.investmentDeductions) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="C">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="st">Attention Required</h3>
+            <button class="btn-pm btn-sm" (click)="openModal('attentionModal')">View all</button>
+          </div>
+          <div class="sr" *ngFor="let item of attentionItems">
+            <div class="d-flex align-items-center gap-3">
+              <div [style.width]="'36px'" [style.height]="'36px'" [style.border-radius]="'50%'" [style.background]="item.iconBg" [style.color]="item.iconColor" style="display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+                <i class="bi {{ item.icon }}"></i>
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+                <div style="font-size:11px;color:var(--pm-muted)">{{ item.detail }}</div>
+              </div>
+            </div>
+            <button class="btn-pm btn-sm" [class.btn-pm-d]="item.actionType === 'danger'" (click)="openModal(item.modalTarget)">{{ item.action }}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="C">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="st">Smart Suggestions</h3>
+            <span class="B B-p"><i class="bi bi-stars"></i> AI</span>
+          </div>
+          <div class="sr" *ngFor="let item of smartSuggestions">
+            <div class="d-flex align-items-center gap-3">
+              <div [style.width]="'36px'" [style.height]="'36px'" [style.border-radius]="'50%'" [style.background]="item.iconBg" [style.color]="item.iconColor" style="display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+                <i class="bi {{ item.icon }}"></i>
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+                <div style="font-size:11px;color:var(--pm-muted)">{{ item.detail }}</div>
+              </div>
+            </div>
+            <button class="btn-pm btn-sm" (click)="openModal(item.modalTarget)">{{ item.action }}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="C">
+          <div class="mb-3">
+            <h3 class="st">Quick Actions</h3>
+            <p class="ss">Frequent government payment workflows</p>
+          </div>
+          <div class="quick-grid">
+            <button class="quick-btn" (click)="openModal('payKRAModal')"><i class="bi bi-receipt-cutoff text-danger me-1"></i> Pay Tax</button>
+            <button class="quick-btn" (click)="openModal('fileReturnModal')"><i class="bi bi-file-earmark-text text-primary me-1"></i> File Return</button>
+            <button class="quick-btn" (click)="openModal('payECitizenModal')"><i class="bi bi-globe text-info me-1"></i> eCitizen</button>
+            <button class="quick-btn" (click)="openModal('payCountyModal')"><i class="bi bi-building text-warning me-1"></i> County Permit</button>
+            <button class="quick-btn" (click)="openModal('payArdhisasaModal')"><i class="bi bi-map text-success me-1"></i> Ardhisasa</button>
+            <button class="quick-btn" (click)="openModal('bulkTaxModal')"><i class="bi bi-collection me-1" style="color:var(--pm-purple)"></i> Bulk File</button>
+            <button class="quick-btn" (click)="openModal('taxOptimizerModal')"><i class="bi bi-lightbulb me-1" style="color:var(--pm-accent)"></i> Optimizer</button>
+            <button class="quick-btn" (click)="openModal('complianceHealthModal')"><i class="bi bi-heart-pulse me-1" style="color:var(--pm-primary)"></i> Health Check</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1.12.1 -->
+    <div class="C">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="st"><i class="bi bi-bank2" style="color:var(--pm-primary)"></i> 1.12.1 — KRA iTax Integration Hub</h3>
+          <p class="ss">Link multiple KRA PINs, sync obligations, view real-time tax position, and manage filings across personal and business entities.</p>
+        </div>
+        <div class="d-flex" style="gap:8px">
+          <button class="btn-pm btn-sm" (click)="openModal('addKRAModal')"><i class="bi bi-plus-lg"></i> Link PIN</button>
+          <button class="btn-pm btn-sm btn-pm-p" (click)="openModal('syncItaxModal')"><i class="bi bi-arrow-repeat"></i> Sync iTax</button>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-7">
+          <div class="UB">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Linked KRA PINs & Obligations</h4>
+            <div class="table-responsive">
+              <table class="T">
+                <thead>
+                  <tr><th>PIN</th><th>Entity</th><th>Status</th><th>Next Due</th><th>Amount</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let pin of kraPins">
+                    <td><code>{{ pin.pin }}</code></td>
+                    <td>{{ pin.entity }}</td>
+                    <td><span class="B {{ getStatusBadgeClass(pin.status) }}">{{ getStatusLabel(pin.status) }}</span></td>
+                    <td>{{ pin.nextDue }}</td>
+                    <td>{{ formatAmount(pin.amount) }}</td>
+                    <td>
+                      <div class="d-flex" style="gap:4px">
+                        <button class="btn-pm btn-sm" (click)="openModal('payKRAModal')">Pay</button>
+                        <button class="btn-pm btn-sm" (click)="openModal('fileReturnModal')">File</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="UB">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Tax Position Snapshot</h4>
+            <div class="sr"><div><strong>Total Outstanding</strong></div><strong style="color:var(--pm-danger)">{{ formatAmount(heroStats.dueAmount) }}</strong></div>
+            <div class="sr"><div><strong>Refunds Due</strong></div><strong style="color:var(--pm-accent)">{{ formatAmount(31450) }}</strong></div>
+            <div class="sr"><div><strong>Compliance Score</strong></div><span class="B B-s">{{ heroStats.complianceScore }}/100</span></div>
+            <div class="sr"><div><strong>Last iTax Sync</strong></div><span style="font-size:12px">27 Jun 2025, 09:14</span></div>
+            <div class="mt-3"><button class="btn-pm btn-sm w-100" (click)="openModal('syncItaxModal')"><i class="bi bi-arrow-repeat"></i> Force Full Sync</button></div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="UB">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+              <h4 style="font-size:14px;font-weight:700;margin:0">Recent iTax Activity</h4>
+              <button class="btn-pm btn-sm" (click)="openModal('taxHistoryModal')">Full History</button>
+            </div>
+            <div class="table-responsive">
+              <table class="T">
+                <thead>
+                  <tr><th>Date</th><th>PIN</th><th>Type</th><th>Amount</th><th>Status</th><th>Ref</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let act of taxActivities">
+                    <td>{{ act.date }}</td>
+                    <td>{{ act.pin }}</td>
+                    <td>{{ act.type }}</td>
+                    <td>{{ formatAmount(act.amount) }}</td>
+                    <td><span class="B {{ getStatusBadgeClass(act.status) }}">{{ getStatusLabel(act.status) }}</span></td>
+                    <td>{{ act.ref }}</td>
+                    <td>
+                      <button class="btn-pm btn-sm" [class.btn-pm-d]="act.status === 'overdue'" (click)="act.status === 'overdue' ? openModal('payKRAModal') : openModal('taxReceiptModal')">
+                        {{ act.status === 'overdue' ? 'Pay' : (act.status === 'paid' ? 'Receipt' : 'View') }}
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1.12.2 -->
+    <div class="C">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="st"><i class="bi bi-credit-card" style="color:var(--pm-info)"></i> 1.12.2 — Tax Payment Execution & Scheduling</h3>
+          <p class="ss">Execute single or bulk tax payments, set recurring schedules, and manage payment plans with full audit trails.</p>
+        </div>
+        <div class="d-flex" style="gap:8px">
+          <button class="btn-pm btn-sm" (click)="openModal('bulkTaxModal')"><i class="bi bi-collection"></i> Bulk Pay</button>
+          <button class="btn-pm btn-sm btn-pm-p" (click)="openModal('payKRAModal')">Pay Now</button>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-5">
+          <div class="UB">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Payment Methods & Sources</h4>
+            <div class="sr">
+              <div><strong>PayMo Wallet</strong><div style="font-size:11px;color:var(--pm-muted)">Balance: KES 124,500</div></div>
+              <span class="B B-s">Default</span>
+            </div>
+            <div class="sr">
+              <div><strong>M-Pesa</strong><div style="font-size:11px;color:var(--pm-muted)">0712***890</div></div>
+              <button class="btn-pm btn-sm" (click)="openModal('payKRAModal')">Use</button>
+            </div>
+            <div class="sr">
+              <div><strong>Equity Bank</strong><div style="font-size:11px;color:var(--pm-muted)">Acc ***4521</div></div>
+              <button class="btn-pm btn-sm" (click)="openModal('payKRAModal')">Use</button>
+            </div>
+            <div class="sr">
+              <div><strong>KCB Bank</strong><div style="font-size:11px;color:var(--pm-muted)">Acc ***7782</div></div>
+              <button class="btn-pm btn-sm" (click)="openModal('payKRAModal')">Use</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="UB">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Scheduled & Recurring Payments</h4>
+            <div class="sr" *ngFor="let sched of scheduledPayments">
+              <div><strong>{{ sched.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ sched.frequency }}</div></div>
+              <span class="B {{ sched.status === 'active' ? 'B-s' : 'B-w' }}">{{ sched.status === 'active' ? 'Active' : 'Paused' }}</span>
+            </div>
+            <div class="mt-3"><button class="btn-pm btn-sm w-100" (click)="openModal('scheduleTaxModal')"><i class="bi bi-plus-lg"></i> Schedule New Payment</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1.12.3 -->
+    <div class="C">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="st"><i class="bi bi-globe" style="color:var(--pm-purple)"></i> 1.12.3 — eCitizen & Government Services Portal</h3>
+          <p class="ss">Pay for passports, driving licences, police clearance, business registration, and other eCitizen services in one place.</p>
+        </div>
+        <div class="d-flex" style="gap:8px">
+          <button class="btn-pm btn-sm" (click)="openModal('payECitizenModal')">Pay Service</button>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-8">
+          <div class="UB">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Recent & Upcoming Government Services</h4>
+            <div class="table-responsive">
+              <table class="T">
+                <thead>
+                  <tr><th>Service</th><th>Ref / Application</th><th>Amount</th><th>Status</th><th>Due / Expiry</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let svc of govServices">
+                    <td>{{ svc.service }}</td>
+                    <td>{{ svc.ref }}</td>
+                    <td>{{ formatAmount(svc.amount) }}</td>
+                    <td><span class="B {{ getStatusBadgeClass(svc.status) }}">{{ getStatusLabel(svc.status) }}</span></td>
+                    <td>{{ svc.dueDate }}</td>
+                    <td>
+                      <button class="btn-pm btn-sm" (click)="svc.status === 'paid' ? openModal('govReceiptModal') : (svc.status === 'processing' ? openModal('trackGovModal') : openModal('payECitizenModal'))">
+                        {{ svc.status === 'paid' ? 'Receipt' : (svc.status === 'processing' ? 'Track' : 'Pay') }}
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="UB">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Quick Government Services</h4>
+            <div class="quick-grid">
+              <button class="quick-btn" (click)="openModal('payECitizenModal')">Passport</button>
+              <button class="quick-btn" (click)="openModal('payECitizenModal')">Driving Licence</button>
+              <button class="quick-btn" (click)="openModal('payECitizenModal')">Police Clearance</button>
+              <button class="quick-btn" (click)="openModal('payECitizenModal')">Good Conduct</button>
+              <button class="quick-btn" (click)="openModal('payECitizenModal')">Business Reg</button>
+              <button class="quick-btn" (click)="openModal('payECitizenModal')">CRB Report</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1.12.4 -->
+    <div class="C">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="st"><i class="bi bi-map" style="color:var(--pm-accent)"></i> 1.12.4 — County & Ardhisasa Land Services</h3>
+          <p class="ss">Pay land rates, single business permits, building approvals, and manage property transactions via Ardhisasa.</p>
+        </div>
+        <div class="d-flex" style="gap:8px">
+          <button class="btn-pm btn-sm" (click)="openModal('payCountyModal')">County Permit</button>
+          <button class="btn-pm btn-sm btn-pm-p" (click)="openModal('payArdhisasaModal')">Ardhisasa</button>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="UB">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">County Revenue Payments</h4>
+            <div class="sr" *ngFor="let county of countyPayments">
+              <div><strong>{{ county.county }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ county.service }} · {{ formatAmount(county.amount) }}</div></div>
+              <button class="btn-pm btn-sm" (click)="openModal('payCountyModal')">Pay</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="UB">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Ardhisasa Land Services</h4>
+            <div class="sr" *ngFor="let ard of ardhisasaServices">
+              <div><strong>{{ ard.service }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ ard.lrNumber }} · {{ formatAmount(ard.amount) }}</div></div>
+              <button class="btn-pm btn-sm" (click)="openModal('payArdhisasaModal')">Pay</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="C">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="st"><i class="bi bi-clock-history" style="color:var(--pm-muted)"></i> Recent Government Transactions</h3>
+        <button class="btn-pm btn-sm" (click)="openModal('govHistoryModal')">View All</button>
+      </div>
+      <div class="table-responsive">
+        <table class="T">
+          <thead>
+            <tr><th>Date</th><th>Service</th><th>Provider</th><th>Amount</th><th>Method</th><th>Status</th><th>Ref</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tx of govTransactions">
+              <td>{{ tx.date }}</td>
+              <td>{{ tx.service }}</td>
+              <td>{{ tx.provider }}</td>
+              <td>{{ formatAmount(tx.amount) }}</td>
+              <td>{{ tx.method }}</td>
+              <td><span class="B {{ getStatusBadgeClass(tx.status) }}">{{ getStatusLabel(tx.status) }}</span></td>
+              <td>{{ tx.ref }}</td>
+              <td>
+                <button class="btn-pm btn-sm" (click)="tx.status === 'filed' ? openModal('taxReceiptModal') : openModal('trackGovModal')">
+    {{ tx.status === 'filed' ? 'Receipt' : 'Track' }}
+</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- pm-content -->
+</div><!-- pm-page -->
+
+
+<!-- ============================================================ -->
+<!-- ==================== MODAL OVERLAY SYSTEM ==================== -->
+<!-- ============================================================ -->
+
+<!-- Backdrop overlay for all modals -->
+<div class="modal-overlay" [class.show]="activeModal" (click)="closeModal()" *ngIf="activeModal">
+
+  <!-- M1: Pay KRA Tax (multi-step) -->
+  <div class="modal" *ngIf="isModalOpen('payKRAModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-receipt-cutoff text-danger me-2"></i>Pay KRA Tax</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Loading Overlay -->
+          <div class="loading-ov" *ngIf="isProcessing">
+            <div class="spinner"></div>
+            <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">{{ processingMessage }}</p>
+          </div>
+
+          <!-- Stepper -->
+          <div class="stepper">
+            <ng-container *ngFor="let label of flows['kra'].labels; let i = index">
+              <div class="step" [class.active]="isStepActive('kra', i+1)" [class.done]="isStepDone('kra', i+1)">
+                <div class="step-n">
+                  <i class="bi bi-check" *ngIf="isStepDone('kra', i+1)"></i>
+                  <span *ngIf="!isStepDone('kra', i+1)">{{ i+1 }}</span>
+                </div>
+                <div class="step-l">{{ label }}</div>
+              </div>
+              <div class="step-line" *ngIf="i < flows['kra'].labels.length - 1"></div>
+            </ng-container>
+          </div>
+
+          <!-- Step 1: Select Obligation -->
+          <div class="fstep" [class.active]="flows['kra'].current === 1">
+            <h6 style="font-weight:700">Step 1: Select Obligation</h6>
+            <div class="mb-3">
+              <label class="FL">KRA PIN / Entity</label>
+              <select class="FC" [(ngModel)]="payKraForm.pin">
+                <option value="A012345678Y">A012345678Y — James Kamau (PAYE)</option>
+                <option value="P987654321Z">P987654321Z — JK Holdings (VAT)</option>
+                <option value="R445566778X">R445566778X — Rental Portfolio (TOT)</option>
+                <option value="C112233445W">C112233445W — JK Investments (CGT)</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="FL">Tax Type</label>
+              <select class="FC" [(ngModel)]="payKraForm.taxType">
+                <option>PAYE</option>
+                <option>VAT</option>
+                <option>TOT</option>
+                <option>CGT</option>
+                <option>Withholding Tax</option>
+              </select>
+            </div>
+            <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px">
+              <i class="bi bi-info-circle me-1"></i> Current due: <strong>KES 42,800</strong> • Due date: 15 Jul 2025
+            </div>
+          </div>
+
+          <!-- Step 2: Payment Details -->
+          <div class="fstep" [class.active]="flows['kra'].current === 2">
+            <h6 style="font-weight:700">Step 2: Payment Details</h6>
+            <div class="mb-3">
+              <label class="FL">Amount (KES)</label>
+              <input class="FC" [(ngModel)]="payKraForm.amount">
+            </div>
+            <div class="mb-3">
+              <label class="FL">Payment Method</label>
+              <select class="FC" [(ngModel)]="payKraForm.method">
+                <option value="wallet">PayMo Wallet (KES 124,500)</option>
+                <option value="mpesa">M-Pesa (0712***890)</option>
+                <option value="equity">Equity Bank ***4521</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="FL">Schedule</label>
+              <select class="FC" [(ngModel)]="payKraForm.schedule">
+                <option value="immediate">Pay immediately</option>
+                <option value="schedule">Schedule for 10 Jul</option>
+                <option value="recurring">Recurring monthly</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Step 3: Confirm & Pay -->
+          <div class="fstep" [class.active]="flows['kra'].current === 3">
+            <h6 style="font-weight:700">Step 3: Confirm & Pay</h6>
+            <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Tax Type</span><strong>{{ payKraForm.taxType }}</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES {{ payKraForm.amount | number }}</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Method</span><strong>Wallet</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">Fee</span><strong>KES 0</strong></div>
+            </div>
+            <label class="FL">Enter Wallet PIN</label>
+            <div class="pin-row">
+              <input type="password" maxlength="1">
+              <input type="password" maxlength="1">
+              <input type="password" maxlength="1">
+              <input type="password" maxlength="1">
+            </div>
+          </div>
+
+          <!-- Step 4: Done -->
+          <div class="fstep" [class.active]="flows['kra'].current === 4">
+            <div class="receipt">
+              <div class="ri"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Tax Payment Successful</h5>
+              <p style="font-size:13px;color:var(--pm-ink-soft)">Your KRA payment has been processed. Receipt and iTax confirmation have been sent.</p>
+              <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">KRA PIN</span><strong>A012345678Y</strong></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 42,800</strong></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">iTax Ref</span><strong>ITX-883421</strong></div>
+                <div class="d-flex justify-content-between"><span class="text-muted">Date</span><strong>27 Jun 2025, 14:32</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Cancel</button>
+          <button class="btn-pm btn-pm-p" (click)="nextFlow('kra')">
+            {{ getFlowButtonText('kra') }} <i class="bi {{ getFlowButtonIcon('kra') }}"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M2: File Return (multi-step) -->
+  <div class="modal" *ngIf="isModalOpen('fileReturnModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-file-earmark-text text-primary me-2"></i>File Tax Return</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="loading-ov" *ngIf="isProcessing">
+            <div class="spinner"></div>
+            <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">{{ processingMessage }}</p>
+          </div>
+
+          <div class="stepper">
+            <ng-container *ngFor="let label of flows['file'].labels; let i = index">
+              <div class="step" [class.active]="isStepActive('file', i+1)" [class.done]="isStepDone('file', i+1)">
+                <div class="step-n">
+                  <i class="bi bi-check" *ngIf="isStepDone('file', i+1)"></i>
+                  <span *ngIf="!isStepDone('file', i+1)">{{ i+1 }}</span>
+                </div>
+                <div class="step-l">{{ label }}</div>
+              </div>
+              <div class="step-line" *ngIf="i < flows['file'].labels.length - 1"></div>
+            </ng-container>
+          </div>
+
+          <div class="fstep" [class.active]="flows['file'].current === 1">
+            <h6 style="font-weight:700">Step 1: Select Return</h6>
+            <div class="mb-3">
+              <label class="FL">KRA PIN</label>
+              <select class="FC" [(ngModel)]="fileReturnForm.pin">
+                <option>P987654321Z — JK Holdings Ltd (VAT)</option>
+                <option>A012345678Y — James Kamau (PAYE)</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="FL">Return Period</label>
+              <select class="FC" [(ngModel)]="fileReturnForm.period">
+                <option>June 2025</option>
+                <option>May 2025</option>
+                <option>April 2025</option>
+              </select>
+            </div>
+            <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px">
+              <i class="bi bi-clock me-1"></i> Due in <strong>2 days</strong>. File early to avoid late penalties.
+            </div>
+          </div>
+
+          <div class="fstep" [class.active]="flows['file'].current === 2">
+            <h6 style="font-weight:700">Step 2: Upload & Review</h6>
+            <div class="mb-3">
+              <label class="FL">Upload Supporting Documents</label>
+              <input type="file" class="FC" (change)="onFileUpload($event, 'fileReturn')">
+            </div>
+            <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Gross Sales</span><strong>KES 4,200,000</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Input VAT</span><strong>KES 672,000</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Output VAT</span><strong>KES 756,200</strong></div>
+              <hr class="divider">
+              <div class="d-flex justify-content-between"><span style="font-weight:700">Net VAT Payable</span><strong style="color:var(--pm-danger)">KES 84,200</strong></div>
+            </div>
+          </div>
+
+          <div class="fstep" [class.active]="flows['file'].current === 3">
+            <h6 style="font-weight:700">Step 3: Submit & Pay</h6>
+            <div class="p-3 rounded mb-3" style="background:var(--pm-accent-soft)">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Return Type</span><strong>VAT — June 2025</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount Due</span><strong>KES 84,200</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">iTax Confirmation</span><strong>Will be emailed</strong></div>
+            </div>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="fileReturnForm.payImmediately" checked>
+              <label class="form-check-label" style="font-size:13px">Pay immediately after filing</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="fileReturnForm.autoFile" checked>
+              <label class="form-check-label" style="font-size:13px">Auto-file next month</label>
+            </div>
+          </div>
+
+          <div class="fstep" [class.active]="flows['file'].current === 4">
+            <div class="receipt">
+              <div class="ri"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Return Filed Successfully</h5>
+              <p style="font-size:13px;color:var(--pm-ink-soft)">VAT return for June 2025 has been submitted to iTax. Payment of KES 84,200 processed.</p>
+              <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">iTax Ref</span><strong>VAT-202506-99182</strong></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Filed By</span><strong>James Kamau</strong></div>
+                <div class="d-flex justify-content-between"><span class="text-muted">Date</span><strong>27 Jun 2025, 14:45</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Cancel</button>
+          <button class="btn-pm btn-pm-p" (click)="nextFlow('file')">
+            {{ getFlowButtonText('file') }} <i class="bi {{ getFlowButtonIcon('file') }}"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M3: Pay eCitizen -->
+  <div class="modal" *ngIf="isModalOpen('payECitizenModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-globe text-info me-2"></i>Pay eCitizen Service</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="loading-ov" *ngIf="isProcessing">
+            <div class="spinner"></div>
+            <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">{{ processingMessage }}</p>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Service</label>
+            <select class="FC" [(ngModel)]="payECitizenForm.service">
+              <option>Passport Renewal — KES 4,500</option>
+              <option>Driving Licence Renewal — KES 3,200</option>
+              <option>Police Clearance — KES 1,000</option>
+              <option>Good Conduct Certificate — KES 1,000</option>
+              <option>Business Registration — KES 12,500</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Application / Ref Number</label>
+            <input class="FC" [(ngModel)]="payECitizenForm.ref">
+          </div>
+          <div class="mb-3">
+            <label class="FL">Payment Method</label>
+            <select class="FC" [(ngModel)]="payECitizenForm.method">
+              <option>M-Pesa</option>
+              <option>PayMo Wallet</option>
+              <option>Bank Transfer</option>
+            </select>
+          </div>
+          <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px">
+            <i class="bi bi-info-circle me-1"></i> Payment will be processed instantly. You will receive a confirmation SMS and email with the receipt.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Cancel</button>
+          <button class="btn-pm btn-pm-p" (click)="doAction('payECitizenModal', 'eCitizen payment successful! Receipt sent to your email.', 'EC-449281')">Pay KES 4,500</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M4: Pay County -->
+  <div class="modal" *ngIf="isModalOpen('payCountyModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-building text-warning me-2"></i>Pay County Revenue</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="loading-ov" *ngIf="isProcessing">
+            <div class="spinner"></div>
+            <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">{{ processingMessage }}</p>
+          </div>
+          <div class="mb-3">
+            <label class="FL">County</label>
+            <select class="FC" [(ngModel)]="payCountyForm.county">
+              <option>Nairobi City County</option>
+              <option>Kiambu County</option>
+              <option>Nakuru County</option>
+              <option>Mombasa County</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Service / Permit</label>
+            <select class="FC" [(ngModel)]="payCountyForm.service">
+              <option>Single Business Permit — KES 18,500</option>
+              <option>Land Rates — KES 42,300</option>
+              <option>Health Permit — KES 7,800</option>
+              <option>Fire Safety Certificate — KES 4,200</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Account / Plot Number</label>
+            <input class="FC" [(ngModel)]="payCountyForm.account">
+          </div>
+          <div class="mb-3">
+            <label class="FL">Payment Method</label>
+            <select class="FC" [(ngModel)]="payCountyForm.method">
+              <option>M-Pesa</option>
+              <option>PayMo Wallet</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Cancel</button>
+          <button class="btn-pm btn-pm-p" (click)="doAction('payCountyModal', 'County payment successful! Permit updated in your records.', 'CCN-772910')">Pay Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M5: Pay Ardhisasa -->
+  <div class="modal" *ngIf="isModalOpen('payArdhisasaModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-map text-success me-2"></i>Pay Ardhisasa Land Services</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="loading-ov" *ngIf="isProcessing">
+            <div class="spinner"></div>
+            <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">{{ processingMessage }}</p>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Service</label>
+            <select class="FC" [(ngModel)]="payArdhisasaForm.service">
+              <option>Title Deed Processing — KES 28,500</option>
+              <option>Stamp Duty — KES 124,000</option>
+              <option>Lease Renewal — KES 15,200</option>
+              <option>Change of User — KES 45,000</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="FL">LR / Plot Number</label>
+            <input class="FC" [(ngModel)]="payArdhisasaForm.lrNumber">
+          </div>
+          <div class="mb-3">
+            <label class="FL">Payment Method</label>
+            <select class="FC" [(ngModel)]="payArdhisasaForm.method">
+              <option>PayMo Wallet</option>
+              <option>Bank Transfer</option>
+            </select>
+          </div>
+          <div class="p-3 rounded" style="background:var(--pm-accent-soft);font-size:12px">
+            <i class="bi bi-info-circle me-1"></i> Payments are processed through the Ministry of Lands portal. You will receive an official receipt.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Cancel</button>
+          <button class="btn-pm btn-pm-p" (click)="doAction('payArdhisasaModal', 'Ardhisasa payment successful! Receipt and confirmation sent.', 'ARD-20250627-1192')">Pay Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M6: Bulk Tax (multi-step) -->
+  <div class="modal" *ngIf="isModalOpen('bulkTaxModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-collection me-2"></i>Bulk Tax Filing & Payment</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="loading-ov" *ngIf="isProcessing">
+            <div class="spinner"></div>
+            <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">{{ processingMessage }}</p>
+          </div>
+
+          <div class="stepper">
+            <ng-container *ngFor="let label of flows['bulk'].labels; let i = index">
+              <div class="step" [class.active]="isStepActive('bulk', i+1)" [class.done]="isStepDone('bulk', i+1)">
+                <div class="step-n">
+                  <i class="bi bi-check" *ngIf="isStepDone('bulk', i+1)"></i>
+                  <span *ngIf="!isStepDone('bulk', i+1)">{{ i+1 }}</span>
+                </div>
+                <div class="step-l">{{ label }}</div>
+              </div>
+              <div class="step-line" *ngIf="i < flows['bulk'].labels.length - 1"></div>
+            </ng-container>
+          </div>
+
+          <div class="fstep" [class.active]="flows['bulk'].current === 1">
+            <h6 style="font-weight:700">Step 1: Upload File</h6>
+            <div class="mb-3">
+              <label class="FL">Upload CSV/Excel</label>
+              <input type="file" class="FC" (change)="onFileUpload($event, 'bulk')">
+            </div>
+            <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px">
+              <i class="bi bi-info-circle me-1"></i> Download template: 
+<a href="javascript:void(0)" (click)="downloadTemplateAlert()">KRA_Bulk_Template.csv</a>
+            </div>
+          </div>
+
+          <div class="fstep" [class.active]="flows['bulk'].current === 2">
+            <h6 style="font-weight:700">Step 2: Preview & Validate</h6>
+            <div class="table-responsive">
+              <table class="T">
+                <thead>
+                  <tr><th>PIN</th><th>Tax Type</th><th>Amount</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>A012345678Y</td><td>PAYE</td><td>KES 42,800</td><td><span class="B B-s">Valid</span></td></tr>
+                  <tr><td>P987654321Z</td><td>VAT</td><td>KES 84,200</td><td><span class="B B-s">Valid</span></td></tr>
+                  <tr><td>R445566778X</td><td>TOT</td><td>KES 18,600</td><td><span class="B B-w">Warning</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="fstep" [class.active]="flows['bulk'].current === 3">
+            <div class="receipt">
+              <div class="ri"><i class="bi bi-check-all"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Bulk Filing Complete</h5>
+              <p style="font-size:13px;color:var(--pm-ink-soft)">3 returns filed and 2 payments processed successfully.</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Cancel</button>
+          <button class="btn-pm btn-pm-p" (click)="nextFlow('bulk')">
+            {{ getFlowButtonText('bulk') }} <i class="bi {{ getFlowButtonIcon('bulk') }}"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M7: Schedule Tax -->
+  <div class="modal" *ngIf="isModalOpen('scheduleTaxModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-calendar-event me-2"></i>Schedule Tax Payment</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="loading-ov" *ngIf="isProcessing">
+            <div class="spinner"></div>
+            <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">{{ processingMessage }}</p>
+          </div>
+          <div class="mb-3">
+            <label class="FL">KRA PIN / Tax Type</label>
+            <select class="FC" [(ngModel)]="scheduleTaxForm.pin">
+              <option>P987654321Z — VAT</option>
+              <option>A012345678Y — PAYE</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Amount</label>
+            <input class="FC" [(ngModel)]="scheduleTaxForm.amount">
+          </div>
+          <div class="mb-3">
+            <label class="FL">Frequency</label>
+            <select class="FC" [(ngModel)]="scheduleTaxForm.frequency">
+              <option>Monthly</option>
+              <option>Quarterly</option>
+              <option>Annual</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Start Date</label>
+            <input type="date" class="FC" [(ngModel)]="scheduleTaxForm.startDate">
+          </div>
+          <div class="mb-3">
+            <label class="FL">Payment Method</label>
+            <select class="FC" [(ngModel)]="scheduleTaxForm.method">
+              <option>PayMo Wallet</option>
+              <option>M-Pesa</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Cancel</button>
+          <button class="btn-pm btn-pm-p" (click)="doAction('scheduleTaxModal', 'Tax payment scheduled successfully!', 'SCH-20250627-4421')">Schedule</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M8: Tax Optimizer -->
+  <div class="modal" *ngIf="isModalOpen('taxOptimizerModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-lightbulb text-warning me-2"></i>Tax Optimizer</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="p-3 rounded mb-3" style="background:var(--pm-accent-soft)">
+            <div style="font-size:11px;font-weight:700;color:#047857">POTENTIAL SAVINGS IDENTIFIED</div>
+            <div style="font-size:28px;font-weight:700;color:var(--pm-accent)">KES 47,800</div>
+          </div>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Opportunity</th><th>Estimated Saving</th><th>Action</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let opp of optimizerOpportunities">
+                  <td>{{ opp.opportunity }}</td>
+                  <td>{{ formatAmount(opp.saving) }}</td>
+                  <td><button class="btn-pm btn-sm" (click)="doAction('taxOptimizerModal', 'Relief claim submitted to KRA.', '')">{{ opp.action }}</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M9: Add KRA PIN -->
+  <div class="modal" *ngIf="isModalOpen('addKRAModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Link New KRA PIN</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="loading-ov" *ngIf="isProcessing">
+            <div class="spinner"></div>
+            <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">{{ processingMessage }}</p>
+          </div>
+          <div class="mb-3">
+            <label class="FL">KRA PIN</label>
+            <input class="FC" [(ngModel)]="addKraForm.pin" placeholder="A012345678Y">
+          </div>
+          <div class="mb-3">
+            <label class="FL">Entity Type</label>
+            <select class="FC" [(ngModel)]="addKraForm.entityType">
+              <option>Individual</option>
+              <option>Company</option>
+              <option>Partnership</option>
+              <option>Trust</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Entity Name</label>
+            <input class="FC" [(ngModel)]="addKraForm.entityName" placeholder="Company or Individual Name">
+          </div>
+          <div class="mb-3">
+            <label class="FL">Default Payment Source</label>
+            <select class="FC" [(ngModel)]="addKraForm.defaultMethod">
+              <option>PayMo Wallet</option>
+              <option>M-Pesa</option>
+              <option>Bank</option>
+            </select>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="addKraForm.autoSync" checked>
+            <label class="form-check-label" style="font-size:13px">Enable auto-sync with iTax</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Cancel</button>
+          <button class="btn-pm btn-pm-p" (click)="doAction('addKRAModal', 'KRA PIN linked successfully! Syncing obligations...', 'KRA-20250627-1192')">Link PIN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M10: Sync iTax -->
+  <div class="modal" *ngIf="isModalOpen('syncItaxModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-arrow-repeat me-2"></i>Sync with iTax</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="loading-ov" *ngIf="isProcessing">
+            <div class="spinner"></div>
+            <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">{{ processingMessage }}</p>
+          </div>
+          <div class="p-3 rounded mb-3" style="background:var(--pm-info-soft)">
+            <div style="font-size:13px">Last sync: 27 Jun 2025, 09:14</div>
+            <div style="font-size:13px">Obligations synced: 12</div>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="syncItaxForm.fullSync" checked>
+            <label class="form-check-label" style="font-size:13px">Full obligation sync</label>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="syncItaxForm.paymentHistory" checked>
+            <label class="form-check-label" style="font-size:13px">Payment history</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="syncItaxForm.refundStatus">
+            <label class="form-check-label" style="font-size:13px">Refund status</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Cancel</button>
+          <button class="btn-pm btn-pm-p" (click)="doAction('syncItaxModal', 'iTax sync completed successfully! 3 new obligations found.', '')">Sync Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M11: Tax Receipt -->
+  <div class="modal" *ngIf="isModalOpen('taxReceiptModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Tax Payment Receipt</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="receipt">
+            <div class="ri"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Official Receipt</h5>
+            <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">KRA PIN</span><strong>A012345678Y</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Tax Type</span><strong>PAYE</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 42,800</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">iTax Ref</span><strong>ITX-882341</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">Date</span><strong>27 Jun 2025</strong></div>
+            </div>
+            <div class="d-flex justify-content-center mt-3" style="gap:8px">
+              <button class="btn-pm btn-sm"><i class="bi bi-download"></i> PDF</button>
+              <button class="btn-pm btn-sm"><i class="bi bi-whatsapp"></i> Share</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M12: Gov Receipt -->
+  <div class="modal" *ngIf="isModalOpen('govReceiptModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Government Service Receipt</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="receipt">
+            <div class="ri"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Payment Confirmed</h5>
+            <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Service</span><strong>Passport Renewal</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Ref</span><strong>P-449281</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 4,500</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">Date</span><strong>27 Jun 2025</strong></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M13: Track Gov -->
+  <div class="modal" *ngIf="isModalOpen('trackGovModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-truck me-2"></i>Track Government Service</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="FL">Application Ref</label>
+            <input class="FC" value="P-449281">
+          </div>
+          <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Status</span><span class="B B-i">Under Processing</span></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Stage</span><strong>Biometric Verification</strong></div>
+            <div class="d-flex justify-content-between"><span class="text-muted">Est. Completion</span><strong>02 Jul 2025</strong></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M14: Compliance Health -->
+  <div class="modal" *ngIf="isModalOpen('complianceHealthModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-heart-pulse text-success me-2"></i>Compliance Health Dashboard</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3 mb-3">
+            <div class="col-md-3 col-6">
+              <div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)">
+                <div style="font-size:28px;font-weight:800;color:var(--pm-accent);font-family:var(--pm-font-display)">94</div>
+                <div style="font-size:10px;font-weight:700;color:#047857">COMPLIANCE</div>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="p-3 rounded text-center" style="background:var(--pm-info-soft)">
+                <div style="font-size:24px;font-weight:700;color:var(--pm-info)">0</div>
+                <div style="font-size:10px;font-weight:700;color:#1D4ED8">PENALTIES</div>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="p-3 rounded text-center" style="background:var(--pm-warning-soft)">
+                <div style="font-size:24px;font-weight:700;color:var(--pm-warning)">2</div>
+                <div style="font-size:10px;font-weight:700;color:#B45309">RETURNS DUE</div>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="p-3 rounded text-center" style="background:var(--pm-purple-soft)">
+                <div style="font-size:24px;font-weight:700;color:var(--pm-purple)">18</div>
+                <div style="font-size:10px;font-weight:700;color:#6D28D9">MONTHS CLEAN</div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Entity</th><th>Score</th><th>Issues</th><th>Next Action</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let entity of complianceEntities">
+                  <td>{{ entity.name }}</td>
+                  <td><span class="B {{ entity.score >= 90 ? 'B-s' : (entity.score >= 80 ? 'B-w' : 'B-d') }}">{{ entity.score }}</span></td>
+                  <td>{{ entity.issues }}</td>
+                  <td>{{ entity.nextAction }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Close</button>
+          <button class="btn-pm btn-pm-p" (click)="closeModal(); openModal('payKRAModal')">Resolve Issues</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M15: Attention Modal -->
+  <div class="modal" *ngIf="isModalOpen('attentionModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>All Items Requiring Attention</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="sr" *ngFor="let item of attentionItems">
+            <div>
+              <strong>{{ item.title }}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ item.detail }}</div>
+            </div>
+            <button class="btn-pm btn-sm" [class.btn-pm-d]="item.actionType === 'danger'" (click)="closeModal(); openModal(item.modalTarget)">{{ item.action }}</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M16: Tax History -->
+  <div class="modal" *ngIf="isModalOpen('taxHistoryModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Full Tax Payment History</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Date</th><th>PIN</th><th>Type</th><th>Amount</th><th>Method</th><th>Status</th><th>Ref</th><th>Action</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let act of fullTaxHistory">
+                  <td>{{ act.date }}</td>
+                  <td>{{ act.pin }}</td>
+                  <td>{{ act.type }}</td>
+                  <td>{{ formatAmount(act.amount) }}</td>
+                  <td>M-Pesa</td>
+                  <td><span class="B {{ getStatusBadgeClass(act.status) }}">{{ getStatusLabel(act.status) }}</span></td>
+                  <td>{{ act.ref }}</td>
+                  <td><button class="btn-pm btn-sm" (click)="openModal('taxReceiptModal')">Receipt</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M17: Gov History -->
+  <div class="modal" *ngIf="isModalOpen('govHistoryModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Government Services History</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Date</th><th>Service</th><th>Provider</th><th>Amount</th><th>Status</th><th>Ref</th><th>Action</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tx of fullGovHistory">
+                  <td>{{ tx.date }}</td>
+                  <td>{{ tx.service }}</td>
+                  <td>{{ tx.provider }}</td>
+                  <td>{{ formatAmount(tx.amount) }}</td>
+                  <td><span class="B {{ getStatusBadgeClass(tx.status) }}">{{ getStatusLabel(tx.status) }}</span></td>
+                  <td>{{ tx.ref }}</td>
+                  <td><button class="btn-pm btn-sm" (click)="tx.status === 'processing' ? openModal('trackGovModal') : openModal('govReceiptModal')">{{ tx.status === 'processing' ? 'Track' : 'Receipt' }}</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M18: Dispute KRA -->
+  <div class="modal" *ngIf="isModalOpen('disputeKRAModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>Dispute KRA Assessment</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="loading-ov" *ngIf="isProcessing">
+            <div class="spinner"></div>
+            <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">{{ processingMessage }}</p>
+          </div>
+          <div class="mb-3">
+            <label class="FL">KRA PIN</label>
+            <select class="FC" [(ngModel)]="disputeKraForm.pin">
+              <option>C112233445W — JK Investments</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Assessment Ref</label>
+            <input class="FC" [(ngModel)]="disputeKraForm.assessmentRef">
+          </div>
+          <div class="mb-3">
+            <label class="FL">Dispute Reason</label>
+            <textarea class="FC" rows="3" [(ngModel)]="disputeKraForm.reason"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Upload Supporting Documents</label>
+            <input type="file" class="FC" (change)="onFileUpload($event, 'dispute')">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Cancel</button>
+          <button class="btn-pm btn-pm-p" (click)="doAction('disputeKRAModal', 'Dispute filed successfully. Case #KRA-DSP-99182 created.', 'KRA-DSP-99182')">Submit Dispute</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M19: Profile -->
+  <div class="modal" *ngIf="isModalOpen('profileModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">{{ profile.initials }}</div>
+          <h5 style="font-weight:700;margin-bottom:2px">{{ profile.name }}</h5>
+          <p style="font-size:13px;color:var(--pm-muted)">{{ profile.email }} · {{ profile.phone }}</p>
+          <div class="row g-2 text-start mt-3" style="font-size:13px">
+            <div class="col-6">
+              <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">KRA PINs</span><br><strong>{{ profile.kraPinsCount }} linked</strong></div>
+            </div>
+            <div class="col-6">
+              <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Compliance</span><br><strong style="color:var(--pm-accent)">{{ profile.complianceScore }}/100</strong></div>
+            </div>
+            <div class="col-6">
+              <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Member Since</span><br><strong>{{ profile.memberSince }}</strong></div>
+            </div>
+            <div class="col-6">
+              <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Open Cases</span><br><strong>{{ profile.openCases }}</strong></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M20: Gov Notifications -->
+  <div class="modal" *ngIf="isModalOpen('govNotifModal')" (click)="$event.stopPropagation()">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-bell me-2"></i>Government Notifications (9)</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body" style="max-height:500px;overflow-y:auto">
+          <div class="p-3 rounded mb-2" *ngFor="let notif of notifications" [style.background]="notif.bg" style="font-size:13px">
+            <strong>{{ notif.title }}</strong>
+            <div style="font-size:11px" [style.color]="notif.textColor">{{ notif.detail }}</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- modal-overlay -->

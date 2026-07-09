@@ -1,0 +1,1088 @@
+<!-- dispute-chargeback.component.html -->
+<!-- Complete Angular template for PayMo Dispute & Chargeback Management -->
+
+<!-- PAGE HEADER -->
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb"><a href="#">Home</a> / <a href="#">BaaS Transactions</a> / <strong>Dispute & Chargeback</strong></div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 1.16 — Dispute & Chargeback Management</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Initiate disputes, manage evidence, track chargeback workflows, resolve cases and analyse resolution performance across all payment rails.</p>
+  </div>
+  <div class="d-flex flex-wrap" style="gap:8px">
+    <button class="btn-pm" (click)="openModal('healthCheckModal')"><i class="bi bi-heart-pulse"></i> Health Check</button>
+    <button class="btn-pm" (click)="openModal('disputeModal')"><i class="bi bi-plus-lg"></i> New Dispute</button>
+    <button class="btn-pm" (click)="openModal('bulkDisputeModal')"><i class="bi bi-collection"></i> Bulk</button>
+    <button class="btn-pm btn-pm-p" (click)="openModal('evidenceUploadModal')"><i class="bi bi-upload"></i> Upload Evidence</button>
+  </div>
+</div>
+
+<!-- PM-CONTENT -->
+<div class="pm-content">
+
+  <!-- HERO STATS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C C-accent" style="min-height:170px">
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Dispute command center live <span style="color:#86efac">●</span></p>
+        <div class="SV" style="margin:8px 0;color:#fff">{{ stats.openCases }} open cases</div>
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">38 disputes filed this month, 67 chargebacks in progress, 37 resolved in last 7 days across Visa, Mastercard, PesaLink, SWIFT and local rails.</p>
+        <div class="d-flex flex-wrap mt-3" style="gap:8px">
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('disputeModal')">File dispute</button>
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('evidenceUploadModal')">Upload evidence</button>
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('bulkDisputeModal')">Bulk action</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-danger)">WIN RATE</p>
+        <div class="SV" style="margin:6px 0">{{ stats.winRate }}%<span style="font-size:14px;color:var(--pm-muted)">/90d</span></div>
+        <span class="B B-s"><i class="bi bi-trophy"></i> +{{ stats.winRateTrend }}% vs last quarter</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">Avg resolution: {{ stats.avgResolutionDays }} days<br>Recovery: {{ formatCurrency(stats.totalRecovered) }}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-warning)">AT RISK / PENDING</p>
+        <div class="SV" style="margin:6px 0">{{ stats.atRiskCount }}</div>
+        <span class="B B-w"><i class="bi bi-clock"></i> {{ stats.expiringCount }} expiring in 7 days</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">High-value: 8 cases<br>Merchant repeat: 4 merchants</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4">
+      <div class="C" style="min-height:170px;border-left:3px solid var(--pm-accent)">
+        <p class="SL" style="color:var(--pm-accent)">MONTHLY SAVINGS</p>
+        <div class="SV" style="margin:6px 0">{{ formatCurrency(stats.monthlySavings) }}</div>
+        <span class="B B-s"><i class="bi bi-piggy-bank"></i> Chargeback recovery</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">Fraud prevention: {{ formatCurrency(stats.fraudPrevention) }}<br>Merchant clawbacks: {{ formatCurrency(stats.merchantClawbacks) }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Attention Required</h3>
+          <button class="btn-pm btn-sm" (click)="openModal('attentionModal')">View all</button>
+        </div>
+        <div class="sr" *ngFor="let item of attentionItems; trackBy: trackByIndex">
+          <div class="d-flex align-items-center gap-3">
+            <div [style.width]="'36px'" [style.height]="'36px'" [style.border-radius]="'50%'" [style.background]="item.iconBg" [style.color]="item.iconColor" style="display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi {{ item.icon }}"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ item.detail }}</div>
+            </div>
+          </div>
+          <button class="btn-pm btn-sm {{ item.actionClass }}" (click)="openModal(item.action)">{{ item.actionLabel }}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Smart Suggestions</h3>
+          <span class="B B-p"><i class="bi bi-stars"></i> AI</span>
+        </div>
+        <div class="sr" *ngFor="let item of smartSuggestions; trackBy: trackByIndex">
+          <div class="d-flex align-items-center gap-3">
+            <div [style.width]="'36px'" [style.height]="'36px'" [style.border-radius]="'50%'" [style.background]="item.iconBg" [style.color]="item.iconColor" style="display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi {{ item.icon }}"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ item.detail }}</div>
+            </div>
+          </div>
+          <button class="btn-pm btn-sm" (click)="openModal(item.action)">{{ item.actionLabel }}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="mb-3">
+          <h3 class="st">Quick Actions</h3>
+          <p class="ss">Frequent dispute workflows</p>
+        </div>
+        <div class="quick-grid">
+          <button class="quick-btn" *ngFor="let action of quickActions; trackBy: trackByIndex" (click)="openModal(action.modal)">
+            <i class="bi {{ action.icon }} {{ action.iconColor }}" [style.color]="action.styleColor || ''" style="margin-right:4px"></i> {{ action.label }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1.16.1 -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-file-earmark-plus" style="color:var(--pm-primary)"></i> 1.16.1 — Dispute Initiation & Filing</h3>
+        <p class="ss">Create new disputes, select transactions, choose reason codes, attach initial evidence and route to the correct workflow.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('disputeModal')"><i class="bi bi-plus-lg"></i> New Dispute</button>
+        <button class="btn-pm btn-sm" (click)="openModal('bulkDisputeModal')"><i class="bi bi-collection"></i> Bulk</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-5">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Recent Transactions Eligible for Dispute</h4>
+          <div class="sr" *ngFor="let tx of recentTransactions; trackBy: trackByIndex">
+            <div>
+              <strong>{{ tx.merchant }}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ tx.card }} · {{ formatCurrency(tx.amount) }} · {{ tx.date }}</div>
+            </div>
+            <button class="btn-pm btn-sm" (click)="openModal('disputeModal')">Dispute</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Dispute Reason Quick Select</h4>
+          <div class="quick-grid">
+            <button class="quick-btn" *ngFor="let reason of disputeReasons; trackBy: trackByIndex" (click)="quickDispute(reason.code)">
+              <i class="bi {{ reason.icon }} {{ reason.color }}" style="margin-right:4px"></i> {{ reason.label }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Filing Stats (30d)</h4>
+          <div class="p-3 rounded mb-2" *ngFor="let stat of filingStats; trackBy: trackByIndex" [style.background]="stat.bg">
+            <div style="font-size:11px;font-weight:700" [style.color]="stat.color">{{ stat.label }}</div>
+            <div [style.font-size]="stat.size" style="font-weight:700" [style.color]="stat.color">{{ stat.value }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1.16.2 -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-folder-fill" style="color:var(--pm-info)"></i> 1.16.2 — Evidence Management & Submission</h3>
+        <p class="ss">Upload, organise and submit evidence packages to networks with deadline tracking and compliance checks.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('evidenceUploadModal')"><i class="bi bi-upload"></i> Upload</button>
+        <button class="btn-pm btn-sm" (click)="openModal('evidencePackageModal')"><i class="bi bi-archive"></i> Packages</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Active Evidence Requirements</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Case</th><th>Network</th><th>Deadline</th><th>Evidence Needed</th><th>Status</th><th>Action</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let case of evidenceRequirements; trackBy: trackByIndex">
+                  <td><code>{{ case.id }}</code></td>
+                  <td>{{ case.network }}</td>
+                  <td><span class="text-danger">{{ case.deadline }}</span></td>
+                  <td>Receipt, Police report, ID</td>
+                  <td><span class="B" [class.B-w]="case.status !== 'Complete'" [class.B-s]="case.status === 'Complete'">{{ case.status }}</span></td>
+                  <td><button class="btn-pm btn-sm" (click)="openModal('evidenceUploadModal')">Upload</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Evidence Library</h4>
+          <div class="sr" *ngFor="let lib of evidenceLibrary; trackBy: trackByIndex">
+            <div>
+              <strong>{{ lib.name }}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ lib.count }} files</div>
+            </div>
+            <button class="btn-pm btn-sm" (click)="openModal('evidencePackageModal')">Browse</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1.16.3 -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-arrow-repeat" style="color:var(--pm-purple)"></i> 1.16.3 — Chargeback Workflow & Tracking</h3>
+        <p class="ss">Track chargeback lifecycle, respond to representments, manage pre-arbitration and arbitration stages.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('chargebackResponseModal')"><i class="bi bi-reply"></i> Respond</button>
+        <button class="btn-pm btn-sm" (click)="openModal('chargebackTrackerModal')"><i class="bi bi-graph-up"></i> Tracker</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Active Chargebacks</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>CB ID</th><th>Case</th><th>Network</th><th>Stage</th><th>Amount</th><th>Due</th><th>Action</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cb of activeChargebacks; trackBy: trackByIndex">
+                  <td><code>{{ cb.cbId }}</code></td>
+                  <td>{{ cb.caseId }}</td>
+                  <td>{{ cb.network }}</td>
+                  <td><span class="B" [class.B-w]="cb.stage === 'Representment'" [class.B-i]="cb.stage === 'Pre-Arbitration'" [class.B-p]="cb.stage === 'Arbitration'">{{ cb.stage }}</span></td>
+                  <td>{{ formatCurrency(cb.amount) }}</td>
+                  <td>{{ cb.dueDate }}</td>
+                  <td><button class="btn-pm btn-sm" (click)="cb.stage === 'Representment' ? openModal('chargebackResponseModal') : openModal('chargebackTrackerModal')">{{ cb.stage === 'Representment' ? 'Respond' : 'Track' }}</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Stage Summary</h4>
+          <div class="sr" *ngFor="let stage of stageSummary; trackBy: trackByIndex">
+            <div><strong>{{ stage.stage }}</strong></div><span class="B {{ stage.badgeClass }}">{{ stage.count }} cases</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1.16.4 -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-bar-chart-line" style="color:var(--pm-accent)"></i> 1.16.4 — Resolution Analytics & Insights</h3>
+        <p class="ss">Analyse win/loss rates, merchant performance, reason code effectiveness and financial recovery metrics.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('resolutionAnalyticsModal')"><i class="bi bi-graph-up-arrow"></i> Deep Analytics</button>
+        <button class="btn-pm btn-sm" (click)="openModal('exportReportModal')"><i class="bi bi-download"></i> Export</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-5">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Win Rate by Reason Code</h4>
+          <div class="sr" *ngFor="let wr of winRateByReason; trackBy: trackByIndex">
+            <div><strong>{{ wr.reason }}</strong></div>
+            <div><span class="B {{ wr.badgeClass }}">{{ wr.rate }}%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Top 5 Merchants by Disputes</h4>
+          <div class="sr" *ngFor="let m of topMerchants; trackBy: trackByIndex">
+            <div>
+              <strong>{{ m.name }}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ m.cases }} cases · {{ m.winRate }}% win</div>
+            </div>
+            <span class="B {{ m.badgeClass }}">{{ m.status }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Recovery Summary (30d)</h4>
+          <div class="p-3 rounded mb-2" *ngFor="let r of recoverySummary; trackBy: trackByIndex" [style.background]="r.bg">
+            <div style="font-size:11px;font-weight:700" [style.color]="r.color">{{ r.label }}</div>
+            <div [style.font-size]="r.size" style="font-weight:700" [style.color]="r.color">{{ r.value }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT ACTIVITY -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="st"><i class="bi bi-clock-history" style="color:var(--pm-muted)"></i> Recent Dispute Activity</h3>
+      <button class="btn-pm btn-sm" (click)="openModal('activityLogModal')">View Full Log</button>
+    </div>
+    <div class="table-responsive">
+      <table class="T">
+        <thead>
+          <tr><th>Date</th><th>Case</th><th>Type</th><th>Details</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let act of recentActivity; trackBy: trackByIndex">
+            <td>{{ act.timestamp }}</td>
+            <td><code>{{ act.caseId }}</code></td>
+            <td>{{ act.action }}</td>
+            <td style="font-size:12px;color:var(--pm-muted)">{{ act.details }}</td>
+            <td><button class="btn-pm btn-sm" (click)="openModal('disputeDetailModal')">View</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /pm-content -->
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- M1: New Dispute (multi-step) -->
+<div class="modal fade" bsModal #disputeModal="bs-modal" tabindex="-1" role="dialog" [config]="{ backdrop: 'static', keyboard: false }">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-earmark-plus text-primary me-2"></i>File New Dispute</h5>
+        <button type="button" class="btn-close" (click)="disputeModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="stepper">
+          <div class="step" [class.active]="isStepActive('disp', 1)" [class.done]="isStepDone('disp', 1)">
+            <div class="step-n">1</div><div class="step-l">Select</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" [class.active]="isStepActive('disp', 2)" [class.done]="isStepDone('disp', 2)">
+            <div class="step-n">2</div><div class="step-l">Reason</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" [class.active]="isStepActive('disp', 3)" [class.done]="isStepDone('disp', 3)">
+            <div class="step-n">3</div><div class="step-l">Evidence</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" [class.active]="isStepActive('disp', 4)" [class.done]="isStepDone('disp', 4)">
+            <div class="step-n">4</div><div class="step-l">Done</div>
+          </div>
+        </div>
+        <div class="fstep" [class.active]="isStepActive('disp', 1)">
+          <h6 style="font-weight:700">Step 1: Select Transaction</h6>
+          <div class="mb-3"><label class="FL">Card / Account</label><select class="FC"><option>Visa ****4521</option><option>MC ****3392</option><option>Prepaid ****8890</option></select></div>
+          <div class="mb-3"><label class="FL">Transaction</label><select class="FC"><option>12 Jun 2025 — Amazon Kenya — KES 87,400 — Ref: AMZ-882910</option><option>10 Jun 2025 — Jumia Pay — KES 23,150 — Ref: JM-441029</option><option>08 Jun 2025 — Booking.com — KES 124,800 — Ref: BK-991022</option></select></div>
+        </div>
+        <div class="fstep" [class.active]="isStepActive('disp', 2)">
+          <h6 style="font-weight:700">Step 2: Reason & Details</h6>
+          <div class="mb-3"><label class="FL">Reason Code</label><select class="FC"><option>01 — Unauthorised Transaction</option><option>02 — Goods Not Received</option><option>03 — Goods Not as Described</option><option>04 — Duplicate Charge</option><option>05 — Cancelled Recurring</option><option>06 — Refund Not Processed</option></select></div>
+          <div class="mb-3"><label class="FL">Description</label><textarea class="FC" rows="3">I did not authorise this transaction. Card was in my possession at all times.</textarea></div>
+          <div class="mb-3"><label class="FL">Requested Amount</label><input class="FC" value="87400"></div>
+        </div>
+        <div class="fstep" [class.active]="isStepActive('disp', 3)">
+          <h6 style="font-weight:700">Step 3: Initial Evidence</h6>
+          <div class="mb-3"><label class="FL">Upload Supporting Documents</label><input type="file" class="FC" multiple></div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Police report will be uploaded within 48 hours</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">ID verification attached</label></div>
+        </div>
+        <div class="fstep" [class.active]="isStepActive('disp', 4)">
+          <div class="receipt">
+            <div class="ri"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Dispute Filed Successfully</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Case CDP-44923 created. Network deadline: 11 Jul 2025.</p>
+            <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Case ID</span><strong>CDP-44923</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 87,400</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">Status</span><span class="B B-i">Under Review</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="disputeModal.hide(); initFlows()">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="nextFlow('disp', 4)">{{ getFlowCurrent('disp') >= 4 ? 'Done' : 'Continue' }} <i class="bi bi-arrow-right" *ngIf="getFlowCurrent('disp') < 4"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M2: Evidence Upload (multi-step) -->
+<div class="modal fade" bsModal #evidenceUploadModal="bs-modal" tabindex="-1" role="dialog" [config]="{ backdrop: 'static', keyboard: false }">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-upload text-success me-2"></i>Upload Evidence Package</h5>
+        <button type="button" class="btn-close" (click)="evidenceUploadModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="stepper">
+          <div class="step" [class.active]="isStepActive('ev', 1)" [class.done]="isStepDone('ev', 1)">
+            <div class="step-n">1</div><div class="step-l">Select</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" [class.active]="isStepActive('ev', 2)" [class.done]="isStepDone('ev', 2)">
+            <div class="step-n">2</div><div class="step-l">Upload</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" [class.active]="isStepActive('ev', 3)" [class.done]="isStepDone('ev', 3)">
+            <div class="step-n">3</div><div class="step-l">Done</div>
+          </div>
+        </div>
+        <div class="fstep" [class.active]="isStepActive('ev', 1)">
+          <h6 style="font-weight:700">Step 1: Select Case</h6>
+          <div class="mb-3"><label class="FL">Case</label><select class="FC"><option>CDP-44892 — Visa — KES 1,850,000</option><option>CB-99102 — MC — KES 87,400</option><option>CDP-44915 — PesaLink — KES 124,800</option></select></div>
+          <div class="mb-3"><label class="FL">Evidence Type</label><select class="FC"><option>Receipt / Invoice</option><option>Police Report</option><option>Delivery Proof</option><option>Contract / Agreement</option><option>Bank Statement</option><option>Other</option></select></div>
+        </div>
+        <div class="fstep" [class.active]="isStepActive('ev', 2)">
+          <h6 style="font-weight:700">Step 2: Upload Files</h6>
+          <div class="mb-3"><label class="FL">Files</label><input type="file" class="FC" multiple></div>
+          <div class="mb-3"><label class="FL">Description / Notes</label><textarea class="FC" rows="2">Receipt from merchant dated 12 Jun 2025 showing full payment.</textarea></div>
+          <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Accepted formats: PDF, JPG, PNG, DOCX. Max 10MB per file.</div>
+        </div>
+        <div class="fstep" [class.active]="isStepActive('ev', 3)">
+          <div class="receipt">
+            <div class="ri"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Evidence Uploaded</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">3 files attached to CDP-44892. Package completeness: 6/6.</p>
+            <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Files</span><strong>receipt.pdf, police.pdf, id.jpg</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">Deadline</span><strong>29 Jun 2025</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="evidenceUploadModal.hide(); initFlows()">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="nextFlow('ev', 3)">{{ getFlowCurrent('ev') >= 3 ? 'Done' : 'Continue' }} <i class="bi bi-arrow-right" *ngIf="getFlowCurrent('ev') < 3"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M3: Chargeback Response -->
+<div class="modal fade" bsModal #chargebackResponseModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-reply text-info me-2"></i>Respond to Chargeback</h5>
+        <button type="button" class="btn-close" (click)="chargebackResponseModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="FL">Chargeback</label><select class="FC"><option>CB-99102 — Visa — KES 87,400 — Representment due 27 Jun</option><option>CB-99087 — MC — KES 312,000 — Pre-Arbitration</option></select></div>
+        <div class="mb-3"><label class="FL">Response Type</label><select class="FC"><option>Representment (provide evidence)</option><option>Accept chargeback</option><option>Pre-arbitration response</option><option>Arbitration filing</option></select></div>
+        <div class="mb-3"><label class="FL">Evidence / Notes</label><textarea class="FC" rows="4">Merchant provided signed delivery confirmation and CCTV footage showing cardholder at pickup location.</textarea></div>
+        <div class="mb-3"><label class="FL">Additional Files</label><input type="file" class="FC" multiple></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="chargebackResponseModal.hide()">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('chargebackResponseModal','Chargeback response submitted successfully. Case updated to Pre-Arbitration stage.','CB-99102-R1')">Submit Response</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M4: Bulk Dispute -->
+<div class="modal fade" bsModal #bulkDisputeModal="bs-modal" tabindex="-1" role="dialog" [config]="{ backdrop: 'static', keyboard: false }">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-collection text-purple me-2"></i>Bulk Dispute Actions</h5>
+        <button type="button" class="btn-close" (click)="bulkDisputeModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="stepper">
+          <div class="step" [class.active]="isStepActive('bulk', 1)" [class.done]="isStepDone('bulk', 1)">
+            <div class="step-n">1</div><div class="step-l">Select</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" [class.active]="isStepActive('bulk', 2)" [class.done]="isStepDone('bulk', 2)">
+            <div class="step-n">2</div><div class="step-l">Action</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" [class.active]="isStepActive('bulk', 3)" [class.done]="isStepDone('bulk', 3)">
+            <div class="step-n">3</div><div class="step-l">Done</div>
+          </div>
+        </div>
+        <div class="fstep" [class.active]="isStepActive('bulk', 1)">
+          <h6 style="font-weight:700">Step 1: Select Cases</h6>
+          <div class="form-check p-3 border rounded mb-2"><input class="form-check-input" type="checkbox" checked><label class="form-check-label ms-2 d-flex justify-content-between w-100"><span><strong>CDP-44892</strong> — Visa — KES 1.85M</span><span class="B B-w">Evidence due</span></label></div>
+          <div class="form-check p-3 border rounded mb-2"><input class="form-check-input" type="checkbox" checked><label class="form-check-label ms-2 d-flex justify-content-between w-100"><span><strong>CDP-44915</strong> — PesaLink — KES 124.8k</span><span class="B B-s">Complete</span></label></div>
+          <div class="form-check p-3 border rounded mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label ms-2 d-flex justify-content-between w-100"><span><strong>CB-99087</strong> — MC — KES 312k</span><span class="B B-i">Pre-Arbitration</span></label></div>
+          <hr class="divider">
+          <div class="d-flex justify-content-between"><span style="font-weight:700">Selected</span><strong>2 cases</strong></div>
+        </div>
+        <div class="fstep" [class.active]="isStepActive('bulk', 2)">
+          <h6 style="font-weight:700">Step 2: Action</h6>
+          <div class="mb-3"><label class="FL">Bulk Action</label><select class="FC"><option>Upload evidence to all</option><option>Request extension</option><option>Accept chargebacks</option><option>Escalate to arbitration</option></select></div>
+          <div class="mb-3"><label class="FL">Notes (applies to all)</label><textarea class="FC" rows="3">Bulk evidence package attached for all selected cases.</textarea></div>
+        </div>
+        <div class="fstep" [class.active]="isStepActive('bulk', 3)">
+          <div class="receipt">
+            <div class="ri"><i class="bi bi-check-all"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Bulk Action Completed</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Evidence uploaded to 2 cases. Deadlines extended where applicable.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="bulkDisputeModal.hide(); initFlows()">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="nextFlow('bulk', 3)">{{ getFlowCurrent('bulk') >= 3 ? 'Done' : 'Continue' }} <i class="bi bi-arrow-right" *ngIf="getFlowCurrent('bulk') < 3"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M5: Evidence Package -->
+<div class="modal fade" bsModal #evidencePackageModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-archive me-2"></i>Evidence Package Manager</h5>
+        <button type="button" class="btn-close" (click)="evidencePackageModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="isTabActive('evpkg', 'all')" (click)="sw('evpkg', 'all')">All Files</button>
+          <button class="pill" [class.active]="isTabActive('evpkg', 'receipt')" (click)="sw('evpkg', 'receipt')">Receipts</button>
+          <button class="pill" [class.active]="isTabActive('evpkg', 'police')" (click)="sw('evpkg', 'police')">Police</button>
+          <button class="pill" [class.active]="isTabActive('evpkg', 'delivery')" (click)="sw('evpkg', 'delivery')">Delivery</button>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('evpkg', 'all')">
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>File</th><th>Case</th><th>Type</th><th>Uploaded</th><th>Size</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let file of evidenceFiles; trackBy: trackByIndex">
+                  <td>{{ file.name }}</td>
+                  <td>{{ file.caseId }}</td>
+                  <td>{{ file.type }}</td>
+                  <td>{{ file.uploaded }}</td>
+                  <td>{{ file.size }}</td>
+                  <td><button class="btn-pm btn-sm" (click)="doAction('evidencePackageModal','File downloaded.','')">Download</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('evpkg', 'receipt')">
+          <div class="sr"><div><strong>receipt_amz.pdf</strong><div style="font-size:11px;color:var(--pm-muted)">CDP-44892 · 1.2 MB</div></div><button class="btn-pm btn-sm" (click)="doAction('evidencePackageModal','File downloaded.','')">Download</button></div>
+          <div class="sr"><div><strong>receipt_jumia.pdf</strong><div style="font-size:11px;color:var(--pm-muted)">CB-99102 · 0.9 MB</div></div><button class="btn-pm btn-sm" (click)="doAction('evidencePackageModal','File downloaded.','')">Download</button></div>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('evpkg', 'police')">
+          <div class="sr"><div><strong>police_88291.pdf</strong><div style="font-size:11px;color:var(--pm-muted)">CDP-44892 · 3.4 MB</div></div><button class="btn-pm btn-sm" (click)="doAction('evidencePackageModal','File downloaded.','')">Download</button></div>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('evpkg', 'delivery')">
+          <div class="sr"><div><strong>delivery_booking.jpg</strong><div style="font-size:11px;color:var(--pm-muted)">CDP-44915 · 2.1 MB</div></div><button class="btn-pm btn-sm" (click)="doAction('evidencePackageModal','File downloaded.','')">Download</button></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="evidencePackageModal.hide()">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="openModal('evidenceUploadModal')">Upload More</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M6: Merchant Risk -->
+<div class="modal fade" bsModal #merchantRiskModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-building text-warning me-2"></i>Merchant Risk Management</h5>
+        <button type="button" class="btn-close" (click)="merchantRiskModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="isTabActive('mrisk', 'high')" (click)="sw('mrisk', 'high')">High Risk</button>
+          <button class="pill" [class.active]="isTabActive('mrisk', 'repeat')" (click)="sw('mrisk', 'repeat')">Repeat Offenders</button>
+          <button class="pill" [class.active]="isTabActive('mrisk', 'blacklist')" (click)="sw('mrisk', 'blacklist')">Blacklist</button>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('mrisk', 'high')">
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>Merchant</th><th>Cases (30d)</th><th>Win Rate</th><th>Risk Score</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let mr of merchantRiskList; trackBy: trackByIndex">
+                  <td>{{ mr.name }}</td>
+                  <td>{{ mr.cases30d }}</td>
+                  <td>{{ mr.winRate }}%</td>
+                  <td><span class="B" [class.B-d]="mr.riskScore >= 80" [class.B-w]="mr.riskScore >= 60 && mr.riskScore < 80">{{ mr.riskScore }}</span></td>
+                  <td>
+                    <button class="btn-pm btn-sm" [class.btn-pm-d]="mr.status === 'Blacklist'" (click)="doAction('merchantRiskModal', mr.status === 'Blacklist' ? 'Merchant blacklisted. All future transactions will be blocked.' : 'Merchant flagged for review. Monitoring enabled.', '')">{{ mr.status === 'Blacklist' ? 'Blacklist' : 'Monitor' }}</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('mrisk', 'repeat')">
+          <div class="sr" *ngFor="let m of merchantAnalytics; trackBy: trackByIndex">
+            <div><strong>{{ m.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ m.cases }} cases · {{ m.winRate }}% win rate</div></div>
+            <button class="btn-pm btn-sm" (click)="doAction('merchantRiskModal','Merchant flagged for review. Monitoring enabled.','')">Monitor</button>
+          </div>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('mrisk', 'blacklist')">
+          <div class="sr"><div><strong>Local Vendor X</strong><div style="font-size:11px;color:var(--pm-muted)">Blacklisted 24 Jun 2025</div></div><button class="btn-pm btn-sm" (click)="doAction('merchantRiskModal','Merchant removed from blacklist. Transactions will be allowed.','')">Remove</button></div>
+          <div class="sr"><div><strong>Scam Merchant Y</strong><div style="font-size:11px;color:var(--pm-muted)">Blacklisted 12 May 2025</div></div><button class="btn-pm btn-sm" (click)="doAction('merchantRiskModal','Merchant removed from blacklist. Transactions will be allowed.','')">Remove</button></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="merchantRiskModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M7: Resolution Analytics -->
+<div class="modal fade" bsModal #resolutionAnalyticsModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-graph-up-arrow text-accent me-2"></i>Resolution Analytics Dashboard</h5>
+        <button type="button" class="btn-close" (click)="resolutionAnalyticsModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="isTabActive('ran', 'win')" (click)="sw('ran', 'win')">Win Rate</button>
+          <button class="pill" [class.active]="isTabActive('ran', 'merchant')" (click)="sw('ran', 'merchant')">Merchant</button>
+          <button class="pill" [class.active]="isTabActive('ran', 'reason')" (click)="sw('ran', 'reason')">Reason Code</button>
+          <button class="pill" [class.active]="isTabActive('ran', 'time')" (click)="sw('ran', 'time')">Time to Resolve</button>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('ran', 'win')">
+          <div class="row g-3">
+            <div class="col-md-4"><div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)"><div style="font-size:28px;font-weight:800;color:var(--pm-accent)">68%</div><div style="font-size:11px;font-weight:700;color:#047857">OVERALL WIN RATE</div></div></div>
+            <div class="col-md-4"><div class="p-3 rounded text-center" style="background:var(--pm-info-soft)"><div style="font-size:24px;font-weight:700;color:var(--pm-info)">41 days</div><div style="font-size:11px;font-weight:700;color:#1D4ED8">AVG RESOLUTION</div></div></div>
+            <div class="col-md-4"><div class="p-3 rounded text-center" style="background:var(--pm-purple-soft)"><div style="font-size:24px;font-weight:700;color:var(--pm-purple)">KES 129k</div><div style="font-size:11px;font-weight:700;color:#6D28D9">AVG RECOVERED</div></div></div>
+          </div>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('ran', 'merchant')">
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>Merchant</th><th>Cases</th><th>Win Rate</th><th>Avg Amount</th><th>Trend</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let m of merchantAnalytics; trackBy: trackByIndex">
+                  <td>{{ m.name }}</td>
+                  <td>{{ m.cases }}</td>
+                  <td>{{ m.winRate }}%</td>
+                  <td>{{ m.avgAmount }}</td>
+                  <td><span class="B {{ m.trendClass }}">{{ m.trend }}</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('ran', 'reason')">
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>Reason Code</th><th>Cases</th><th>Win Rate</th><th>Avg Days</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let rc of reasonCodeStats; trackBy: trackByIndex">
+                  <td>{{ rc.code }}</td>
+                  <td>{{ rc.cases }}</td>
+                  <td>{{ rc.winRate }}%</td>
+                  <td>{{ rc.avgDays }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('ran', 'time')">
+          <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+            <div style="font-size:13px;font-weight:700">Resolution Time Distribution</div>
+            <div class="sr mt-2" *ngFor="let td of timeDistribution; trackBy: trackByIndex"><div>{{ td.range }}</div><div><span class="B {{ td.badgeClass }}">{{ td.percent }}%</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="resolutionAnalyticsModal.hide()">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="openModal('exportReportModal')">Export Report</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M8: Dispute Rules -->
+<div class="modal fade" bsModal #disputeRulesModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-sliders text-primary me-2"></i>Dispute Automation Rules</h5>
+        <button type="button" class="btn-close" (click)="disputeRulesModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="isTabActive('drule', 'auto')" (click)="sw('drule', 'auto')">Auto-Escalation</button>
+          <button class="pill" [class.active]="isTabActive('drule', 'evidence')" (click)="sw('drule', 'evidence')">Evidence Rules</button>
+          <button class="pill" [class.active]="isTabActive('drule', 'merchant')" (click)="sw('drule', 'merchant')">Merchant Rules</button>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('drule', 'auto')">
+          <div class="sr"><div><strong>Auto-escalate disputes > KES 500,000</strong><div style="font-size:11px;color:var(--pm-muted)">Current: Disabled</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox"></div></div>
+          <div class="sr"><div><strong>Auto-file chargeback if no response in 10 days</strong></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked></div></div>
+          <div class="sr"><div><strong>Auto-blacklist merchant after 5 lost cases</strong></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox"></div></div>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('drule', 'evidence')">
+          <div class="sr"><div><strong>Require police report for unauthorised > KES 100k</strong></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked></div></div>
+          <div class="sr"><div><strong>Require delivery proof for "not received"</strong></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked></div></div>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('drule', 'merchant')">
+          <div class="sr"><div><strong>Auto-flag merchants with win rate < 40%</strong></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked></div></div>
+          <div class="sr"><div><strong>Auto-block transactions from blacklisted merchants</strong></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked></div></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="disputeRulesModal.hide()">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('disputeRulesModal','Automation rules updated. Changes take effect immediately.','')">Save Rules</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M9: Arbitration -->
+<div class="modal fade" bsModal #arbitrationModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-gavel text-purple me-2"></i>Arbitration Management</h5>
+        <button type="button" class="btn-close" (click)="arbitrationModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="FL">Case</label><select class="FC"><option>CB-99065 — Visa — KES 1,240,000 — Arbitration</option></select></div>
+        <div class="mb-3"><label class="FL">Arbitration Status</label>
+          <div class="p-3 rounded" style="background:var(--pm-purple-soft)">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Stage</span><strong>Arbitration Filed</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Network</span><strong>Visa</strong></div>
+            <div class="d-flex justify-content-between"><span class="text-muted">Decision Due</span><strong>15 Aug 2025</strong></div>
+          </div>
+        </div>
+        <div class="mb-3"><label class="FL">Notes</label><textarea class="FC" rows="3">Strong evidence package submitted. Merchant has poor compliance history.</textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="arbitrationModal.hide()">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('arbitrationModal','Arbitration notes saved. Case updated.','')">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M10: Export Report -->
+<div class="modal fade" bsModal #exportReportModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-download me-2"></i>Export Dispute Report</h5>
+        <button type="button" class="btn-close" (click)="exportReportModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="FL">Report Type</label><select class="FC"><option>Full dispute & chargeback report</option><option>Win/loss analysis</option><option>Merchant performance</option><option>Reason code effectiveness</option><option>Monthly resolution summary</option></select></div>
+        <div class="row g-3 mb-3">
+          <div class="col-6"><label class="FL">From</label><input type="date" class="FC" value="2025-01-01"></div>
+          <div class="col-6"><label class="FL">To</label><input type="date" class="FC" value="2025-06-27"></div>
+        </div>
+        <div class="mb-3"><label class="FL">Format</label><select class="FC"><option>PDF</option><option>Excel</option><option>CSV</option></select></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="exportReportModal.hide()">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('exportReportModal','Report generated and downloading...','')">Generate</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M11: Health Check -->
+<div class="modal fade" bsModal #healthCheckModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>Dispute Health Check</h5>
+        <button type="button" class="btn-close" (click)="healthCheckModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-3 col-6" *ngFor="let card of healthScoreCards; trackBy: trackByIndex">
+            <div class="p-3 rounded text-center" [style.background]="card.bg">
+              <div [style.font-size]="card.size" style="font-weight:800" [style.color]="card.color">{{ card.value }}</div>
+              <div style="font-size:10px;font-weight:700" [style.color]="card.color">{{ card.label }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Metric</th><th>Current</th><th>Target</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let hm of healthMetrics; trackBy: trackByIndex">
+                <td>{{ hm.metric }}</td>
+                <td>{{ hm.current }}</td>
+                <td>{{ hm.target }}</td>
+                <td><span class="B {{ hm.badgeClass }}">{{ hm.status }}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="healthCheckModal.hide()">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="openModal('disputeRulesModal')">Improve Score</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M12: Case Notifications -->
+<div class="modal fade" bsModal #caseNotifModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-bell me-2"></i>Dispute Notifications (14)</h5>
+        <button type="button" class="btn-close" (click)="caseNotifModal.hide()"></button>
+      </div>
+      <div class="modal-body" style="max-height:500px;overflow-y:auto">
+        <div class="p-3 rounded mb-2" *ngFor="let n of notifications; trackBy: trackByIndex" [style.background]="n.bg" style="font-size:13px">
+          <strong [style.color]="n.color">{{ n.title }}</strong>
+          <div style="font-size:11px" [style.color]="n.color">{{ n.detail }}</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="openModal('disputeRulesModal')">Automation</button>
+        <button class="btn-pm" (click)="caseNotifModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M13: Profile -->
+<div class="modal fade" bsModal #profileModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile</h5>
+        <button type="button" class="btn-close" (click)="profileModal.hide()"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">JK</div>
+        <h5 style="font-weight:700;margin-bottom:2px">James Kamau</h5>
+        <p style="font-size:13px;color:var(--pm-muted)">james.kamau@email.com · +254 712 345 890</p>
+        <div class="row g-2 text-start mt-3" style="font-size:13px">
+          <div class="col-6">
+            <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Disputes Managed</span><br><strong>142 this month</strong></div>
+          </div>
+          <div class="col-6">
+            <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Win Rate</span><br><strong style="color:var(--pm-accent)">68%</strong></div>
+          </div>
+          <div class="col-6">
+            <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Recovery</span><br><strong>KES 18.4M</strong></div>
+          </div>
+          <div class="col-6">
+            <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Health Score</span><br><strong style="color:var(--pm-accent)">84/100</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="profileModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M14: Activity Log -->
+<div class="modal fade" bsModal #activityLogModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Full Activity Log</h5>
+        <button type="button" class="btn-close" (click)="activityLogModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex gap-2 mb-3"><select class="FC" style="width:auto"><option>All Cases</option><option>CDP-44892</option><option>CB-99102</option></select><input class="FC" style="width:200px" placeholder="Search activity..."></div>
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Timestamp</th><th>Case</th><th>Action</th><th>User</th><th>Details</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let log of activityLogFull; trackBy: trackByIndex">
+                <td>{{ log.timestamp }}</td>
+                <td>{{ log.caseId }}</td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.user }}</td>
+                <td style="font-size:12px;color:var(--pm-muted)">{{ log.details }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="activityLogModal.hide()">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="openModal('exportReportModal')">Export Log</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M15: Attention Full -->
+<div class="modal fade" bsModal #attentionModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>All Items Requiring Attention</h5>
+        <button type="button" class="btn-close" (click)="attentionModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="sr"><div><strong>CDP-44892 evidence due in 2 days</strong><div style="font-size:11px;color:var(--pm-muted)">KES 1.85M — 4 files remaining</div></div><button class="btn-pm btn-sm" (click)="openModal('evidenceUploadModal')">Upload</button></div>
+        <div class="sr"><div><strong>CB-99102 representment due today</strong><div style="font-size:11px;color:var(--pm-muted)">Visa — KES 87,400</div></div><button class="btn-pm btn-sm" (click)="openModal('chargebackResponseModal')">Respond</button></div>
+        <div class="sr"><div><strong>Local Vendor X blacklisting review</strong><div style="font-size:11px;color:var(--pm-muted)">6 cases — 17% win rate</div></div><button class="btn-pm btn-sm btn-pm-d" (click)="openModal('merchantRiskModal')">Blacklist</button></div>
+        <div class="sr"><div><strong>CDP-44923 evidence package complete</strong><div style="font-size:11px;color:var(--pm-muted)">Ready for submission</div></div><button class="btn-pm btn-sm" (click)="openModal('disputeDetailModal')">Submit</button></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="attentionModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M16: Quick Dispute -->
+<div class="modal fade" bsModal #quickDisputeModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-lightning-charge me-2"></i>Quick Dispute</h5>
+        <button type="button" class="btn-close" (click)="quickDisputeModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="FL">Transaction</label><select class="FC"><option>Amazon Kenya — KES 87,400 — 12 Jun</option><option>Jumia Pay — KES 23,150 — 10 Jun</option></select></div>
+        <div class="mb-3"><label class="FL">Reason</label><select class="FC"><option>Unauthorised</option><option>Not Received</option><option>Duplicate</option></select></div>
+        <div class="mb-3"><label class="FL">Amount</label><input class="FC" value="87400"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="quickDisputeModal.hide()">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('quickDisputeModal','Quick dispute filed successfully. Case CDP-44924 created.','CDP-44924')">File Dispute</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M17: Dispute Detail -->
+<div class="modal fade" bsModal #disputeDetailModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-earmark-text me-2"></i>Dispute Details</h5>
+        <button type="button" class="btn-close" (click)="disputeDetailModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Case ID</span><strong>CDP-44923</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Status</span><span class="B B-i">Under Review</span></div>
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 87,400</strong></div>
+          <div class="d-flex justify-content-between"><span class="text-muted">Network Deadline</span><strong>11 Jul 2025</strong></div>
+        </div>
+        <div class="mb-3">
+          <h6 style="font-weight:700">Timeline</h6>
+          <div class="sr"><div>27 Jun 14:32</div><div>Evidence uploaded</div></div>
+          <div class="sr"><div>27 Jun 09:15</div><div>Dispute filed</div></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="disputeDetailModal.hide()">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="openModal('evidenceUploadModal')">Upload Evidence</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M18: Chargeback Tracker -->
+<div class="modal fade" bsModal #chargebackTrackerModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-graph-up me-2"></i>Chargeback Tracker</h5>
+        <button type="button" class="btn-close" (click)="chargebackTrackerModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-3" style="background:var(--pm-purple-soft)">
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">CB-99102</span><span class="B B-w">Representment</span></div>
+          <div class="d-flex justify-content-between"><span class="text-muted">Progress</span><strong>Visa → Pre-Arbitration</strong></div>
+        </div>
+        <div class="mb-3">
+          <h6 style="font-weight:700">Stage Timeline</h6>
+          <div class="sr"><div>20 Jun</div><div>First chargeback filed</div></div>
+          <div class="sr"><div>25 Jun</div><div>Representment submitted</div></div>
+          <div class="sr"><div>27 Jun</div><div>Response due</div></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="chargebackTrackerModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M19: Fee Calculator -->
+<div class="modal fade" bsModal #feeCalcModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-calculator me-2"></i>Dispute Fee Calculator</h5>
+        <button type="button" class="btn-close" (click)="feeCalcModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="FL">Action</label><select class="FC"><option>Arbitration filing fee</option><option>Pre-arbitration response</option><option>Evidence retrieval</option></select></div>
+        <div class="mb-3"><label class="FL">Amount (KES)</label><input class="FC" value="500000"></div>
+        <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Network Fee</span><strong>KES 2,500</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Legal Review</span><strong>KES 15,000</strong></div>
+          <hr class="divider">
+          <div class="d-flex justify-content-between"><span style="font-weight:700">Total Cost</span><strong style="color:var(--pm-primary)">KES 17,500</strong></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="feeCalcModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M20: Branch Support -->
+<div class="modal fade" bsModal #branchSupportModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-geo-alt me-2"></i>Branch Support Locator</h5>
+        <button type="button" class="btn-close" (click)="branchSupportModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="FL">Search Location</label><input class="FC" placeholder="Enter area" value="Nairobi"></div>
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Branch</th><th>Address</th><th>Services</th><th>Distance</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let b of branchLocations; trackBy: trackByIndex">
+                <td><strong>{{ b.name }}</strong></td>
+                <td>{{ b.address }}</td>
+                <td>{{ b.services }}</td>
+                <td>{{ b.distance }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="branchSupportModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M21: Security Check -->
+<div class="modal fade" bsModal #securityCheckModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-check text-success me-2"></i>Dispute Security Check</h5>
+        <button type="button" class="btn-close" (click)="securityCheckModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-4" *ngFor="let sc of securityScoreCards; trackBy: trackByIndex">
+            <div class="p-3 rounded text-center" [style.background]="sc.bg">
+              <div [style.font-size]="sc.size" style="font-weight:800" [style.color]="sc.color">{{ sc.value }}</div>
+              <div style="font-size:10px;font-weight:700" [style.color]="sc.color">{{ sc.label }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="securityCheckModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

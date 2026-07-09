@@ -1,0 +1,104 @@
+<header [class]="headerClasses">
+    <div class="d-flex align-items-center gap-3">
+        <button class="sidebar-toggle" (click)="onToggleSidebar()" aria-label="Toggle sidebar">
+            <i [class]="toggleIconClass"></i>
+        </button>
+        <span class="badge rounded-pill px-3 py-2" style="background:rgba(239,68,68,0.1);color:#ef4444;font-size:0.72rem;font-weight:700;border:1px solid rgba(239,68,68,0.2)">
+            <i class="bi bi-circle-fill me-1" style="font-size:0.5rem;animation:pulse-dot 1.5s ease-in-out infinite"></i> SANDBOX
+        </span>
+        <div class="global-search d-none d-md-block">
+            <i class="bi bi-search search-icon"></i>
+            <input type="text" placeholder="Search endpoints, logs, API keys…" />
+        </div>
+    </div>
+
+    <div class="header-actions">
+        <div class="vr d-none d-lg-block mx-1" style="height:28px;opacity:0.15"></div>
+
+        <button class="header-action" (click)="onOpenAside('apiExplorer')" aria-label="API Explorer" title="API Explorer">
+            <i class="bi bi-terminal action-icon"></i>
+        </button>
+
+        <button class="header-action" (click)="onOpenAside('systemStatus')" aria-label="System Status" title="System Status">
+            <i class="bi bi-activity action-icon"></i>
+        </button>
+
+        <div class="position-relative" data-dropdown="notifications">
+            <button class="header-action" (click)="toggleDropdown('notifications', $event)"
+                [attr.aria-expanded]="isDropdownOpen('notifications')" aria-label="Notifications">
+                <i class="bi bi-bell action-icon"></i>
+                <span class="header-badge">3</span>
+            </button>
+            <div class="dropdown-panel" [class.show]="isDropdownOpen('notifications')" data-dropdown-panel="notifications">
+                <div class="panel-header">
+                    <span class="panel-title">Dev Alerts</span>
+                    <button class="btn btn-sm btn-link text-decoration-none" style="font-size:0.75rem">Mark all read</button>
+                </div>
+                <div class="panel-body">
+                    <div class="notification-item" *ngFor="let n of notifications" [class.unread]="n.unread">
+                        <div class="notification-icon" [ngClass]="n.tone"><i class="bi {{ n.icon }}"></i></div>
+                        <div class="flex-grow-1" style="min-width:0">
+                            <div class="d-flex justify-content-between align-items-start gap-2">
+                                <span class="fw-semibold" style="font-size:0.82rem;color:var(--text)">{{ n.title }}</span>
+                                <span class="notification-dot" *ngIf="n.unread"></span>
+                            </div>
+                            <div class="text-muted text-truncate" style="font-size:0.75rem">{{ n.desc }}</div>
+                        </div>
+                        <span class="text-muted flex-shrink-0" style="font-size:0.7rem">{{ n.time }}</span>
+                    </div>
+                </div>
+                <div class="panel-footer text-center">
+                    <button class="btn btn-sm btn-link text-decoration-none fw-semibold" style="color:#6366f1">View all activity</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="position-relative" data-dropdown="user">
+            <button class="user-trigger" (click)="toggleDropdown('user', $event)" [attr.aria-expanded]="isDropdownOpen('user')">
+                <div class="avatar" style="background:linear-gradient(135deg,#6366f1,#4338ca)">JD</div>
+                <div class="user-meta">
+                    <div class="user-name">John Dev</div>
+                    <div class="user-role">Tech Lead</div>
+                </div>
+                <i class="bi bi-chevron-down chev" style="font-size:0.8rem"></i>
+            </button>
+            <div class="dropdown-panel" [class.show]="isDropdownOpen('user')" data-dropdown-panel="user" style="width:280px">
+                <div class="p-3 d-flex align-items-center gap-3 border-bottom">
+                    <div class="avatar" style="width:46px;height:46px;font-size:1rem;border-radius:50%;background:linear-gradient(135deg,#6366f1,#4338ca);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">JD</div>
+                    <div>
+                        <div class="fw-bold" style="font-size:0.9rem">John Dev</div>
+                        <div class="text-muted" style="font-size:0.75rem">john@paymo.dev</div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="d-flex flex-column">
+                        <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i class="bi bi-person"></i> Profile</button>
+                        <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i class="bi bi-gear"></i> Settings</button>
+                        <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3" (click)="onOpenAside('apiKeys', $event)"><i class="bi bi-key"></i> API Keys</button>
+                        <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i class="bi bi-question-circle"></i> Documentation</button>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <button class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2" style="font-size:0.82rem" (click)="onLogout()">
+                        <i class="bi bi-box-arrow-right"></i> Log out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="toast-container-custom">
+    <div class="paymo-toast" *ngFor="let t of toasts" [class.leaving]="t.isLeaving">
+        <div class="toast-ic" [style.background]="t.bg" [style.color]="t.color"><i class="bi {{ t.icon }}"></i></div>
+        <div class="flex-grow-1">
+            <div class="fw-semibold" style="font-size:0.82rem">{{ t.title }}</div>
+            <div class="text-muted" style="font-size:0.75rem">{{ t.message }}</div>
+        </div>
+        <button class="btn btn-link text-muted p-0 ms-2" style="font-size:0.8rem" (click)="removeToast(t.id)"><i class="bi bi-x-lg"></i></button>
+    </div>
+</div>
+
+<style>
+@keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.7)} }
+</style>

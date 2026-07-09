@@ -1,0 +1,1480 @@
+<div class="pm-app">
+    <div class="pm-main">
+        <div class="pm-page-bar">
+            <div>
+                <div class="pm-breadcrumb"><a href="javascript:void(0)">Home</a> / <a href="javascript:void(0)">Utilities Hub</a> / <strong>Mobile
+                        Money & Airtime</strong></div>
+                <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE
+                    2.6 — Mobile Money & Airtime Hub</h2>
+                <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Unified management for your Safaricom,
+                    Airtel, and Telkom lines. Deep integration with M-Pesa ecosystem, interoperability transfers,
+                    and smart data bundles.</p>
+            </div>
+            <div class="d-flex flex-wrap" style="gap:8px">
+                <button class="pm-btn" (click)="openModal('agentLocatorModal')"><i class="bi bi-geo-alt"></i> Find
+                    Agent</button>
+                <button class="pm-btn" (click)="openModal('addPhoneNumberModal')"><i class="bi bi-sim"></i> Link
+                    Line</button>
+                <button class="pm-btn" (click)="openModal('buyAirtimeModal')"><i class="bi bi-phone"></i> Buy
+                    Airtime</button>
+                <button class="pm-btn-primary pm-btn" (click)="openModal('sendMoneyCrossNetworkModal')"><i
+                        class="bi bi-send"></i> Send Money</button>
+            </div>
+        </div>
+        <div class="pm-content">
+
+            <!-- HERO STATS ROW -->
+            <div class="row g-3">
+                <div class="col-lg-3 col-md-6">
+                    <div class="pm-card mpesa-card" style="min-height:160px;background:var(--pm-gradient-accent)">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <p class="pm-stat-label" style="color:rgba(255,255,255,0.8)">M-PESA WALLET BALANCE</p>
+                            <i class="bi bi-shield-check" style="color:#A7F3D0"></i>
+                        </div>
+                        <div class="pm-stat-value" style="margin:6px 0;color:#fff">KES 48,250</div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.8);margin-top:16px">
+                            <div>Total Received Today: <strong>KES 12,400</strong></div>
+                            <div>Total Sent Today: <strong>KES 3,200</strong></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="pm-card" style="min-height:160px">
+                        <p class="pm-stat-label" style="color:var(--pm-accent)">TOTAL AIRTIME (ALL NETWORKS)</p>
+                        <div class="pm-stat-value" style="margin:6px 0">KES 1,480</div>
+                        <span class="pm-badge pm-badge-success"><i class="bi bi-sim"></i> 3 Lines Linked</span>
+                        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+                            <div class="d-flex justify-content-between"><span>Safaricom</span><strong>KES
+                                    1,200</strong></div>
+                            <div class="d-flex justify-content-between"><span>Airtel</span><strong>KES 250</strong>
+                            </div>
+                            <div class="d-flex justify-content-between"><span>Telkom</span><strong>KES 30</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="pm-card" style="min-height:160px">
+                        <p class="pm-stat-label" style="color:var(--pm-info)">ACTIVE DATA BUNDLES</p>
+                        <div class="pm-stat-value" style="margin:6px 0">14.2 GB</div>
+                        <span class="pm-badge pm-badge-warning"><i class="bi bi-clock"></i> 2.5 GB expiring in 2
+                            days</span>
+                        <div class="mt-3">
+                            <div class="d-flex justify-content-between mb-1"
+                                style="font-size:11px;color:var(--pm-muted)"><span>Monthly Usage</span><span>14.2 /
+                                    20 GB</span></div>
+                            <div class="pm-progress">
+                                <div class="pm-progress-bar" style="width:71%;background:var(--pm-info)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="pm-card" style="min-height:160px;border-left:3px solid var(--pm-purple)">
+                        <p class="pm-stat-label" style="color:var(--pm-purple)">FULIZA LIMIT AVAILABLE</p>
+                        <div class="pm-stat-value" style="margin:6px 0">KES 14,000</div>
+                        <span class="pm-badge pm-badge-danger"><i class="bi bi-exclamation-circle"></i> KES 6,000
+                            Used</span>
+                        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+                            <div>Total Limit: <strong>KES 20,000</strong></div>
+                            <div>Daily Fee Accruing: <strong>KES 14.00</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS ROW -->
+            <div class="row g-3">
+                <div class="col-lg-4">
+                    <div class="pm-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="pm-section-title">Attention Required</h3><button class="pm-btn pm-btn-sm"
+                                (click)="openModal('attentionDetailModal')">View all</button>
+                        </div>
+                        <div class="feed-item">
+                            <div class="pm-icon-circle"
+                                style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">FZ
+                            </div>
+                            <div style="flex:1">
+                                <div style="font-weight:600;font-size:13px">Fuliza outstanding balance</div>
+                                <div style="font-size:11px;color:var(--pm-muted)">KES 6,000 utilized · Day 4 of 30
+                                </div>
+                            </div><button class="pm-btn pm-btn-sm pm-btn-danger"
+                                (click)="openModal('fulizaManagementModal')">Repay</button>
+                        </div>
+                        <div class="feed-item">
+                            <div class="pm-icon-circle"
+                                style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">DT
+                            </div>
+                            <div style="flex:1">
+                                <div style="font-weight:600;font-size:13px">Data bundle expiring soon</div>
+                                <div style="font-size:11px;color:var(--pm-muted)">2.5GB Safaricom expires in 48 hrs
+                                </div>
+                            </div><button class="pm-btn pm-btn-sm"
+                                (click)="openModal('buyDataModal')">Renew</button>
+                        </div>
+                        <div class="feed-item">
+                            <div class="pm-icon-circle"
+                                style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">MS</div>
+                            <div style="flex:1">
+                                <div style="font-weight:600;font-size:13px">M-Shwari savings goal off-track</div>
+                                <div style="font-size:11px;color:var(--pm-muted)">Deposit KES 2,000 to meet June
+                                    target</div>
+                            </div><button class="pm-btn pm-btn-sm" (click)="openModal('mShwariModal')">Save</button>
+                        </div>
+                        <div class="feed-item">
+                            <div class="pm-icon-circle"
+                                style="background:var(--pm-purple-soft);color:var(--pm-purple);font-size:12px">BP
+                            </div>
+                            <div style="flex:1">
+                                <div style="font-weight:600;font-size:13px">4,200 Bonga Points available</div>
+                                <div style="font-size:11px;color:var(--pm-muted)">Redeem for 500 Minutes or Data
+                                </div>
+                            </div><button class="pm-btn pm-btn-sm"
+                                (click)="openModal('bongaPointsModal')">Redeem</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="pm-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="pm-section-title">Smart Suggestions</h3><span
+                                class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span>
+                        </div>
+                        <div class="feed-item">
+                            <div class="pm-icon-circle"
+                                style="background:var(--pm-accent-soft);color:var(--pm-accent);font-size:12px">TN
+                            </div>
+                            <div style="flex:1">
+                                <div style="font-weight:600;font-size:13px">Tunukiwa Offer Available Now!</div>
+                                <div style="font-size:11px;color:var(--pm-muted)">1GB for 1 hour @ KES 20 (Save 80%)
+                                </div>
+                            </div><button class="pm-btn pm-btn-sm"
+                                (click)="openModal('tunukiwaOffersModal')">Claim</button>
+                        </div>
+                        <div class="feed-item">
+                            <div class="pm-icon-circle"
+                                style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">AR
+                            </div>
+                            <div style="flex:1">
+                                <div style="font-weight:600;font-size:13px">Enable auto-renew for 12GB plan</div>
+                                <div style="font-size:11px;color:var(--pm-muted)">Avoid running out of data
+                                    mid-meeting</div>
+                            </div><button class="pm-btn pm-btn-sm"
+                                (click)="openModal('airtimeAutoRenewModal')">Setup</button>
+                        </div>
+                        <div class="feed-item">
+                            <div class="pm-icon-circle"
+                                style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">IO</div>
+                            <div style="flex:1">
+                                <div style="font-weight:600;font-size:13px">Send to Airtel for free via PayMo</div>
+                                <div style="font-size:11px;color:var(--pm-muted)">Save KES 50 on interoperability
+                                    fees</div>
+                            </div><button class="pm-btn pm-btn-sm"
+                                (click)="openModal('sendMoneyCrossNetworkModal')">Send</button>
+                        </div>
+                        <div class="feed-item">
+                            <div class="pm-icon-circle"
+                                style="background:var(--pm-primary-light);color:#fff;font-size:12px">MI</div>
+                            <div style="flex:1">
+                                <div style="font-weight:600;font-size:13px">Move idle funds to Mali</div>
+                                <div style="font-size:11px;color:var(--pm-muted)">Earn 9% p.a. daily interest on KES
+                                    20,000</div>
+                            </div><button class="pm-btn pm-btn-sm"
+                                (click)="openModal('maliInvestmentModal')">Invest</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="pm-card">
+                        <div class="mb-3">
+                            <h3 class="pm-section-title">Mobile Money Actions</h3>
+                            <p class="pm-section-sub">Frequent transfers and airtime operations</p>
+                        </div>
+                        <div class="quick-action-grid">
+                            <button class="quick-action-btn" (click)="openModal('buyAirtimeModal')"><i
+                                    class="bi bi-phone text-success me-1"></i> Buy Airtime</button>
+                            <button class="quick-action-btn" (click)="openModal('buyDataModal')"><i
+                                    class="bi bi-wifi text-primary me-1"></i> Buy Data</button>
+                            <button class="quick-action-btn" (click)="openModal('sendMoneyCrossNetworkModal')"><i
+                                    class="bi bi-send text-info me-1"></i> Send Money</button>
+                            <button class="quick-action-btn" (click)="openModal('kcbMpesaModal')"><i
+                                    class="bi bi-bank text-warning me-1"></i> KCB M-Pesa</button>
+                            <button class="quick-action-btn" (click)="openModal('pochiLaBiasharaModal')"><i
+                                    class="bi bi-briefcase me-1" style="color:var(--pm-purple)"></i> Pochi</button>
+                            <button class="quick-action-btn" (click)="openModal('mPesaGlobalModal')"><i
+                                    class="bi bi-globe text-secondary me-1"></i> Global Tx</button>
+                            <button class="quick-action-btn" (click)="openModal('airtimeResaleModal')"><i
+                                    class="bi bi-shop text-danger me-1"></i> Airtime Resale</button>
+                            <button class="quick-action-btn" (click)="openModal('agentLocatorModal')"><i
+                                    class="bi bi-geo-alt me-1" style="color:var(--pm-primary)"></i> Find
+                                Agent</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pm-card">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+                    <div>
+                        <h3 class="pm-section-title"><i class="bi bi-sim" style="color:var(--pm-accent)"></i> 2.6.1
+                            — Airtime & Data Management</h3>
+                        <p class="pm-section-sub">Unified dashboard for Safaricom, Airtel, and Telkom balances,
+                            bundle status, and auto-renewals.</p>
+                    </div>
+                    <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"
+                            (click)="openModal('airtimeAutoRenewModal')"><i class="bi bi-arrow-repeat"></i>
+                            Auto-Renew</button><button class="pm-btn pm-btn-sm pm-btn-primary"
+                            (click)="openModal('addPhoneNumberModal')"><i class="bi bi-plus-lg"></i> Link
+                            Line</button></div>
+                </div>
+                <div class="table-responsive">
+                    <table class="pm-table">
+                        <thead>
+                            <tr>
+                                <th>Phone Number</th>
+                                <th>Network</th>
+                                <th>Airtime Balance</th>
+                                <th>Active Data</th>
+                                <th>Voice/SMS</th>
+                                <th>Auto-Renew</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let line of linkedLines">
+                                <td><strong>{{ line.phone }}</strong> <span class="pm-badge ms-1"
+                                        style="background:var(--pm-surface-2)">Default</span></td>
+                                <td><span [style.color]="line.networkColor" style="font-weight:600">{{ line.network }}</span></td>
+                                <td>{{ line.airtimeBalance }}</td>
+                                <td>{{ line.activeData }}</td>
+                                <td>{{ line.voiceSms }}</td>
+                                <td><span class="pm-badge" [ngClass]="line.autoRenewClass || 'pm-badge'">{{ line.autoRenew }}</span></td>
+                                <td>
+                                    <div class="d-flex gap-1">
+                                        <button class="pm-btn pm-btn-sm" (click)="openModal('buyDataModal')">Top-up</button>
+                                        <button class="pm-btn pm-btn-sm" (click)="openModal('manageLinkedLineModal')"><i class="bi bi-gear"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="pm-card">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+                    <div>
+                        <h3 class="pm-section-title"><i class="bi bi-shuffle" style="color:var(--pm-info)"></i>
+                            2.6.2 — Mobile Money Interoperability & Agents</h3>
+                        <p class="pm-section-sub">Cross-network transfers, transparent fee calculator, and nearby
+                            agent locator with GPS.</p>
+                    </div>
+                    <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"
+                            (click)="openModal('linkBankAccountModal')"><i class="bi bi-bank"></i> Link
+                            Bank</button><button class="pm-btn pm-btn-sm pm-btn-primary"
+                            (click)="openModal('sendMoneyCrossNetworkModal')"><i class="bi bi-send"></i> Send
+                            Money</button></div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <div class="utility-block">
+                            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Interoperability Transfer
+                                Network</h4>
+                            <div class="p-3 border rounded mb-2 d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="pm-icon-circle"
+                                        style="background:var(--pm-accent-soft);color:#047857"><i
+                                            class="bi bi-phone"></i></div>
+                                    <div><strong>M-Pesa to Airtel Money</strong>
+                                        <div style="font-size:11px;color:var(--pm-muted)">Real-time · Up to KES 250K
+                                        </div>
+                                    </div>
+                                </div>
+                                <div><span class="pm-badge pm-badge-success">0% PayMo Fee</span></div>
+                            </div>
+                            <div class="p-3 border rounded mb-2 d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="pm-icon-circle"
+                                        style="background:var(--pm-info-soft);color:#1D4ED8"><i
+                                            class="bi bi-phone"></i></div>
+                                    <div><strong>M-Pesa to T-Kash</strong>
+                                        <div style="font-size:11px;color:var(--pm-muted)">Real-time · Up to KES 250K
+                                        </div>
+                                    </div>
+                                </div>
+                                <div><span class="pm-badge pm-badge-success">0% PayMo Fee</span></div>
+                            </div>
+                            <div class="p-3 border rounded mb-2 d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="pm-icon-circle"
+                                        style="background:var(--pm-warning-soft);color:#B45309"><i
+                                            class="bi bi-bank"></i></div>
+                                    <div><strong>Mobile to PesaLink (Bank)</strong>
+                                        <div style="font-size:11px;color:var(--pm-muted)">Real-time to 50+ banks
+                                        </div>
+                                    </div>
+                                </div>
+                                <div><span class="pm-badge pm-badge-warning">Standard Bank Fees</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="utility-block">
+                            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Nearby Agents Locator</h4>
+                            <div class="p-3 rounded mb-3"
+                                style="background:var(--pm-surface);border:1px dashed var(--pm-border);text-align:center">
+                                <i class="bi bi-map text-muted" style="font-size:32px"></i>
+                                <div style="font-weight:600;margin-top:8px">Location Access Required</div>
+                                <div style="font-size:11px;color:var(--pm-muted)">Enable GPS to see agents near you.
+                                </div>
+                                <button class="pm-btn pm-btn-sm mt-2" (click)="openModal('agentLocatorModal')">Open
+                                    Map View</button>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1" style="font-size:12px">
+                                <span><strong>Kencom Agency (M-Pesa)</strong></span><span>120m away</span></div>
+                            <div class="d-flex justify-content-between mb-1" style="font-size:12px">
+                                <span><strong>Airtel Shop Westlands</strong></span><span>350m away</span></div>
+                            <div class="d-flex justify-content-between mb-1" style="font-size:12px">
+                                <span><strong>Equity Agent (Tuskys)</strong></span><span>400m away</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pm-card">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+                    <div>
+                        <h3 class="pm-section-title"><i class="bi bi-shield-check"
+                                style="color:var(--pm-purple)"></i> 2.6.3 — M-Pesa Deep Integration Suite</h3>
+                        <p class="pm-section-sub">Manage your Fuliza limit, M-Shwari savings, Mali investments,
+                            Pochi la Biashara and Global transfers directly.</p>
+                    </div>
+                    <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"
+                            (click)="openModal('mobileMoneyAnalyticsModal')"><i class="bi bi-graph-up"></i> M-Pesa
+                            Analytics</button></div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="utility-block text-center position-relative">
+                            <div class="pm-icon-circle mx-auto mb-2"
+                                style="background:var(--pm-danger-soft);color:var(--pm-danger)"><i
+                                    class="bi bi-arrow-repeat"></i></div>
+                            <h4 style="font-size:15px;font-weight:700;margin:0">Fuliza Management</h4>
+                            <p style="font-size:11px;color:var(--pm-muted);margin:4px 0 12px">Overdraft limit &
+                                repayment</p>
+                            <div style="font-size:20px;font-weight:700;color:var(--pm-danger)">-KES 6,000</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">Limit: KES 20,000</div>
+                            <button class="pm-btn pm-btn-sm w-100 mt-3 pm-btn-danger"
+                                (click)="openModal('fulizaManagementModal')">Repay & Manage</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="utility-block text-center position-relative">
+                            <div class="pm-icon-circle mx-auto mb-2"
+                                style="background:var(--pm-info-soft);color:var(--pm-info)"><i
+                                    class="bi bi-piggy-bank"></i></div>
+                            <h4 style="font-size:15px;font-weight:700;margin:0">M-Shwari</h4>
+                            <p style="font-size:11px;color:var(--pm-muted);margin:4px 0 12px">Savings & Loan status
+                            </p>
+                            <div style="font-size:20px;font-weight:700;color:var(--pm-info)">KES 12,450</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">Loan Limit: KES 8,000</div>
+                            <button class="pm-btn pm-btn-sm w-100 mt-3" (click)="openModal('mShwariModal')">Save or
+                                Borrow</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="utility-block text-center position-relative">
+                            <div class="pm-icon-circle mx-auto mb-2"
+                                style="background:var(--pm-accent-soft);color:var(--pm-accent)"><i
+                                    class="bi bi-briefcase"></i></div>
+                            <h4 style="font-size:15px;font-weight:700;margin:0">Pochi La Biashara</h4>
+                            <p style="font-size:11px;color:var(--pm-muted);margin:4px 0 12px">Business wallet
+                                separation</p>
+                            <div style="font-size:20px;font-weight:700;color:var(--pm-accent)">KES 45,900</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">Received today: KES 8,500</div>
+                            <button class="pm-btn pm-btn-sm w-100 mt-3 pm-btn-accent"
+                                (click)="openModal('pochiLaBiasharaModal')">View Pochi</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="utility-block text-center position-relative">
+                            <div class="pm-icon-circle mx-auto mb-2"
+                                style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i
+                                    class="bi bi-bank"></i></div>
+                            <h4 style="font-size:15px;font-weight:700;margin:0">KCB M-Pesa</h4>
+                            <p style="font-size:11px;color:var(--pm-muted);margin:4px 0 12px">Bank account
+                                integration</p>
+                            <div style="font-size:20px;font-weight:700">KES 0.00</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">Target Savings: Active</div>
+                            <button class="pm-btn pm-btn-sm w-100 mt-3" (click)="openModal('kcbMpesaModal')">Open
+                                Account</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="utility-block text-center position-relative">
+                            <div class="pm-icon-circle mx-auto mb-2"
+                                style="background:var(--pm-primary-light);color:#fff"><i
+                                    class="bi bi-graph-up-arrow"></i></div>
+                            <h4 style="font-size:15px;font-weight:700;margin:0">Mali Investment</h4>
+                            <p style="font-size:11px;color:var(--pm-muted);margin:4px 0 12px">Unit trust / Money
+                                market</p>
+                            <div style="font-size:20px;font-weight:700;color:var(--pm-primary)">KES 102,500</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">Earned YTD: KES 4,120 (9.2% p.a)</div>
+                            <button class="pm-btn pm-btn-sm w-100 mt-3"
+                                (click)="openModal('maliInvestmentModal')">Invest More</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="utility-block text-center position-relative">
+                            <div class="pm-icon-circle mx-auto mb-2"
+                                style="background:var(--pm-gradient-slate);color:#fff"><i class="bi bi-globe"></i>
+                            </div>
+                            <h4 style="font-size:15px;font-weight:700;margin:0">M-Pesa Global</h4>
+                            <p style="font-size:11px;color:var(--pm-muted);margin:4px 0 12px">International
+                                remittance</p>
+                            <div style="font-size:20px;font-weight:700">3 Transfers</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">This month to UG/TZ</div>
+                            <button class="pm-btn pm-btn-sm w-100 mt-3" (click)="openModal('mPesaGlobalModal')">Send
+                                Global</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pm-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="pm-section-title"><i class="bi bi-clock-history" style="color:var(--pm-muted)"></i>
+                        Recent Mobile Money & Airtime Transactions</h3><button class="pm-btn pm-btn-sm"
+                        (click)="openModal('transactionHistoryModal')">View All</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="pm-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Details</th>
+                                <th>Amount</th>
+                                <th>Network/Wallet</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let tx of recentTransactions">
+                                <td>{{ tx.date }}</td>
+                                <td>{{ tx.type }}</td>
+                                <td>{{ tx.details }}</td>
+                                <td><strong [style.color]="tx.amount.startsWith('-') ? 'var(--pm-danger)' : 'var(--pm-accent)'">{{ tx.amount }}</strong></td>
+                                <td>{{ tx.network }}</td>
+                                <td><span class="pm-badge" [ngClass]="tx.statusClass">{{ tx.status }}</span></td>
+                                <td><button class="pm-btn pm-btn-sm" (click)="openModal('receiptModal')"><i
+                                            class="bi bi-receipt"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 24 MODALS FOR COMPREHENSIVE FUNCTIONALITY -->
+<!-- ============================================================ -->
+
+<!-- 1. Buy Airtime Modal -->
+<div class="modal fade resettable" [class.show]="isModalOpen['buyAirtimeModal']" [style.display]="isModalOpen['buyAirtimeModal'] ? 'block' : 'none'" id="buyAirtimeModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-phone text-success me-2"></i>Buy Airtime</h5><button type="button" class="btn-close" (click)="closeModal('buyAirtimeModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <div class="pm-stepper">
+                    <ng-container *ngFor="let label of getLabels('airtime'); let i = index">
+                        <div class="pm-step" [class.completed]="(i + 1) < flows['airtime']" [class.active]="(i + 1) === flows['airtime']">
+                            <div class="pm-step-num">
+                                <i class="bi bi-check" *ngIf="(i + 1) < flows['airtime']"></i>
+                                <span *ngIf="(i + 1) >= flows['airtime']">{{ i + 1 }}</span>
+                            </div>
+                            <div class="pm-step-label">{{ label }}</div>
+                        </div>
+                        <div class="pm-step-line" *ngIf="i < getLabels('airtime').length - 1"></div>
+                    </ng-container>
+                </div>
+                
+                <div id="airtimeStep1" class="fade-step" [class.active]="flows['airtime'] === 1">
+                    <h6 style="font-weight:700">Step 1: Details</h6>
+                    <div class="pm-tab-pills mb-3"><button class="pm-tab-pill active">My Number</button><button class="pm-tab-pill">Other Number</button></div>
+                    <div class="mb-3"><label class="pm-form-label">Phone Number</label><select class="pm-form-control">
+                            <option>0712 345 890 (Safaricom)</option>
+                            <option>0733 987 456 (Airtel)</option>
+                            <option>0777 112 233 (Telkom)</option>
+                        </select></div><label class="pm-form-label">Quick Amount</label>
+                    <div class="pm-amount-chips mb-3">
+                        <span class="pm-amount-chip" [class.active]="chips['airAmt'] === '50'" (click)="chips['airAmt'] = '50'">50</span>
+                        <span class="pm-amount-chip" [class.active]="chips['airAmt'] === '100'" (click)="chips['airAmt'] = '100'">100</span>
+                        <span class="pm-amount-chip" [class.active]="chips['airAmt'] === '250'" (click)="chips['airAmt'] = '250'">250</span>
+                        <span class="pm-amount-chip" [class.active]="chips['airAmt'] === '500'" (click)="chips['airAmt'] = '500'">500</span>
+                        <span class="pm-amount-chip" [class.active]="chips['airAmt'] === '1000'" (click)="chips['airAmt'] = '1000'">1,000</span>
+                    </div>
+                    <input id="airAmt" type="number" class="pm-form-control" [(ngModel)]="chips['airAmt']" placeholder="Custom amount">
+                </div>
+                
+                <div id="airtimeStep2" class="fade-step" [class.active]="flows['airtime'] === 2">
+                    <h6 style="font-weight:700">Step 2: Pay</h6>
+                    <div class="mb-3"><label class="pm-form-label">Payment Method</label>
+                        <div class="p-3 border rounded mb-2 d-flex gap-3 align-items-center" [style.borderColor]="paymentMethod === 'mpesa' ? 'var(--pm-primary)' : ''" [style.background]="paymentMethod === 'mpesa' ? 'rgba(79,70,229,.04)' : ''" (click)="paymentMethod = 'mpesa'">
+                            <input type="radio" [checked]="paymentMethod === 'mpesa'" name="airpay"><i class="bi bi-wallet2 text-primary" style="font-size:20px"></i>
+                            <div><strong>M-Pesa Wallet</strong>
+                                <div style="font-size:11px;color:var(--pm-muted)">KES 48,250 available</div>
+                            </div>
+                        </div>
+                        <div class="p-3 border rounded d-flex gap-3 align-items-center" [style.borderColor]="paymentMethod === 'bank' ? 'var(--pm-primary)' : ''" [style.background]="paymentMethod === 'bank' ? 'rgba(79,70,229,.04)' : ''" (click)="paymentMethod = 'bank'">
+                            <input type="radio" [checked]="paymentMethod === 'bank'" name="airpay"><i class="bi bi-bank text-info" style="font-size:20px"></i>
+                            <div><strong>Equity Bank</strong>
+                                <div style="font-size:11px;color:var(--pm-muted)">***4521</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                        <div class="d-flex justify-content-between mb-1"><span>Amount</span><strong>KES {{ chips['airAmt'] }}</strong></div>
+                        <div class="d-flex justify-content-between mb-1"><span>Fee</span><strong>KES 0</strong></div>
+                        <hr class="pm-divider">
+                        <div class="d-flex justify-content-between"><span style="font-weight:700">Total</span><strong style="color:var(--pm-primary);font-size:18px">KES {{ chips['airAmt'] }}</strong></div>
+                    </div>
+                </div>
+                
+                <div id="airtimeStep3" class="fade-step" [class.active]="flows['airtime'] === 3">
+                    <div class="pm-receipt">
+                        <div class="receipt-icon"><i class="bi bi-check"></i></div>
+                        <h5 style="font-weight:700;color:var(--pm-accent)">Airtime Purchased!</h5>
+                        <p style="font-size:13px;color:var(--pm-ink-soft)">KES {{ chips['airAmt'] }} added to 0712 345 890.</p>
+                    </div>
+                </div>
+
+                <div class="pm-loading-overlay" *ngIf="processLoading['airtime']">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="pm-btn" (click)="closeModal('buyAirtimeModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="nextFlowStep('airtime', 3)">
+                    <span *ngIf="flows['airtime'] === 1">Continue <i class="bi bi-arrow-right"></i></span>
+                    <span *ngIf="flows['airtime'] === 2">Confirm & Pay <i class="bi bi-check2"></i></span>
+                    <span *ngIf="flows['airtime'] === 3">Done</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Buy Data Modal -->
+<div class="modal fade resettable" [class.show]="isModalOpen['buyDataModal']" [style.display]="isModalOpen['buyDataModal'] ? 'block' : 'none'" id="buyDataModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-wifi text-primary me-2"></i>Buy Data Bundles</h5><button type="button" class="btn-close" (click)="closeModal('buyDataModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <div class="pm-tab-pills mb-3">
+                    <button class="pm-tab-pill" [class.active]="activeTabs['dataNet'] === 'saf'" (click)="activeTabs['dataNet'] = 'saf'">Safaricom</button>
+                    <button class="pm-tab-pill" [class.active]="activeTabs['dataNet'] === 'air'" (click)="activeTabs['dataNet'] = 'air'">Airtel</button>
+                    <button class="pm-tab-pill" [class.active]="activeTabs['dataNet'] === 'tk'" (click)="activeTabs['dataNet'] = 'tk'">Telkom</button>
+                </div>
+                <div class="mb-3"><label class="pm-form-label">Phone Number</label><input type="text" class="pm-form-control" value="0712 345 890"></div>
+                
+                <div id="dataNet-saf" class="tab-panel" [class.active]="activeTabs['dataNet'] === 'saf'"><label class="pm-form-label">Select Bundle</label>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-4 col-6"><div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="selectedBundle === '1.2GB' ? 'var(--pm-primary)' : ''" [style.background]="selectedBundle === '1.2GB' ? 'rgba(79,70,229,.04)' : ''" (click)="selectedBundle = '1.2GB'"><strong>1.2GB</strong><br><span style="font-size:11px;color:var(--pm-muted)">24 Hrs</span><br>KES 99</div></div>
+                        <div class="col-md-4 col-6"><div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="selectedBundle === '2.5GB' ? 'var(--pm-primary)' : ''" [style.background]="selectedBundle === '2.5GB' ? 'rgba(79,70,229,.04)' : ''" (click)="selectedBundle = '2.5GB'"><strong>2.5GB</strong><br><span style="font-size:11px;color:var(--pm-muted)">7 Days</span><br>KES 300</div></div>
+                        <div class="col-md-4 col-6"><div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="selectedBundle === '12GB' ? 'var(--pm-primary)' : ''" [style.background]="selectedBundle === '12GB' ? 'rgba(79,70,229,.04)' : ''" (click)="selectedBundle = '12GB'"><strong>12GB</strong><br><span style="font-size:11px;color:var(--pm-muted)">30 Days</span><br>KES 1,000</div></div>
+                        <div class="col-md-4 col-6"><div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="selectedBundle === '25GB' ? 'var(--pm-primary)' : ''" [style.background]="selectedBundle === '25GB' ? 'rgba(79,70,229,.04)' : ''" (click)="selectedBundle = '25GB'"><strong>25GB</strong><br><span style="font-size:11px;color:var(--pm-muted)">30 Days</span><br>KES 2,000</div></div>
+                        <div class="col-md-4 col-6"><div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="selectedBundle === 'No Expiry' ? 'var(--pm-primary)' : ''" [style.background]="selectedBundle === 'No Expiry' ? 'rgba(79,70,229,.04)' : ''" (click)="selectedBundle = 'No Expiry'"><strong>No Expiry</strong><br><span style="font-size:11px;color:var(--pm-muted)">1GB</span><br>KES 100</div></div>
+                        <div class="col-md-4 col-6"><div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="selectedBundle === 'All in One' ? 'var(--pm-primary)' : ''" [style.background]="selectedBundle === 'All in One' ? 'rgba(79,70,229,.04)' : ''" (click)="selectedBundle = 'All in One'"><strong>All in One</strong><br><span style="font-size:11px;color:var(--pm-muted)">15GB+Min</span><br>KES 2,000</div></div>
+                    </div>
+                </div>
+                <div id="dataNet-air" class="tab-panel" [class.active]="activeTabs['dataNet'] === 'air'">
+                    <p class="text-muted" style="font-size:13px">Airtel Amazing Data offers will load here.</p>
+                </div>
+                <div id="dataNet-tk" class="tab-panel" [class.active]="activeTabs['dataNet'] === 'tk'">
+                    <p class="text-muted" style="font-size:13px">Telkom Freedom Data offers will load here.</p>
+                </div>
+                <div class="form-check mb-3"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Buy once (do not auto-renew)</label></div>
+                <div class="mb-3"><label class="pm-form-label">Pay Using</label><select class="pm-form-control">
+                        <option>M-Pesa (Direct)</option>
+                        <option>Airtime Balance (KES 1,200)</option>
+                        <option>Bonga Points (4,200 pts)</option>
+                    </select></div>
+
+                <ng-container *ngIf="!modalState['buyDataModal']?.processed">
+                    <div class="pm-loading-overlay" *ngIf="modalState['buyDataModal']?.loading">
+                        <div class="pm-spinner"></div>
+                        <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                    </div>
+                </ng-container>
+                <div class="pm-receipt" *ngIf="modalState['buyDataModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['buyDataModal']?.msg }}</h5>
+                    <p style="font-size:12px;color:var(--pm-muted)" *ngIf="modalState['buyDataModal']?.ref">Ref: {{ modalState['buyDataModal']?.ref }}</p>
+                    <div class="mt-3"><button class="pm-btn pm-btn-sm" (click)="closeModal('buyDataModal')"><i class="bi bi-download"></i> Receipt</button></div>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['buyDataModal']?.processed">
+                <button class="pm-btn" (click)="closeModal('buyDataModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="processAction('buyDataModal','12GB Data Bundle Purchased Successfully!','BND-20250627-01')">Buy Bundle KES 1,000</button>
+            </div>
+            <div class="modal-footer" *ngIf="modalState['buyDataModal']?.processed">
+                <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('buyDataModal')">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. Send Money Cross Network -->
+<div class="modal fade resettable" [class.show]="isModalOpen['sendMoneyCrossNetworkModal']" [style.display]="isModalOpen['sendMoneyCrossNetworkModal'] ? 'block' : 'none'" id="sendMoneyCrossNetworkModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-send text-info me-2"></i>Send Money Across Networks</h5>
+                <button type="button" class="btn-close" (click)="closeModal('sendMoneyCrossNetworkModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <div class="pm-stepper">
+                    <ng-container *ngFor="let label of getLabels('xnet'); let i = index">
+                        <div class="pm-step" [class.completed]="(i + 1) < flows['xnet']" [class.active]="(i + 1) === flows['xnet']">
+                            <div class="pm-step-num">
+                                <i class="bi bi-check" *ngIf="(i + 1) < flows['xnet']"></i>
+                                <span *ngIf="(i + 1) >= flows['xnet']">{{ i + 1 }}</span>
+                            </div>
+                            <div class="pm-step-label">{{ label }}</div>
+                        </div>
+                        <div class="pm-step-line" *ngIf="i < getLabels('xnet').length - 1"></div>
+                    </ng-container>
+                </div>
+                <div id="xnetStep1" class="fade-step" [class.active]="flows['xnet'] === 1">
+                    <h6 style="font-weight:700">Step 1: Recipient</h6>
+                    <div class="mb-3"><label class="pm-form-label">Recipient Number</label><input type="text" class="pm-form-control" placeholder="07XX XXX XXX"></div>
+                    <div class="mb-3"><label class="pm-form-label">Destination Network</label><select class="pm-form-control">
+                            <option>Airtel Money</option>
+                            <option>T-Kash</option>
+                            <option>M-Pesa</option>
+                        </select></div>
+                    <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Send to Airtel Money or T-Kash easily. Name verification will appear on the next step.</div>
+                </div>
+                <div id="xnetStep2" class="fade-step" [class.active]="flows['xnet'] === 2">
+                    <h6 style="font-weight:700">Step 2: Amount & Verify</h6>
+                    <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+                        <div class="d-flex justify-content-between mb-1"><span class="text-muted">Sending to</span><strong>John Doe</strong></div>
+                        <div class="d-flex justify-content-between"><span class="text-muted">Network</span><strong>Airtel Money</strong></div>
+                    </div>
+                    <div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input type="number" class="pm-form-control" value="1500"></div>
+                    <div class="p-3 border rounded">
+                        <div class="d-flex justify-content-between mb-1"><span>Amount</span><strong>KES 1,500</strong></div>
+                        <div class="d-flex justify-content-between mb-1"><span>Network Fee</span><strong>KES 22</strong></div>
+                        <hr class="pm-divider">
+                        <div class="d-flex justify-content-between"><span style="font-weight:700">Total Deducted</span><strong style="color:var(--pm-primary)">KES 1,522</strong></div>
+                    </div>
+                </div>
+                <div id="xnetStep3" class="fade-step" [class.active]="flows['xnet'] === 3">
+                    <div class="pm-receipt">
+                        <div class="receipt-icon"><i class="bi bi-check"></i></div>
+                        <h5 style="font-weight:700;color:var(--pm-accent)">Money Sent!</h5>
+                        <p style="font-size:13px;color:var(--pm-ink-soft)">KES 1,500 successfully sent to John Doe (Airtel).</p>
+                        <div style="font-size:11px;color:var(--pm-muted)">Ref: XNET-PM-20250627</div>
+                    </div>
+                </div>
+                <div class="pm-loading-overlay" *ngIf="processLoading['xnet']">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="pm-btn" (click)="closeModal('sendMoneyCrossNetworkModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="nextFlowStep('xnet', 3)">
+                    <span *ngIf="flows['xnet'] === 1">Verify <i class="bi bi-arrow-right"></i></span>
+                    <span *ngIf="flows['xnet'] === 2">Confirm & Pay <i class="bi bi-check2"></i></span>
+                    <span *ngIf="flows['xnet'] === 3">Done</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 4. Agent Locator -->
+<div class="modal fade resettable" [class.show]="isModalOpen['agentLocatorModal']" [style.display]="isModalOpen['agentLocatorModal'] ? 'block' : 'none'" id="agentLocatorModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-geo-alt text-primary me-2"></i>Find Nearby Mobile Money Agents</h5><button type="button" class="btn-close" (click)="closeModal('agentLocatorModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-tab-pills mb-3">
+                    <button class="pm-tab-pill" [class.active]="activeTabs['agentView'] === 'list'" (click)="activeTabs['agentView'] = 'list'">List View</button>
+                    <button class="pm-tab-pill" [class.active]="activeTabs['agentView'] === 'map'" (click)="activeTabs['agentView'] = 'map'">Map View</button>
+                </div>
+                <div class="mb-3 d-flex gap-2"><select class="pm-form-control" style="width:auto">
+                        <option>All Networks</option>
+                        <option>M-Pesa Only</option>
+                        <option>Airtel Money Only</option>
+                    </select><input type="text" class="pm-form-control" placeholder="Search area (e.g. Westlands)">
+                </div>
+                <div id="agentView-list" class="tab-panel" [class.active]="activeTabs['agentView'] === 'list'">
+                    <div class="status-row">
+                        <div><strong>Kencom Agency</strong> <span class="pm-badge pm-badge-success">M-Pesa</span>
+                            <div style="font-size:11px;color:var(--pm-muted)">Cash-in / Cash-out · 4.8 ⭐ (120 reviews)</div>
+                        </div>
+                        <div class="text-end"><div style="font-weight:700">120m</div><button class="pm-btn pm-btn-sm mt-1">Directions</button></div>
+                    </div>
+                    <div class="status-row">
+                        <div><strong>Westlands Comm.</strong> <span class="pm-badge pm-badge-danger">Airtel</span><span class="pm-badge pm-badge-success ms-1">M-Pesa</span>
+                            <div style="font-size:11px;color:var(--pm-muted)">Super Agent · 4.5 ⭐ (85 reviews)</div>
+                        </div>
+                        <div class="text-end"><div style="font-weight:700">350m</div><button class="pm-btn pm-btn-sm mt-1">Directions</button></div>
+                    </div>
+                    <div class="status-row">
+                        <div><strong>Tuskys Kiosk</strong> <span class="pm-badge pm-badge-info">T-Kash</span>
+                            <div style="font-size:11px;color:var(--pm-muted)">Cash-in only · 4.0 ⭐ (22 reviews)</div>
+                        </div>
+                        <div class="text-end"><div style="font-weight:700">400m</div><button class="pm-btn pm-btn-sm mt-1">Directions</button></div>
+                    </div>
+                </div>
+                <div id="agentView-map" class="tab-panel" [class.active]="activeTabs['agentView'] === 'map'">
+                    <div style="height:300px;background:#E5E7EB;border-radius:var(--pm-r-md);display:flex;align-items:center;justify-content:center;color:var(--pm-muted);font-weight:600">
+                        <i class="bi bi-map me-2" style="font-size:24px"></i> Interactive Map Rendering...</div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn" (click)="closeModal('agentLocatorModal')">Close</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 5. Fuliza Management -->
+<div class="modal fade resettable" [class.show]="isModalOpen['fulizaManagementModal']" [style.display]="isModalOpen['fulizaManagementModal'] ? 'block' : 'none'" id="fulizaManagementModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-arrow-repeat text-danger me-2"></i>Fuliza M-Pesa Management</h5><button type="button" class="btn-close" (click)="closeModal('fulizaManagementModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['fulizaManagementModal']?.processed">
+                    <div class="text-center mb-4">
+                        <div style="font-size:11px;font-weight:700;color:var(--pm-muted);letter-spacing:1px">AVAILABLE LIMIT</div>
+                        <div style="font-size:36px;font-weight:800;color:var(--pm-danger);font-family:var(--pm-font-display);line-height:1">KES 14,000</div>
+                        <div style="font-size:13px;color:var(--pm-ink-soft);margin-top:8px">Total Limit: <strong>KES 20,000</strong></div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Utilized: KES 6,000</span><span>30%</span></div>
+                        <div class="pm-progress" style="height:10px;border-radius:5px"><div class="pm-progress-bar" style="width:30%;background:var(--pm-danger)"></div></div>
+                    </div>
+                    <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft)">
+                        <div class="d-flex justify-content-between mb-1"><span style="color:#991B1B;font-size:13px">Outstanding Balance</span><strong style="color:var(--pm-danger)">KES 6,000</strong></div>
+                        <div class="d-flex justify-content-between mb-1"><span style="color:#991B1B;font-size:13px">Accrued Fees (4 days)</span><strong style="color:var(--pm-danger)">KES 56.00</strong></div>
+                        <div class="d-flex justify-content-between"><span style="color:#991B1B;font-size:13px">Total Due</span><strong style="color:var(--pm-danger);font-size:16px">KES 6,056.00</strong></div>
+                    </div>
+                    <div class="mb-3"><label class="pm-form-label">Repay Amount</label><input type="number" class="pm-form-control" value="6056"></div>
+                    <div class="mb-3"><label class="pm-form-label">Source</label><select class="pm-form-control">
+                            <option>PayMo Wallet</option>
+                            <option>Bank (Equity)</option>
+                        </select></div>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['fulizaManagementModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['fulizaManagementModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['fulizaManagementModal']?.msg }}</h5>
+                    <p style="font-size:12px;color:var(--pm-muted)" *ngIf="modalState['fulizaManagementModal']?.ref">Ref: {{ modalState['fulizaManagementModal']?.ref }}</p>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['fulizaManagementModal']?.processed">
+                <button class="pm-btn" (click)="closeModal('fulizaManagementModal')">Close</button>
+                <button class="pm-btn pm-btn-danger" (click)="processAction('fulizaManagementModal','Fuliza balance fully repaid! Limit restored to KES 20,000.','FUL-20250627')">Repay KES 6,056</button>
+            </div>
+            <div class="modal-footer" *ngIf="modalState['fulizaManagementModal']?.processed">
+                <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('fulizaManagementModal')">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 6. M-Shwari -->
+<div class="modal fade resettable" [class.show]="isModalOpen['mShwariModal']" [style.display]="isModalOpen['mShwariModal'] ? 'block' : 'none'" id="mShwariModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-piggy-bank text-info me-2"></i>M-Shwari Services</h5><button type="button" class="btn-close" (click)="closeModal('mShwariModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['mShwariModal']?.processed">
+                    <div class="pm-tab-pills mb-3">
+                        <button class="pm-tab-pill" [class.active]="activeTabs['mshwariTab'] === 'save'" (click)="activeTabs['mshwariTab'] = 'save'">Save</button>
+                        <button class="pm-tab-pill" [class.active]="activeTabs['mshwariTab'] === 'loan'" (click)="activeTabs['mshwariTab'] = 'loan'">Loan</button>
+                        <button class="pm-tab-pill" [class.active]="activeTabs['mshwariTab'] === 'lock'" (click)="activeTabs['mshwariTab'] = 'lock'">Lock Savings</button>
+                    </div>
+                    <div id="mshwariTab-save" class="tab-panel" [class.active]="activeTabs['mshwariTab'] === 'save'">
+                        <div class="p-3 rounded mb-3 text-center" style="background:var(--pm-info-soft)"><div style="font-size:11px;font-weight:700;color:#1E40AF">SAVINGS BALANCE</div><div style="font-size:28px;font-weight:700;color:var(--pm-info)">KES 12,450</div></div>
+                        <div class="mb-3"><label class="pm-form-label">Action</label><select class="pm-form-control"><option>Deposit to M-Shwari</option><option>Withdraw to M-Pesa</option></select></div>
+                        <div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input type="number" class="pm-form-control" value="2000"></div>
+                        <button class="pm-btn pm-btn-primary w-100" (click)="processAction('mShwariModal','Successfully deposited KES 2,000 to M-Shwari Savings.','')">Process Deposit</button>
+                    </div>
+                    <div id="mshwariTab-loan" class="tab-panel" [class.active]="activeTabs['mshwariTab'] === 'loan'">
+                        <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);text-align:center"><div style="font-size:11px;font-weight:700;color:var(--pm-muted)">LOAN LIMIT</div><div style="font-size:28px;font-weight:700">KES 8,000</div></div>
+                        <p style="font-size:13px;color:var(--pm-ink-soft)">No active loan. You can borrow up to your limit at a facility fee of 9% for 30 days.</p>
+                        <div class="mb-3"><label class="pm-form-label">Request Loan Amount</label><input type="number" class="pm-form-control" placeholder="Max 8,000"></div>
+                        <button class="pm-btn pm-btn-primary w-100" (click)="processAction('mShwariModal','Loan request of KES 5,000 approved and disbursed to M-Pesa.','')">Request Loan</button>
+                    </div>
+                    <div id="mshwariTab-lock" class="tab-panel" [class.active]="activeTabs['mshwariTab'] === 'lock'">
+                        <p style="font-size:13px;color:var(--pm-ink-soft)">Lock your savings to earn higher interest (up to 6% p.a.) and prevent early withdrawal.</p>
+                        <div class="mb-3"><label class="pm-form-label">Amount to Lock</label><input type="number" class="pm-form-control" value="5000"></div>
+                        <div class="mb-3"><label class="pm-form-label">Duration</label><select class="pm-form-control"><option>1 Month</option><option>3 Months</option><option>6 Months</option></select></div>
+                        <button class="pm-btn pm-btn-primary w-100" (click)="processAction('mShwariModal','KES 5,000 successfully locked for 3 months.','')">Lock Savings</button>
+                    </div>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['mShwariModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['mShwariModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['mShwariModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['mShwariModal']?.processed"><button class="pm-btn" (click)="closeModal('mShwariModal')">Close</button></div>
+            <div class="modal-footer" *ngIf="modalState['mShwariModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('mShwariModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 7. Pochi La Biashara -->
+<div class="modal fade resettable" [class.show]="isModalOpen['pochiLaBiasharaModal']" [style.display]="isModalOpen['pochiLaBiasharaModal'] ? 'block' : 'none'" id="pochiLaBiasharaModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-briefcase me-2" style="color:var(--pm-purple)"></i>Pochi La Biashara</h5><button type="button" class="btn-close" (click)="closeModal('pochiLaBiasharaModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['pochiLaBiasharaModal']?.processed">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6"><div class="p-3 rounded text-center" style="background:var(--pm-purple-soft)"><div style="font-size:11px;font-weight:700;color:#6D28D9">POCHI BALANCE</div><div style="font-size:28px;font-weight:700;color:var(--pm-purple)">KES 45,900</div><button class="pm-btn pm-btn-sm mt-2" (click)="processAction('pochiLaBiasharaModal','Funds withdrawn from Pochi to Main M-Pesa account successfully.','')">Withdraw to Main</button></div></div>
+                        <div class="col-md-6"><div class="p-3 rounded h-100" style="background:var(--pm-surface-2)"><div style="font-size:11px;font-weight:700;color:var(--pm-muted)">QUICK STATS</div><div class="mt-2 d-flex justify-content-between"><span>Received Today</span><strong style="color:var(--pm-accent)">KES 8,500</strong></div><div class="mt-2 d-flex justify-content-between"><span>Txn Count</span><strong>12 Payments</strong></div><div class="mt-2 d-flex justify-content-between"><span>Opt-in Status</span><span class="pm-badge pm-badge-success">Active</span></div></div></div>
+                    </div>
+                    <h6 style="font-weight:700">Recent Pochi Transactions</h6>
+                    <div class="table-responsive">
+                        <table class="pm-table">
+                            <thead><tr><th>Time</th><th>Customer</th><th>Amount</th><th>Status</th></tr></thead>
+                            <tbody>
+                                <tr *ngFor="let pt of pochiTransactions"><td>{{ pt.time }}</td><td>{{ pt.customer }}</td><td>{{ pt.amount }}</td><td><span class="pm-badge pm-badge-success">{{ pt.status }}</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['pochiLaBiasharaModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['pochiLaBiasharaModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['pochiLaBiasharaModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['pochiLaBiasharaModal']?.processed">
+                <button class="pm-btn" (click)="closeModal('pochiLaBiasharaModal')">Close</button>
+                <button class="pm-btn pm-btn-primary" (click)="openModal('exportStatementModal')">Export Statement</button>
+            </div>
+            <div class="modal-footer" *ngIf="modalState['pochiLaBiasharaModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('pochiLaBiasharaModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 8. M-Pesa Global -->
+<div class="modal fade resettable" [class.show]="isModalOpen['mPesaGlobalModal']" [style.display]="isModalOpen['mPesaGlobalModal'] ? 'block' : 'none'" id="mPesaGlobalModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-globe me-2 text-secondary"></i>M-Pesa Global Transfers</h5>
+                <button type="button" class="btn-close" (click)="closeModal('mPesaGlobalModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <div class="pm-stepper">
+                    <ng-container *ngFor="let label of getLabels('global'); let i = index">
+                        <div class="pm-step" [class.completed]="(i + 1) < flows['global']" [class.active]="(i + 1) === flows['global']">
+                            <div class="pm-step-num">
+                                <i class="bi bi-check" *ngIf="(i + 1) < flows['global']"></i>
+                                <span *ngIf="(i + 1) >= flows['global']">{{ i + 1 }}</span>
+                            </div>
+                            <div class="pm-step-label">{{ label }}</div>
+                        </div>
+                        <div class="pm-step-line" *ngIf="i < getLabels('global').length - 1"></div>
+                    </ng-container>
+                </div>
+                <div id="globalStep1" class="fade-step" [class.active]="flows['global'] === 1">
+                    <h6 style="font-weight:700">Step 1: Destination</h6>
+                    <div class="mb-3"><label class="pm-form-label">Send To</label><select class="pm-form-control"><option>Mobile Number (East Africa)</option><option>Bank Account (Global)</option><option>Western Union Location</option><option>PayPal</option></select></div>
+                    <div class="mb-3"><label class="pm-form-label">Country</label><select class="pm-form-control"><option>Uganda (MTN / Airtel)</option><option>Tanzania (Vodacom / Airtel)</option><option>Rwanda (MTN)</option></select></div>
+                    <div class="mb-3"><label class="pm-form-label">Recipient Number</label><input type="text" class="pm-form-control" placeholder="+256 7XX XXX XXX"></div>
+                </div>
+                <div id="globalStep2" class="fade-step" [class.active]="flows['global'] === 2">
+                    <h6 style="font-weight:700">Step 2: Amount</h6>
+                    <div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input type="number" class="pm-form-control" value="5000"></div>
+                    <div class="p-3 border rounded mb-3">
+                        <div class="d-flex justify-content-between mb-1"><span class="text-muted">Exchange Rate</span><strong>1 KES = 28.5 UGX</strong></div>
+                        <div class="d-flex justify-content-between mb-1"><span class="text-muted">Recipient gets</span><strong style="color:var(--pm-accent)">142,500 UGX</strong></div>
+                        <div class="d-flex justify-content-between"><span class="text-muted">Transfer Fee</span><strong>KES 100</strong></div>
+                    </div>
+                    <div class="mb-3"><label class="pm-form-label">Source of Funds</label><select class="pm-form-control"><option>M-Pesa</option><option>PayMo Wallet</option></select></div>
+                </div>
+                <div id="globalStep3" class="fade-step" [class.active]="flows['global'] === 3">
+                    <div class="pm-receipt">
+                        <div class="receipt-icon"><i class="bi bi-check"></i></div>
+                        <h5 style="font-weight:700;color:var(--pm-accent)">Global Transfer Sent</h5>
+                        <p style="font-size:13px;color:var(--pm-ink-soft)">142,500 UGX sent successfully to +256 7XX XXX XXX.</p>
+                    </div>
+                </div>
+                <div class="pm-loading-overlay" *ngIf="processLoading['global']">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="pm-btn" (click)="closeModal('mPesaGlobalModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="nextFlowStep('global', 3)">
+                    <span *ngIf="flows['global'] === 1">Next <i class="bi bi-arrow-right"></i></span>
+                    <span *ngIf="flows['global'] === 2">Confirm & Pay <i class="bi bi-check2"></i></span>
+                    <span *ngIf="flows['global'] === 3">Done</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 9. Airtime Auto-Renew -->
+<div class="modal fade resettable" [class.show]="isModalOpen['airtimeAutoRenewModal']" [style.display]="isModalOpen['airtimeAutoRenewModal'] ? 'block' : 'none'" id="airtimeAutoRenewModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-arrow-repeat text-success me-2"></i>Auto-Renew Rules</h5>
+                <button type="button" class="btn-close" (click)="closeModal('airtimeAutoRenewModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['airtimeAutoRenewModal']?.processed">
+                    <div class="mb-3"><label class="pm-form-label">Select Line</label><select class="pm-form-control"><option>0712 345 890 (Safaricom)</option><option>0733 987 456 (Airtel)</option></select></div>
+                    <div class="mb-3"><label class="pm-form-label">Type</label><select class="pm-form-control"><option>Data Bundle</option><option>Airtime Top-up</option></select></div>
+                    <div class="mb-3"><label class="pm-form-label">Bundle/Amount</label><select class="pm-form-control"><option>12GB Monthly (KES 1,000)</option><option>25GB Monthly (KES 2,000)</option></select></div>
+                    <div class="mb-3"><label class="pm-form-label">Trigger Rule</label><select class="pm-form-control"><option>When bundle expires (time)</option><option>When data drops below 500MB</option><option>Specific date (e.g. 1st of month)</option></select></div>
+                    <div class="p-3 rounded" style="background:var(--pm-surface-2)"><div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Charge from PayMo Wallet first, fallback to M-Pesa</label></div></div>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['airtimeAutoRenewModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['airtimeAutoRenewModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['airtimeAutoRenewModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['airtimeAutoRenewModal']?.processed">
+                <button class="pm-btn" (click)="closeModal('airtimeAutoRenewModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="processAction('airtimeAutoRenewModal','Auto-renew rule created successfully!','')">Save Rule</button>
+            </div>
+            <div class="modal-footer" *ngIf="modalState['airtimeAutoRenewModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('airtimeAutoRenewModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 10. Tunukiwa Offers -->
+<div class="modal fade resettable" [class.show]="isModalOpen['tunukiwaOffersModal']" [style.display]="isModalOpen['tunukiwaOffersModal'] ? 'block' : 'none'" id="tunukiwaOffersModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-stars text-accent me-2"></i>Special Offers (Tunukiwa)</h5>
+                <button type="button" class="btn-close" (click)="closeModal('tunukiwaOffersModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['tunukiwaOffersModal']?.processed">
+                    <p style="font-size:13px;color:var(--pm-ink-soft)">Personalized offers valid for a limited time for 0712 345 890.</p>
+                    <div class="p-3 border rounded mb-2 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent)"><i class="bi bi-wifi"></i></div>
+                            <div><div style="font-weight:700">1GB for 1 Hour</div><div style="font-size:11px;color:var(--pm-muted)">Valid until 6 PM</div></div>
+                        </div>
+                        <div><button class="pm-btn pm-btn-sm pm-btn-accent" (click)="processAction('tunukiwaOffersModal','1GB Tunukiwa offer claimed successfully for KES 20.','')">KES 20</button></div>
+                    </div>
+                    <div class="p-3 border rounded mb-2 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info)"><i class="bi bi-telephone"></i></div>
+                            <div><div style="font-weight:700">500 Min All-Net</div><div style="font-size:11px;color:var(--pm-muted)">Valid for 3 Days</div></div>
+                        </div>
+                        <div><button class="pm-btn pm-btn-sm" (click)="processAction('tunukiwaOffersModal','500 Min offer claimed successfully for KES 150.','')">KES 150</button></div>
+                    </div>
+                    <div class="p-3 border rounded mb-2 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i class="bi bi-chat"></i></div>
+                            <div><div style="font-weight:700">Unlimited SMS</div><div style="font-size:11px;color:var(--pm-muted)">Valid for 24 Hrs</div></div>
+                        </div>
+                        <div><button class="pm-btn pm-btn-sm" (click)="processAction('tunukiwaOffersModal','Unlimited SMS offer claimed for KES 10.','')">KES 10</button></div>
+                    </div>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['tunukiwaOffersModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['tunukiwaOffersModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['tunukiwaOffersModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['tunukiwaOffersModal']?.processed"><button class="pm-btn" (click)="closeModal('tunukiwaOffersModal')">Close</button></div>
+            <div class="modal-footer" *ngIf="modalState['tunukiwaOffersModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('tunukiwaOffersModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 11. Airtime Resale -->
+<div class="modal fade resettable" [class.show]="isModalOpen['airtimeResaleModal']" [style.display]="isModalOpen['airtimeResaleModal'] ? 'block' : 'none'" id="airtimeResaleModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-shop text-danger me-2"></i>Airtime Resale (Agent Mode)</h5>
+                <button type="button" class="btn-close" (click)="closeModal('airtimeResaleModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['airtimeResaleModal']?.processed">
+                    <div class="p-3 rounded mb-3 text-center" style="background:var(--pm-surface-2)"><div style="font-size:11px;font-weight:700;color:var(--pm-muted)">COMMISSION RATE</div><div style="font-size:24px;font-weight:700;color:var(--pm-danger)">5% Cashback</div><div style="font-size:12px;color:var(--pm-ink-soft)">On every KES 100+ sold</div></div>
+                    <div class="mb-3"><label class="pm-form-label">Customer Number</label><input type="text" class="pm-form-control" placeholder="07XX XXX XXX"></div>
+                    <div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input type="number" class="pm-form-control" value="500"></div>
+                    <div class="p-3 border rounded">
+                        <div class="d-flex justify-content-between mb-1"><span>Customer receives</span><strong>KES 500</strong></div>
+                        <div class="d-flex justify-content-between mb-1"><span>You pay (from Wallet)</span><strong>KES 475</strong></div>
+                        <hr class="pm-divider">
+                        <div class="d-flex justify-content-between"><span style="font-weight:700;color:var(--pm-accent)">Your Profit</span><strong style="color:var(--pm-accent)">KES 25</strong></div>
+                    </div>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['airtimeResaleModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['airtimeResaleModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['airtimeResaleModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['airtimeResaleModal']?.processed">
+                <button class="pm-btn" (click)="closeModal('airtimeResaleModal')">Cancel</button>
+                <button class="pm-btn pm-btn-danger" (click)="processAction('airtimeResaleModal','Airtime sold successfully. KES 25 commission added to Wallet.','')">Sell Airtime</button>
+            </div>
+            <div class="modal-footer" *ngIf="modalState['airtimeResaleModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('airtimeResaleModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 12. Bonga Points -->
+<div class="modal fade resettable" [class.show]="isModalOpen['bongaPointsModal']" [style.display]="isModalOpen['bongaPointsModal'] ? 'block' : 'none'" id="bongaPointsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-gift text-purple me-2" style="color:var(--pm-purple)"></i>Redeem Bonga Points</h5><button type="button" class="btn-close" (click)="closeModal('bongaPointsModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['bongaPointsModal']?.processed">
+                    <div class="text-center mb-4"><div style="font-size:11px;font-weight:700;color:var(--pm-muted)">AVAILABLE POINTS</div><div style="font-size:36px;font-weight:800;color:var(--pm-purple);font-family:var(--pm-font-display)">4,200</div></div>
+                    <div class="mb-3"><label class="pm-form-label">Redeem for</label><select class="pm-form-control"><option>Data Bundles</option><option>Airtime / Minutes</option><option>Lipa na Bonga (Merchant)</option><option>SMS</option></select></div>
+                    <div class="mb-3"><label class="pm-form-label">Select Option</label>
+                        <div class="p-3 border rounded mb-2 d-flex justify-content-between align-items-center" [style.borderColor]="selectedBonga === '1GB' ? 'var(--pm-primary)' : ''" [style.background]="selectedBonga === '1GB' ? 'rgba(79,70,229,.04)' : ''" (click)="selectedBonga = '1GB'">
+                            <div class="d-flex align-items-center gap-2"><input type="radio" [checked]="selectedBonga === '1GB'" name="bp"><div><strong>1GB Data</strong> (Valid 7 days)</div></div>
+                            <div><span class="pm-badge pm-badge-purple">1,000 pts</span></div>
+                        </div>
+                        <div class="p-3 border rounded d-flex justify-content-between align-items-center" [style.borderColor]="selectedBonga === '2.5GB' ? 'var(--pm-primary)' : ''" [style.background]="selectedBonga === '2.5GB' ? 'rgba(79,70,229,.04)' : ''" (click)="selectedBonga = '2.5GB'">
+                            <div class="d-flex align-items-center gap-2"><input type="radio" [checked]="selectedBonga === '2.5GB'" name="bp"><div><strong>2.5GB Data</strong> (Valid 30 days)</div></div>
+                            <div><span class="pm-badge pm-badge-purple">2,500 pts</span></div>
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['bongaPointsModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['bongaPointsModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['bongaPointsModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['bongaPointsModal']?.processed">
+                <button class="pm-btn" (click)="closeModal('bongaPointsModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="processAction('bongaPointsModal','Bonga points redeemed successfully for 1GB Data!','')">Redeem Now</button>
+            </div>
+            <div class="modal-footer" *ngIf="modalState['bongaPointsModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('bongaPointsModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 13. KCB M-Pesa -->
+<div class="modal fade resettable" [class.show]="isModalOpen['kcbMpesaModal']" [style.display]="isModalOpen['kcbMpesaModal'] ? 'block' : 'none'" id="kcbMpesaModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-bank text-warning me-2"></i>KCB M-Pesa Account</h5><button type="button" class="btn-close" (click)="closeModal('kcbMpesaModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['kcbMpesaModal']?.processed">
+                    <div class="pm-tab-pills mb-3">
+                        <button class="pm-tab-pill" [class.active]="activeTabs['kcbTab'] === 'save'" (click)="activeTabs['kcbTab'] = 'save'">Save</button>
+                        <button class="pm-tab-pill" [class.active]="activeTabs['kcbTab'] === 'loan'" (click)="activeTabs['kcbTab'] = 'loan'">Loan Limit</button>
+                    </div>
+                    <div id="kcbTab-save" class="tab-panel" [class.active]="activeTabs['kcbTab'] === 'save'">
+                        <div class="p-3 rounded mb-3 text-center" style="background:var(--pm-warning-soft)"><div style="font-size:11px;font-weight:700;color:#B45309">ACCOUNT BALANCE</div><div style="font-size:28px;font-weight:700;color:var(--pm-warning)">KES 0.00</div></div>
+                        <div class="mb-3"><label class="pm-form-label">Action</label><select class="pm-form-control"><option>Deposit from M-Pesa</option><option>Withdraw to M-Pesa</option></select></div>
+                        <div class="mb-3"><label class="pm-form-label">Amount</label><input type="number" class="pm-form-control" placeholder="Min KES 100"></div>
+                        <button class="pm-btn pm-btn-primary w-100" (click)="processAction('kcbMpesaModal','Deposit to KCB M-Pesa successful.','')">Submit</button>
+                    </div>
+                    <div id="kcbTab-loan" class="tab-panel" [class.active]="activeTabs['kcbTab'] === 'loan'">
+                        <div class="p-3 rounded mb-3 text-center" style="background:var(--pm-surface-2)"><div style="font-size:11px;font-weight:700;color:var(--pm-muted)">LOAN LIMIT</div><div style="font-size:28px;font-weight:700">KES 15,000</div></div>
+                        <p style="font-size:13px;color:var(--pm-ink-soft)">1.08% monthly interest rate. Repayment period: 30 days.</p>
+                        <div class="mb-3"><label class="pm-form-label">Amount to Borrow</label><input type="number" class="pm-form-control" value="5000"></div>
+                        <button class="pm-btn pm-btn-primary w-100" (click)="processAction('kcbMpesaModal','Loan of KES 5,000 disbursed to M-Pesa.','')">Request Loan</button>
+                    </div>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['kcbMpesaModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['kcbMpesaModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['kcbMpesaModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['kcbMpesaModal']?.processed"><button class="pm-btn" (click)="closeModal('kcbMpesaModal')">Close</button></div>
+            <div class="modal-footer" *ngIf="modalState['kcbMpesaModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('kcbMpesaModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 14. Mali Investment -->
+<div class="modal fade resettable" [class.show]="isModalOpen['maliInvestmentModal']" [style.display]="isModalOpen['maliInvestmentModal'] ? 'block' : 'none'" id="maliInvestmentModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-graph-up-arrow text-primary me-2"></i>Mali Unit Trust</h5>
+                <button type="button" class="btn-close" (click)="closeModal('maliInvestmentModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['maliInvestmentModal']?.processed">
+                    <div class="row g-3 mb-4">
+                        <div class="col-6"><div class="p-3 rounded text-center h-100" style="background:var(--pm-primary-light);color:white"><div style="font-size:11px;font-weight:700">TOTAL INVESTMENT</div><div style="font-size:24px;font-weight:700">KES 102,500</div></div></div>
+                        <div class="col-6"><div class="p-3 rounded text-center h-100" style="background:var(--pm-accent-soft)"><div style="font-size:11px;font-weight:700;color:#047857">CURRENT YIELD</div><div style="font-size:24px;font-weight:700;color:var(--pm-accent)">9.2% p.a.</div></div></div>
+                    </div>
+                    <div class="mb-3"><label class="pm-form-label">Action</label><select class="pm-form-control"><option>Invest (Deposit)</option><option>Withdraw</option></select></div>
+                    <div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input type="number" class="pm-form-control" value="10000"></div>
+                    <p style="font-size:11px;color:var(--pm-muted)">Interest is calculated daily and credited to your principal balance. Withdrawals reflect instantly in M-Pesa.</p>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['maliInvestmentModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['maliInvestmentModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['maliInvestmentModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['maliInvestmentModal']?.processed">
+                <button class="pm-btn" (click)="closeModal('maliInvestmentModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="processAction('maliInvestmentModal','KES 10,000 invested successfully into Mali!','')">Confirm Transaction</button>
+            </div>
+            <div class="modal-footer" *ngIf="modalState['maliInvestmentModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('maliInvestmentModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 15. Analytics -->
+<div class="modal fade resettable" [class.show]="isModalOpen['mobileMoneyAnalyticsModal']" [style.display]="isModalOpen['mobileMoneyAnalyticsModal'] ? 'block' : 'none'" id="mobileMoneyAnalyticsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-pie-chart me-2"></i>M-Pesa Spend Analytics</h5><button type="button" class="btn-close" (click)="closeModal('mobileMoneyAnalyticsModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-tab-pills mb-3"><button class="pm-tab-pill active">Cash Flow</button><button class="pm-tab-pill">Fee Breakdown</button><button class="pm-tab-pill">Fuliza Costs</button></div>
+                <div class="row g-3">
+                    <div class="col-md-6"><div class="p-3 rounded h-100" style="background:var(--pm-surface-2)"><h6 style="font-size:13px;font-weight:700">Money In (June)</h6><div style="font-size:24px;font-weight:700;color:var(--pm-accent)">KES 145,200</div><div class="pm-progress mt-2"><div class="pm-progress-bar" style="width:100%;background:var(--pm-accent)"></div></div></div></div>
+                    <div class="col-md-6"><div class="p-3 rounded h-100" style="background:var(--pm-surface-2)"><h6 style="font-size:13px;font-weight:700">Money Out (June)</h6><div style="font-size:24px;font-weight:700;color:var(--pm-danger)">KES 98,450</div><div class="pm-progress mt-2"><div class="pm-progress-bar" style="width:68%;background:var(--pm-danger)"></div></div></div></div>
+                    <div class="col-12"><h6 style="font-weight:700;margin-top:16px">Top Spend Categories</h6>
+                        <div class="table-responsive">
+                            <table class="pm-table">
+                                <thead><tr><th>Category</th><th>Amount</th><th>% of Total</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Send Money</td><td>KES 45,000</td><td>45%</td></tr>
+                                    <tr><td>PayBill / Till</td><td>KES 32,100</td><td>32%</td></tr>
+                                    <tr><td>Withdrawal</td><td>KES 15,000</td><td>15%</td></tr>
+                                    <tr><td>Airtime/Data</td><td>KES 6,350</td><td>8%</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="pm-btn" (click)="closeModal('mobileMoneyAnalyticsModal')">Close</button>
+                <button class="pm-btn pm-btn-primary" (click)="openModal('exportStatementModal')">Export Data</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 16. Add Phone Number -->
+<div class="modal fade resettable" [class.show]="isModalOpen['addPhoneNumberModal']" [style.display]="isModalOpen['addPhoneNumberModal'] ? 'block' : 'none'" id="addPhoneNumberModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-sim me-2 text-primary"></i>Link New Phone Number</h5><button type="button" class="btn-close" (click)="closeModal('addPhoneNumberModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['addPhoneNumberModal']?.processed">
+                    <div class="mb-3"><label class="pm-form-label">Phone Number</label><input type="text" class="pm-form-control" placeholder="07XX XXX XXX"></div>
+                    <div class="mb-3"><label class="pm-form-label">Network</label><select class="pm-form-control"><option>Safaricom</option><option>Airtel</option><option>Telkom</option><option>Equitel</option><option>Faiba</option></select></div>
+                    <div class="form-check mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label">Set as primary line for notifications</label></div>
+                    <div class="p-3 rounded mt-3" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-shield-lock me-1"></i> An OTP will be sent to this number to verify ownership.</div>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['addPhoneNumberModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['addPhoneNumberModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['addPhoneNumberModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['addPhoneNumberModal']?.processed">
+                <button class="pm-btn" (click)="closeModal('addPhoneNumberModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="processAction('addPhoneNumberModal','OTP sent. Phone number verified and linked!','')">Send OTP</button>
+            </div>
+            <div class="modal-footer" *ngIf="modalState['addPhoneNumberModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('addPhoneNumberModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 17. Link Bank Account -->
+<div class="modal fade resettable" [class.show]="isModalOpen['linkBankAccountModal']" [style.display]="isModalOpen['linkBankAccountModal'] ? 'block' : 'none'" id="linkBankAccountModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-bank me-2"></i>Link Bank for Interoperability</h5><button type="button" class="btn-close" (click)="closeModal('linkBankAccountModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['linkBankAccountModal']?.processed">
+                    <div class="mb-3"><label class="pm-form-label">Select Bank</label><select class="pm-form-control"><option>Equity Bank</option><option>KCB</option><option>Co-operative Bank</option><option>Absa</option><option>Standard Chartered</option></select></div>
+                    <div class="mb-3"><label class="pm-form-label">Account Number</label><input type="text" class="pm-form-control" placeholder="Enter account number"></div>
+                    <div class="mb-3"><label class="pm-form-label">PesaLink Alias (Phone)</label><input type="text" class="pm-form-control" value="0712345890"></div>
+                    <p style="font-size:12px;color:var(--pm-muted)">By linking this account, you agree to allow PayMo to initiate PesaLink and EFT transfers on your behalf.</p>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['linkBankAccountModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['linkBankAccountModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['linkBankAccountModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['linkBankAccountModal']?.processed">
+                <button class="pm-btn" (click)="closeModal('linkBankAccountModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="processAction('linkBankAccountModal','Bank account linked successfully via PesaLink!','')">Link Bank</button>
+            </div>
+            <div class="modal-footer" *ngIf="modalState['linkBankAccountModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('linkBankAccountModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 18. Transaction History -->
+<div class="modal fade resettable" [class.show]="isModalOpen['transactionHistoryModal']" [style.display]="isModalOpen['transactionHistoryModal'] ? 'block' : 'none'" id="transactionHistoryModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-list-check me-2"></i>Full Mobile Money History</h5><button type="button" class="btn-close" (click)="closeModal('transactionHistoryModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <select class="pm-form-control" style="width:auto"><option>All Categories</option><option>Send Money</option><option>Buy Airtime</option><option>Fuliza/Loan</option><option>Pochi</option></select>
+                    <select class="pm-form-control" style="width:auto"><option>Last 30 Days</option><option>Last 3 Months</option></select>
+                    <input type="text" class="pm-form-control" style="width:200px" placeholder="Search reference">
+                </div>
+                <div class="table-responsive" style="max-height:400px;overflow-y:auto">
+                    <table class="pm-table">
+                        <thead><tr><th>Date</th><th>Type</th><th>Ref/Name</th><th>Amount</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr *ngFor="let ht of historyTransactions">
+                                <td>{{ ht.date }}</td><td>{{ ht.type }}</td><td>{{ ht.ref }}</td><td>{{ ht.amount }}</td>
+                                <td><span class="pm-badge pm-badge-success">{{ ht.status }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="pm-btn" (click)="closeModal('transactionHistoryModal')">Close</button>
+                <button class="pm-btn pm-btn-primary" (click)="openModal('exportStatementModal')">Export PDF/CSV</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 19. Export Statement -->
+<div class="modal fade resettable" [class.show]="isModalOpen['exportStatementModal']" [style.display]="isModalOpen['exportStatementModal'] ? 'block' : 'none'" id="exportStatementModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-download me-2"></i>Export Statements</h5><button type="button" class="btn-close" (click)="closeModal('exportStatementModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['exportStatementModal']?.processed">
+                    <div class="mb-3"><label class="pm-form-label">Data Source</label><select class="pm-form-control"><option>Combined PayMo Wallet & M-Pesa</option><option>M-Pesa Only</option><option>Pochi La Biashara</option><option>Airtime Purchase History</option></select></div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-6"><label class="pm-form-label">From</label><input type="date" class="pm-form-control" value="2025-01-01"></div>
+                        <div class="col-6"><label class="pm-form-label">To</label><input type="date" class="pm-form-control" value="2025-06-27"></div>
+                    </div>
+                    <div class="mb-3"><label class="pm-form-label">Format</label><select class="pm-form-control"><option>PDF Document</option><option>Excel Spreadsheet</option><option>CSV Format</option></select></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Password protect PDF (Uses ID Number)</label></div>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['exportStatementModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['exportStatementModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['exportStatementModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['exportStatementModal']?.processed">
+                <button class="pm-btn" (click)="closeModal('exportStatementModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="processAction('exportStatementModal','Statement generated and downloading...','')">Generate</button>
+            </div>
+            <div class="modal-footer" *ngIf="modalState['exportStatementModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('exportStatementModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 20. Notifications -->
+<div class="modal fade resettable" [class.show]="isModalOpen['notificationsModal']" [style.display]="isModalOpen['notificationsModal'] ? 'block' : 'none'" id="notificationsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notifications (4)</h5><button type="button" class="btn-close" (click)="closeModal('notificationsModal')"></button>
+            </div>
+            <div class="modal-body" style="max-height:400px;overflow-y:auto">
+                <div class="p-3 rounded mb-2" style="background:var(--pm-danger-soft);font-size:13px"><i class="bi bi-exclamation-triangle text-danger me-1"></i> <strong>Fuliza utilized</strong> — You have an outstanding Fuliza balance of KES 6,000.<div style="font-size:11px;color:var(--pm-muted);margin-top:4px">2 hrs ago</div></div>
+                <div class="p-3 rounded mb-2" style="background:var(--pm-warning-soft);font-size:13px"><i class="bi bi-clock text-warning me-1"></i> <strong>Data expiring</strong> — Safaricom 2.5GB bundle expires in 48 hours.<div style="font-size:11px;color:var(--pm-muted);margin-top:4px">5 hrs ago</div></div>
+                <div class="p-3 rounded mb-2" style="background:var(--pm-accent-soft);font-size:13px"><i class="bi bi-stars text-accent me-1"></i> <strong>Tunukiwa Offer</strong> — Get 1GB for KES 20 valid for 1 hour.<div style="font-size:11px;color:var(--pm-muted);margin-top:4px">Yesterday</div></div>
+                <div class="p-3 rounded mb-2" style="background:#fff;border:1px solid var(--pm-border);font-size:13px"><i class="bi bi-briefcase text-purple me-1"></i> <strong>Pochi Transfer</strong> — You received KES 4,500 from Jane Smith.<div style="font-size:11px;color:var(--pm-muted);margin-top:4px">Yesterday</div></div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn w-100" (click)="closeModal('notificationsModal')">Mark all as read</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 21. Profile -->
+<div class="modal fade resettable" [class.show]="isModalOpen['profileModal']" [style.display]="isModalOpen['profileModal'] ? 'block' : 'none'" id="profileModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-person me-2"></i>Profile & Security</h5><button type="button" class="btn-close" (click)="closeModal('profileModal')"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">JK</div>
+                <h5 style="font-weight:700;margin-bottom:2px">James Kamau</h5>
+                <p style="font-size:13px;color:var(--pm-muted)">+254 712 345 890 · Primary Line</p>
+                <div class="row g-2 text-start mt-3" style="font-size:13px">
+                    <div class="col-6"><div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Lines Linked</span><br><strong>3 Numbers</strong></div></div>
+                    <div class="col-6"><div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">KYC Level</span><br><strong style="color:var(--pm-accent)">Tier 3 (Verified)</strong></div></div>
+                    <div class="col-6"><div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Bank Linked</span><br><strong>Equity Bank</strong></div></div>
+                    <div class="col-6"><div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">M-Pesa Limits</span><br><strong>Up to 500k/day</strong></div></div>
+                </div><button class="pm-btn w-100 mt-3" style="border-color: var(--pm-primary); color: var(--pm-primary)">Change App PIN</button>
+            </div>
+            <div class="modal-footer"><button class="pm-btn" (click)="closeModal('profileModal')">Close</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 22. Attention Detail -->
+<div class="modal fade resettable" [class.show]="isModalOpen['attentionDetailModal']" [style.display]="isModalOpen['attentionDetailModal'] ? 'block' : 'none'" id="attentionDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>Attention Required</h5><button type="button" class="btn-close" (click)="closeModal('attentionDetailModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="p-3 border rounded mb-2" style="border-left:3px solid var(--pm-danger)!important"><div class="d-flex justify-content-between align-items-start"><div><strong>Fuliza outstanding balance</strong><div style="font-size:11px;color:var(--pm-muted)">KES 6,000 utilized · Day 4 of 30</div></div><button class="pm-btn pm-btn-sm pm-btn-danger" (click)="closeModal('attentionDetailModal'); openModal('fulizaManagementModal')">Repay</button></div></div>
+                <div class="p-3 border rounded mb-2" style="border-left:3px solid var(--pm-warning)!important"><div class="d-flex justify-content-between align-items-start"><div><strong>Data bundle expiring soon</strong><div style="font-size:11px;color:var(--pm-muted)">2.5GB Safaricom expires in 48 hrs</div></div><button class="pm-btn pm-btn-sm" (click)="closeModal('attentionDetailModal'); openModal('buyDataModal')">Renew</button></div></div>
+                <div class="p-3 border rounded mb-2" style="border-left:3px solid var(--pm-info)!important"><div class="d-flex justify-content-between align-items-start"><div><strong>M-Shwari savings goal off-track</strong><div style="font-size:11px;color:var(--pm-muted)">Deposit KES 2,000 to meet June target</div></div><button class="pm-btn pm-btn-sm" (click)="closeModal('attentionDetailModal'); openModal('mShwariModal')">Save</button></div></div>
+                <div class="p-3 border rounded mb-2" style="border-left:3px solid var(--pm-purple)!important"><div class="d-flex justify-content-between align-items-start"><div><strong>4,200 Bonga Points available</strong><div style="font-size:11px;color:var(--pm-muted)">Redeem for 500 Minutes or Data</div></div><button class="pm-btn pm-btn-sm" (click)="closeModal('attentionDetailModal'); openModal('bongaPointsModal')">Redeem</button></div></div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn" (click)="closeModal('attentionDetailModal')">Close</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 23. Manage Linked Line -->
+<div class="modal fade resettable" [class.show]="isModalOpen['manageLinkedLineModal']" [style.display]="isModalOpen['manageLinkedLineModal'] ? 'block' : 'none'" id="manageLinkedLineModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-gear me-2"></i>Manage Linked Line</h5><button type="button" class="btn-close" (click)="closeModal('manageLinkedLineModal')"></button>
+            </div>
+            <div class="modal-body" style="position: relative;">
+                <ng-container *ngIf="!modalState['manageLinkedLineModal']?.processed">
+                    <div class="p-3 rounded mb-3 text-center" style="background:var(--pm-surface-2)"><strong>0733 987 456</strong><br><span class="pm-badge pm-badge-danger mt-1">Airtel Money</span></div>
+                    <div class="mb-3"><label class="pm-form-label">Nickname</label><input type="text" class="pm-form-control" value="Airtel Business Line"></div>
+                    <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox"><label class="form-check-label">Set as Primary Line (Default for TX)</label></div>
+                    <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Sync Airtel Money balance</label></div>
+                    <button class="pm-btn pm-btn-danger w-100"><i class="bi bi-trash"></i> Remove this line</button>
+                </ng-container>
+                <div class="pm-loading-overlay" *ngIf="modalState['manageLinkedLineModal']?.loading">
+                    <div class="pm-spinner"></div>
+                    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+                </div>
+                <div class="pm-receipt" *ngIf="modalState['manageLinkedLineModal']?.processed">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">{{ modalState['manageLinkedLineModal']?.msg }}</h5>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!modalState['manageLinkedLineModal']?.processed">
+                <button class="pm-btn" (click)="closeModal('manageLinkedLineModal')">Cancel</button>
+                <button class="pm-btn pm-btn-primary" (click)="processAction('manageLinkedLineModal','Line settings updated!','')">Save Settings</button>
+            </div>
+            <div class="modal-footer" *ngIf="modalState['manageLinkedLineModal']?.processed"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('manageLinkedLineModal')">Done</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 24. Receipt Modal (Generic) -->
+<div class="modal fade resettable" [class.show]="isModalOpen['receiptModal']" [style.display]="isModalOpen['receiptModal'] ? 'block' : 'none'" id="receiptModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Transaction Receipt</h5><button type="button" class="btn-close" (click)="closeModal('receiptModal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pm-receipt">
+                    <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">Transaction Successful</h5>
+                    <div class="p-3 rounded mt-3" style="background:#fff;text-align:left;font-size:13px">
+                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Type</span><strong>Send Money (Airtel)</strong></div>
+                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Recipient</span><strong>John Doe</strong></div>
+                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 1,500.00</strong></div>
+                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Fee</span><strong>KES 22.00</strong></div>
+                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Reference</span><strong>XNET-8834199</strong></div>
+                        <div class="d-flex justify-content-between"><span class="text-muted">Date</span><strong>27 Jun 2025, 14:32</strong></div>
+                    </div>
+                    <div class="d-flex gap-2 justify-content-center mt-3">
+                        <button class="pm-btn pm-btn-sm"><i class="bi bi-download"></i> Download</button>
+                        <button class="pm-btn pm-btn-sm"><i class="bi bi-share"></i> Share</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn w-100" (click)="closeModal('receiptModal')">Close</button></div>
+        </div>
+    </div>
+</div>

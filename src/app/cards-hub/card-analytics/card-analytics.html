@@ -1,0 +1,1703 @@
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb"><a (click)="$event.preventDefault()">Home</a> / <a (click)="$event.preventDefault()">Card
+        Center</a> / <a (click)="$event.preventDefault()">Reporting</a> / <strong>Card Analytics</strong></div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 5.8 — Card
+      Analytics & Reporting</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Analyze issuance, usage, merchant concentration, churn
+      risk, and corporate compliance.</p>
+  </div>
+  <div class="d-flex flex-wrap" style="gap:8px">
+    <button class="pm-btn" (click)="openModal('predictiveEngineModal')"><i class="bi bi-stars"
+        style="color:var(--pm-purple)"></i> AI Predict</button>
+    <button class="pm-btn" (click)="openModal('scheduleReportModal')"><i class="bi bi-calendar-check text-info"></i>
+      Schedule</button>
+    <button class="pm-btn" (click)="openModal('buildReportModal')"><i class="bi bi-layout-text-window text-success"></i>
+      Build Custom</button>
+    <button class="pm-btn-primary pm-btn" (click)="openModal('exportReportModal')"><i class="bi bi-download"></i> Export
+      Data</button>
+  </div>
+</div>
+
+<div class="pm-content">
+
+  <!-- HERO STATS ROW -->
+  <div class="row g-3">
+    @for (stat of heroStats; track $index) {
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card" [ngClass]="stat.cardExtraClass || ''" [attr.style]="stat.cardStyle || null">
+        <p class="pm-stat-label" [attr.style]="stat.labelStyle">{{ stat.label }}</p>
+        <div class="pm-stat-value" style="margin:6px 0">{{ stat.value }}</div>
+        <span class="pm-badge" [ngClass]="stat.badge.badgeClass" [attr.style]="stat.badge.badgeStyle || null"><i
+            [class]="stat.badge.icon"></i> {{ stat.badge.text }}</span>
+        <div class="mt-3" [attr.style]="stat.breakdownStyle">
+          @for (b of stat.breakdowns; track $index) {
+          <div class="d-flex justify-content-between" [class.mb-1]="$index < stat.breakdowns.length - 1"><span>{{
+              b.label }}</span><strong [attr.style]="b.valueStyle || null">{{ b.value }}</strong></div>
+          }
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- SECTION 5.8.1: PORTFOLIO ANALYTICS -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-pie-chart-fill" style="color:var(--pm-info)"></i> 5.8.1 — Card
+            Portfolio Analytics</h3>
+          <p class="pm-section-sub">Analyze issuance pipelines, activation rates, replacements, and revenue drivers
+            across the portfolio.</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('issuanceAnalyticsModal')">Issuance Data</button>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('usageTrendsModal')">Usage Trends</button>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-lg-5">
+          <div class="utility-block">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 style="font-size:14px;font-weight:700;margin:0">Issuance & Activation Funnel</h4>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('activationDetailsModal')">Details</button>
+            </div>
+            @for (step of issuanceFunnel; track $index) {
+            <div class="mb-3">
+              <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>{{ step.label
+                  }}</span><strong>{{ step.value }}</strong></div>
+              <div class="pm-progress">
+                <div class="pm-progress-bar" [style.width.%]="step.width" [style.background]="step.color"></div>
+              </div>
+            </div>
+            }
+            <div class="d-flex justify-content-between align-items-center mt-4 p-2 rounded"
+              style="background:#fff;border:1px solid var(--pm-border)">
+              <div style="font-size:12px;color:var(--pm-muted)">Avg Time to Activate</div>
+              <div style="font-weight:700;color:var(--pm-primary)">1.2 Days</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="utility-block">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 style="font-size:14px;font-weight:700;margin:0">Revenue & Operations</h4>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('revenueAnalyticsModal')"><i
+                  class="bi bi-box-arrow-up-right"></i></button>
+            </div>
+            @for (box of revenueBoxes; track $index) {
+            <div class="p-3 rounded mb-2 text-center" [attr.style]="box.bgStyle">
+              <div [attr.style]="box.labelStyle">{{ box.label }}</div>
+              <div [attr.style]="box.valueStyle">{{ box.value }}</div>
+            </div>
+            }
+            <div class="status-row">
+              <div><strong>Replacement Rate</strong>
+                <div style="font-size:11px;color:var(--pm-muted)">Loss, damage, theft</div>
+              </div>
+              <div class="text-end"><strong>2.4%</strong><br><a (click)="$event.preventDefault(); openModal('replacementLogModal')" style="font-size:11px">View Log</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="utility-block">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 style="font-size:14px;font-weight:700;margin:0">Usage & Channel Mix</h4>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('channelMixModal')">Drill Down</button>
+            </div>
+            <div class="chart-bars">
+              @for (bar of channelBars; track $index) {
+              <div class="chart-bar" [style.height.%]="bar.height" [style.background]="bar.color"
+                title="{{ bar.title }}"><span class="bar-label">{{ bar.label }}</span></div>
+              }
+            </div>
+            <div class="d-flex flex-wrap mt-3" style="gap:10px;font-size:12px;justify-content:center">
+              @for (bar of channelBars; track $index) {
+              @if (bar.showInLegend) {
+              <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px"
+                  [style.background]="bar.color"></span>{{ bar.label }} ({{ bar.height }}%)</span>
+              }
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5.8.2: SPEND ANALYTICS & INSIGHTS -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-cart-check-fill" style="color:var(--pm-purple)"></i> 5.8.2 —
+            Spend Analytics & Insights</h3>
+          <p class="pm-section-sub">Understand cardholder spending behavior, merchant concentration, recurring flows,
+            and predictive risk factors.</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('predictiveEngineModal')"><i
+              class="bi bi-stars text-purple"></i> Predict Insights</button>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-lg-4">
+          <div class="utility-block">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 style="font-size:14px;font-weight:700;margin:0">Consumer Insights</h4>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('topCategoriesModal')">Categories</button>
+            </div>
+            @for (item of consumerInsights; track $index) {
+            <div class="status-row">
+              <div><strong>{{ item.name }}</strong>
+                <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+              </div>
+              <div class="text-end"><strong>{{ item.value }}</strong></div>
+            </div>
+            }
+            <div class="d-flex justify-content-between mt-3">
+              <button class="pm-btn pm-btn-sm" (click)="openModal('geoSpendModal')"><i class="bi bi-globe"></i> Geo /
+                Intl Spend</button>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('subscriptionTrackerModal')"><i
+                  class="bi bi-arrow-repeat"></i> Subscriptions</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="utility-block">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 style="font-size:14px;font-weight:700;margin:0">Merchant Intelligence</h4>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('merchantConcentrationModal')">View Top</button>
+            </div>
+            <div class="p-3 rounded mb-3" style="background:var(--pm-surface);border:1px solid var(--pm-border)">
+              <div style="font-size:11px;color:var(--pm-muted);font-weight:600">CONCENTRATION RISK</div>
+              <div style="font-size:18px;font-weight:700;color:var(--pm-ink)">Top 10 = 45% Vol.</div>
+              <div class="pm-progress mt-2">
+                <div class="pm-progress-bar" style="width:45%;background:var(--pm-warning)"></div>
+              </div>
+            </div>
+            @for (m of merchantIntelligence; track $index) {
+            <div class="status-row">
+              <div><strong>{{ m.name }}</strong>
+                <div style="font-size:11px;color:var(--pm-muted)">{{ m.subtitle }}</div>
+              </div>
+              <div class="text-end"><strong>{{ m.value }}</strong></div>
+            </div>
+            }
+            <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('merchantCrossSellModal')"><i
+                class="bi bi-link-45deg"></i> Partner / Cross-Sell Analysis</button>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="utility-block">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 style="font-size:14px;font-weight:700;margin:0">Predictive & Churn Risk</h4>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('ltvAnalyticsModal')">LTV Model</button>
+            </div>
+            @for (callout of predictiveCallouts; track $index) {
+            <div class="p-3 rounded" [ngClass]="callout.extraClass || ''" [attr.style]="callout.bgStyle">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div [attr.style]="callout.labelStyle">{{ callout.label }}</div>
+                  <div [attr.style]="callout.valueStyle">{{ callout.value }}</div>
+                </div>
+                <button class="{{ callout.buttonClass }}" (click)="openModal(callout.modalId)">{{ callout.buttonText
+                  }}</button>
+              </div>
+              <div [attr.style]="callout.subtitleStyle">{{ callout.subtitle }}</div>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5.8.3: CORPORATE CARD REPORTING -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-building-fill-gear" style="color:var(--pm-warning)"></i> 5.8.3 —
+            Corporate Card Reporting</h3>
+          <p class="pm-section-sub">Monitor aggregate business spend, department budget utilization, compliance
+            tracking, and policy violations.</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('complianceTaxModal')"><i
+              class="bi bi-file-earmark-ruled"></i> Compliance & Tax</button>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('corpSpendSummaryModal')"><i class="bi bi-building"></i>
+            Corp Summary</button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="pm-table">
+          <thead>
+            <tr>
+              <th>Company / Department</th>
+              <th>Active Cards</th>
+              <th>Spend (MTD)</th>
+              <th>Budget Utilization</th>
+              <th>Violations</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of corpSpendRows; track $index) {
+            <tr>
+              <td><strong>{{ row.company }}</strong>
+                <div style="font-size:11px;color:var(--pm-muted)">{{ row.department }}</div>
+              </td>
+              <td>{{ row.activeCards }}</td>
+              <td>{{ row.spendMtd }}</td>
+              <td>
+                <div class="d-flex justify-content-between mb-1" style="font-size:11px"><span>{{ row.budgetPct
+                    }}%</span><span>{{ row.budgetAmount }}</span></div>
+                <div class="pm-progress">
+                  <div class="pm-progress-bar" [style.width.%]="row.budgetPct" [style.background]="row.progressColor">
+                  </div>
+                </div>
+              </td>
+              <td><span class="pm-badge" [ngClass]="row.violationBadgeClass">{{ row.violationText }}</span></td>
+              <td>
+                <div class="d-flex gap-1">
+                  <button class="pm-btn pm-btn-sm" (click)="openModal('deptBudgetModal')">Budgets</button>
+                  <button class="pm-btn pm-btn-sm" (click)="openModal('policyViolationModal')">Audit</button>
+                </div>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- end pm-content -->
+</div><!-- end pm-main -->
+
+
+
+<!-- ============================================================ -->
+<!-- MODALS (24 UNIQUE MODALS FOR 5.8) -->
+<!-- ============================================================ -->
+<div id="modalsContainer">
+
+  <!-- 1. Export Report Modal (Multi-step) -->
+
+
+  @if (activeModal === 'exportReportModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-download me-2 text-primary"></i>Export Dashboard Data</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="pm-stepper" id="exportStepper">
+            @for (label of exportStepperLabels; track $index) {
+            @if ($index > 0) { <div class="pm-step-line"></div> }
+            <div class="pm-step" [class.active]="exportStep === $index + 1" [class.completed]="exportStep > $index + 1">
+              <div class="pm-step-num">@if (exportStep > $index + 1) { <i class="bi bi-check"></i> } @else {{{ $index +
+                1 }}}</div>
+              <div class="pm-step-label">{{ label }}</div>
+            </div>
+            }
+          </div>@if (exportStep === 1) {
+          <h6 style="font-weight:700">1. Select Datasets</h6>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked><label
+              class="form-check-label">Card Issuance & Activation</label></div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked><label
+              class="form-check-label">Usage & Revenue Trends</label></div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox"><label
+              class="form-check-label">Merchant Concentration</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox"><label
+              class="form-check-label">Corporate Spend & Violations</label></div>
+        }
+        @if (exportStep === 2) {
+        <h6 style="font-weight:700">2. Configure Options</h6>
+        <div class="mb-3"><label class="pm-form-label">Date Range</label><select class="pm-form-control">
+            <option>Last 30 Days</option>
+            <option>Last 90 Days</option>
+            <option>Year to Date</option>
+            <option>Custom Range</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Format</label><select class="pm-form-control">
+            <option>Excel (.xlsx)</option>
+            <option>CSV</option>
+            <option>PDF Summary</option>
+          </select></div>
+      }
+
+      @if (exportStep === 3) {
+      <div class="pm-receipt">
+        <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-accent)">Export Ready</h5>
+        <p style="font-size:13px;color:var(--pm-muted)">Your report has been compiled successfully.</p><button
+          class="pm-btn pm-btn-primary" (click)="closeModal()">Download File</button>
+      </div>
+    }
+  </div>
+
+  <div class="modal-footer" id="exportFooter"><button class="pm-btn" (click)="closeModal()">Cancel</button><button
+      class="pm-btn pm-btn-primary" id="exportNextBtn" (click)="nextExportStep()">Continue</button></div>
+</div>
+</div>
+</div>
+}
+@if (activeModal === 'buildReportModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      @if (!buildReportSaved) {
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-layout-text-window me-2 text-success"></i>Build Custom Report</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-tab-pills mb-3"><button class="pm-tab-pill" [class.active]="activeTabs['build'] === 'fields'"
+            (click)="switchTab('build','fields',$event)">1. Data Fields</button><button class="pm-tab-pill"
+            (click)="switchTab('build','group',$event)">2. Grouping</button><button class="pm-tab-pill"
+            (click)="switchTab('build','filter',$event)">3. Filters</button></div>
+        <div [class.active]="activeTabs['build'] === 'fields'" id="build-fields" class="tab-panel">
+          <div class="row">
+            <div class="col-6"><label class="pm-form-label">Available Fields</label>
+              <div class="p-2 border rounded mb-1" style="font-size:12px;cursor:pointer">Card PAN (Masked) <i
+                  class="bi bi-plus float-end"></i></div>
+              <div class="p-2 border rounded mb-1" style="font-size:12px;cursor:pointer">Transaction Amount <i
+                  class="bi bi-plus float-end"></i></div>
+              <div class="p-2 border rounded mb-1" style="font-size:12px;cursor:pointer">Merchant Category (MCC) <i
+                  class="bi bi-plus float-end"></i></div>
+              <div class="p-2 border rounded mb-1" style="font-size:12px;cursor:pointer">Authorization Status <i
+                  class="bi bi-plus float-end"></i></div>
+            </div>
+            <div class="col-6"><label class="pm-form-label">Selected Fields</label>
+              <div class="p-2 rounded mb-1" style="font-size:12px;background:var(--pm-surface-2)">Transaction Date <i
+                  class="bi bi-x float-end text-danger"></i></div>
+              <div class="p-2 rounded mb-1" style="font-size:12px;background:var(--pm-surface-2)">Cardholder Name <i
+                  class="bi bi-x float-end text-danger"></i></div>
+              <div class="p-2 rounded mb-1" style="font-size:12px;background:var(--pm-surface-2)">Settlement Amount <i
+                  class="bi bi-x float-end text-danger"></i></div>
+            </div>
+          </div>
+        </div>
+        <div [class.active]="activeTabs['build'] === 'group'" id="build-group" class="tab-panel">
+          <div class="mb-3"><label class="pm-form-label">Primary Grouping</label><select class="pm-form-control">
+              <option>By Month</option>
+              <option>By Card Type</option>
+              <option>By Department (Corporate)</option>
+            </select></div>
+          <div class="mb-3"><label class="pm-form-label">Secondary Grouping</label><select class="pm-form-control">
+              <option>None</option>
+              <option>By Merchant Category</option>
+              <option>By Status</option>
+            </select></div>
+        </div>
+        <div [class.active]="activeTabs['build'] === 'filter'" id="build-filter" class="tab-panel">
+          <div class="mb-3"><label class="pm-form-label">Card Types to Include</label><select class="pm-form-control">
+              <option>All Types</option>
+              <option>Debit Only</option>
+              <option>Credit Only</option>
+              <option>Virtual Only</option>
+            </select></div>
+          <div class="mb-3"><label class="pm-form-label">Amount Threshold</label><input class="pm-form-control"
+              placeholder="> KES"></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-success"
+          (click)="processAction('buildReportModal','Custom Report Saved! You can now run or export it.','')">Save
+          Report Template</button></div>
+      } @else {
+      <div class="modal-body">
+        <div class="pm-receipt">
+          <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">Custom Report Saved! You can now run or export it.</h5>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+@if (activeModal === 'scheduleReportModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-calendar-check me-2 text-info"></i>Schedule Automated Report</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper" id="schedStepper">
+          @for (label of schedStepperLabels; track $index) {
+          @if ($index > 0) { <div class="pm-step-line"></div> }
+          <div class="pm-step" [class.active]="schedStep === $index + 1" [class.completed]="schedStep > $index + 1">
+            <div class="pm-step-num">@if (schedStep > $index + 1) { <i class="bi bi-check"></i> } @else {{{ $index + 1
+              }}}</div>
+            <div class="pm-step-label">{{ label }}</div>
+          </div>
+          }
+        </div>@if (schedStep === 1) {
+        <h6 style="font-weight:700">1. Select Report</h6><select class="pm-form-control mb-3">
+          <option>Monthly Executive Portfolio Summary</option>
+          <option>Daily Corporate Policy Violations</option>
+          <option>Weekly Churn Risk Alerts</option>
+          <option>Custom: Marketing Dept Spend</option>
+        </select>
+        }
+        @if (schedStep === 2) {
+        <h6 style="font-weight:700">2. Frequency & Timing</h6>
+        <div class="mb-3"><label class="pm-form-label">Frequency</label><select class="pm-form-control">
+            <option>Daily</option>
+            <option>Weekly (Mondays)</option>
+            <option selected>Monthly (1st of Month)</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Delivery Time</label><input type="time" class="pm-form-control"
+            value="08:00"></div>
+        }
+        @if (schedStep === 3) {
+        <h6 style="font-weight:700">3. Recipients & Format</h6>
+        <div class="mb-3"><label class="pm-form-label">Email Addresses (Comma separated)</label><textarea
+            class="pm-form-control" rows="2">management@paymo.com, finance@paymo.com</textarea></div>
+        <div class="mb-3"><label class="pm-form-label">Attachment Format</label><select class="pm-form-control">
+            <option>PDF</option>
+            <option>Excel</option>
+            <option>CSV link</option>
+          </select></div>
+        }
+        <div class="modal-footer" id="schedFooter"><button class="pm-btn" (click)="closeModal()">Cancel</button><button
+            class="pm-btn pm-btn-primary" id="schedNextBtn" (click)="nextSchedStep()">Continue</button></div>
+      </div>
+    </div>
+  </div>
+  </div>
+  }
+  @if (activeModal === 'globalFilterModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        @if (!globalFilterSaved) {
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-funnel me-2"></i>Global Analytics Filter</h5><button class="btn-close"
+            (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3"><label class="pm-form-label">Time Period</label><select class="pm-form-control">
+              <option>This Month (MTD)</option>
+              <option>Last Month</option>
+              <option>Last 90 Days</option>
+              <option>Year to Date</option>
+              <option>Custom Dates</option>
+            </select></div>
+          <div class="mb-3"><label class="pm-form-label">Card Portfolio Segment</label><select class="pm-form-control">
+              <option>All Cards</option>
+              <option>Retail / Consumer</option>
+              <option>SME / Business</option>
+              <option>Enterprise / Corporate</option>
+            </select></div>
+          <div class="mb-3"><label class="pm-form-label">Currency View</label><select class="pm-form-control">
+              <option>KES (Default)</option>
+              <option>USD</option>
+              <option>EUR</option>
+            </select></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Clear All</button><button
+            class="pm-btn pm-btn-primary"
+            (click)="processAction('globalFilterModal','Dashboard filters applied! Refreshing views...','')">Apply
+            Filters</button></div>
+        } @else {
+        <div class="modal-body">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Dashboard filters applied! Refreshing views...</h5>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'issuanceAnalyticsModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-credit-card me-2"></i>Issuance Breakdown</h5><button class="btn-close"
+            (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row mb-3">
+            <div class="col-4">
+              <div class="p-3 rounded text-center" style="background:var(--pm-surface-2)">
+                <div style="font-size:11px;color:var(--pm-muted)">Total Issued MTD</div>
+                <div style="font-size:20px;font-weight:700">4,500</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="p-3 rounded text-center"
+                style="background:var(--pm-primary-soft);color:var(--pm-primary-dark)">
+                <div style="font-size:11px">Virtual Share</div>
+                <div style="font-size:20px;font-weight:700">68%</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="p-3 rounded text-center" style="background:var(--pm-accent-soft);color:#047857">
+                <div style="font-size:11px">Credit Approved</div>
+                <div style="font-size:20px;font-weight:700">1,210</div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead>
+                <tr>
+                  <th>Card Type</th>
+                  <th>Issued (MTD)</th>
+                  <th>MoM Growth</th>
+                  <th>Pending Review</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Virtual Debit (Single/Multi)</td>
+                  <td>2,450</td>
+                  <td><span class="text-success">+14%</span></td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>Physical Debit (Premium/Std)</td>
+                  <td>610</td>
+                  <td><span class="text-danger">-2%</span></td>
+                  <td>142</td>
+                </tr>
+                <tr>
+                  <td>Virtual Credit</td>
+                  <td>980</td>
+                  <td><span class="text-success">+22%</span></td>
+                  <td>310</td>
+                </tr>
+                <tr>
+                  <td>Physical Credit</td>
+                  <td>230</td>
+                  <td><span class="text-success">+5%</span></td>
+                  <td>85</td>
+                </tr>
+                <tr>
+                  <td>Prepaid (GPR/Gift)</td>
+                  <td>230</td>
+                  <td><span class="text-muted">0%</span></td>
+                  <td>12</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+            class="pm-btn pm-btn-primary"
+            (click)="openModal('exportReportModal'); closeModal();">Export</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'activationDetailsModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-lightning me-2"></i>Activation Funnel Details</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size:13px;color:var(--pm-muted)">Analysis of 4,500 issued cards this month.</p>
+          <div class="status-row">
+            <div><strong>Virtual Cards</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Auto-activated instantly</div>
+            </div>
+            <div class="text-end"><strong>100% Rate</strong><br><span style="font-size:11px;color:var(--pm-accent)">Avg:
+                0 mins</span></div>
+          </div>
+          <div class="status-row">
+            <div><strong>Physical Delivery (Metro)</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Nairobi & Environs</div>
+            </div>
+            <div class="text-end"><strong>78% Rate</strong><br><span style="font-size:11px;color:var(--pm-warning)">Avg:
+                2.4 Days</span></div>
+          </div>
+          <div class="status-row">
+            <div><strong>Physical Delivery (Regional)</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Courier network delays</div>
+            </div>
+            <div class="text-end"><strong>54% Rate</strong><br><span style="font-size:11px;color:var(--pm-danger)">Avg:
+                5.1 Days</span></div>
+          </div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-warning-soft);font-size:12px"><i
+              class="bi bi-exclamation-triangle me-1"></i> Drop-off reason analysis: 65% of unactivated physical cards
+            failed delivery OTP verification. Recommend SMS reminders.</div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'replacementLogModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-arrow-repeat me-2"></i>Replacement & Cancellation Log</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="pm-tab-pills mb-3"><button class="pm-tab-pill" [class.active]="activeTabs['build'] === 'fields'"
+              (click)="switchTab('repl','reasons',$event)">Replacement Reasons</button><button class="pm-tab-pill"
+              (click)="switchTab('repl','cancellations',$event)">Cancellation Log</button></div>
+          <div [class.active]="activeTabs['repl'] === 'reasons'" id="repl-reasons" class="tab-panel">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height:60%;background:var(--pm-danger)"><span
+                  class="bar-label">Lost/Stolen</span></div>
+              <div class="chart-bar" style="height:20%;background:var(--pm-warning)"><span
+                  class="bar-label">Damaged</span></div>
+              <div class="chart-bar" style="height:80%;background:var(--pm-info)"><span class="bar-label">Expired</span>
+              </div>
+              <div class="chart-bar" style="height:40%;background:var(--pm-purple)"><span class="bar-label">Fraud
+                  Susp.</span></div>
+              <div class="chart-bar" style="height:10%;background:var(--pm-muted)"><span class="bar-label">Other</span>
+              </div>
+            </div>
+          </div>
+          <div [class.active]="activeTabs['repl'] === 'cancellations'" id="repl-cancellations" class="tab-panel">
+            <div class="table-responsive">
+              <table class="pm-table">
+                <thead>
+                  <tr>
+                    <th>Card Mask</th>
+                    <th>Cardholder</th>
+                    <th>Date</th>
+                    <th>Reason Code</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>**** 4102</td>
+                    <td>Grace Kamau</td>
+                    <td>27 Jun</td>
+                    <td>Customer Request</td>
+                    <td>Closed</td>
+                  </tr>
+                  <tr>
+                    <td>**** 8821</td>
+                    <td>Acme Corp</td>
+                    <td>26 Jun</td>
+                    <td>Employee Terminated</td>
+                    <td>Closed</td>
+                  </tr>
+                  <tr>
+                    <td>**** 9011</td>
+                    <td>David O.</td>
+                    <td>24 Jun</td>
+                    <td>Account Delinquent</td>
+                    <td>Forced Closure</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'usageTrendsModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog modal-xl" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-graph-up-arrow me-2"></i>Usage Trends (12 Months)</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="chart-bars mb-3" style="height:150px">
+            <div class="chart-bar" style="height:30%;background:var(--pm-primary-light)"><span
+                class="bar-label">Jul</span></div>
+            <div class="chart-bar" style="height:35%;background:var(--pm-primary-light)"><span
+                class="bar-label">Aug</span></div>
+            <div class="chart-bar" style="height:40%;background:var(--pm-primary-light)"><span
+                class="bar-label">Sep</span></div>
+            <div class="chart-bar" style="height:42%;background:var(--pm-primary-light)"><span
+                class="bar-label">Oct</span></div>
+            <div class="chart-bar" style="height:50%;background:var(--pm-primary-light)"><span
+                class="bar-label">Nov</span></div>
+            <div class="chart-bar" style="height:65%;background:var(--pm-primary)"><span class="bar-label">Dec</span>
+            </div>
+            <div class="chart-bar" style="height:55%;background:var(--pm-primary-light)"><span
+                class="bar-label">Jan</span></div>
+            <div class="chart-bar" style="height:60%;background:var(--pm-primary-light)"><span
+                class="bar-label">Feb</span></div>
+            <div class="chart-bar" style="height:62%;background:var(--pm-primary-light)"><span
+                class="bar-label">Mar</span></div>
+            <div class="chart-bar" style="height:70%;background:var(--pm-primary-light)"><span
+                class="bar-label">Apr</span></div>
+            <div class="chart-bar" style="height:75%;background:var(--pm-primary-light)"><span
+                class="bar-label">May</span></div>
+            <div class="chart-bar" style="height:85%;background:var(--pm-primary)"><span class="bar-label">Jun</span>
+            </div>
+          </div>
+          <div class="row text-center mt-4">
+            <div class="col-4">
+              <div style="font-size:11px;color:var(--pm-muted);font-weight:600">AVERAGE ACTIVE RATE</div>
+              <div style="font-size:20px;font-weight:700">74%</div>
+            </div>
+            <div class="col-4">
+              <div style="font-size:11px;color:var(--pm-muted);font-weight:600">AVG TICKET SIZE YTD</div>
+              <div style="font-size:20px;font-weight:700">KES 520</div>
+            </div>
+            <div class="col-4">
+              <div style="font-size:11px;color:var(--pm-muted);font-weight:600">TXNS PER ACTIVE CARD</div>
+              <div style="font-size:20px;font-weight:700">18.4 / mo</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'revenueAnalyticsModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-cash-coin me-2 text-success"></i>Revenue & Fee Analytics</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="p-3 rounded mb-3 text-center" style="background:var(--pm-surface-2)">
+            <div style="font-size:12px;color:var(--pm-muted)">Total Gross Revenue MTD</div>
+            <div style="font-size:28px;font-weight:700;color:var(--pm-primary)">KES 18,500,000</div>
+          </div>
+          <div class="status-row">
+            <div><strong>Interchange Revenue</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Merchant discount sharing</div>
+            </div><strong style="color:var(--pm-accent)">KES 12.2M</strong>
+          </div>
+          <div class="status-row">
+            <div><strong>FX Spread / Cross-Border</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Markup on international spend</div>
+            </div><strong style="color:var(--pm-info)">KES 4.1M</strong>
+          </div>
+          <div class="status-row">
+            <div><strong>Card Replacement Fees</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Lost/damaged re-issuance</div>
+            </div><strong>KES 850k</strong>
+          </div>
+          <div class="status-row">
+            <div><strong>Late & Cash Advance Fees</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Credit portfolio penalties</div>
+            </div><strong style="color:var(--pm-warning)">KES 1.35M</strong>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'topCategoriesModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-basket me-2 text-info"></i>Top Category Drill-down</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Supermarkets &
+                Grocery</span><strong>KES 264M (22%)</strong></div>
+            <div class="pm-progress">
+              <div class="pm-progress-bar" style="width:100%;background:var(--pm-primary)"></div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Dining &
+                Restaurants</span><strong>KES 216M (18%)</strong></div>
+            <div class="pm-progress">
+              <div class="pm-progress-bar" style="width:81%;background:var(--pm-info)"></div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Fuel & Auto</span><strong>KES
+                168M (14%)</strong></div>
+            <div class="pm-progress">
+              <div class="pm-progress-bar" style="width:63%;background:var(--pm-accent)"></div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Travel &
+                Airlines</span><strong>KES 120M (10%)</strong></div>
+            <div class="pm-progress">
+              <div class="pm-progress-bar" style="width:45%;background:var(--pm-purple)"></div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Digital Subscriptions &
+                Media</span><strong>KES 85M (7%)</strong></div>
+            <div class="pm-progress">
+              <div class="pm-progress-bar" style="width:32%;background:var(--pm-warning)"></div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Healthcare &
+                Pharmacies</span><strong>KES 60M (5%)</strong></div>
+            <div class="pm-progress">
+              <div class="pm-progress-bar" style="width:22%;background:var(--pm-danger)"></div>
+            </div>
+          </div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-info-soft);font-size:12px"><i
+              class="bi bi-graph-up-arrow me-1"></i> Travel has grown 24% MoM, indicating seasonal holiday bookings.
+            Recommended to push travel rewards campaign.</div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'channelMixModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-phone-vibrate me-2"></i>Usage Channel Mix</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="p-3 rounded"
+                style="background:var(--pm-warning-soft);border-left:3px solid var(--pm-warning)">
+                <div style="font-size:11px;font-weight:700">POS TERMINALS</div>
+                <div style="font-size:20px;font-weight:700">45%</div>
+                <div style="font-size:11px;color:var(--pm-muted)">Physical Retail</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-3 rounded" style="background:var(--pm-info-soft);border-left:3px solid var(--pm-info)">
+                <div style="font-size:11px;font-weight:700">ONLINE / E-COMMERCE</div>
+                <div style="font-size:20px;font-weight:700">35%</div>
+                <div style="font-size:11px;color:var(--pm-muted)">Card-Not-Present</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-3 rounded"
+                style="background:var(--pm-primary-soft);border-left:3px solid var(--pm-primary);background:var(--pm-purple-soft)">
+                <div style="font-size:11px;font-weight:700">ATM WITHDRAWALS</div>
+                <div style="font-size:20px;font-weight:700">15%</div>
+                <div style="font-size:11px;color:var(--pm-muted)">Cash Access</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-3 rounded" style="background:var(--pm-accent-soft);border-left:3px solid var(--pm-accent)">
+                <div style="font-size:11px;font-weight:700">MOBILE WALLETS</div>
+                <div style="font-size:20px;font-weight:700">5%</div>
+                <div style="font-size:11px;color:var(--pm-muted)">Apple/Google Pay</div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3" style="font-size:13px">
+            <p><strong>Insights:</strong></p>
+            <ul>
+              <li>Contactless (Tap-to-Pay) accounts for 68% of all POS transactions.</li>
+              <li>Mobile wallet usage has doubled since Apple Pay integration last quarter.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'geoSpendModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-globe me-2 text-info"></i>Geographic Spend Analysis</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="text-center">
+              <div style="font-size:24px;font-weight:700;color:var(--pm-primary)">88%</div>
+              <div style="font-size:11px;font-weight:600;color:var(--pm-muted)">DOMESTIC (KES)</div>
+            </div>
+            <div style="flex:1;height:4px;background:var(--pm-border);margin:0 15px;position:relative">
+              <div style="position:absolute;left:0;top:0;height:100%;width:88%;background:var(--pm-primary)"></div>
+            </div>
+            <div class="text-center">
+              <div style="font-size:24px;font-weight:700;color:var(--pm-warning)">12%</div>
+              <div style="font-size:11px;font-weight:600;color:var(--pm-muted)">INTERNATIONAL</div>
+            </div>
+          </div>
+          <h6 style="font-weight:700">Top International Destinations (Corridor)</h6>
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead>
+                <tr>
+                  <th>Country / Currency</th>
+                  <th>Volume</th>
+                  <th>% of Intl</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>United States (USD)</td>
+                  <td>KES 72M</td>
+                  <td>50%</td>
+                </tr>
+                <tr>
+                  <td>United Kingdom (GBP)</td>
+                  <td>KES 28M</td>
+                  <td>20%</td>
+                </tr>
+                <tr>
+                  <td>European Union (EUR)</td>
+                  <td>KES 21M</td>
+                  <td>15%</td>
+                </tr>
+                <tr>
+                  <td>UAE (AED)</td>
+                  <td>KES 10M</td>
+                  <td>7%</td>
+                </tr>
+                <tr>
+                  <td>Others</td>
+                  <td>KES 13M</td>
+                  <td>8%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'subscriptionTrackerModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-arrow-repeat me-2 text-primary"></i>Recurring & Subscription Tracker
+          </h5><button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="p-3 rounded mb-3"
+            style="background:var(--pm-surface-2);display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:11px;color:var(--pm-muted)">Identified Monthly Subscription Volume</div>
+              <div style="font-size:20px;font-weight:700">KES 85.2M</div>
+            </div><span class="pm-badge pm-badge-info">7% of portfolio</span>
+          </div>
+          <h6 style="font-weight:700">Top Recurring Merchants</h6>
+          <div class="status-row">
+            <div><strong>Netflix</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Entertainment</div>
+            </div><strong>12,400 cards</strong>
+          </div>
+          <div class="status-row">
+            <div><strong>DSTV Multichoice</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Media</div>
+            </div><strong>9,850 cards</strong>
+          </div>
+          <div class="status-row">
+            <div><strong>Spotify</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Audio</div>
+            </div><strong>8,100 cards</strong>
+          </div>
+          <div class="status-row">
+            <div><strong>AWS / Google Cloud</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Tech / B2B</div>
+            </div><strong>4,200 cards</strong>
+          </div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-danger-soft);font-size:12px"><i
+              class="bi bi-shield-x me-1 text-danger"></i> Failed subscription renewal rate is <strong>4.2%</strong>.
+            Mostly due to insufficient funds on prepaid cards.</div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'merchantConcentrationModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-shop me-2 text-warning"></i>Merchant Concentration</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead>
+                <tr>
+                  <th>Merchant Name</th>
+                  <th>Category</th>
+                  <th>Txn Volume</th>
+                  <th>% of Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Naivas Supermarket</td>
+                  <td>Groceries</td>
+                  <td>98,420</td>
+                  <td>8.2%</td>
+                </tr>
+                <tr>
+                  <td>Safaricom PLC</td>
+                  <td>Telco / Util</td>
+                  <td>85,110</td>
+                  <td>7.1%</td>
+                </tr>
+                <tr>
+                  <td>Quickmart</td>
+                  <td>Groceries</td>
+                  <td>62,300</td>
+                  <td>5.2%</td>
+                </tr>
+                <tr>
+                  <td>Shell / Vivo Energy</td>
+                  <td>Fuel</td>
+                  <td>54,800</td>
+                  <td>4.5%</td>
+                </tr>
+                <tr>
+                  <td>Jumia Kenya</td>
+                  <td>E-commerce</td>
+                  <td>41,200</td>
+                  <td>3.4%</td>
+                </tr>
+                <tr>
+                  <td>Uber</td>
+                  <td>Transport</td>
+                  <td>38,900</td>
+                  <td>3.2%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-surface-2);font-size:12px"><strong>Concentration
+              Risk:</strong> Top 10 merchants account for 45% of total transaction volume, indicating high reliance on
+            daily essentials and transport.</div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'merchantCrossSellModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        @if (!merchantCrossSellSaved) {
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-link-45deg me-2 text-success"></i>Loyalty & Cross-Sell Engine</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size:13px;color:var(--pm-muted)">AI-identified co-branding and reward partnership opportunities
+            based on overlapping spend.</p>
+          <div class="status-row">
+            <div><strong>Co-brand Opportunity: Fuel</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">14% of users spend >KES 10k/mo at Shell</div>
+            </div><button class="pm-btn pm-btn-sm pm-btn-accent"
+              (click)="processAction('merchantCrossSellModal','Initiated partnership workflow for Fuel Co-Brand.','')">Draft
+              Proposal</button>
+          </div>
+          <div class="status-row">
+            <div><strong>Cashback Tier: Groceries</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Naivas/Quickmart frequent shoppers (2x/week)</div>
+            </div><button class="pm-btn pm-btn-sm pm-btn-accent"
+              (click)="processAction('merchantCrossSellModal','Added to Marketing Campaign queue.','')">Create
+              Campaign</button>
+          </div>
+          <div class="status-row">
+            <div><strong>Upsell: Travel Card</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Users with >2 international flight bookings YTD</div>
+            </div><button class="pm-btn pm-btn-sm pm-btn-accent"
+              (click)="processAction('merchantCrossSellModal','Targeted 4,200 users for Premium Travel Card.','')">Target
+              Users</button>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+        } @else {
+        <div class="modal-body">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Initiated partnership workflow for Fuel Co-Brand.</h5>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'churnRiskModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        @if (!churnRiskSaved) {
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2 text-danger"></i>Churn Risk Identification
+          </h5><button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="p-3 rounded mb-3"
+            style="background:var(--pm-danger-soft);display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:11px;color:#991B1B;font-weight:700">IDENTIFIED AT RISK</div>
+              <div style="font-size:24px;font-weight:700;color:var(--pm-danger)">1,420 Cards</div>
+            </div><span class="pm-badge pm-badge-danger">3.1% of portfolio</span>
+          </div>
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead>
+                <tr>
+                  <th>Risk Factor</th>
+                  <th>Cards Affected</th>
+                  <th>Avg Decline in Vol</th>
+                  <th>Action Trigger</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Zero activity > 45 days</td>
+                  <td>840</td>
+                  <td>-100%</td>
+                  <td><button class="pm-btn pm-btn-sm">Send 'We Miss You' Offer</button></td>
+                </tr>
+                <tr>
+                  <td>Salary deposit stopped</td>
+                  <td>310</td>
+                  <td>-85%</td>
+                  <td><button class="pm-btn pm-btn-sm">Call/Check Status</button></td>
+                </tr>
+                <tr>
+                  <td>Multiple 3DS failures</td>
+                  <td>150</td>
+                  <td>-60%</td>
+                  <td><button class="pm-btn pm-btn-sm">Support Intervention</button></td>
+                </tr>
+                <tr>
+                  <td>Prepaid balance KES 0</td>
+                  <td>120</td>
+                  <td>-100%</td>
+                  <td><button class="pm-btn pm-btn-sm">Reload Incentive (KES 100)</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+            class="pm-btn pm-btn-primary"
+            (click)="processAction('churnRiskModal','Automated retention campaigns activated for 1,420 users.','')">Run
+            Auto-Retention Workflow</button></div>
+        } @else {
+        <div class="modal-body">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Automated retention campaigns activated for 1,420 users.
+            </h5>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'upsellOpportunityModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        @if (!upsellOpportunitySaved) {
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-graph-up me-2 text-accent"></i>Credit Upsell Opportunities</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size:13px;color:var(--pm-muted)">Users exhibiting high debit volume, excellent balance
+            histories, and clean KYC, eligible for Virtual Credit.</p>
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead>
+                <tr>
+                  <th>Segment</th>
+                  <th>Eligible Users</th>
+                  <th>Suggested Limit</th>
+                  <th>Conv. Est.</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>High Net Worth Debit</td>
+                  <td>142</td>
+                  <td>KES 500k+</td>
+                  <td>45%</td>
+                  <td><button class="pm-btn pm-btn-sm pm-btn-primary">Email Upgrade</button></td>
+                </tr>
+                <tr>
+                  <td>Consistent Salary Deposits</td>
+                  <td>180</td>
+                  <td>KES 100k - 300k</td>
+                  <td>60%</td>
+                  <td><button class="pm-btn pm-btn-sm pm-btn-primary">Push Notification</button></td>
+                </tr>
+                <tr>
+                  <td>Heavy E-commerce Shoppers</td>
+                  <td>90</td>
+                  <td>KES 50k</td>
+                  <td>35%</td>
+                  <td><button class="pm-btn pm-btn-sm pm-btn-primary">In-App Banner</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+            class="pm-btn pm-btn-success"
+            (click)="processAction('upsellOpportunityModal','Targeted upsell campaigns launched across all channels.','')">Launch
+            All Campaigns</button></div>
+        } @else {
+        <div class="modal-body">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Targeted upsell campaigns launched across all channels.
+            </h5>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'corpSpendSummaryModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-building me-2 text-warning"></i>Corporate Program Overview</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                <div style="font-size:11px;color:var(--pm-muted)">Total Active Companies</div>
+                <div style="font-size:24px;font-weight:700">124</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                <div style="font-size:11px;color:var(--pm-muted)">Employee Cards Issued</div>
+                <div style="font-size:24px;font-weight:700">8,450</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="p-3 rounded" style="background:var(--pm-warning-soft);color:#B45309">
+                <div style="font-size:11px;font-weight:700">B2B SPEND MTD</div>
+                <div style="font-size:28px;font-weight:700">KES 412M</div>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:13px;color:var(--pm-muted)">Corporate spend represents 34% of total dashboard volume, with
+            highly profitable interchange margins.</p>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+            class="pm-btn pm-btn-primary"
+            (click)="openModal('exportReportModal'); closeModal()">Export Data</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'deptBudgetModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-wallet me-2"></i>Department Budget Breakdown (Acme Logistics)</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead>
+                <tr>
+                  <th>Department</th>
+                  <th>Allocated Budget</th>
+                  <th>Actual Spend</th>
+                  <th>Utilization</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Fleet Management</td>
+                  <td>KES 2.5M</td>
+                  <td>KES 2.1M</td>
+                  <td>
+                    <div class="pm-progress">
+                      <div class="pm-progress-bar" style="width:84%;background:var(--pm-warning)"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Sales & Marketing</td>
+                  <td>KES 1.0M</td>
+                  <td>KES 950k</td>
+                  <td>
+                    <div class="pm-progress">
+                      <div class="pm-progress-bar" style="width:95%;background:var(--pm-danger)"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Executive Travel</td>
+                  <td>KES 800k</td>
+                  <td>KES 350k</td>
+                  <td>
+                    <div class="pm-progress">
+                      <div class="pm-progress-bar" style="width:43%;background:var(--pm-info)"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'policyViolationModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-shield-x me-2 text-danger"></i>Policy Violation Audit</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead>
+                <tr>
+                  <th>Employee Card</th>
+                  <th>Amount</th>
+                  <th>Merchant</th>
+                  <th>Violation Type</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>**** 4412 (J. Doe)</td>
+                  <td>KES 45,000</td>
+                  <td>Nairobi Serena</td>
+                  <td>Over per-transaction limit</td>
+                  <td><button class="pm-btn pm-btn-sm">Override</button></td>
+                </tr>
+                <tr>
+                  <td>**** 8810 (S. Smith)</td>
+                  <td>KES 12,000</td>
+                  <td>Brew Bistro</td>
+                  <td>Weekend/Alcohol MCC</td>
+                  <td><button class="pm-btn pm-btn-sm">Flag to HR</button></td>
+                </tr>
+                <tr>
+                  <td>**** 9921 (M. Kariuki)</td>
+                  <td>KES 8,500</td>
+                  <td>Total Petrol</td>
+                  <td>Missing Receipt > 7 days</td>
+                  <td><button class="pm-btn pm-btn-sm">Remind</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'complianceTaxModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        @if (!complianceTaxSaved) {
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-file-earmark-ruled me-2"></i>Compliance & Tax Data Export</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3"><label class="pm-form-label">Report Form Type</label><select class="pm-form-control">
+              <option>Tax-Deductible Business Expenses</option>
+              <option>VAT Withholding Report</option>
+              <option>CBK Transaction Volume Summary</option>
+              <option>Per Diem & Mileage Allowances</option>
+            </select></div>
+          <div class="mb-3"><label class="pm-form-label">Fiscal Quarter</label><select class="pm-form-control">
+              <option>Q1 2025</option>
+              <option>Q2 2025</option>
+              <option>Q3 2025</option>
+              <option>Q4 2025</option>
+              <option>Full Year</option>
+            </select></div>
+          <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i
+              class="bi bi-info-circle me-1"></i> Data exported here is pre-formatted to align with Kenya Revenue
+            Authority (KRA) standard iTax templates.</div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button
+            class="pm-btn pm-btn-primary"
+            (click)="processAction('complianceTaxModal','Compliance report generated and sent to finance@paymo.com.','')">Generate
+            Compliance Form</button></div>
+        } @else {
+        <div class="modal-body">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Compliance report generated and sent to
+              finance@paymo.com.</h5>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'notificationsModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-bell me-2"></i>Analytics Alerts</h5><button class="btn-close"
+            (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="p-3 border rounded mb-2" style="border-left:3px solid var(--pm-warning)!important">
+            <div style="font-weight:600;font-size:13px">Fraud Spike Detected</div>
+            <div style="font-size:11px;color:var(--pm-muted)">CNP transactions in Eastern Europe elevated by 400% in
+              last 6 hours.</div>
+          </div>
+          <div class="p-3 border rounded mb-2" style="border-left:3px solid var(--pm-primary)!important">
+            <div style="font-weight:600;font-size:13px">Report Successfully Generated</div>
+            <div style="font-size:11px;color:var(--pm-muted)">Monthly Portfolio Summary (June) is ready for download.
+            </div>
+          </div>
+          <div class="p-3 border rounded mb-2" style="border-left:3px solid var(--pm-danger)!important">
+            <div style="font-weight:600;font-size:13px">Corporate Budget Exceeded</div>
+            <div style="font-size:11px;color:var(--pm-muted)">TechStart Inc has breached 90% of their monthly limit.
+            </div>
+          </div>
+          <div class="p-3 border rounded" style="border-left:3px solid var(--pm-accent)!important">
+            <div style="font-weight:600;font-size:13px">Scheduled Job Complete</div>
+            <div style="font-size:11px;color:var(--pm-muted)">Churn risk predictive model updated at 02:00 AM.</div>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-sm">Mark All Read</button><button class="pm-btn"
+            (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'profileModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Admin Profile</h5><button class="btn-close"
+            (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="pm-avatar mx-auto mb-3"
+            style="width:64px;height:64px;font-size:24px;background:var(--pm-gradient-slate)">DA</div>
+          <h5 style="font-weight:700;margin-bottom:2px">David A.</h5>
+          <p style="font-size:13px;color:var(--pm-muted)">BAAS Admin · Card Center Data Owner</p>
+          <div class="row g-2 text-start mt-3" style="font-size:13px">
+            <div class="col-6">
+              <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Access
+                  Level</span><br><strong>Full Analytics</strong></div>
+            </div>
+            <div class="col-6">
+              <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Last
+                  Login</span><br><strong>Today, 08:42 AM</strong></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-danger w-100" (click)="closeModal()">Sign Out
+            Session</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'predictiveEngineModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-stars text-purple me-2"></i>AI Predictive Engine Dashboard</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="p-3 rounded text-center"
+                style="background:var(--pm-purple-soft);border:1px solid var(--pm-purple);cursor:pointer"
+                (click)="closeModal(); openModal('churnRiskModal')"><i
+                  class="bi bi-exclamation-triangle d-block mb-2 text-danger" style="font-size:24px"></i>
+                <div style="font-weight:700">Churn Prediction</div>
+                <div style="font-size:11px;color:var(--pm-muted)">1,420 users at risk</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 rounded text-center"
+                style="background:var(--pm-accent-soft);border:1px solid var(--pm-accent);cursor:pointer"
+                (click)="closeModal(); openModal('upsellOpportunityModal')"><i
+                  class="bi bi-graph-up-arrow d-block mb-2 text-success" style="font-size:24px"></i>
+                <div style="font-weight:700">Credit Upsell</div>
+                <div style="font-size:11px;color:var(--pm-muted)">412 qualified users</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 rounded text-center"
+                style="background:var(--pm-warning-soft);border:1px solid var(--pm-warning);cursor:pointer"
+                (click)="closeModal(); openModal('merchantCrossSellModal')"><i
+                  class="bi bi-link-45deg d-block mb-2 text-warning" style="font-size:24px"></i>
+                <div style="font-weight:700">Merchant Cross-Sell</div>
+                <div style="font-size:11px;color:var(--pm-muted)">3 active campaigns</div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-surface-2);font-size:13px">
+            <p><strong>Next Month Forecast:</strong></p>
+            <ul>
+              <li>Projected Volume: KES 1.35B (+12.5%)</li>
+              <li>Predicted Active Cards: 48,000</li>
+              <li>Machine Learning Confidence Score: 94.2%</li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (activeModal === 'ltvAnalyticsModal') {
+  <div class="pm-modal-backdrop" (click)="closeModal()">
+    <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-person-lines-fill me-2 text-primary"></i>Customer LTV Analytics</h5>
+          <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div style="font-size:11px;font-weight:700;color:var(--pm-muted)">AVERAGE LIFETIME VALUE</div>
+            <div style="font-size:24px;font-weight:700;color:var(--pm-primary)">KES 12,400</div>
+          </div>
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead>
+                <tr>
+                  <th>Segment</th>
+                  <th>Avg LTV</th>
+                  <th>CAC</th>
+                  <th>ROI Ratio</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Premium Credit</td>
+                  <td>KES 45,000</td>
+                  <td>KES 2,500</td>
+                  <td>18x</td>
+                </tr>
+                <tr>
+                  <td>Corporate Expense</td>
+                  <td>KES 32,100</td>
+                  <td>KES 1,200</td>
+                  <td>26x</td>
+                </tr>
+                <tr>
+                  <td>Standard Debit</td>
+                  <td>KES 8,500</td>
+                  <td>KES 800</td>
+                  <td>10.6x</td>
+                </tr>
+                <tr>
+                  <td>Virtual Only</td>
+                  <td>KES 4,200</td>
+                  <td>KES 150</td>
+                  <td>28x</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-info-soft);font-size:12px">Virtual cards have the
+            lowest LTV but the highest ROI ratio due to zero physical acquisition costs. Focus acquisition budget here.
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+  }    
+</div>
+    

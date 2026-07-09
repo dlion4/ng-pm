@@ -1,0 +1,332 @@
+!-- PAGE BAR -->
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb"><a role="button" tabindex="0">Home</a> / <a role="button" tabindex="0">Business Portal</a> / <strong>Bulk Disbursements</strong></div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 3.5 — Bulk Disbursements & Payments</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Execute, track, and manage bulk payouts to employees, suppliers, program beneficiaries, and G2P/NGO recipients.</p>
+  </div>
+  <div class="d-flex flex-wrap" style="gap:8px">
+    <button class="pm-btn" (click)="openModal('fundWalletModal')"><i class="bi bi-plus-circle"></i> Add Float</button>
+    <button class="pm-btn" (click)="openModal('beneficiaryDirectoryModal')"><i class="bi bi-people"></i> Directory</button>
+    <button class="pm-btn pm-btn-primary" (click)="openModal('newDisbursementModal')"><i class="bi bi-send-plus"></i> New Bulk Payout</button>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="pm-content">
+
+  <!-- HERO STATS ROW -->
+  <div class="row g-3">
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card pm-card-accent" style="min-height:160px">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <p class="pm-stat-label" style="color:rgba(255,255,255,.7)">AVAILABLE FLOAT</p>
+            <div class="pm-stat-value" style="margin:8px 0;color:#fff;font-size:24px">KES 14.2M</div>
+          </div>
+          <i class="bi bi-wallet2" style="font-size:24px;color:rgba(255,255,255,.5)"></i>
+        </div>
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.7)">B2C limit: <strong>KES 50M/day</strong></p>
+        <button class="pm-btn pm-btn-sm mt-3" style="background:rgba(255,255,255,.15);border:none;color:#fff" (click)="openModal('fundWalletModal')">Top-up float</button>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card" style="min-height:160px">
+        <p class="pm-stat-label" style="color:var(--pm-info)">TOTAL DISBURSED (MTD)</p>
+        <div class="pm-stat-value" style="margin:6px 0;font-size:24px">KES 84.5M</div>
+        <span class="pm-badge pm-badge-success"><i class="bi bi-graph-up-arrow"></i> +12% vs last month</span>
+        <div class="mt-3 d-flex justify-content-between text-muted" style="font-size:11px">
+          <span>M-Pesa B2C: 62%</span>
+          <span>PesaLink: 38%</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card" style="min-height:160px;border-left:3px solid var(--pm-warning)">
+        <p class="pm-stat-label" style="color:var(--pm-warning)">PENDING APPROVALS</p>
+        <div class="pm-stat-value" style="margin:6px 0;font-size:24px">3 Batches</div>
+        <span class="pm-badge pm-badge-warning"><i class="bi bi-shield-lock"></i> Requires Checker</span>
+        <div class="mt-3 text-muted" style="font-size:11px">
+          Value: <strong>KES 4.2M</strong> awaiting authorization
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card" style="min-height:160px;border-left:3px solid var(--pm-danger)">
+        <p class="pm-stat-label" style="color:var(--pm-danger)">FAILED PAYMENTS (MTD)</p>
+        <div class="pm-stat-value" style="margin:6px 0;font-size:24px">18 <span style="font-size:14px;color:var(--pm-muted);font-weight:500">/ 14,200</span></div>
+        <span class="pm-badge pm-badge-danger"><i class="bi bi-exclamation-triangle"></i> Needs Review</span>
+        <div class="mt-3 text-muted" style="font-size:11px">
+          Success Rate: <strong style="color:var(--pm-accent)">99.87%</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENTION / INTELLIGENCE / ACTIONS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="pm-card" style="height:100%">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="pm-section-title">Attention Required</h3>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('attentionActionModal')">Review all</button>
+        </div>
+        @for (item of attentionItems; track item.id) {
+          <div class="feed-item">
+            <div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor" style="font-size:12px">{{ item.iconText }}</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+            </div>
+            <button [class]="item.buttonClass" (click)="openModal(item.modalId)">{{ item.buttonLabel }}</button>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="pm-card" style="height:100%">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="pm-section-title">System Intelligence</h3>
+          <span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span>
+        </div>
+        @for (item of intelligenceItems; track item.id) {
+          <div class="feed-item">
+            <div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor" style="font-size:12px">{{ item.iconText }}</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+            </div>
+            <button [class]="item.buttonClass" (click)="openModal(item.modalId)">{{ item.buttonLabel }}</button>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="pm-card" style="height:100%">
+        <div class="mb-3"><h3 class="pm-section-title">Quick Actions</h3><p class="pm-section-sub">Frequent business operational flows</p></div>
+        <div class="quick-action-grid">
+          @for (action of quickActions; track action.id) {
+            <button class="quick-action-btn" (click)="openModal(action.modalId)">
+              <i [class]="action.iconClass" [style.color]="action.iconStyle"></i> {{ action.label }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.5.1 — Bulk Disbursement Engine -->
+  <div class="pm-card">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-engine-fill" style="color:var(--pm-primary)"></i> 3.5.1 — Bulk Disbursement Engine</h3><p class="pm-section-sub">Upload batch files, validate numbers, detect duplicates, and schedule mass payouts.</p></div>
+      <div class="d-flex" style="gap:8px">
+        <button class="pm-btn pm-btn-sm" (click)="openModal('scheduleDisbursementModal')"><i class="bi bi-clock"></i> Schedule</button>
+        <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('newDisbursementModal')"><i class="bi bi-cloud-upload"></i> New Upload</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Recent Batches & Drafts</h4>
+          <div class="table-responsive"><table class="pm-table">
+            <thead><tr><th>Batch ID</th><th>Name / Type</th><th>Count</th><th>Total Value</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              @for (batch of recentBatches; track batch.id) {
+                <tr>
+                  <td><code>{{ batch.batchId }}</code></td>
+                  <td><strong>{{ batch.name }}</strong><br><span style="font-size:11px;color:var(--pm-muted)">{{ batch.type }}</span></td>
+                  <td>{{ batch.count }}</td>
+                  <td>{{ batch.totalValue }}</td>
+                  <td><span [class]="batch.statusBadgeClass">{{ batch.statusBadge }}</span></td>
+                  <td><button class="pm-btn pm-btn-sm" (click)="openModal(batch.actionModal)">{{ batch.actionLabel }}</button></td>
+                </tr>
+              }
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Saved Templates</h4>
+          <p style="font-size:12px;color:var(--pm-ink-soft)">Use pre-configured templates for recurring payment lists.</p>
+          @for (tmpl of savedTemplates; track tmpl.id) {
+            <div class="status-row">
+              <div class="d-flex align-items-center gap-3">
+                <div class="pm-icon-circle" [style.background]="tmpl.iconBg" [style.color]="tmpl.iconColor"><i class="bi bi-file-earmark-spreadsheet"></i></div>
+                <div><strong>{{ tmpl.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ tmpl.count }}</div></div>
+              </div>
+              <button class="pm-btn pm-btn-sm" (click)="openModal(tmpl.modalId)">Use</button>
+            </div>
+          }
+          <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('beneficiaryDirectoryModal')"><i class="bi bi-list"></i> Manage Templates & Directory</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.5.2 — Approval & Execution -->
+  <div class="pm-card">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-shield-check" style="color:var(--pm-accent)"></i> 3.5.2 — Approval & Execution Queue</h3><p class="pm-section-sub">Maker-checker workflows, real-time execution tracking, and failure retry management.</p></div>
+      <button class="pm-btn pm-btn-sm" (click)="openModal('approvalWorkflowModal')"><i class="bi bi-diagram-3"></i> Approval Settings</button>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Pending Authorization</h4>
+          <div class="table-responsive"><table class="pm-table">
+            <thead><tr><th>Batch</th><th>Maker</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              @for (auth of pendingAuths; track auth.id) {
+                <tr>
+                  <td><code>{{ auth.batchId }}</code><br><span style="font-size:10px;color:var(--pm-muted)">{{ auth.batchType }}</span></td>
+                  <td>{{ auth.maker }}</td>
+                  <td>{{ auth.amount }}</td>
+                  <td><span [class]="auth.statusBadgeClass">{{ auth.statusBadge }}</span></td>
+                  <td>
+                    <button class="pm-btn pm-btn-sm" [style.display]="auth.isLocked ? '' : 'none'" disabled>Locked</button>
+                    <button class="pm-btn pm-btn-sm pm-btn-primary" [style.display]="auth.isLocked ? 'none' : ''" (click)="openModal(auth.actionModal)">{{ auth.actionLabel }}</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Executions</h4>
+          <div class="p-3 border rounded mb-3 table-execution-row executing">
+            <div class="d-flex justify-content-between mb-2">
+              <div><strong>BTH-9921: June Contractor Payout</strong><div style="font-size:11px;color:var(--pm-muted)">Processing via M-Pesa B2C...</div></div>
+              <div class="text-end"><strong>64%</strong><div style="font-size:11px;color:var(--pm-muted)">27 / 42 completed</div></div>
+            </div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:64%;background:var(--pm-primary)"></div></div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background:var(--pm-danger-soft)">
+            <div><strong style="color:var(--pm-danger);font-size:13px">14 Failed Transfers Detected</strong><br><span style="font-size:11px;color:#7F1D1D">From previously executed batches</span></div>
+            <button class="pm-btn pm-btn-sm pm-btn-danger" (click)="openModal('failedTransfersModal')">Retry & Resolve</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.5.3 — Disbursement Analytics -->
+  <div class="pm-card">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-bar-chart-line" style="color:var(--pm-info)"></i> 3.5.3 — Disbursement Analytics</h3><p class="pm-section-sub">Track success rates, analyze failure reasons, and view historical trends across payment methods.</p></div>
+      <button class="pm-btn pm-btn-sm" (click)="openModal('exportAnalyticsModal')"><i class="bi bi-download"></i> Export Data</button>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Volume Trend (MTD)</h4>
+          <div class="chart-bars" style="height:120px">
+            <div class="chart-bar" style="height:30%;background:var(--pm-primary-light)"><span class="bar-label">W1</span></div>
+            <div class="chart-bar" style="height:45%;background:var(--pm-primary-light)"><span class="bar-label">W2</span></div>
+            <div class="chart-bar" style="height:85%;background:var(--pm-primary)"><span class="bar-label">W3</span></div>
+            <div class="chart-bar" style="height:60%;background:var(--pm-primary-light)"><span class="bar-label">W4</span></div>
+          </div>
+          <div class="mt-3 pt-3 border-top d-flex justify-content-between text-muted" style="font-size:12px">
+            <span>Peak: Week 3 (KES 45M)</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Success vs Failure Rate</h4>
+          <div class="d-flex align-items-center gap-4">
+            <div style="position:relative;width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--pm-accent) 0 98%, var(--pm-danger) 98% 100%)">
+              <div style="position:absolute;inset:15px;background:var(--pm-surface-2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px">98%</div>
+            </div>
+            <div style="flex:1;font-size:12px">
+              <div class="d-flex justify-content-between mb-2"><span><i class="bi bi-circle-fill text-success" style="font-size:8px"></i> Success</span><strong>14,182</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span><i class="bi bi-circle-fill text-danger" style="font-size:8px"></i> Failed</span><strong>18</strong></div>
+              <div class="d-flex justify-content-between border-top pt-2 mt-2"><span>Recovery</span><strong style="color:var(--pm-info)">95%</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Top Failure Reasons</h4>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between mb-1" style="font-size:11px"><span>Invalid Account / Phone</span><span>65%</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:65%;background:var(--pm-warning)"></div></div>
+          </div>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between mb-1" style="font-size:11px"><span>Limit Exceeded (User)</span><span>20%</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:20%;background:var(--pm-info)"></div></div>
+          </div>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between mb-1" style="font-size:11px"><span>Network Timeout</span><span>10%</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:10%;background:var(--pm-purple)"></div></div>
+          </div>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between mb-1" style="font-size:11px"><span>Insufficient Float</span><span>5%</span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" style="width:5%;background:var(--pm-danger)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.5.4 — Government & NGO Bulk Disbursements -->
+  <div class="pm-card pm-card-dark">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-globe-africa" style="color:var(--pm-accent)"></i> 3.5.4 — Social Protection & NGO Programs</h3><p class="pm-section-sub" style="color:rgba(255,255,255,.7)">Manage G2P/NGO disbursements, agricultural subsidies, and emergency relief with biometric verification & rapid onboarding.</p></div>
+      <button class="pm-btn pm-btn-sm pm-btn-accent" (click)="openModal('ngoProgramModal')"><i class="bi bi-plus"></i> New Program</button>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="utility-block" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+          <div class="d-flex justify-content-between align-items-center mb-2"><span class="pm-badge" style="background:rgba(255,255,255,.2);color:#fff">Inua Jamii / Elderly</span><i class="bi bi-fingerprint" style="font-size:18px;color:rgba(255,255,255,.5)"></i></div>
+          <h4 style="font-size:15px;font-weight:700;margin:0 0 8px;color:#fff">Q2 Stipend Payout</h4>
+          <div class="d-flex justify-content-between text-white-50" style="font-size:12px;margin-bottom:12px"><span>Total: KES 12.5M</span><span>4,200 Recipients</span></div>
+          <div class="pm-progress mb-2" style="background:rgba(255,255,255,.1)"><div class="pm-progress-bar" style="width:100%;background:var(--pm-accent)"></div></div>
+          <button class="pm-btn pm-btn-sm w-100" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.2)" (click)="openModal('biometricVerificationModal')">View Compliance Report</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+          <div class="d-flex justify-content-between align-items-center mb-2"><span class="pm-badge pm-badge-danger">Emergency Relief</span><i class="bi bi-water" style="font-size:18px;color:rgba(255,255,255,.5)"></i></div>
+          <h4 style="font-size:15px;font-weight:700;margin:0 0 8px;color:#fff">Flood Relief (Tana River)</h4>
+          <div class="d-flex justify-content-between text-white-50" style="font-size:12px;margin-bottom:12px"><span>Target: KES 5.0M</span><span>Actively disbursing...</span></div>
+          <div class="pm-progress mb-2" style="background:rgba(255,255,255,.1)"><div class="pm-progress-bar" style="width:45%;background:var(--pm-danger)"></div></div>
+          <button class="pm-btn pm-btn-sm w-100" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.2)" (click)="openModal('beneficiaryFeedbackModal')">Collection & Feedback</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+          <div class="d-flex justify-content-between align-items-center mb-2"><span class="pm-badge pm-badge-warning">Agri-Subsidy</span><i class="bi bi-tree" style="font-size:18px;color:rgba(255,255,255,.5)"></i></div>
+          <h4 style="font-size:15px;font-weight:700;margin:0 0 8px;color:#fff">Fertilizer e-Voucher</h4>
+          <div class="d-flex justify-content-between text-white-50" style="font-size:12px;margin-bottom:12px"><span>Vouchers Issued: 1,500</span><span>Redeemed: 840</span></div>
+          <div class="pm-progress mb-2" style="background:rgba(255,255,255,.1)"><div class="pm-progress-bar" style="width:56%;background:var(--pm-warning)"></div></div>
+          <button class="pm-btn pm-btn-sm w-100" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.2)" (click)="openModal('subsidyVoucherModal')">Manage Redemptions</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================ -->
+<!-- Compile-safe generic modal host replacing corrupted generated modal blocks -->
+<div class="modal-backdrop fade show" [style.display]="activeModal ? 'block' : 'none'" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" [style.display]="activeModal ? 'block' : 'none'" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Bulk Payments Action</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-muted);margin:0">{{ activeModal }} is ready. Continue from this modal action.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="pm-btn btn-pm" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

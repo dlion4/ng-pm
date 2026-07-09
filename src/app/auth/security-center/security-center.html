@@ -1,0 +1,558 @@
+<!-- Background layers -->
+<div class="grid-overlay position-fixed top-0 start-0 w-100 h-100" style="opacity:.45; pointer-events:none;"></div>
+<div class="blob" style="width:520px;height:520px;background:#22d3ee;top:-190px;right:-120px;"></div>
+<div class="blob" style="width:430px;height:430px;background:#a78bfa;bottom:-140px;left:-120px;animation-delay:-6s;">
+</div>
+
+<main class="page-wrap">
+    <div class="auth-shell">
+        <div class="row g-4 align-items-start">
+
+            <!-- ═══════════════════════════════════════════════════════
+           LEFT SIDEBAR
+           ═══════════════════════════════════════════════════════ -->
+            <aside class="col-lg-4">
+                <div class="side-visual glass-strong">
+                    <div class="scan-line"></div>
+                    <div class="side-content">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-4">
+                                <span class="logo-mark">P</span>
+                                <div>
+                                    <div class="fw-bold text-white">Paymo <span class="text-gradient">BAAS</span></div>
+                                    <div style="font-size:.74rem;color:var(--ink-3);">Zero-trust security center</div>
+                                </div>
+                            </div>
+                            <span class="pill mb-3"><span class="pill-dot"></span> Account protected</span>
+                            <h1 class="mb-3" style="font-size:clamp(2rem,4vw,3.1rem);line-height:1.02;">
+                                Session Management & <span class="text-gradient">Security Center</span>
+                            </h1>
+                            <p class="mb-4" style="color:var(--ink-2);max-width:360px;">
+                                Monitor active devices, login history, app access, alert rules, and emergency controls
+                                from one secure surface.
+                            </p>
+                            <div class="flow-frame mb-4">
+                                <img src="https://i.pinimg.com/originals/82/de/83/82de83fb86c54aa5783bbb6ca3b26938.gif"
+                                    alt="Security telemetry flow">
+                                <div class="flow-caption">
+                                    <span class="badge-mini badge-native">Live risk engine</span>
+                                    <div class="fw-bold text-white mt-1">Device, location, API and login telemetry</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="glass p-3">
+                                    <div class="mono text-gradient fw-bold">7</div>
+                                    <div style="font-size:.72rem;color:var(--ink-3);">Active sessions</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="glass p-3">
+                                    <div class="mono text-gradient fw-bold">90d</div>
+                                    <div style="font-size:.72rem;color:var(--ink-3);">Login history</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="glass p-3">
+                                    <div class="mono text-gradient-gold fw-bold">2</div>
+                                    <div style="font-size:.72rem;color:var(--ink-3);">Open actions</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="glass p-3">
+                                    <div class="mono text-gradient fw-bold">24/7</div>
+                                    <div style="font-size:.72rem;color:var(--ink-3);">Fraud watch</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ═══════════════════════════════════════════════════════
+           RIGHT CONTENT
+           ═══════════════════════════════════════════════════════ -->
+            <section class="col-lg-8">
+
+                <!-- ── Security Score Card ── -->
+                <div class="glass-strong p-3 p-md-4 mb-4">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+                        <div>
+                            <div class="section-label">Page 57 · /security</div>
+                            <h2 class="mb-2" style="font-size:clamp(1.8rem,3.5vw,2.6rem);">Security Center</h2>
+                            <p class="mb-0" style="color:var(--ink-2);">Monitor your account security and manage every
+                                active session.</p>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-outline-paymo btn-sm" (click)="exportSummary()">
+                                <i class="bi bi-download me-1"></i> Export summary
+                            </button>
+                            <button class="btn btn-danger-paymo btn-sm" (click)="setPanel('emergency')">
+                                <i class="bi bi-shield-exclamation me-1"></i> Emergency
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-4 d-flex justify-content-center">
+                            <div class="score-ring">
+                                <svg width="180" height="180" viewBox="0 0 180 180">
+                                    <circle cx="90" cy="90" r="72" fill="none" stroke="rgba(255,255,255,.08)"
+                                        stroke-width="14"></circle>
+                                    <circle id="scoreCircle" cx="90" cy="90" r="72" fill="none" stroke="url(#scoreGrad)"
+                                        stroke-width="14" stroke-linecap="round" stroke-dasharray="452"
+                                        [attr.stroke-dashoffset]="scoreDashOffset"></circle>
+                                    <defs>
+                                        <linearGradient id="scoreGrad" x1="0" x2="1">
+                                            <stop offset="0" stop-color="#22d3ee"></stop>
+                                            <stop offset="1" stop-color="#a78bfa"></stop>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <div class="score-center">
+                                    <div class="score-num">{{ scoreValue }}</div>
+                                    <div class="score-caption">Security score</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row g-2">
+                                <div class="col-sm-6" *ngFor="let c of components">
+                                    <div class="d-flex align-items-center justify-content-between glass p-3 h-100"
+                                        style="border-radius:14px;">
+                                        <div>
+                                            <div class="fw-bold text-white" style="font-size:.9rem;">{{ c.label }}</div>
+                                            <div style="font-size:.72rem;color:var(--ink-3);">+{{ c.points }} points
+                                            </div>
+                                        </div>
+                                        <span class="badge-mini" [ngClass]="c.done ? 'badge-ok' : 'badge-soon'">{{
+                                            c.done ? 'Done' : 'Open' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notice mt-3" [class.show]="globalNoticeVisible">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>{{ globalNoticeText }}</span>
+                    </div>
+                </div>
+
+                <!-- ── Tab Bar ── -->
+                <div class="glass p-3 p-md-4 mb-4">
+                    <div class="tabbar">
+                        <button class="tabbtn" [class.active]="activePanel === 'sessions'"
+                            (click)="setPanel('sessions')">
+                            <i class="bi bi-phone me-1"></i> Active sessions
+                        </button>
+                        <button class="tabbtn" [class.active]="activePanel === 'history'" (click)="setPanel('history')">
+                            <i class="bi bi-clock-history me-1"></i> Login history
+                        </button>
+                        <button class="tabbtn" [class.active]="activePanel === 'trusted'" (click)="setPanel('trusted')">
+                            <i class="bi bi-patch-check me-1"></i> Trusted devices
+                        </button>
+                        <button class="tabbtn" [class.active]="activePanel === 'alerts'" (click)="setPanel('alerts')">
+                            <i class="bi bi-bell me-1"></i> Alerts
+                        </button>
+                        <button class="tabbtn" [class.active]="activePanel === 'recommendations'"
+                            (click)="setPanel('recommendations')">
+                            <i class="bi bi-check2-square me-1"></i> Recommendations
+                        </button>
+                        <button class="tabbtn" [class.active]="activePanel === 'emergency'"
+                            (click)="setPanel('emergency')">
+                            <i class="bi bi-shield-lock me-1"></i> Emergency
+                        </button>
+                        <button class="tabbtn" [class.active]="activePanel === 'apps'" (click)="setPanel('apps')">
+                            <i class="bi bi-plug me-1"></i> Apps
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════
+             PANEL: ACTIVE SESSIONS
+             ═══════════════════════════════════════════════════════ -->
+                <div class="panel" [class.active]="activePanel === 'sessions'" id="panel-sessions">
+                    <div class="glass p-3 p-md-4 mb-4">
+                        <div
+                            class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+                            <div>
+                                <h3 class="mb-1">Active Sessions</h3>
+                                <p class="mb-0" style="color:var(--ink-2);font-size:.92rem;">
+                                    Review devices currently signed in and revoke anything unfamiliar.
+                                </p>
+                            </div>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <select id="autoLogout" class="form-select form-select-sm" style="width:auto;"
+                                    [(ngModel)]="autoLogoutValue" (change)="onAutoLogoutChange()">
+                                    <option value="15">Auto logout: 15 min</option>
+                                    <option value="60">Auto logout: 1 hour</option>
+                                    <option value="480">Auto logout: 8 hours</option>
+                                    <option value="never">Auto logout: Never</option>
+                                </select>
+                                <button class="btn btn-outline-paymo btn-sm" (click)="logoutAllOthers()">
+                                    <i class="bi bi-box-arrow-right me-1"></i> Log out all other devices
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6" *ngFor="let s of sessions">
+                                <div class="session-card h-100">
+                                    <div class="d-flex gap-3 align-items-start">
+                                        <div class="device-icon"><i class="bi {{ s.icon }}"></i></div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between gap-2">
+                                                <h5 class="mb-1" style="font-size:1rem;">{{ s.device }}</h5>
+                                                <span class="badge-mini" [ngClass]="sessionStatusBadge(s)">{{ s.status
+                                                    }}</span>
+                                            </div>
+                                            <div style="font-size:.82rem;color:var(--ink-2);">
+                                                <i class="bi bi-geo-alt me-1"></i>{{ s.location }}
+                                            </div>
+                                            <div class="mono" style="font-size:.74rem;color:var(--ink-3);">{{ s.ip }} ·
+                                                {{ s.last }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="mini-map my-3"></div>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <button class="btn btn-outline-paymo btn-sm" (click)="toggleTrust(s.id)">
+                                            <i class="bi"
+                                                [ngClass]="s.trusted ? 'bi-patch-check-fill' : 'bi-patch-check'"></i>
+                                            {{ s.trusted ? 'Trusted' : 'Mark trusted' }}
+                                        </button>
+                                        <button class="btn btn-outline-paymo btn-sm" *ngIf="s.current" disabled>This
+                                            device</button>
+                                        <button class="btn btn-outline-paymo btn-sm" *ngIf="!s.current"
+                                            (click)="logoutSession(s.id)">
+                                            <i class="bi bi-box-arrow-right me-1"></i>Log out
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════
+             PANEL: LOGIN HISTORY
+             ═══════════════════════════════════════════════════════ -->
+                <div class="panel" [class.active]="activePanel === 'history'" id="panel-history">
+                    <div class="glass p-3 p-md-4 mb-4">
+                        <div
+                            class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+                            <div>
+                                <h3 class="mb-1">Login History</h3>
+                                <p class="mb-0" style="color:var(--ink-2);font-size:.92rem;">
+                                    90-day activity trail with risk flags and step-up events.
+                                </p>
+                            </div>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <select id="historyStatus" class="form-select form-select-sm" style="width:auto;" [(ngModel)]="historyStatusFilter"
+                                    (change)="renderHistory()">
+                                    <option value="all">All statuses</option>
+                                    <option value="Success">Success</option>
+                                    <option value="Failed">Failed</option>
+                                    <option value="Blocked">Blocked</option>
+                                    <option value="Step-up Required">Step-up Required</option>
+                                </select>
+                                
+                                <select id="historyLocation" class="form-select form-select-sm" style="width:auto;" [(ngModel)]="historyLocationFilter"
+                                    (change)="renderHistory()">
+                                    <option value="all">All locations</option>
+                                    <option value="Lagos">Lagos</option>
+                                    <option value="Nairobi">Nairobi</option>
+                                    <option value="Accra">Accra</option>
+                                    <option value="London">London</option>
+                                    <option value="Dubai">Dubai</option>
+                                </select>
+                                <button class="btn btn-outline-paymo btn-sm" (click)="exportCSV()">
+                                    <i class="bi bi-filetype-csv me-1"></i> CSV
+                                </button>
+                                <button class="btn btn-outline-paymo btn-sm" (click)="exportPDF()">
+                                    <i class="bi bi-filetype-pdf me-1"></i> PDF
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <table class="security-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date/Time</th>
+                                        <th>Device</th>
+                                        <th>Browser</th>
+                                        <th>Location</th>
+                                        <th>IP</th>
+                                        <th>Method</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let r of filteredHistory">
+                                        <td class="mono">{{ r.dateTime }}</td>
+                                        <td>{{ r.device }}</td>
+                                        <td>{{ r.browser }}</td>
+                                        <td>
+                                            {{ r.location }}
+                                            <span class="badge-mini badge-danger-soft ms-1"
+                                                *ngIf="r.status === 'Blocked'">Unusual</span>
+                                        </td>
+                                        <td class="mono">{{ r.ip }}</td>
+                                        <td>{{ r.method }}</td>
+                                        <td>
+                                            <span class="badge-mini" [ngClass]="badgeForStatus(r.status)">{{ r.status
+                                                }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="filteredHistory.length === 0">
+                                        <td colspan="7" class="text-center py-4" style="color:var(--ink-3);">No login
+                                            history matches your filters.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════
+             PANEL: TRUSTED DEVICES
+             ═══════════════════════════════════════════════════════ -->
+                <div class="panel" [class.active]="activePanel === 'trusted'" id="panel-trusted">
+                    <div class="glass p-3 p-md-4 mb-4">
+                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                            <div>
+                                <h3 class="mb-1">Trusted Devices</h3>
+                                <p class="mb-0" style="color:var(--ink-2);font-size:.92rem;">
+                                    Trusted devices can use longer sessions and lighter step-up prompts. Limit: 10
+                                    devices.
+                                </p>
+                            </div>
+                            <span class="badge-mini badge-native">{{ trustedCount }} / 10</span>
+                        </div>
+                        <div class="row g-3" *ngIf="trustedDevices.length > 0">
+                            <div class="col-md-6" *ngFor="let s of trustedDevices">
+                                <div class="device-card h-100">
+                                    <div class="d-flex gap-3">
+                                        <div class="device-icon"><i class="bi {{ s.icon }}"></i></div>
+                                        <div class="flex-grow-1">
+                                            <h5 style="font-size:1rem;">{{ s.device }}</h5>
+                                            <div style="color:var(--ink-2);font-size:.84rem;">{{ s.location }}</div>
+                                            <div class="mono" style="color:var(--ink-3);font-size:.74rem;">Last active:
+                                                {{ s.last }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 mt-3">
+                                        <button class="btn btn-outline-paymo btn-sm"
+                                            (click)="renameDevice(s.id)">Rename</button>
+                                        <button class="btn btn-outline-paymo btn-sm"
+                                            (click)="untrustDevice(s.id)">Remove trust</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3" *ngIf="trustedDevices.length === 0">
+                            <div class="col-12">
+                                <div class="glass p-4 text-center" style="border-radius:14px;color:var(--ink-2);">No
+                                    trusted devices yet.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════
+             PANEL: ALERTS
+             ═══════════════════════════════════════════════════════ -->
+                <div class="panel" [class.active]="activePanel === 'alerts'" id="panel-alerts">
+                    <div class="glass p-3 p-md-4 mb-4">
+                        <div
+                            class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+                            <div>
+                                <h3 class="mb-1">Security Alerts &amp; Notifications</h3>
+                                <p class="mb-0" style="color:var(--ink-2);font-size:.92rem;">
+                                    Customize delivery methods and thresholds for high-risk events.
+                                </p>
+                            </div>
+                            <button class="btn btn-primary-paymo btn-sm" (click)="enableAllAlerts()">
+                                <i class="bi bi-bell-fill me-1"></i> Enable all alerts
+                            </button>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6" *ngFor="let a of alerts">
+                                <div class="alert-card h-100">
+                                    <div class="d-flex justify-content-between gap-3 align-items-start mb-2">
+                                        <div>
+                                            <h5 style="font-size:1rem;">{{ a.label }}</h5>
+                                            <p class="mb-0" style="color:var(--ink-2);font-size:.84rem;">{{ a.desc }}
+                                            </p>
+                                        </div>
+                                        <label class="toggle">
+                                            <input type="checkbox" [checked]="a.enabled"
+                                                (change)="toggleAlert(a.key, $any($event.target).checked)">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-1 mt-3">
+                                        <span class="badge-mini badge-native" *ngFor="let c of a.channels">{{ c
+                                            }}</span>
+                                    </div>
+                                    <div class="mt-3" *ngIf="a.threshold !== undefined">
+                                        <label
+                                            style="font-size:.72rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.12em;">Threshold
+                                            USD</label>
+                                        <input class="form-control form-control-sm threshold-input"
+                                            [value]="a.threshold"
+                                            (change)="updateAlertThreshold(a.key, +$any($event.target).value)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════
+             PANEL: RECOMMENDATIONS
+             ═══════════════════════════════════════════════════════ -->
+                <div class="panel" [class.active]="activePanel === 'recommendations'" id="panel-recommendations">
+                    <div class="glass p-3 p-md-4 mb-4">
+                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                            <div>
+                                <h3 class="mb-1">Security Recommendations</h3>
+                                <p class="mb-0" style="color:var(--ink-2);font-size:.92rem;">Complete these actions to
+                                    improve your score.</p>
+                            </div>
+                            <span class="badge-mini badge-soon">{{ openActionsCount }} open</span>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6" *ngFor="let r of recommendations">
+                                <div class="recommend-card h-100">
+                                    <div class="d-flex gap-3">
+                                        <div class="device-icon" style="width:42px;height:42px;font-size:1.1rem;">
+                                            <i class="bi"
+                                                [ngClass]="isRecommendationDone(r.key) ? 'bi-check-circle-fill' : 'bi-circle'"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h5 style="font-size:1rem;">{{ r.title }}</h5>
+                                            <p style="color:var(--ink-2);font-size:.84rem;">{{ r.desc }}</p>
+                                            <button class="btn btn-sm"
+                                                [ngClass]="isRecommendationDone(r.key) ? 'btn-outline-paymo' : 'btn-primary-paymo'"
+                                                [disabled]="isRecommendationDone(r.key)"
+                                                (click)="completeRecommendation(r.key)">
+                                                {{ isRecommendationDone(r.key) ? r.link : r.link }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════
+             PANEL: EMERGENCY
+             ═══════════════════════════════════════════════════════ -->
+                <div class="panel" [class.active]="activePanel === 'emergency'" id="panel-emergency">
+                    <div class="glass p-3 p-md-4 mb-4">
+                        <div class="d-flex align-items-start gap-3 mb-4">
+                            <div class="device-icon"
+                                style="background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:#fca5a5;">
+                                <i class="bi bi-shield-exclamation"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-1">Account Lock &amp; Emergency Freeze</h3>
+                                <p class="mb-0" style="color:var(--ink-2);font-size:.92rem;">
+                                    Use these controls if you suspect unauthorized access or card fraud.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="alert-card h-100">
+                                    <span class="badge-mini badge-soon mb-2">Temporary</span>
+                                    <h5>Lock account for 24 hours</h5>
+                                    <p style="color:var(--ink-2);font-size:.86rem;">Blocks all new logins and sensitive
+                                        account changes.</p>
+                                    <button class="btn btn-outline-paymo btn-sm w-100" (click)="applyEmergency('lock')">
+                                        <i class="bi bi-lock me-1"></i> Lock account
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="alert-card h-100">
+                                    <span class="badge-mini badge-danger-soft mb-2">Fraud control</span>
+                                    <h5>Freeze cards and transactions</h5>
+                                    <p style="color:var(--ink-2);font-size:.86rem;">Stops card spend, payouts,
+                                        beneficiary additions, and API transfers.</p>
+                                    <button class="btn btn-danger-paymo btn-sm w-100"
+                                        (click)="applyEmergency('freeze')">
+                                        <i class="bi bi-credit-card-2-front me-1"></i> Freeze movement
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="alert-card h-100">
+                                    <span class="badge-mini badge-danger-soft mb-2">Panic button</span>
+                                    <h5>Secure my account now</h5>
+                                    <p style="color:var(--ink-2);font-size:.86rem;">Revokes sessions, freezes money
+                                        movement, and starts a fraud review.</p>
+                                    <button class="btn btn-danger-paymo btn-sm w-100" (click)="applyEmergency('panic')">
+                                        <i class="bi bi-lightning-charge me-1"></i> Secure now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notice mt-3" [class.show]="emergencyNoticeVisible">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>{{ emergencyNoticeText }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════
+             PANEL: APPS
+             ═══════════════════════════════════════════════════════ -->
+                <div class="panel" [class.active]="activePanel === 'apps'" id="panel-apps">
+                    <div class="glass p-3 p-md-4 mb-4">
+                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                            <div>
+                                <h3 class="mb-1">Third-Party App Access</h3>
+                                <p class="mb-0" style="color:var(--ink-2);font-size:.92rem;">OAuth-connected apps and
+                                    their granted permissions.</p>
+                            </div>
+                            <span class="badge-mini badge-adv">{{ appCount }} connected</span>
+                        </div>
+                        <div class="row g-3" *ngIf="apps.length > 0">
+                            <div class="col-md-6" *ngFor="let app of apps">
+                                <div class="app-card h-100">
+                                    <div class="d-flex gap-3 align-items-start">
+                                        <div class="device-icon"><i class="bi {{ app.icon }}"></i></div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between gap-2">
+                                                <h5 style="font-size:1rem;">{{ app.name }}</h5>
+                                                <span class="badge-mini" [ngClass]="appRiskBadge(app.risk)">{{ app.risk
+                                                    }} risk</span>
+                                            </div>
+                                            <div style="color:var(--ink-3);font-size:.78rem;">{{ app.last }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-1 my-3">
+                                        <span class="badge-mini badge-adv" *ngFor="let p of app.perms">{{ p }}</span>
+                                    </div>
+                                    <button class="btn btn-outline-paymo btn-sm" (click)="revokeApp(app.id)">
+                                        <i class="bi bi-x-circle me-1"></i>Revoke access
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3" *ngIf="apps.length === 0">
+                            <div class="col-12">
+                                <div class="glass p-4 text-center" style="border-radius:14px;color:var(--ink-2);">No
+                                    connected apps remain.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
+</main>

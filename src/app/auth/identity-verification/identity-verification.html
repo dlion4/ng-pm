@@ -1,0 +1,390 @@
+<main class="auth-shell">
+    <div class="grid-overlay fixed inset-0 opacity-50 pointer-events-none"></div>
+    <div class="blob" style="width:520px;height:520px;background:#22d3ee;top:-160px;right:-120px"></div>
+    <div class="blob" style="width:420px;height:420px;background:#a78bfa;bottom:-130px;left:-80px;animation-delay:-6s">
+    </div>
+
+    <div class="container">
+        <div class="row g-4 align-items-stretch">
+            <aside class="col-lg-5">
+                <div class="glass-strong hero-panel">
+                    <div class="hero-content">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-4">
+                                <span class="logo-mark">{{ logoMark }}</span>
+                                <div>
+                                    <div class="fw-bold text-white">{{ brandTitle }} <span
+                                            class="text-gradient">BAAS</span></div>
+                                    <div style="font-size:.75rem;color:var(--ink-3)">{{ brandSubtitle }}</div>
+                                </div>
+                            </div>
+                            <span class="pill mb-3"><span class="pill-dot"></span> {{ pillText }}</span>
+                            <h1 style="font-size:clamp(2.2rem,4.4vw,4rem);line-height:1.02;font-weight:900">{{
+                                heroHeading }} <span class="text-gradient">{{ heroAccent }}</span></h1>
+                            <p class="mt-3" style="color:var(--ink-2);max-width:430px">{{ heroDescription }}</p>
+                            <div class="glass p-3 mt-4" style="border-radius:16px">
+                                <div class="section-title mb-2">Reason for verification</div>
+                                <select class="form-select" [(ngModel)]="selectedReason">
+                                    <option *ngFor="let r of reasonOptions; trackBy: trackByIndex">{{ r }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="row g-2">
+                                <div *ngFor="let stat of detailStats; trackBy: trackByIndex" class="col-6">
+                                    <div class="detail-stat">
+                                        <div class="detail-stat-lbl">{{ stat.label }}</div>
+                                        <div class="detail-stat-val">{{ stat.value }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="col-lg-7">
+                <div class="glass-strong p-3 p-md-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                        <div>
+                            <div class="section-title">{{ sectionLabel }}</div>
+                            <h2 class="mb-1" style="font-size:1.55rem">{{ sectionTitle }}</h2>
+                            <p class="mb-0" style="color:var(--ink-2);font-size:.92rem">{{ sectionDescription }}</p>
+                        </div>
+                        <span class="badge-mini {{ riskBadgeClass }}">{{ riskBadgeText }}</span>
+                    </div>
+
+                    <div class="step-rail mb-4">
+                        <span *ngFor="let chip of stepChips; trackBy: trackById" class="step-chip"
+                            [class.active]="isStepActive(chip.id)" [class.done]="isStepDone(chip.id)">
+                            <i class="bi {{ chip.icon }}"></i> {{ chip.label }}
+                        </span>
+                    </div>
+
+                    <!-- SELECT PANEL -->
+                    <div *ngIf="currentStep === 'select'" class="hidden-panel active">
+                        <div class="row g-3">
+                            <div *ngFor="let m of methods; trackBy: trackById" class="col-md-6 col-xl-4">
+                                <div class="method-card" [class.active]="selectedMethod === m.id"
+                                    (click)="selectMethod(m.id)">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="method-icon"><i class="bi {{ m.icon }}"></i></div>
+                                        <span class="check-dot"></span>
+                                    </div>
+                                    <h5 style="font-size:1rem">{{ m.title }}</h5>
+                                    <p style="font-size:.82rem;color:var(--ink-2);margin:0">{{ m.description }}</p>
+                                    <div class="mt-3 d-flex gap-1 flex-wrap">
+                                        <span *ngFor="let b of m.badges; trackBy: trackByIndex"
+                                            class="badge-mini {{ b.class }}">{{ b.label }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2 mt-4">
+                            <button class="btn btn-primary-paymo" (click)="showFlow()">
+                                <i class="bi bi-arrow-right-circle me-1"></i> Continue verification
+                            </button>
+                            <button class="btn btn-outline-paymo" (click)="simulateRiskRouting()">
+                                <i class="bi bi-lightning-charge me-1"></i> Simulate risk routing
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- VERIFY PANEL -->
+                    <div *ngIf="currentStep === 'verify'" class="hidden-panel active">
+                        <!-- Basic Flow -->
+                        <div *ngIf="selectedMethod === 'basic'" class="verify-flow">
+                            <h4>Dual-channel verification</h4>
+                            <p style="color:var(--ink-2)">Enter both OTP codes and answer 2 security questions.</p>
+                            <div class="row g-3">
+                                <div class="col-md-6"><label class="form-label-paymo">Email OTP</label><input
+                                        class="form-control otp" maxlength="6" placeholder="123456"
+                                        [(ngModel)]="emailOtp"></div>
+                                <div class="col-md-6"><label class="form-label-paymo">SMS OTP</label><input
+                                        class="form-control otp" maxlength="6" placeholder="654321"
+                                        [(ngModel)]="smsOtp"></div>
+                                <div class="col-md-6"><label class="form-label-paymo">Security question 1</label><input
+                                        class="form-control" id="q1" placeholder="City where you were born"
+                                        [(ngModel)]="securityQ1"></div>
+                                <div class="col-md-6"><label class="form-label-paymo">Security question 2</label><input
+                                        class="form-control" id="q2" placeholder="First school name"
+                                        [(ngModel)]="securityQ2"></div>
+                            </div>
+                        </div>
+
+                        <!-- Document Flow -->
+                        <div *ngIf="selectedMethod === 'document'" class="verify-flow">
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <h4>Document upload verification</h4>
+                                    <p style="color:var(--ink-2)">Select document type, upload or capture the document,
+                                        then complete a live selfie match.</p>
+                                    <label class="form-label-paymo">Document type</label>
+                                    <select class="form-select mb-3" [(ngModel)]="docType">
+                                        <option *ngFor="let t of docTypes; trackBy: trackByIndex">{{ t }}</option>
+                                    </select>
+                                    <input type="file" id="docFile" class="d-none" accept="image/*,.pdf"
+                                        (change)="onDocFileChange($event)">
+                                    <div class="upload-zone" id="uploadZone" [class.loaded]="docUploaded"
+                                        (click)="onUploadZoneClick()">
+                                        <ng-container *ngIf="!docUploaded; else uploadedState">
+                                            <i class="bi bi-cloud-arrow-up"
+                                                style="font-size:2rem;color:var(--accent)"></i>
+                                            <div class="fw-bold mt-2">Upload or capture document</div>
+                                            <div style="font-size:.82rem;color:var(--ink-3)">JPEG, PNG, or PDF.
+                                                Auto-crop enabled.</div>
+                                        </ng-container>
+                                        <ng-template #uploadedState>
+                                            <i class="bi bi-check-circle" style="font-size:2rem;color:#86efac"></i>
+                                            <div class="fw-bold mt-2">Document received</div>
+                                            <div style="font-size:.82rem;color:var(--ink-3)">Auto-crop and OCR complete
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                    <div class="mt-3" id="qualityBox">
+                                        <div *ngFor="let q of qualityChecks; trackBy: trackByIndex" class="quality-row">
+                                            <span>{{ q.label }}</span>
+                                            <span class="badge-mini {{ q.badgeClass }}">{{ q.status }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="camera-box">
+                                        <img src="https://i.pinimg.com/736x/9e/c1/f1/9ec1f12d8d3474f7ca550168f7ef48bc.jpg"
+                                            alt="Selfie verification preview">
+                                        <div class="scan-line"></div>
+                                        <div class="face-frame"></div>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-2 mt-3">
+                                        <button class="btn btn-outline-paymo btn-sm"
+                                            [class.btn-primary-paymo]="liveness.blink" id="blinkBtn"
+                                            (click)="onLivenessAction('blink')">
+                                            <i class="bi bi-eye me-1"></i> Blink
+                                        </button>
+                                        <button class="btn btn-outline-paymo btn-sm"
+                                            [class.btn-primary-paymo]="liveness.turn" id="turnBtn"
+                                            (click)="onLivenessAction('turn')">
+                                            <i class="bi bi-arrow-left-right me-1"></i> Turn head
+                                        </button>
+                                        <button class="btn btn-outline-paymo btn-sm"
+                                            [class.btn-primary-paymo]="liveness.smile" id="smileBtn"
+                                            (click)="onLivenessAction('smile')">
+                                            <i class="bi bi-emoji-smile me-1"></i> Smile
+                                        </button>
+                                    </div>
+                                    <div class="detail-stat mt-3">
+                                        <div class="detail-stat-lbl">Face match confidence</div>
+                                        <div class="detail-stat-val" id="faceScore"
+                                            [style.color]="faceScore === '97.8% match' ? '#86efac' : null">{{ faceScore
+                                            }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video Flow -->
+                        <div *ngIf="selectedMethod === 'video'" class="verify-flow">
+                            <h4>Schedule a 5-minute video call</h4>
+                            <p style="color:var(--ink-2)">Have a valid ID ready, use good lighting, and join from a
+                                stable connection.</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label-paymo">Language</label>
+                                    <select class="form-select" [(ngModel)]="callLang">
+                                        <option *ngFor="let l of callLangs; trackBy: trackByIndex">{{ l }}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label-paymo">Timezone</label>
+                                    <select class="form-select" [(ngModel)]="timezone">
+                                        <option *ngFor="let t of timezones; trackBy: trackByIndex">{{ t }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row g-2 mt-3">
+                                <div *ngFor="let slot of slotOptions; let i = index; trackBy: trackByIndex"
+                                    class="col-6 col-md-3">
+                                    <div class="slot" [class.active]="slot.active" (click)="selectSlot(i)">{{ slot.label
+                                        }}</div>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedSlot" id="callConfirm" class="glass p-3 mt-3"
+                                style="border-radius:14px">
+                                <i class="bi bi-calendar-check me-2" style="color:#86efac"></i>{{ callConfirmText }}
+                            </div>
+                        </div>
+
+                        <!-- Bank Flow -->
+                        <div *ngIf="selectedMethod === 'bank'" class="verify-flow">
+                            <h4>Micro-deposit verification</h4>
+                            <p style="color:var(--ink-2)">We send two small deposits to your linked bank. Enter the
+                                amounts to confirm ownership.</p>
+                            <div *ngIf="!depositsSent" id="bankSetup">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label-paymo">Bank name</label>
+                                        <select class="form-select" [(ngModel)]="bankName">
+                                            <option *ngFor="let b of banks; trackBy: trackByIndex">{{ b }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-paymo">Account number</label>
+                                        <input class="form-control" id="acctNum" placeholder="0123456789"
+                                            [(ngModel)]="accountNumber">
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline-paymo mt-3" id="sendDepositsBtn"
+                                    (click)="sendDeposits()">Send micro-deposits</button>
+                            </div>
+                            <div *ngIf="depositsSent" id="depositConfirm">
+                                <div class="row g-3">
+                                    <div class="col-md-6"><label class="form-label-paymo">First amount</label><input
+                                            class="form-control" id="dep1" placeholder="0.23" [(ngModel)]="deposit1">
+                                    </div>
+                                    <div class="col-md-6"><label class="form-label-paymo">Second amount</label><input
+                                            class="form-control" id="dep2" placeholder="0.47" [(ngModel)]="deposit2">
+                                    </div>
+                                </div>
+                                <p class="mt-2" style="font-size:.82rem;color:var(--ink-3)">Demo accepted values: 0.23
+                                    and 0.47.</p>
+                            </div>
+                        </div>
+
+                        <!-- Enterprise Flow -->
+                        <div *ngIf="selectedMethod === 'enterprise'" class="verify-flow">
+                            <h4>Enterprise document courier verification</h4>
+                            <p style="color:var(--ink-2)">For enterprise admins and signatories, we verify original
+                                documents through an approved courier partner.</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label-paymo">Company legal name</label>
+                                    <input class="form-control" id="entName" placeholder="Company Ltd"
+                                        [(ngModel)]="enterpriseName">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label-paymo">Registered country</label>
+                                    <select class="form-select" [(ngModel)]="enterpriseCountry">
+                                        <option *ngFor="let c of enterpriseCountries; trackBy: trackByIndex">{{ c }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label-paymo">Courier pickup address</label>
+                                    <input class="form-control" id="pickupAddr" placeholder="Office address"
+                                        [(ngModel)]="pickupAddress">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Affidavit Flow -->
+                        <div *ngIf="selectedMethod === 'affidavit'" class="verify-flow">
+                            <h4>Notarized affidavit recovery</h4>
+                            <p style="color:var(--ink-2)">For legal disputes, ownership conflicts, or inaccessible
+                                recovery factors.</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label-paymo">Case type</label>
+                                    <select class="form-select" [(ngModel)]="caseType">
+                                        <option *ngFor="let c of caseTypes; trackBy: trackByIndex">{{ c }}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label-paymo">Jurisdiction</label>
+                                    <input class="form-control" id="jurisdiction" placeholder="e.g. Lagos, Nigeria"
+                                        [(ngModel)]="jurisdiction">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label-paymo">Short explanation</label>
+                                    <textarea class="form-control" rows="3" id="affText"
+                                        placeholder="Describe the recovery issue"
+                                        [(ngModel)]="affidavitText"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2 mt-4">
+                            <button class="btn btn-primary-paymo" id="submitVerifyBtn" (click)="submitVerification()">
+                                <i class="bi bi-shield-check me-1"></i> Submit verification
+                            </button>
+                            <button class="btn btn-outline-paymo" id="backSelectBtn" (click)="backToSelect()">
+                                <i class="bi bi-arrow-left me-1"></i> Change method
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- REVIEW PANEL -->
+                    <div *ngIf="currentStep === 'review'" class="hidden-panel active">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <h4>Verification status tracking</h4>
+                                <p style="color:var(--ink-2)">Email and push notifications are sent at each stage. If
+                                    rejected, we provide a clear reason and re-submission guidance.</p>
+                                <div id="statusList">
+                                    <div *ngFor="let line of statusLines; trackBy: trackByIndex" class="status-line"
+                                        [class.done]="line.done" [class.active]="line.active">
+                                        <span class="status-dot"><i class="bi {{ line.icon }}"></i></span>
+                                        <strong>{{ line.title }}</strong>
+                                        <div style="font-size:.82rem;color:var(--ink-3)">{{ line.description }}</div>
+                                    </div>
+                                </div>
+                                <div class="progress mt-3">
+                                    <div class="progress-bar" id="reviewBar" [style.width.%]="reviewProgress"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="flow-frame">
+                                    <img src="https://i.pinimg.com/originals/82/de/83/82de83fb86c54aa5783bbb6ca3b26938.gif"
+                                        alt="Verification flow">
+                                    <div class="flow-label">
+                                        <span class="badge-mini badge-native">Review engine</span>
+                                        <div class="fw-bold text-white mt-1">Identity graph, fraud checks, and
+                                            compliance rules</div>
+                                    </div>
+                                </div>
+                                <div class="row g-2 mt-3">
+                                    <div class="col-6">
+                                        <div class="detail-stat">
+                                            <div class="detail-stat-lbl">Case ID</div>
+                                            <div class="detail-stat-val mono" id="caseId">{{ caseId }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="detail-stat">
+                                            <div class="detail-stat-lbl">ETA</div>
+                                            <div class="detail-stat-val" id="caseEta">{{ caseEta }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DONE PANEL -->
+                    <div *ngIf="currentStep === 'done'" class="hidden-panel active">
+                        <div class="success-card active">
+                            <div class="success-icon"><i class="bi bi-check-lg"></i></div>
+                            <h3>Identity verified</h3>
+                            <p style="color:var(--ink-2);max-width:520px;margin:0 auto 1.5rem">{{ doneCopy }}</p>
+                            <div class="row g-3 text-start">
+                                <div *ngFor="let action of doneActions; let i = index; trackBy: trackByIndex"
+                                    class="col-md-6">
+                                    <div class="method-card">
+                                        <div class="method-icon"><i class="bi {{ action.icon }}"></i></div>
+                                        <h5 style="font-size:1rem">{{ action.title }}</h5>
+                                        <p style="font-size:.82rem;color:var(--ink-2)">{{ action.description }}</p>
+                                        <button class="btn {{ action.btnClass }} btn-sm w-100 actionBtn"
+                                            [disabled]="actionBtnStates[i]?.disabled" (click)="onActionClick(i)">
+                                            <i class="bi bi-check-lg me-1" *ngIf="actionBtnStates[i]?.disabled"></i>
+                                            {{ actionBtnStates[i]?.label || action.btnLabel }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </div>
+</main>

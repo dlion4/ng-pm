@@ -1,0 +1,1091 @@
+<!-- ============================================================
+     PayMo — Card Security & Fraud Prevention (Page 5.7)
+     Angular 17+ template. Uses @if / @for control flow (no *ngIf).
+     Sidebar + top nav header removed per spec. All 22 modals intact.
+     Fully declarative: all data lives in TS signals and is rendered
+     via @for + {{ }} interpolation (no hardcoded lists/amounts).
+     ============================================================ -->
+
+<div class="pm-app">
+  <div class="pm-main">
+
+    <!-- ============ PAGE BAR (header removed; quick icons kept accessible) ============ -->
+    <div class="pm-page-bar">
+      <div>
+        <div class="pm-breadcrumb"><a href="javascript:void(0)">Home</a> / <a href="javascript:void(0)">Card Center</a> / <strong>Security &amp; Fraud</strong></div>
+        <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 5.7 — Card Security &amp; Fraud Prevention</h2>
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Manage risk posture across all physical and virtual cards. Configure velocity rules, geo-fencing, 3DS, and manage compromise recovery workflows.</p>
+      </div>
+      <div class="d-flex flex-wrap" style="gap:8px;align-items:center">
+        <button class="pm-header-btn" (click)="openModal('healthCheckModal')" title="Security Health"><i class="bi bi-heart-pulse"></i></button>
+        <button class="pm-header-btn" (click)="openModal('securityAlertsModal')" title="Security Alerts"><i class="bi bi-shield-exclamation"></i><span class="counter">3</span></button>
+        <button class="pm-header-btn" (click)="openModal('profileModal')" title="Profile"><i class="bi bi-person-circle"></i></button>
+        <button class="pm-btn pm-btn-danger" (click)="openModal('reportCompromiseModal')"><i class="bi bi-exclamation-triangle"></i> Report Compromise</button>
+        <button class="pm-btn" (click)="openModal('fraudRuleBuilderModal')"><i class="bi bi-plus-lg"></i> Custom Rule</button>
+      </div>
+    </div>
+
+    <!-- ============ CONTENT ============ -->
+    <div class="pm-content">
+
+      <!-- HERO STATS ROW — fully declarative via heroStats() signal -->
+      <div class="row g-3">
+        @for (stat of heroStats(); track stat.id) {
+          <div class="col-lg-3 col-md-6">
+            <div [class]="stat.cardClass" [style]="stat.cardStyle">
+              <p [class]="stat.labelClass" [style]="stat.labelStyle">{{ stat.label }}</p>
+              <div class="pm-stat-value" [style]="stat.valueStyle">{{ stat.value }}@if (stat.valueSuffix) {<span [style]="stat.valueSuffixStyle">{{ stat.valueSuffix }}</span>}</div>
+              @if (stat.subtext) {
+                <p [style]="stat.subtextStyle">{{ stat.subtext }}@if (stat.subtextHighlight) {<span [style]="stat.subtextHighlightStyle">{{ stat.subtextHighlight }}</span>}</p>
+              }
+              @if (stat.badgeText) {
+                <span [class]="stat.badgeClass"><i [class]="stat.badgeIcon"></i> {{ stat.badgeText }}</span>
+              }
+              <div class="mt-3">
+                <button [class]="stat.actionBtnClass" [style]="stat.actionBtnStyle" (click)="openModal(stat.actionModal)">{{ stat.actionLabel }}</button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- SECTION 5.7.1 — Fraud Monitoring & Alerts Engine -->
+      <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+          <div>
+            <h3 class="pm-section-title"><i class="bi bi-eye-fill" style="color:var(--pm-primary)"></i> 5.7.1 — Fraud Monitoring &amp; Alerts Engine</h3>
+            <p class="pm-section-sub">AI-driven real-time transaction monitoring, merchant blocking, and configurable velocity limits.</p>
+          </div>
+          <div class="d-flex" style="gap:8px">
+            <button class="pm-btn pm-btn-sm" (click)="openModal('mccBlockerModal')"><i class="bi bi-tags"></i> MCC Blocks</button>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('velocityLimitsModal')"><i class="bi bi-speedometer2"></i> Velocity Limits</button>
+            <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('fraudRuleBuilderModal')"><i class="bi bi-plus-lg"></i> Rule</button>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-lg-8">
+            <div class="security-block">
+              <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Suspicious Activity Log</h4>
+              <div class="table-responsive">
+                <table class="pm-table">
+                  <thead><tr><th>Date &amp; Time</th><th>Merchant / Context</th><th>Card</th><th>Amount</th><th>Status / Reason</th><th>Action</th></tr></thead>
+                  <tbody>
+                    @for (s of suspiciousActivity(); track s.id) {
+                      <tr [style.background]="s.highlightDanger ? 'var(--pm-danger-soft)' : ''">
+                        <td>{{ s.date }}</td>
+                        <td><strong>{{ s.merchant }}</strong> <span class="text-muted">({{ s.country }})</span></td>
+                        <td>{{ s.cardType }} · {{ s.last4 }}</td>
+                        <td>{{ formatKes(s.amount) }}</td>
+                        <td>
+                          <span [class]="statusBadgeClass(s.status)">{{ s.status | titlecase }}</span>
+                          <span> {{ s.reason }}</span>
+                        </td>
+                        <td>
+                          @if (s.status === 'blocked') {
+                            <button class="pm-btn pm-btn-sm pm-btn-danger" (click)="openModal('reviewSuspiciousTxModal')">Review</button>
+                          } @else {
+                            <button class="pm-btn pm-btn-sm" (click)="openModal('reviewSuspiciousTxModal')">{{ s.status === 'flagged' ? 'Review' : 'View' }}</button>
+                          }
+                        </td>
+                      </tr>
+                    } @empty {
+                      <tr><td colspan="6" class="text-center text-muted py-3">No suspicious activity recorded.</td></tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="security-block">
+              <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Rules &amp; Blocks</h4>
+              @for (rule of activeRules(); track rule.id) {
+                <div class="status-row">
+                  <div><strong>{{ rule.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ rule.description }}</div></div>
+                  <button class="pm-btn pm-btn-sm" (click)="openModal(rule.editModal)">Edit</button>
+                </div>
+              } @empty {
+                <div class="text-center text-muted py-3" style="font-size:12px">No active rules.</div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5.7.2 — Access Controls & Device Security -->
+      <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+          <div>
+            <h3 class="pm-section-title"><i class="bi bi-shield-lock-fill" style="color:var(--pm-accent)"></i> 5.7.2 — Access Controls &amp; Device Security</h3>
+            <p class="pm-section-sub">Manage device binding, 3D Secure verification preferences, travel modes, and geofencing for physical/virtual cards.</p>
+          </div>
+          <div class="d-flex" style="gap:8px">
+            <button class="pm-btn pm-btn-sm" (click)="openModal('travelModeModal')"><i class="bi bi-airplane"></i> Travel Mode</button>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('geoFencingModal')"><i class="bi bi-geo-alt"></i> Geo-Fencing</button>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <!-- Device Binding -->
+          <div class="col-lg-4">
+            <div class="security-block">
+              <div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Device Binding</h4><button class="pm-btn pm-btn-sm" (click)="openModal('deviceBindingModal')">Manage</button></div>
+              @for (device of boundDevices(); track device.id) {
+                <div class="p-3 border rounded d-flex align-items-center gap-3 {{ device.sectionItemClass }}">
+                  <i [class]="device.icon" style="font-size:24px" [style.color]="device.iconColor"></i>
+                  <div><strong>{{ device.name }}</strong> @if (device.sectionBadgeText) {<span [class]="device.sectionBadgeClass" [style]="device.sectionBadgeStyle">{{ device.sectionBadgeText }}</span>}<div style="font-size:11px;color:var(--pm-muted)">{{ device.sectionDetail }}</div></div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- 3D Secure -->
+          <div class="col-lg-4">
+            <div class="security-block">
+              <div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">3D Secure (Verified by Visa/MC)</h4><button class="pm-btn pm-btn-sm" (click)="openModal('manage3DSModal')">Config</button></div>
+              <div class="p-3 rounded mb-2" style="background:var(--pm-accent-soft);color:#047857;font-size:13px"><i class="bi bi-check-circle me-1"></i> {{ threeDSInfo().activeMessage }}</div>
+              <div class="status-row pb-0"><div><strong>{{ threeDSInfo().fallbackLabel }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ threeDSInfo().fallbackDetail }}</div></div></div>
+              <div class="status-row pb-0 border-0"><div><strong>{{ threeDSInfo().whitelistLabel }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ threeDSInfo().whitelistDetail }}</div></div><span [class]="threeDSInfo().whitelistBadgeClass">{{ threeDSInfo().whitelistStatus }}</span></div>
+            </div>
+          </div>
+
+          <!-- Geography & POS Controls -->
+          <div class="col-lg-4">
+            <div class="security-block">
+              <div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Geography &amp; POS Controls</h4></div>
+              @for (control of geoControls(); track control.id) {
+                <div class="status-row {{ control.rowClass }}">
+                  <div>
+                    <strong>{{ control.name }}</strong>
+                    <div style="font-size:11px;color:var(--pm-muted)">{{ control.detail }}</div>
+                  </div>
+                  @switch (control.type) {
+                    @case ('button') {
+                      <button class="pm-btn pm-btn-sm" (click)="openModal(control.actionModal!)">{{ control.actionLabel }}</button>
+                    }
+                    @case ('badge') {
+                      <span [class]="control.badgeClass">{{ control.badgeText }}</span>
+                    }
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5.7.3 — Incident Response & Compromise Management -->
+      <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+          <div>
+            <h3 class="pm-section-title"><i class="bi bi-life-preserver" style="color:var(--pm-danger)"></i> 5.7.3 — Incident Response &amp; Compromise Management</h3>
+            <p class="pm-section-sub">Instantly freeze cards, report compromises, manage chargeback disputes, and auto-issue replacement cards.</p>
+          </div>
+          <div class="d-flex" style="gap:8px">
+            <button class="pm-btn pm-btn-sm" (click)="openModal('freezeCardModal')"><i class="bi bi-snow"></i> Freeze Card</button>
+            <button class="pm-btn pm-btn-sm pm-btn-danger" (click)="openModal('reportCompromiseModal')"><i class="bi bi-exclamation-triangle"></i> Compromised</button>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-lg-8">
+            <div class="security-block">
+              <div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Disputes &amp; Incidents</h4><button class="pm-btn pm-btn-sm" (click)="openModal('disputeCenterModal')">New Dispute</button></div>
+              <div class="table-responsive">
+                <table class="pm-table">
+                  <thead><tr><th>Case ID</th><th>Type</th><th>Card</th><th>Amount</th><th>Status</th><th>Next Action</th></tr></thead>
+                  <tbody>
+                    @for (d of disputes(); track d.id) {
+                      <tr>
+                        <td>{{ d.caseId }}</td>
+                        <td>{{ d.type }}</td>
+                        <td>{{ d.cardType }} · {{ d.last4 }}</td>
+                        <td>{{ formatKes(d.amount) }}</td>
+                        <td>
+                          @switch (d.status) {
+                            @case ('awaiting') { <span class="pm-badge pm-badge-warning">Awaiting Evidence</span> }
+                            @case ('resolved') { <span class="pm-badge pm-badge-success">Resolved</span> }
+                            @case ('review') { <span class="pm-badge pm-badge-info">In Review</span> }
+                          }
+                        </td>
+                        <td><button class="pm-btn pm-btn-sm" (click)="openModal(d.actionModal)">{{ d.actionLabel }}</button></td>
+                      </tr>
+                    } @empty {
+                      <tr><td colspan="6" class="text-center text-muted py-3">No disputes or incidents.</td></tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="security-block">
+              <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ evidenceVault().title }}</h4>
+              <p style="font-size:12px;color:var(--pm-ink-soft)">{{ evidenceVault().description }}</p>
+              <div class="p-3 border border-dashed rounded text-center mb-3" style="cursor:pointer;background:var(--pm-surface)" (click)="openModal('evidenceVaultModal')">
+                <i [class]="evidenceVault().uploadIcon" [style]="evidenceVault().uploadIconStyle"></i>
+                <div style="font-size:12px;font-weight:600;margin-top:8px">{{ evidenceVault().uploadLabel }}</div>
+                <div style="font-size:10px;color:var(--pm-muted)">{{ evidenceVault().uploadHint }}</div>
+              </div>
+              @for (action of evidenceVault().actions; track action.modal) {
+                <button [class]="action.btnClass" (click)="openModal(action.modal)"><i [class]="action.icon"></i> {{ action.label }}</button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end content -->
+  </div><!-- end main -->
+</div><!-- end app -->
+
+
+<!-- ==========================================
+     MODALS — 22 total. Each gated by @if(isModalOpen(id)).
+     Close buttons call closeModal(id). No dead ends.
+     ========================================== -->
+
+<!-- 1. Health Check -->
+@if (isModalOpen('healthCheckModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>Security Health Check</h5>
+        <button class="pm-modal-close" (click)="closeModal('healthCheckModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3"><div class="pm-stat-value" style="color:var(--pm-accent)">{{ healthCheckSummary().score }}</div><div style="font-size:12px;color:var(--pm-muted);font-weight:600">{{ healthCheckSummary().postureLabel }}</div></div>
+        @for (check of healthChecks(); track check.id) {
+          <div class="status-row"><div><strong>{{ check.name }}</strong></div><span [class]="check.statusClass">{{ check.status }}</span></div>
+        }
+        <div class="mt-3"><button class="pm-btn pm-btn-primary w-100" (click)="openAndClose('vpnProxyBlockerModal','healthCheckModal')">Fix: Enable VPN Blocker</button></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('healthCheckModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 2. Security Alerts -->
+@if (isModalOpen('securityAlertsModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-exclamation text-warning me-2"></i>Security Alerts</h5>
+        <button class="pm-modal-close" (click)="closeModal('securityAlertsModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        @for (alert of securityAlerts(); track alert.id) {
+          <div class="p-3 rounded mb-2" [style.background]="alert.bgClass">
+            <div class="d-flex justify-content-between"><strong [style.color]="alert.titleColor" style="font-size:13px">{{ alert.title }}</strong><span style="font-size:10px;color:var(--pm-muted)">{{ alert.time }}</span></div>
+            <div style="font-size:12px;margin-top:4px">{{ alert.message }}</div>
+            @if (alert.hasReviewButton) {
+              <button [class]="alert.reviewButtonClass" (click)="openAndClose(alert.reviewModal!, 'securityAlertsModal')">{{ alert.reviewButtonLabel }}</button>
+            }
+          </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('securityAlertsModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 3. Profile -->
+@if (isModalOpen('profileModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Security Profile</h5>
+        <button class="pm-modal-close" (click)="closeModal('profileModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">{{ profileData().initials }}</div>
+        <h5 style="font-weight:700">{{ profileData().name }}</h5>
+        <p style="font-size:13px;color:var(--pm-muted)">{{ profileData().email }}<br>Device: {{ profileData().device }}</p>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn pm-btn-sm" (click)="openAndClose('deviceBindingModal','profileModal')">Manage Devices</button>
+        <button class="pm-btn" (click)="closeModal('profileModal')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 4. Review Suspicious Transaction (Multi-step, 3 steps, yes/no branch) -->
+@if (isModalOpen('reviewSuspiciousTxModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-x text-danger me-2"></i>Review Suspicious Activity</h5>
+        <button class="pm-modal-close" (click)="closeModal('reviewSuspiciousTxModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div class="pm-stepper">
+          @for (label of rsSteps; track $index) {
+            <div class="pm-step" [class.active]="stepState($index, rsStep())==='active'" [class.completed]="stepState($index, rsStep())==='completed'">
+              <div class="pm-step-num">
+                @if (stepState($index, rsStep()) === 'completed') { <i class="bi bi-check"></i> }
+                @else { {{ $index + 1 }} }
+              </div>
+              <div class="pm-step-label">{{ label }}</div>
+            </div>
+            @if ($index < rsSteps.length - 1) { <div class="pm-step-line"></div> }
+          }
+        </div>
+
+        @if (rsStep() === 1) {
+          <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+            @for (detail of reviewTxDetails(); track detail.id) {
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">{{ detail.label }}</span><strong [style]="detail.valueStyle">{{ detail.value }}</strong></div>
+            }
+          </div>
+          <h6 style="font-weight:600;font-size:13px">Did you authorize this transaction?</h6>
+          <div class="d-flex gap-2 mt-3">
+            <button class="pm-btn pm-btn-danger w-100" (click)="rsDecide('no')">No, it wasn't me</button>
+            <button class="pm-btn w-100 text-white" style="background:var(--pm-accent);border-color:var(--pm-accent)" (click)="rsDecide('yes')">Yes, I authorized it</button>
+          </div>
+        }
+
+        @if (rsStep() === 2) {
+          @if (rsDecision() === 'no') {
+            <h6 style="font-weight:700">Fraud Confirmed</h6>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">We will immediately freeze Virtual Card 4412 and block this merchant.</p>
+          } @else {
+            <h6 style="font-weight:700">False Alarm</h6>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">We will clear the block. The transaction can be retried.</p>
+          }
+          @if (flowLoading()) {
+            <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+          }
+        }
+
+        @if (rsStep() === 3) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-shield-check"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Security Action Applied</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Your card security profile has been updated accordingly.</p>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal('reviewSuspiciousTxModal')">Close</button>
+        @if (rsStep() === 2) {
+          <button [class]="rsConfirmBtnClass()" [style.background]="rsConfirmBtnStyle()" [style.borderColor]="rsConfirmBtnStyle()" (click)="rsConfirm()">Confirm Action</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 5. Fraud Rule Builder (Multi-step, 4 steps) -->
+@if (isModalOpen('fraudRuleBuilderModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-magic text-primary me-2"></i>Custom Fraud Rule Builder</h5>
+        <button class="pm-modal-close" (click)="closeModal('fraudRuleBuilderModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div class="pm-stepper">
+          @for (label of frSteps; track $index) {
+            <div class="pm-step" [class.active]="stepState($index, frStep())==='active'" [class.completed]="stepState($index, frStep())==='completed'">
+              <div class="pm-step-num">
+                @if (stepState($index, frStep()) === 'completed') { <i class="bi bi-check"></i> }
+                @else { {{ $index + 1 }} }
+              </div>
+              <div class="pm-step-label">{{ label }}</div>
+            </div>
+            @if ($index < frSteps.length - 1) { <div class="pm-step-line"></div> }
+          }
+        </div>
+
+        @if (frStep() === 1) {
+          <div class="mb-3"><label class="pm-form-label">Rule Name</label><input class="pm-form-control" value="Block Late Night International"></div>
+          <div class="mb-3"><label class="pm-form-label">Apply to Cards</label><select class="pm-form-control">
+            @for (opt of fraudRuleCardOptions(); track opt) { <option>{{ opt }}</option> }
+          </select></div>
+        }
+
+        @if (frStep() === 2) {
+          <h6 style="font-weight:700">If transaction matches:</h6>
+          @for (cond of fraudRuleConditions(); track $index) {
+            <div class="row g-2 mb-3">
+              <div class="col-4"><select class="pm-form-control">
+                @for (field of cond.fields; track field) { <option>{{ field }}</option> }
+              </select></div>
+              <div class="col-4"><select class="pm-form-control">
+                @for (op of cond.operators; track op) { <option>{{ op }}</option> }
+              </select></div>
+              <div class="col-4"><input class="pm-form-control" [value]="cond.value"></div>
+            </div>
+          }
+          <button class="pm-btn pm-btn-sm"><i class="bi bi-plus"></i> Add Condition</button>
+        }
+
+        @if (frStep() === 3) {
+          <h6 style="font-weight:700">Then Action:</h6>
+          <div class="mb-3"><select class="pm-form-control">
+            @for (action of fraudRuleActions(); track action) { <option>{{ action }}</option> }
+          </select></div>
+          <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Rule Summary: If Time is 00:00-05:00 AND Country is not Kenya, Block Transaction.</div>
+          @if (flowLoading()) {
+            <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+          }
+        }
+
+        @if (frStep() === 4) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Rule Activated</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">The custom fraud rule is now monitoring your portfolio.</p>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal('fraudRuleBuilderModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="nextFrStep()">
+          {{ frNextLabel() }}
+          @if (frStep() < 4) { <i class="bi bi-arrow-right ms-1"></i> }
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 6. MCC Blocker -->
+@if (isModalOpen('mccBlockerModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-tags text-primary me-2"></i>Merchant Category Controls</h5>
+        <button class="pm-modal-close" (click)="closeModal('mccBlockerModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='mccBlockerModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+        }
+        @if (isProcessed('mccBlockerModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ processed()!.message }}</h5></div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Block spending at specific types of merchants globally.</p>
+          @for (cat of mccCategories(); track cat.id) {
+            <div class="status-row"><div><strong>{{ cat.label }}</strong></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [checked]="cat.checked"></div></div>
+          }
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('mccBlockerModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('mccBlockerModal')">Done</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('mccBlockerModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('mccBlockerModal', 'MCC rules updated successfully')">Save</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 7. Velocity Limits -->
+@if (isModalOpen('velocityLimitsModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-speedometer2 text-info me-2"></i>Velocity Limits</h5>
+        <button class="pm-modal-close" (click)="closeModal('velocityLimitsModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='velocityLimitsModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+        }
+        @if (isProcessed('velocityLimitsModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Max Transactions per Hour</label><input type="number" class="pm-form-control" [value]="velocityLimits().maxPerHour"></div>
+          <div class="mb-3"><label class="pm-form-label">Max Transactions per Day</label><input type="number" class="pm-form-control" [value]="velocityLimits().maxPerDay"></div>
+          <div class="mb-3"><label class="pm-form-label">Max Spend per Day (KES)</label><input type="number" class="pm-form-control" [value]="velocityLimits().maxSpendPerDay"></div>
+          <div class="form-check"><input type="checkbox" class="form-check-input" [checked]="velocityLimits().blockExceeding"><label class="form-check-label" style="font-size:13px">Block transactions exceeding limits (otherwise just flag)</label></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('velocityLimitsModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('velocityLimitsModal')">Done</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('velocityLimitsModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('velocityLimitsModal', 'Velocity limits saved')">Save</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 8. VPN / Proxy Blocker -->
+@if (isModalOpen('vpnProxyBlockerModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-shaded text-danger me-2"></i>VPN &amp; Proxy Blocker</h5>
+        <button class="pm-modal-close" (click)="closeModal('vpnProxyBlockerModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='vpnProxyBlockerModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+        }
+        @if (isProcessed('vpnProxyBlockerModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ processed()!.message }}</h5></div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Automatically reject online transactions if the buyer's IP address belongs to a known VPN, Tor node, or anonymous proxy.</p>
+          @for (rule of vpnRules(); track rule.id) {
+            <div class="status-row {{ rule.rowClass }}">
+              <div>
+                <strong>{{ rule.name }}</strong>
+                @if (rule.hasDetail) { <br><span style="font-size:11px;color:var(--pm-muted)">{{ rule.detail }}</span> }
+              </div>
+              <div class="form-check form-switch"><input class="form-check-input" type="checkbox" [checked]="rule.checked"></div>
+            </div>
+          }
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('vpnProxyBlockerModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('vpnProxyBlockerModal')">Done</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('vpnProxyBlockerModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('vpnProxyBlockerModal', 'VPN rules updated')">Save</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 9. Device Binding -->
+@if (isModalOpen('deviceBindingModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-phone text-primary me-2"></i>Device Binding</h5>
+        <button class="pm-modal-close" (click)="closeModal('deviceBindingModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        @for (device of boundDevices(); track device.id) {
+          <div class="status-row">
+            <div><strong>{{ device.name }}</strong>@if (device.isCurrent) {&nbsp;(Current)}<div style="font-size:11px;color:var(--pm-muted)">{{ device.modalDetail }}</div></div>
+            @if (device.modalBadgeText) {
+              <span [class]="device.modalBadgeClass">{{ device.modalBadgeText }}</span>
+            } @else if (device.modalActionLabel) {
+              <button [class]="device.modalActionClass">{{ device.modalActionLabel }}</button>
+            }
+          </div>
+        }
+        <button class="pm-btn pm-btn-sm w-100 mt-3"><i class="bi bi-plus"></i> Add New Trusted Device</button>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('deviceBindingModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 10. Manage 3DS -->
+@if (isModalOpen('manage3DSModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-lock me-2" style="color:var(--pm-accent)"></i>3D Secure Preferences</h5>
+        <button class="pm-modal-close" (click)="closeModal('manage3DSModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='manage3DSModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+        }
+        @if (isProcessed('manage3DSModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Primary Challenge Method</label><select class="pm-form-control">
+            @for (method of threeDSMethods(); track method) { <option>{{ method }}</option> }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Challenge Threshold</label><select class="pm-form-control">
+            @for (opt of threeDSThresholds(); track opt.label) { <option [selected]="opt.selected">{{ opt.label }}</option> }
+          </select></div>
+          <div class="form-check"><input type="checkbox" class="form-check-input" checked><label class="form-check-label" style="font-size:13px">Skip 3DS for saved subscriptions (Netflix, Spotify)</label></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('manage3DSModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('manage3DSModal')">Done</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('manage3DSModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('manage3DSModal', '3DS Preferences Saved')">Save</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 11. Geo-Fencing -->
+@if (isModalOpen('geoFencingModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-geo-alt text-info me-2"></i>Geo-Fencing</h5>
+        <button class="pm-modal-close" (click)="closeModal('geoFencingModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='geoFencingModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+        }
+        @if (isProcessed('geoFencingModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" checked><label class="form-check-label fw-bold">Enable Phone Location Enforcement</label></div>
+          <p style="font-size:12px;color:var(--pm-ink-soft)">Blocks physical POS/ATM transactions if your physical card is used more than X kilometers away from your phone's GPS location.</p>
+          <div class="mb-3"><label class="pm-form-label">Maximum Radius</label><select class="pm-form-control">
+            @for (opt of geoFencingRadii(); track opt.label) { <option [selected]="opt.selected">{{ opt.label }}</option> }
+          </select></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('geoFencingModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('geoFencingModal')">Done</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('geoFencingModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('geoFencingModal', 'Geo-Fencing Updated')">Save</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 12. Travel Mode -->
+@if (isModalOpen('travelModeModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-airplane me-2" style="color:var(--pm-purple)"></i>Travel Mode</h5>
+        <button class="pm-modal-close" (click)="closeModal('travelModeModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='travelModeModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+        }
+        @if (isProcessed('travelModeModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ processed()!.message }}</h5></div>
+        } @else {
+          <p style="font-size:12px;color:var(--pm-ink-soft)">Pre-declare travel destinations to ensure your card is not blocked for suspicious foreign activity.</p>
+          <div class="mb-3"><label class="pm-form-label">Destination Country(ies)</label><input type="text" class="pm-form-control" placeholder="e.g. UAE, South Africa"></div>
+          <div class="row g-2 mb-3"><div class="col-6"><label class="pm-form-label">Start Date</label><input type="date" class="pm-form-control"></div><div class="col-6"><label class="pm-form-label">End Date</label><input type="date" class="pm-form-control"></div></div>
+          <div class="mb-3"><label class="pm-form-label">Apply to Cards</label><select class="pm-form-control">
+            @for (opt of travelModeCardOptions(); track opt) { <option>{{ opt }}</option> }
+          </select></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('travelModeModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('travelModeModal')">Done</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('travelModeModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('travelModeModal', 'Travel itinerary logged. Cards will work smoothly abroad.')">Set Travel Mode</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 13. Contactless Limit -->
+@if (isModalOpen('contactlessLimitModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-wifi me-2" style="color:var(--pm-accent)"></i>Contactless Limits</h5>
+        <button class="pm-modal-close" (click)="closeModal('contactlessLimitModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='contactlessLimitModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+        }
+        @if (isProcessed('contactlessLimitModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Max amount per tap without PIN (KES)</label><input type="number" class="pm-form-control" [value]="contactlessLimit().maxPerTap"></div>
+          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" [checked]="contactlessLimit().enabled"><label class="form-check-label fw-bold">Enable Tap-to-Pay</label></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('contactlessLimitModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('contactlessLimitModal')">Done</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('contactlessLimitModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('contactlessLimitModal', 'Contactless settings saved')">Save</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 14. Freeze Card -->
+@if (isModalOpen('freezeCardModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-snow text-info me-2"></i>Freeze Card</h5>
+        <button class="pm-modal-close" (click)="closeModal('freezeCardModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='freezeCardModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+        }
+        @if (isProcessed('freezeCardModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Select Card</label><select class="pm-form-control">
+            @for (opt of cardSelectOptions(); track opt) { <option>{{ opt }}</option> }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Reason</label><select class="pm-form-control">
+            @for (reason of freezeReasons(); track reason) { <option>{{ reason }}</option> }
+          </select></div>
+          <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px">Freezing is reversible. You can unfreeze it instantly from the app later. Subscriptions may fail while frozen.</div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('freezeCardModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('freezeCardModal')">Done</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('freezeCardModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('freezeCardModal', 'Card frozen successfully')">Freeze</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 15. Report Compromise (Multi-step, 4 steps) -->
+@if (isModalOpen('reportCompromiseModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger me-2"></i>Report Compromised Card</h5>
+        <button class="pm-modal-close" (click)="closeModal('reportCompromiseModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div class="pm-stepper">
+          @for (label of rcSteps; track $index) {
+            <div class="pm-step" [class.active]="stepState($index, rcStep())==='active'" [class.completed]="stepState($index, rcStep())==='completed'">
+              <div class="pm-step-num">
+                @if (stepState($index, rcStep()) === 'completed') { <i class="bi bi-check"></i> }
+                @else { {{ $index + 1 }} }
+              </div>
+              <div class="pm-step-label">{{ label }}</div>
+            </div>
+            @if ($index < rcSteps.length - 1) { <div class="pm-step-line"></div> }
+          }
+        </div>
+
+        @if (rcStep() === 1) {
+          <div class="mb-3"><label class="pm-form-label">Which card is compromised?</label><select class="pm-form-control">
+            @for (opt of cardSelectOptions(); track opt) { <option>{{ opt }}</option> }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">What happened?</label><select class="pm-form-control">
+            @for (reason of reportCompromiseReasons(); track reason) { <option>{{ reason }}</option> }
+          </select></div>
+        }
+
+        @if (rcStep() === 2) {
+          <h6 style="font-weight:700">Flag Unauthorized Transactions</h6>
+          <p style="font-size:12px;color:var(--pm-muted)">Select any transactions you did not make. They will be pushed to disputes.</p>
+          @for (ft of flaggableTransactions(); track ft.id) {
+            <div class="form-check p-2 border rounded mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label ms-2 d-flex justify-content-between w-100"><span>{{ ft.merchant }}</span><span>{{ formatKes(ft.amount) }}</span></label></div>
+          }
+        }
+
+        @if (rcStep() === 3) {
+          <h6 style="font-weight:700">Action Summary</h6>
+          @for (action of compromiseActions(); track action.id) {
+            <div class="status-row {{ action.rowClass }}">
+              <div>
+                <strong>{{ action.label }}</strong>
+                @if (action.detail) { <div style="font-size:11px;color:var(--pm-muted)">{{ action.detail }}</div> }
+              </div>
+              @switch (action.type) {
+                @case ('badge') { <span [class]="action.badgeClass">{{ action.badgeText }}</span> }
+                @case ('toggle') { <div class="form-check form-switch"><input class="form-check-input" type="checkbox" [checked]="action.toggleChecked"></div> }
+              }
+            </div>
+          }
+          @if (flowLoading()) {
+            <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+          }
+        }
+
+        @if (rcStep() === 4) {
+          <div class="pm-receipt">
+            <div class="receipt-icon" style="background:var(--pm-danger-soft);color:var(--pm-danger)"><i class="bi bi-shield-lock"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-danger)">Card Blocked &amp; Secured</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Old card cancelled. New virtual card issued.</p>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal('reportCompromiseModal')">Cancel</button>
+        <button [class]="rcNextBtnClass()" (click)="nextRcStep()">
+          {{ rcNextLabel() }}
+          @if (rcStep() < 4) { <i class="bi bi-arrow-right ms-1"></i> }
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 16. Dispute Center -->
+@if (isModalOpen('disputeCenterModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-life-preserver text-warning me-2"></i>Dispute Transaction (Chargeback)</h5>
+        <button class="pm-modal-close" (click)="closeModal('disputeCenterModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='disputeCenterModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+        }
+        @if (isProcessed('disputeCenterModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ processed()!.message }}</h5><p style="font-size:12px;color:var(--pm-muted)">Reference: {{ processed()!.ref }}</p></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Transaction to Dispute</label><select class="pm-form-control">
+            @for (tx of disputeTransactions(); track tx) { <option>{{ tx }}</option> }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Reason</label><select class="pm-form-control">
+            @for (reason of disputeReasons(); track reason) { <option>{{ reason }}</option> }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Explanation</label><textarea class="pm-form-control" rows="3"></textarea></div>
+          <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:12px">Chargebacks may take 7-45 days to resolve via the Visa/Mastercard network. Please upload any evidence in the vault next.</div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('disputeCenterModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('disputeCenterModal')">Done</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('disputeCenterModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('disputeCenterModal', 'Dispute logged. CB-11921 created.', 'CB-11921')">Submit Dispute</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 17. Evidence Vault -->
+@if (isModalOpen('evidenceVaultModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-cloud-arrow-up text-primary me-2"></i>Upload Evidence</h5>
+        <button class="pm-modal-close" (click)="closeModal('evidenceVaultModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='evidenceVaultModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+        }
+        @if (isProcessed('evidenceVaultModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Link to Case</label><select class="pm-form-control">
+            @for (opt of evidenceCaseOptions(); track opt) { <option>{{ opt }}</option> }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Document Type</label><select class="pm-form-control">
+            @for (opt of evidenceDocTypes(); track opt) { <option>{{ opt }}</option> }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Select File</label><input type="file" class="pm-form-control"></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('evidenceVaultModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('evidenceVaultModal')">Done</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('evidenceVaultModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('evidenceVaultModal', 'Evidence securely uploaded and attached to case.')">Upload</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 18. Security Score Details -->
+@if (isModalOpen('securityScoreDetailsModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-bar-chart-steps me-2" style="color:var(--pm-accent)"></i>Security Score Breakdown</h5>
+        <button class="pm-modal-close" (click)="closeModal('securityScoreDetailsModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4"><div class="pm-stat-value" style="color:var(--pm-accent)">{{ securityScoreValue() }}</div></div>
+        @for (item of scoreBreakdown(); track item.id) {
+          <div class="status-row {{ item.rowClass }}"><div><strong>{{ item.label }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ item.detail }}</div></div><span [class]="item.pointsClass">{{ item.points }}</span></div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary w-100" (click)="openAndClose('vpnProxyBlockerModal','securityScoreDetailsModal')">Improve Score</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 19. Export Security Report -->
+@if (isModalOpen('exportSecurityReportModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-earmark-pdf text-info me-2"></i>Export Security Report</h5>
+        <button class="pm-modal-close" (click)="closeModal('exportSecurityReportModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='exportSecurityReportModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+        }
+        @if (isProcessed('exportSecurityReportModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Content</label><select class="pm-form-control">
+            @for (opt of exportContentOptions(); track opt) { <option>{{ opt }}</option> }
+          </select></div>
+          <div class="row g-2 mb-3"><div class="col-6"><label class="pm-form-label">From</label><input type="date" class="pm-form-control" [value]="exportReportDates().from"></div><div class="col-6"><label class="pm-form-label">To</label><input type="date" class="pm-form-control" [value]="exportReportDates().to"></div></div>
+          <div class="mb-3"><label class="pm-form-label">Format</label><select class="pm-form-control">
+            @for (opt of exportFormatOptions(); track opt) { <option>{{ opt }}</option> }
+          </select></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('exportSecurityReportModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('exportSecurityReportModal')">Done</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('exportSecurityReportModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('exportSecurityReportModal', 'Report generated and downloading...')">Download</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 20. Merchant Whitelist -->
+@if (isModalOpen('merchantWhitelistModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-card-checklist text-success me-2"></i>Trusted Merchants</h5>
+        <button class="pm-modal-close" (click)="closeModal('merchantWhitelistModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12px;color:var(--pm-ink-soft)">These merchants bypass standard velocity and geo-fencing checks based on your history.</p>
+        @for (m of trustedMerchants(); track m.id) {
+          <div class="status-row {{ m.rowClass }}"><div><strong>{{ m.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ m.type }}</div></div><button class="pm-btn pm-btn-sm pm-btn-danger">{{ m.removeAction }}</button></div>
+        }
+        <div class="mt-3"><input type="text" class="pm-form-control" placeholder="Search to add merchant manually"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('merchantWhitelistModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 21. Card Replacement Tracker -->
+@if (isModalOpen('cardReplacementTrackerModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-truck text-info me-2"></i>Replacement Tracker</h5>
+        <button class="pm-modal-close" (click)="closeModal('cardReplacementTrackerModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-4" style="background:var(--pm-surface-2)">
+          <div class="d-flex justify-content-between mb-1"><span class="text-muted">Order ID</span><strong>{{ replacementOrder().orderId }}</strong></div>
+          <div class="d-flex justify-content-between"><span class="text-muted">Status</span><span [class]="replacementOrder().statusClass">{{ replacementOrder().status }}</span></div>
+        </div>
+        <div class="pm-stepper" style="flex-direction:column;align-items:flex-start;gap:16px">
+          @for (step of replacementSteps(); track step.id) {
+            <div class="d-flex align-items-center gap-3">
+              <div class="pm-step-num" [style.background]="step.bgColor || ''" [style.color]="step.color || ''">@if (step.status === 'completed') {<i class="bi bi-check"></i>}@else {{{ step.stepNum }}}</div>
+              <div>
+                <div style="font-weight:600;font-size:13px" [style.color]="step.titleColor || ''">{{ step.title }}</div>
+                <div style="font-size:11px;color:var(--pm-muted)">{{ step.detail }}</div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('cardReplacementTrackerModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 22. Audit Log -->
+@if (isModalOpen('auditLogModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-journal-text me-2"></i>Security Audit Log</h5>
+        <button class="pm-modal-close" (click)="closeModal('auditLogModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="max-height:400px;overflow-y:auto">
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead><tr><th>Time</th><th>Action</th><th>User / System</th><th>IP / Device</th></tr></thead>
+            <tbody>
+              @for (log of auditLog(); track log.id) {
+                <tr>
+                  <td>{{ log.time }}</td>
+                  <td>{{ log.action }}</td>
+                  <td>{{ log.user }}</td>
+                  <td>{{ log.ip }}</td>
+                </tr>
+              } @empty {
+                <tr><td colspan="4" class="text-center text-muted py-3">No audit entries.</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal('auditLogModal')">Close</button>
+        <button class="pm-btn pm-btn-primary" (click)="openAndClose('exportSecurityReportModal','auditLogModal')">Export</button>
+      </div>
+    </div>
+  </div>
+</div>
+}

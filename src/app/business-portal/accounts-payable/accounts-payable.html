@@ -1,0 +1,285 @@
+<!-- Page Bar -->
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb"><a role="button" tabindex="0">Business Portal</a> / <a role="button" tabindex="0">Finance</a> / <strong>Accounts Payable</strong></div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 3.6 — Accounts Payable & Supplier Management</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Onboard suppliers, process invoices via 3-way matching, execute bulk settlements and analyze cash outflows.</p>
+  </div>
+  <div class="d-flex flex-wrap" style="gap:8px">
+    <button class="pm-btn" (click)="openModal('uploadInvoiceModal')"><i class="bi bi-cloud-arrow-up"></i> Upload Invoice</button>
+    <button class="pm-btn" (click)="openModal('bulkPaySuppliersModal')"><i class="bi bi-collection-play"></i> Bulk Run</button>
+    <button class="pm-btn-primary pm-btn" (click)="openModal('addSupplierModal')"><i class="bi bi-person-plus"></i> Add Supplier</button>
+  </div>
+</div>
+
+<div class="pm-content">
+
+<!-- HERO STATS ROW -->
+<div class="row g-3">
+  <div class="col-lg-3 col-md-6">
+    <div class="pm-card pm-card-accent" style="min-height:170px">
+      <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">AP Engine is active <span style="color:#86efac">&#9679;</span></p>
+      <div class="pm-stat-value" style="margin:8px 0;color:#fff;font-size:24px">KES 2.45M</div>
+      <p style="margin:0;font-size:11px;color:rgba(255,255,255,.78);text-transform:uppercase;letter-spacing:0.05em">Total Outstanding Payables</p>
+      <div class="d-flex flex-wrap mt-3" style="gap:8px">
+        <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('payableAgingModal')">Aging Report</button>
+        <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('uploadInvoiceModal')">Process</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="pm-card" style="min-height:170px">
+      <p class="pm-stat-label" style="color:var(--pm-danger)">DUE IN 7 DAYS</p>
+      <div class="pm-stat-value" style="margin:6px 0">KES 845,000</div>
+      <span class="pm-badge pm-badge-danger"><i class="bi bi-exclamation-circle"></i> 12 invoices due</span>
+      <div class="mt-3"><div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>Cash readiness</span><span>92%</span></div><div class="pm-progress mt-1"><div class="pm-progress-bar" style="width:92%;background:var(--pm-danger)"></div></div></div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="pm-card" style="min-height:170px">
+      <p class="pm-stat-label" style="color:var(--pm-info)">DPO (DAYS PAYABLE OUTSTANDING)</p>
+      <div class="pm-stat-value" style="margin:6px 0">42 Days</div>
+      <span class="pm-badge pm-badge-success"><i class="bi bi-arrow-up-right"></i> +4 days vs last month</span>
+      <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)"><div>Standard term: <strong>30 Days</strong></div><div>Liquidity optimized: <strong>High</strong></div></div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-accent)">
+      <p class="pm-stat-label" style="color:var(--pm-accent)">DISCOUNTS CAPTURED</p>
+      <div class="pm-stat-value" style="margin:6px 0">KES 45,200</div>
+      <span class="pm-badge pm-badge-success"><i class="bi bi-piggy-bank"></i> Early payments</span>
+      <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)"><div>Available to capture: <strong style="color:var(--pm-accent)">KES 12,500</strong></div><button class="pm-btn pm-btn-sm mt-1 w-100" (click)="openModal('earlyPaymentDiscountModal')">Capture now</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Attention Required</h3><button class="pm-btn pm-btn-sm" (click)="openModal('attentionActionModal')">View all</button></div>
+      @for (item of attentionItems; track item.id) {
+        <div class="feed-item">
+          <div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor" style="font-size:12px">{{ item.iconText }}</div>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+            <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+          </div>
+          <button [attr.class]="'pm-btn pm-btn-sm' + (item.buttonClass ? ' ' + item.buttonClass : '')" (click)="openModal(item.modalId || 'genericActionModal')">{{ item.buttonLabel }}</button>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Smart Suggestions</h3><span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span></div>
+      @for (item of suggestionItems; track item.id) {
+        <div class="feed-item">
+          <div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor" style="font-size:12px">{{ item.iconText }}</div>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+            <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+          </div>
+          <button class="pm-btn pm-btn-sm" (click)="openModal(item.modalId || 'genericActionModal')">{{ item.buttonLabel }}</button>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="mb-3"><h3 class="pm-section-title">Quick Actions</h3><p class="pm-section-sub">Accounts payable workflows</p></div>
+      <div class="quick-action-grid">
+        @for (action of quickActions; track action.id) {
+          <button class="quick-action-btn" (click)="openQuickAction(action)"><i [attr.class]="action.iconClass" [attr.style]="action.iconStyle"></i> {{ action.label }}</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3.6.1 -->
+<div class="pm-card">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+    <div>
+      <h3 class="pm-section-title"><i class="bi bi-journal-richtext" style="color:var(--pm-primary)"></i> 3.6.1 — Supplier Directory & Master Data</h3>
+      <p class="pm-section-sub">Manage vendor onboarding, KYC/KYB compliance, credit terms, and performance ratings.</p>
+    </div>
+    <div class="d-flex" style="gap:8px">
+      <button class="pm-btn pm-btn-sm" (click)="openModal('onboardSupplierInviteModal')"><i class="bi bi-envelope"></i> Invite to Portal</button>
+      <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('addSupplierModal')"><i class="bi bi-plus-lg"></i> Add Supplier</button>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="pm-table">
+      <thead><tr><th>Supplier Name</th><th>Category</th><th>Primary Pay Method</th><th>Credit Terms</th><th>Status</th><th>Rating</th><th>Actions</th></tr></thead>
+      <tbody>
+        @for (s of suppliers; track s.id) {
+          <tr>
+            <td><strong>{{ s.name }}</strong><br><span style="font-size:11px;color:var(--pm-muted)">{{ s.kraInfo }}</span></td>
+            <td>{{ s.category }}</td>
+            <td>{{ s.payMethod }}</td>
+            <td>{{ s.creditTerms }}</td>
+            <td><span [attr.class]="'pm-badge ' + s.statusBadgeClass">{{ s.status }}</span></td>
+            <td>{{ s.rating }}</td>
+            <td>
+              <div class="d-flex gap-1">
+                @for (action of s.actions; track action.label) {
+                  <button class="pm-btn pm-btn-sm" (click)="openQuickAction(action)"><span [innerHTML]="action.iconHtml"></span>{{ action.label }}</button>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 3.6.2 -->
+<div class="pm-card">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+    <div>
+      <h3 class="pm-section-title"><i class="bi bi-cpu" style="color:var(--pm-purple)"></i> 3.6.2 — Invoice Processing & Three-Way Matching</h3>
+      <p class="pm-section-sub">OCR data extraction, PO matching, routing to departments, and approval workflows.</p>
+    </div>
+    <div class="d-flex" style="gap:8px">
+      <button class="pm-btn pm-btn-sm" (click)="openModal('createPoModal')"><i class="bi bi-file-earmark-plus"></i> New PO</button>
+      <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('uploadInvoiceModal')"><i class="bi bi-scan"></i> Scan Invoice</button>
+    </div>
+  </div>
+  <div class="row g-3">
+    <div class="col-lg-3">
+      <div class="utility-block text-center">
+        <div style="font-size:11px;font-weight:700;color:var(--pm-muted);margin-bottom:12px">INVOICE PIPELINE</div>
+        <div class="d-flex justify-content-around mb-3">
+          <div><div style="font-size:20px;font-weight:700;color:var(--pm-info)">14</div><div style="font-size:10px">NEW (OCR)</div></div>
+          <div><div style="font-size:20px;font-weight:700;color:var(--pm-warning)">8</div><div style="font-size:10px">PENDING APPR.</div></div>
+          <div><div style="font-size:20px;font-weight:700;color:var(--pm-accent)">45</div><div style="font-size:10px">READY TO PAY</div></div>
+        </div>
+        <button class="pm-btn pm-btn-sm w-100" (click)="openModal('approvalQueueModal')">View Approval Queue</button>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <div class="table-responsive">
+        <table class="pm-table">
+          <thead><tr><th>Inv #</th><th>Supplier</th><th>Amount</th><th>3-Way Match</th><th>Department Auth</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            @for (inv of invoices; track inv.id) {
+              <tr>
+                <td>{{ inv.invNum }}</td>
+                <td>{{ inv.supplier }}</td>
+                <td>{{ inv.amount }}</td>
+                <td><span [attr.class]="'pm-badge ' + inv.matchBadgeClass">{{ inv.matchStatus }}</span></td>
+                <td><span [attr.class]="'pm-badge ' + inv.authBadgeClass">{{ inv.authStatus }}</span></td>
+                <td><span [attr.class]="'pm-badge ' + inv.statusBadgeClass">{{ inv.status }}</span></td>
+                <td><button class="pm-btn pm-btn-sm" (click)="openModal(inv.actionModal)">{{ inv.actionLabel }}</button></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3.6.3 -->
+<div class="pm-card">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+    <div>
+      <h3 class="pm-section-title"><i class="bi bi-bank" style="color:var(--pm-accent)"></i> 3.6.3 — Supplier Payments & Treasury Settlement</h3>
+      <p class="pm-section-sub">Batch disbursements, manage early payments, and execute transfers via M-Pesa, PesaLink, or RTGS.</p>
+    </div>
+    <div class="d-flex" style="gap:8px">
+      <button class="pm-btn pm-btn-sm" (click)="openModal('schedulePaymentModal')"><i class="bi bi-calendar"></i> Schedule</button>
+      <button class="pm-btn pm-btn-sm pm-btn-accent" (click)="openModal('bulkPaySuppliersModal')"><i class="bi bi-play-circle"></i> Execute Batch</button>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="pm-table">
+      <thead><tr><th>Payment Batch / Ref</th><th>Date Scheduled</th><th>Invoices Included</th><th>Total Value</th><th>Method</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+        @for (p of payments; track p.id) {
+          <tr>
+            <td>{{ p.ref }}</td>
+            <td>{{ p.dateScheduled }}</td>
+            <td>{{ p.invoicesIncluded }}</td>
+            <td>{{ p.totalValue }}</td>
+            <td>{{ p.method }}</td>
+            <td><span [attr.class]="'pm-badge ' + p.statusBadgeClass">{{ p.status }}</span></td>
+            <td><button class="pm-btn pm-btn-sm" (click)="openModal(p.actionModal)">{{ p.actionLabel }}</button></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 3.6.4 & 3.6.5 ROW -->
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="pm-card h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-receipt" style="color:var(--pm-warning)"></i> 3.6.4 — Expense Claims</h3>
+          <p class="pm-section-sub">Employee reimbursement & petty cash</p>
+        </div>
+        <button class="pm-btn pm-btn-sm" (click)="openModal('expenseClaimModal')">File Claim</button>
+      </div>
+      @for (claim of expenseClaims; track claim.id) {
+        <div class="feed-item">
+          <div class="pm-avatar" [style.background]="claim.avatarBg" style="width:32px;height:32px;font-size:12px">{{ claim.avatarInitials }}</div>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:13px">{{ claim.name }}</div>
+            <div style="font-size:11px;color:var(--pm-muted)">{{ claim.description }}</div>
+          </div>
+          <span class="pm-badge pm-badge-success" [style.display]="claim.isApproved ? '' : 'none'">Approved</span>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" [style.display]="claim.isApproved ? 'none' : ''" (click)="openExpenseClaim(claim)">{{ claim.actionLabel }}</button>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="pm-card h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-pie-chart" style="color:var(--pm-danger)"></i> 3.6.5 — Payable Analytics</h3>
+          <p class="pm-section-sub">Aging, DPO, and cash outflow forecasting</p>
+        </div>
+        <button class="pm-btn pm-btn-sm" (click)="openModal('dpoAnalyticsModal')">Dashboards</button>
+      </div>
+      <div class="utility-block" style="padding:12px">
+        <h4 style="font-size:12px;font-weight:700;color:var(--pm-muted);margin-bottom:8px">AGING SUMMARY (KES)</h4>
+        @for (row of agingRows; track row.label) {
+          <div class="d-flex justify-content-between mb-1" style="font-size:13px"><span>{{ row.label }}</span><strong>{{ row.value }}</strong></div>
+          <div class="pm-progress mb-2"><div class="pm-progress-bar" [style.width.%]="row.pct" [style.background]="row.color"></div></div>
+        }
+        <div class="d-flex justify-content-between mb-1" style="font-size:13px"><span>60+ Days (Disputed)</span><strong>145,000</strong></div>
+        <div class="pm-progress"><div class="pm-progress-bar" style="width:5%;background:var(--pm-ink)"></div></div>
+      </div>
+      <div class="d-flex gap-2 mt-3">
+        <button class="pm-btn pm-btn-sm w-100" (click)="openModal('payableAgingModal')">Full Aging Report</button>
+        <button class="pm-btn pm-btn-sm w-100" (click)="openModal('exportApReportModal')"><i class="bi bi-download"></i> Export</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- Compile-safe generic modal host replacing corrupted modal blocks -->
+<div class="pm-modal-backdrop" [style.display]="activeModal ? 'flex' : 'none'" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Accounts Payable Action</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-muted);margin:0">{{ activeModal }} workflow is ready. Continue using this action panel.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="pm-btn btn-pm" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

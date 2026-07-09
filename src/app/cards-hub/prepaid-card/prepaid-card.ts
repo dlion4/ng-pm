@@ -1,0 +1,1059 @@
+import { Component, signal, computed, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+/* ============================================================
+ * PayMo — Prepaid Card Management
+ * Standalone Angular 17+ component.
+ * Modern @if / @for control flow in template (no *ngIf / *ngFor).
+ * All state is signal-based for change detection safety.
+ * Data models are typed and ready for API integration.
+ * ALL mock data lives in TS signals — the template is fully
+ * declarative (no hardcoded lists, stats, options, or amounts).
+ * ============================================================ */
+
+/* ============================================================
+ * Data models (replace mock arrays with API calls)
+ * ============================================================ */
+
+export type CardType = 'virtual' | 'physical';
+export type CardStatus = 'active' | 'frozen' | 'low_balance' | 'blocked';
+export type CardBrand = 'VISA' | 'Mastercard';
+export type CardGradient = 'blue' | 'purple' | 'dark' | 'emerald';
+
+export interface PrepaidCard {
+  id: string;
+  name: string;
+  type: CardType;
+  status: CardStatus;
+  last4: string;
+  balance: number;
+  currency: string;
+  expiry: string;
+  brand: CardBrand;
+  gradient: CardGradient;
+  lowBalance?: boolean;
+}
+
+export type TxStatus = 'approved' | 'declined';
+export interface Transaction {
+  id: string;
+  date: string;
+  cardName: string;
+  cardLast4: string;
+  merchant: string;
+  category: string;
+  amount: number;
+  status: TxStatus;
+  authCode: string;
+}
+
+export interface AttentionItem {
+  id: string;
+  icon: string;
+  iconBg: string;
+  iconColor: string;
+  title: string;
+  subtitle: string;
+  actionLabel: string;
+  actionModal: string;
+  actionClass: string;
+}
+
+export interface Suggestion {
+  id: string;
+  icon: string;
+  iconBg: string;
+  iconColor: string;
+  title: string;
+  subtitle: string;
+  actionLabel: string;
+  actionModal: string;
+}
+
+export interface AutoReloadRule {
+  id: string;
+  cardName: string;
+  description: string;
+  active: boolean;
+}
+
+export interface BulkIssueRecord {
+  id: string;
+  name: string;
+  department: string;
+  cardType: CardType;
+  limit: number;
+}
+
+export interface ProcessedResult {
+  modalId: string;
+  message: string;
+  ref: string;
+}
+
+/* ---------- Hero stats row ---------- */
+
+export interface HeroStatBar {
+  height: number; // percent
+  color: string;  // CSS var
+}
+
+export interface HeroStatAction {
+  label: string;
+  modal: string;
+  style?: string; // raw inline style string for special button styling
+}
+
+export interface LowBalanceCard {
+  name: string;
+  amount: number;
+}
+
+export interface HeroStat {
+  id: string;
+  colClass: string;       // bootstrap col classes
+  cardClass: string;      // base card classes (pm-card, pm-card-accent)
+  minHeight: string;
+  // Hero stat #1 (accent) — status indicator + subtext on white
+  statusText?: string;
+  statusColor?: string;
+  textColor?: string;
+  subtext?: string;
+  // Generic stat label/value
+  label?: string;
+  labelColor?: string;
+  value: string;
+  // Badge
+  badgeIcon?: string;
+  badgeText?: string;
+  badgeClass?: string;
+  // Accent left border (hero stat #4)
+  accentBorder?: string;
+  // Mini bars (hero stat #2)
+  showBars?: boolean;
+  bars?: HeroStatBar[];
+  // Progress bar (hero stat #3)
+  showProgress?: boolean;
+  progressPercent?: number;
+  progressLabel?: string;
+  progressSectionLabel?: string;
+  // Low balance list (hero stat #4)
+  lowBalanceCards?: LowBalanceCard[];
+  // Action buttons
+  actions?: HeroStatAction[];
+}
+
+/* ---------- Quick actions grid ---------- */
+
+export interface QuickAction {
+  id: string;
+  iconClass: string;  // full icon class string
+  iconStyle?: string; // optional inline style (e.g. for purple icon)
+  label: string;
+  modal: string;
+}
+
+/* ---------- Card filter pills ---------- */
+
+export interface CardFilterPill {
+  key: 'all' | 'virtual' | 'physical' | 'frozen';
+  label: string;
+  count: number;
+}
+
+/* ---------- Global restrictions ---------- */
+
+export interface GlobalRestriction {
+  id: string;
+  name: string;
+  description: string;
+  editModal: string;
+}
+
+/* ---------- Notifications ---------- */
+
+export interface NotificationItem {
+  id: string;
+  colorClass: string;   // text-danger, text-success, etc.
+  iconClass: string;    // full icon class string
+  title: string;
+  message: string;
+}
+
+/* ---------- Health check ---------- */
+
+export interface HealthSummary {
+  score: number;
+  posture: string;
+  postureClass: string;
+}
+
+export interface HealthCheck {
+  id: string;
+  label: string;
+  iconClass: string;  // full icon class string
+  rowClass: string;   // 'mb-2' or ''
+}
+
+/* ---------- Attention details (modal 25) ---------- */
+
+export interface AttentionDetail {
+  id: string;
+  borderClass: string; // 'border-danger' | 'border-warning' | 'border-info'
+  title: string;
+  description: string;
+  actionLabel: string;
+  actionModal: string;
+}
+
+/* ---------- Profile ---------- */
+
+export interface ProfileStat {
+  label: string;
+  value: string;
+}
+
+export interface ProfileData {
+  initials: string;
+  name: string;
+  role: string;
+  avatarBg: string;
+  stats: ProfileStat[];
+}
+
+/* ---------- Spend analytics ---------- */
+
+export interface SpendCategory {
+  id: string;
+  label: string;
+  percentage: number;
+  color: string;  // CSS var
+}
+
+/* ---------- Receipt ---------- */
+
+export interface ReceiptData {
+  amount: number;
+  merchant: string;
+  card: string;
+  datetime: string;
+  authCode: string;
+  category: string;
+}
+
+/* ---------- Generic select option ---------- */
+
+export interface SelectOption {
+  id: string;
+  label: string;
+}
+
+export interface ToggleOption {
+  id: string;
+  label: string;
+  description: string;
+  checked: boolean;
+}
+
+/* ---------- Bulk operations ---------- */
+
+export interface BulkTopupRow {
+  id: string;
+  cardName: string;
+  currentBalance: number;
+  loadAmount: number;
+}
+
+export interface BatchStat {
+  label: string;
+  count: number;
+  status: string;
+  statusClass: string;
+}
+
+export interface ReviewRow {
+  label: string;
+  value: string;
+  isTotal?: boolean;
+}
+
+/* ---------- Dispute ---------- */
+
+export interface DisputeTxData {
+  merchant: string;
+  cardName: string;
+  date: string;
+  amount: number;
+}
+
+/* ---------- Issued card (issue modal step 4) ---------- */
+
+export interface IssuedCardData {
+  pan: string;
+  name: string;
+  expiry: string;
+}
+
+/* ---------- Top-up context (topup modal steps 2 & 3) ---------- */
+
+export interface TopupContext {
+  cardName: string;
+  cardLast4: string;
+  newBalance: number;
+  ref: string;
+}
+
+/* ---------- Card detail (reveal modal) ---------- */
+
+export interface CardDetail {
+  pan: string;
+  name: string;
+  expiry: string;
+  cvv: string;
+  last4: string;
+  activity: CardActivityRow[];
+}
+
+export interface CardActivityRow {
+  id: string;
+  merchant: string;
+  date: string;
+  amount: number;
+}
+
+@Component({
+  selector: 'app-prepaid-card',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './prepaid-card.html',
+  styleUrls: ['./prepaid-card.css'],
+})
+export class PrepaidCardComponent implements OnInit {
+  /* ---------- Modal open/close state ---------- */
+  private _openModals = signal<Set<string>>(new Set());
+  isModalOpen = (id: string) => this._openModals().has(id);
+
+  /* ---------- Multi-step flow state ---------- */
+  issueStep = signal(1);
+  topupStep = signal(1);
+  bulkIssStep = signal(1);
+  bulkTopStep = signal(1);
+  flowLoading = signal(false);
+
+  issueSteps = ['Type', 'Limits', 'Review', 'Done'] as const;
+  topupSteps = ['Details', 'Confirm', 'Done'] as const;
+  bulkIssSteps = ['Upload', 'Review', 'Done'] as const;
+  bulkTopSteps = ['Select', 'Confirm', 'Done'] as const;
+
+  /* ---------- Card filter + analytics tabs ---------- */
+  cardFilter = signal<'all' | 'virtual' | 'physical' | 'frozen'>('all');
+  analyticsTab = signal<'category' | 'merchant' | 'card'>('category');
+
+  /* ---------- Reveal + form helpers ---------- */
+  cardRevealed = signal(false);
+  issueCardType = signal<'virtual' | 'physical'>('virtual');
+  topupAmount = signal(5000);
+  processed = signal<ProcessedResult | null>(null);
+  loadingModalId = signal<string | null>(null);
+
+  /* ============================================================
+   * Data: Cards, transactions, attention, suggestions, etc.
+   * ============================================================ */
+
+  cards = signal<PrepaidCard[]>([
+    { id: 'c1', name: 'Marketing Ads',      type: 'virtual',  status: 'active',     last4: '4812', balance: 14500, currency: 'KES', expiry: '08/26', brand: 'VISA',       gradient: 'blue' },
+    { id: 'c2', name: 'Fleet #1 - John',    type: 'physical', status: 'active',     last4: '9091', balance: 22100, currency: 'KES', expiry: '12/27', brand: 'VISA',       gradient: 'emerald' },
+    { id: 'c3', name: 'Software Subs',      type: 'virtual',  status: 'low_balance',last4: '3321', balance: 150,   currency: 'KES', expiry: '05/25', brand: 'Mastercard', gradient: 'purple', lowBalance: true },
+    { id: 'c4', name: 'Travel Expo',        type: 'physical', status: 'frozen',     last4: '7762', balance: 4500,  currency: 'KES', expiry: '09/25', brand: 'VISA',       gradient: 'dark' },
+  ]);
+
+  transactions = signal<Transaction[]>([
+    { id: 't1', date: 'Today, 14:32', cardName: 'Fleet #1',  cardLast4: '9091', merchant: 'Shell Petrol Station', category: 'Fuel',        amount: 6500,  status: 'approved', authCode: 'AUTH-911' },
+    { id: 't2', date: 'Today, 10:15', cardName: 'Marketing', cardLast4: '4812', merchant: 'Facebook Ads',         category: 'Advertising', amount: 12000, status: 'approved', authCode: 'AUTH-842' },
+    { id: 't3', date: 'Yesterday',    cardName: 'Software',  cardLast4: '3321', merchant: 'AWS Cloud',            category: 'Cloud Svcs',  amount: 8400,  status: 'declined', authCode: '-' },
+    { id: 't4', date: 'Yesterday',    cardName: 'Fleet #2',  cardLast4: '1124', merchant: 'Carrefour',            category: 'Groceries',   amount: 1200,  status: 'approved', authCode: 'AUTH-102' },
+    { id: 't5', date: '25 Jun',       cardName: 'Travel',    cardLast4: '7762', merchant: 'Uber',                 category: 'Transport',   amount: 850,   status: 'approved', authCode: 'AUTH-311' },
+  ]);
+
+  attentionItems = signal<AttentionItem[]>([
+    { id: 'a1', icon: 'bi-x-octagon',      iconBg: 'var(--pm-danger-soft)', iconColor: 'var(--pm-danger)', title: 'Transaction Declined',  subtitle: 'Fleet Card #2 · Insufficient Funds',        actionLabel: 'Fund',   actionModal: 'topupCardModal',   actionClass: 'pm-btn-danger' },
+    { id: 'a2', icon: 'bi-hourglass-split', iconBg: 'var(--pm-warning-soft)', iconColor: 'var(--pm-warning)', title: 'Card Expiring Soon',    subtitle: 'Virtual Ads Card · Exp: 07/25',             actionLabel: 'Renew',  actionModal: 'replaceCardModal', actionClass: '' },
+    { id: 'a3', icon: 'bi-shield-lock',    iconBg: 'var(--pm-info-soft)',    iconColor: 'var(--pm-info)',    title: 'Unusual Online Spend',  subtitle: 'Staff Card · KES 15,000 at Amazon',         actionLabel: 'Review', actionModal: 'disputeTxModal',   actionClass: '' },
+  ]);
+
+  suggestions = signal<Suggestion[]>([
+    { id: 's1', icon: 'bi-arrow-repeat', iconBg: 'var(--pm-accent-soft)', iconColor: 'var(--pm-accent)', title: 'Set Auto-Reload',     subtitle: 'Avoid declines on Marketing Ads Card', actionLabel: 'Setup', actionModal: 'autoReloadModal' },
+    { id: 's2', icon: 'bi-geo-alt',      iconBg: 'var(--pm-purple-soft)', iconColor: 'var(--pm-purple)', title: 'Enable Geo-Blocking', subtitle: 'Lock Fleet cards to Kenya only',       actionLabel: 'Apply',  actionModal: 'geoBlockModal' },
+    { id: 's3', icon: 'bi-archive',      iconBg: 'var(--pm-info-soft)',   iconColor: 'var(--pm-info)',   title: 'Freeze Unused Card',  subtitle: 'Travel Card inactive for 90 days',     actionLabel: 'Freeze', actionModal: 'freezeCardModal' },
+  ]);
+
+  autoReloadRules = signal<AutoReloadRule[]>([
+    { id: 'r1', cardName: 'Marketing Ads',  description: 'Load KES 10K when balance < KES 1K', active: true },
+    { id: 'r2', cardName: 'Software Subs',  description: 'Load KES 5K on 1st of month',        active: true },
+  ]);
+
+  bulkIssueRecords = signal<BulkIssueRecord[]>([
+    { id: 'b1', name: 'Peter Kariuki', department: 'Sales', cardType: 'virtual',  limit: 10000 },
+    { id: 'b2', name: 'Jane Mwangi',   department: 'Ops',   cardType: 'physical', limit: 5000 },
+  ]);
+
+  /* ============================================================
+   * NEW: Hero stats row (4 cards)
+   * ============================================================ */
+
+  heroStats = signal<HeroStat[]>([
+    {
+      id: 'h1',
+      colClass: 'col-lg-4',
+      cardClass: 'pm-card pm-card-accent',
+      minHeight: '170px',
+      statusText: 'Prepaid Card Program is Active',
+      statusColor: '#86efac',
+      textColor: '#fff',
+      value: '12 Active Cards',
+      subtext: '4 Physical, 8 Virtual. Used for fleet fuel, online software, and staff expenses.',
+      actions: [
+        { label: 'Fund Cards',  modal: 'bulkTopupModal', style: 'background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff' },
+        { label: 'New Virtual', modal: 'issueCardModal',  style: 'background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff' },
+      ],
+    },
+    {
+      id: 'h2',
+      colClass: 'col-lg-2 col-md-4 col-6',
+      cardClass: 'pm-card',
+      minHeight: '170px',
+      label: 'TOTAL PREPAID BALANCE',
+      labelColor: 'var(--pm-info)',
+      value: 'KES 142.5K',
+      badgeIcon: 'bi-wallet2',
+      badgeText: 'Available',
+      badgeClass: 'pm-badge pm-badge-info',
+      showBars: true,
+      bars: [
+        { height: 40, color: 'var(--pm-primary)' },
+        { height: 60, color: 'var(--pm-info)' },
+        { height: 30, color: 'var(--pm-primary)' },
+        { height: 80, color: 'var(--pm-info)' },
+        { height: 50, color: 'var(--pm-primary)' },
+        { height: 90, color: 'var(--pm-info)' },
+      ],
+    },
+    {
+      id: 'h3',
+      colClass: 'col-lg-3 col-md-4 col-6',
+      cardClass: 'pm-card',
+      minHeight: '170px',
+      label: 'SPEND THIS MONTH',
+      labelColor: 'var(--pm-warning)',
+      value: 'KES 88.2K',
+      badgeIcon: 'bi-graph-up-arrow',
+      badgeText: '+12% vs last month',
+      badgeClass: 'pm-badge pm-badge-warning',
+      showProgress: true,
+      progressPercent: 44,
+      progressLabel: '44% Used',
+      progressSectionLabel: 'Budget Limit',
+    },
+    {
+      id: 'h4',
+      colClass: 'col-lg-3 col-md-4',
+      cardClass: 'pm-card',
+      minHeight: '170px',
+      accentBorder: '3px solid var(--pm-accent)',
+      label: 'LOW BALANCE CARDS',
+      labelColor: 'var(--pm-accent)',
+      value: '3 Cards',
+      badgeIcon: 'bi-exclamation-circle',
+      badgeText: 'Needs top-up',
+      badgeClass: 'pm-badge pm-badge-danger',
+      lowBalanceCards: [
+        { name: 'Fleet Card #4', amount: 150 },
+        { name: 'Marketing Ads', amount: 450 },
+      ],
+      actions: [
+        { label: 'Top-up Now', modal: 'bulkTopupModal' },
+      ],
+    },
+  ]);
+
+  /* ============================================================
+   * NEW: Quick actions grid (8 buttons)
+   * ============================================================ */
+
+  quickActions = signal<QuickAction[]>([
+    { id: 'qa1', iconClass: 'bi bi-cash text-success me-1',                 label: 'Top-up Card',  modal: 'topupCardModal' },
+    { id: 'qa2', iconClass: 'bi bi-arrow-left-right text-info me-1',        label: 'Transfer',     modal: 'transferModal' },
+    { id: 'qa3', iconClass: 'bi bi-sliders text-primary me-1',              label: 'Set Limits',   modal: 'cardLimitsModal' },
+    { id: 'qa4', iconClass: 'bi bi-asterisk text-warning me-1',             label: 'View PIN',     modal: 'viewPinModal' },
+    { id: 'qa5', iconClass: 'bi bi-snow text-danger me-1',                  label: 'Freeze',       modal: 'freezeCardModal' },
+    { id: 'qa6', iconClass: 'bi bi-box-arrow-right text-secondary me-1',    label: 'Unload Funds', modal: 'unloadCardModal' },
+    { id: 'qa7', iconClass: 'bi bi-shop me-1', iconStyle: 'color:var(--pm-purple)', label: 'MCC Blocks', modal: 'mccBlockModal' },
+    { id: 'qa8', iconClass: 'bi bi-download text-dark me-1',                label: 'Reports',      modal: 'exportReportModal' },
+  ]);
+
+  /* ============================================================
+   * NEW: Card filter pills with counts
+   * ============================================================ */
+
+  cardFilterPills = signal<CardFilterPill[]>([
+    { key: 'all',      label: 'All Cards', count: 12 },
+    { key: 'virtual',  label: 'Virtual',   count: 8 },
+    { key: 'physical', label: 'Physical',  count: 4 },
+    { key: 'frozen',   label: 'Frozen',    count: 1 },
+  ]);
+
+  /* ============================================================
+   * NEW: Global restrictions (Controls section)
+   * ============================================================ */
+
+  globalRestrictions = signal<GlobalRestriction[]>([
+    { id: 'gr1', name: 'Geo-Blocking', description: 'Physical cards locked to Kenya & EA',         editModal: 'geoBlockModal' },
+    { id: 'gr2', name: 'MCC Blocks',   description: 'Gambling, Crypto, Adult blocked on all',      editModal: 'mccBlockModal' },
+  ]);
+
+  /* ============================================================
+   * NEW: Notifications modal (4 items)
+   * ============================================================ */
+
+  notifications = signal<NotificationItem[]>([
+    { id: 'n1', colorClass: 'text-danger',  iconClass: 'bi bi-x-circle me-1',            title: 'Card Declined',   message: 'Software Subs card declined for KES 8,400 (NSF).' },
+    { id: 'n2', colorClass: 'text-success', iconClass: 'bi bi-check-circle me-1',        title: 'Top-up Complete', message: 'Marketing Ads card funded with KES 10,000.' },
+    { id: 'n3', colorClass: 'text-info',    iconClass: 'bi bi-info-circle me-1',         title: 'Travel Notice',   message: 'Travel Expo card used outside Kenya (Dubai).' },
+    { id: 'n4', colorClass: 'text-warning', iconClass: 'bi bi-exclamation-triangle me-1',title: 'Balance Alert',   message: 'Fleet #4 balance is below KES 500 threshold.' },
+  ]);
+
+  /* ============================================================
+   * NEW: Health check modal (summary + 4 checks)
+   * ============================================================ */
+
+  healthSummary = signal<HealthSummary>({
+    score: 96,
+    posture: 'Excellent Security Posture',
+    postureClass: 'text-success',
+  });
+
+  healthChecks = signal<HealthCheck[]>([
+    { id: 'hc1', label: 'All physical cards require PIN',     iconClass: 'bi bi-check-circle text-success me-1', rowClass: 'mb-2' },
+    { id: 'hc2', label: 'Geo-blocking active on 4 cards',     iconClass: 'bi bi-check-circle text-success me-1', rowClass: 'mb-2' },
+    { id: 'hc3', label: 'No compromised PANs detected',       iconClass: 'bi bi-check-circle text-success me-1', rowClass: 'mb-2' },
+    { id: 'hc4', label: '1 card expiring within 30 days',     iconClass: 'bi bi-exclamation-circle text-warning me-1', rowClass: '' },
+  ]);
+
+  /* ============================================================
+   * NEW: Attention modal (3 items)
+   * ============================================================ */
+
+  attentionDetails = signal<AttentionDetail[]>([
+    { id: 'ad1', borderClass: 'border-danger',  title: 'Declined Transaction',  description: 'Software Subs card lacked KES 8,400.',  actionLabel: 'Top-up now', actionModal: 'topupCardModal' },
+    { id: 'ad2', borderClass: 'border-warning', title: 'Expiring Card',         description: 'Virtual Ads Card expires 07/25.',       actionLabel: 'Renew',      actionModal: 'replaceCardModal' },
+    { id: 'ad3', borderClass: 'border-info',    title: 'Unusual Online Spend',  description: 'Review KES 15,000 charge.',             actionLabel: 'Review',     actionModal: 'disputeTxModal' },
+  ]);
+
+  /* ============================================================
+   * NEW: Profile modal data
+   * ============================================================ */
+
+  profileData = signal<ProfileData>({
+    initials: 'AK',
+    name: 'Alex K.',
+    role: 'Fleet & Ops Manager · Corporate Acct',
+    avatarBg: 'var(--pm-gradient-blue)',
+    stats: [
+      { label: 'Role Permissions', value: 'Card Issuance (Max 50K)' },
+      { label: 'Managed Cards',    value: '12 Active' },
+    ],
+  });
+
+  /* ============================================================
+   * NEW: Spend analytics modal (4 categories + donut)
+   * ============================================================ */
+
+  spendTotal = signal(88200); // KES 88.2K total spend this month
+
+  spendCategories = signal<SpendCategory[]>([
+    { id: 'sc1', label: 'Software & Ads',     percentage: 45, color: 'var(--pm-primary)' },
+    { id: 'sc2', label: 'Fuel & Transport',   percentage: 25, color: 'var(--pm-warning)' },
+    { id: 'sc3', label: 'Travel & Hotels',    percentage: 20, color: 'var(--pm-info)' },
+    { id: 'sc4', label: 'Other Expenses',     percentage: 10, color: 'var(--pm-accent)' },
+  ]);
+
+  /** Build conic-gradient string from spendCategories for the donut chart. */
+  spendDonutGradient = computed(() => {
+    const cats = this.spendCategories();
+    let cumulative = 0;
+    const stops: string[] = [];
+    for (const cat of cats) {
+      const start = cumulative;
+      cumulative += cat.percentage;
+      stops.push(`${cat.color} ${start}% ${cumulative}%`);
+    }
+    return `conic-gradient(${stops.join(', ')})`;
+  });
+
+  /* ============================================================
+   * NEW: Tx receipt modal data
+   * ============================================================ */
+
+  receiptData = signal<ReceiptData>({
+    amount: 6500,
+    merchant: 'Shell Petrol Station',
+    card: 'Fleet #1 (...9091)',
+    datetime: '28 Jun 2025, 14:32',
+    authCode: 'AUTH-911244',
+    category: 'Fuel & Auto',
+  });
+
+  /* ============================================================
+   * NEW: Form option lists for modals
+   * ============================================================ */
+
+  // Issue card modal — funding sources
+  fundingSources = signal<SelectOption[]>([
+    { id: 'fs1', label: 'PayMo Main Wallet (KES 240,000)' },
+    { id: 'fs2', label: 'M-Pesa (0712***890)' },
+    { id: 'fs3', label: 'Equity Bank' },
+  ]);
+
+  // Top-up modal — source of funds
+  topupSources = signal<SelectOption[]>([
+    { id: 'ts1', label: 'PayMo Wallet' },
+    { id: 'ts2', label: 'M-Pesa Express' },
+    { id: 'ts3', label: 'Linked Bank' },
+  ]);
+
+  // Top-up amount chips
+  topupAmountChips = signal<number[]>([1000, 5000, 10000]);
+
+  // Auto-reload modal — trigger events
+  autoReloadTriggers = signal<string[]>([
+    'When balance falls below amount',
+    'On specific day of month',
+    'Weekly on Monday',
+  ]);
+
+  // Auto-reload modal — source accounts
+  autoReloadSources = signal<SelectOption[]>([
+    { id: 'ars1', label: 'PayMo Main Wallet' },
+    { id: 'ars2', label: 'Equity Bank Auto-Debit' },
+  ]);
+
+  // Card controls modal — toggle list
+  cardControlToggles = signal<ToggleOption[]>([
+    { id: 'cc1', label: 'Online Transactions',         description: 'Allow card-not-present internet purchases',  checked: true  },
+    { id: 'cc2', label: 'International Spend',         description: 'Allow non-KES cross-border transactions',    checked: false },
+    { id: 'cc3', label: 'Contactless (Tap-to-Pay)',    description: 'Allow physical tap limits without PIN',      checked: true  },
+    { id: 'cc4', label: 'ATM Withdrawals',             description: 'Allow cash out at ATMs',                     checked: false },
+    { id: 'cc5', label: 'Subscriptions / Recurring',   description: 'Allow automated monthly billing charges',    checked: true  },
+  ]);
+
+  // Freeze modal — status options
+  freezeOptions = signal<ToggleOption[]>([
+    { id: 'fo1', label: 'Temporary Freeze',                description: 'Card is disabled but can be unfrozen instantly anytime.', checked: true  },
+    { id: 'fo2', label: 'Permanent Block (Lost/Stolen)',   description: 'Card is cancelled forever. A replacement must be ordered.', checked: false },
+  ]);
+
+  // Replace card modal — reason options
+  replaceReasons = signal<string[]>(['Expiring', 'Damaged', 'Name Change', 'Compromised']);
+
+  // Geo-block modal — apply-to options
+  geoBlockApplyTo = signal<string[]>([
+    'All Physical Fleet Cards (4)',
+    'Fleet #1 only',
+  ]);
+
+  // Geo-block modal — region radio options
+  geoBlockRegions = signal<string[]>([
+    'Kenya Only',
+    'East Africa Region',
+    'Global (No restrictions)',
+    'Custom Allowlist',
+  ]);
+
+  // MCC block modal — apply-to options
+  mccApplyTo = signal<string[]>([
+    'Entire Card Program (All Cards)',
+    'Fleet Cards Only',
+  ]);
+
+  // MCC block modal — toggle list
+  mccBlocks = signal<ToggleOption[]>([
+    { id: 'mb1', label: 'Block Gambling & Casinos',      description: '', checked: true  },
+    { id: 'mb2', label: 'Block Adult Content',           description: '', checked: true  },
+    { id: 'mb3', label: 'Block Cryptocurrency',          description: '', checked: true  },
+    { id: 'mb4', label: 'Block Alcohol & Liquor Stores', description: '', checked: false },
+    { id: 'mb5', label: 'Block Airlines & Travel',       description: '', checked: false },
+  ]);
+
+  // Export report modal — report types + formats
+  exportReportTypes = signal<string[]>([
+    'Full Transaction Ledger (All Cards)',
+    'Card Balances & Status',
+    'Declined Transactions Analysis',
+  ]);
+
+  exportFormats = signal<string[]>([
+    'CSV (For Accounting/ERP)',
+    'Excel (.xlsx)',
+    'PDF Summary',
+  ]);
+
+  // Dispute modal — reason options
+  disputeReasons = signal<string[]>([
+    'I do not recognize this merchant',
+    'Amount charged is incorrect',
+    'Subscription was cancelled',
+    'Card was lost/stolen',
+  ]);
+
+  // Bulk top-up modal — strategy options
+  bulkTopupStrategies = signal<string[]>([
+    'Top-up all low balance cards to KES 5,000',
+    'Top-up specific departments',
+    'Upload custom amount CSV',
+  ]);
+
+  // Full ledger modal — filter options
+  ledgerCardFilters = signal<string[]>(['All Cards', 'Virtual Only']);
+  ledgerDateFilters = signal<string[]>(['Last 30 Days']);
+
+  /* ============================================================
+   * NEW: Bulk operations + flow data
+   * ============================================================ */
+
+  bulkIssBatchSize = signal(45);
+
+  bulkIssueSummary = signal<BatchStat[]>([
+    { label: 'Virtual Cards',  count: 30, status: 'Ready in 2 mins',     statusClass: 'text-success' },
+    { label: 'Physical Cards', count: 15, status: 'Dispatched in 48hrs', statusClass: 'text-info' },
+  ]);
+
+  bulkTopupRows = signal<BulkTopupRow[]>([
+    { id: 'bt1', cardName: 'Software Subs', currentBalance: 150, loadAmount: 4850 },
+    { id: 'bt2', cardName: 'Fleet #4',      currentBalance: 200, loadAmount: 4800 },
+  ]);
+
+  bulkTopupTotal = computed(() =>
+    this.bulkTopupRows().reduce((sum, r) => sum + r.loadAmount, 0)
+  );
+
+  /* ============================================================
+   * NEW: Issue card modal — review rows + issued card data
+   * ============================================================ */
+
+  issueReviewRows = signal<ReviewRow[]>([
+    { label: 'Type',            value: 'Virtual Prepaid VISA' },
+    { label: 'Name',            value: 'Marketing Dept' },
+    { label: 'Initial Load',    value: 'KES 5,000' },
+    { label: 'Issuance Fee',    value: 'KES 150' },
+    { label: 'Total Deduction', value: 'KES 5,150', isTotal: true },
+  ]);
+
+  issuedCardData = signal<IssuedCardData>({
+    pan: '4123 5567 8901 2345',
+    name: 'Marketing Dept',
+    expiry: '07/28',
+  });
+
+  /* ============================================================
+   * NEW: Top-up modal context (steps 2 & 3)
+   * ============================================================ */
+
+  topupContext = signal<TopupContext>({
+    cardName: 'Software Subs',
+    cardLast4: '3321',
+    newBalance: 5150,
+    ref: 'TOP-88214',
+  });
+
+  /* ============================================================
+   * NEW: Card detail (reveal) modal — card + activity
+   * ============================================================ */
+
+  cardDetail = signal<CardDetail>({
+    pan: '4123 5567 8901 4812',
+    name: 'Marketing Dept',
+    expiry: '07/28',
+    cvv: '892',
+    last4: '4812',
+    activity: [
+      { id: 'ca1', merchant: 'Facebook Ads',     date: 'Today',    amount: 12000 },
+      { id: 'ca2', merchant: 'Google Workspace', date: 'Yesterday',amount: 1450 },
+    ],
+  });
+
+  /* ============================================================
+   * NEW: Dispute transaction data
+   * ============================================================ */
+
+  disputeTxData = signal<DisputeTxData>({
+    merchant: 'Amazon AWS Cloud',
+    cardName: 'Software Subs Card',
+    date: 'Yesterday',
+    amount: 8400,
+  });
+
+  /* ============================================================
+   * Computed: filtered cards
+   * ============================================================ */
+
+  filteredCards = computed<PrepaidCard[]>(() => {
+    const f = this.cardFilter();
+    const list = this.cards();
+    if (f === 'all') return list;
+    if (f === 'frozen') return list.filter(c => c.status === 'frozen');
+    return list.filter(c => c.type === f);
+  });
+
+  /* ============================================================
+   * Stepper label helpers
+   * ============================================================ */
+
+  issueNextLabel(): string {
+    if (this.issueStep() === 2) return 'Authorize';
+    if (this.issueStep() === 3) return 'Continue';
+    if (this.issueStep() === 4) return 'Finish';
+    return 'Continue';
+  }
+
+  topupNextLabel(): string {
+    if (this.topupStep() === 2) return 'Confirm Top-up';
+    if (this.topupStep() === 3) return 'Done';
+    return 'Review';
+  }
+
+  bulkIssNextLabel(): string {
+    if (this.bulkIssStep() === 2) return `Issue ${this.bulkIssBatchSize()} Cards`;
+    if (this.bulkIssStep() === 3) return 'Done';
+    return 'Continue';
+  }
+
+  bulkTopNextLabel(): string {
+    if (this.bulkTopStep() === 2) return 'Fund Cards';
+    if (this.bulkTopStep() === 3) return 'Done';
+    return 'Review';
+  }
+
+  ngOnInit(): void {
+    // Hook for initial API load, e.g.:
+    // this.cardsService.getCards().subscribe(c => this.cards.set(c));
+  }
+
+  /* ============================================================
+   * Modal controls
+   * ============================================================ */
+
+  openModal(id: string): void {
+    const next = new Set(this._openModals());
+    next.add(id);
+    this._openModals.set(next);
+  }
+
+  closeModal(id: string): void {
+    const next = new Set(this._openModals());
+    next.delete(id);
+    this._openModals.set(next);
+    // Reset any processed receipt / loading state for this modal
+    if (this.processed()?.modalId === id) {
+      this.processed.set(null);
+    }
+    if (this.loadingModalId() === id) {
+      this.loadingModalId.set(null);
+    }
+    // Reset multi-step flows on close
+    this.resetFlow(id);
+  }
+
+  /** Open one modal and close another (for cross-modal navigation). */
+  openAndClose(openId: string, closeId: string): void {
+    this.closeModal(closeId);
+    this.openModal(openId);
+  }
+
+  /* ============================================================
+   * Multi-step navigation
+   * ============================================================ */
+
+  nextIssueStep(): void {
+    if (this.flowLoading()) return;
+    const cur = this.issueStep();
+    if (cur === 3) {
+      this.flowLoading.set(true);
+      setTimeout(() => {
+        this.flowLoading.set(false);
+        this.issueStep.set(4);
+      }, 1500);
+      return;
+    }
+    if (cur >= 4) {
+      this.closeModal('issueCardModal');
+      return;
+    }
+    this.issueStep.set(cur + 1);
+  }
+
+  nextTopupStep(): void {
+    if (this.flowLoading()) return;
+    const cur = this.topupStep();
+    if (cur === 2) {
+      this.flowLoading.set(true);
+      setTimeout(() => {
+        this.flowLoading.set(false);
+        this.topupStep.set(3);
+      }, 1500);
+      return;
+    }
+    if (cur >= 3) {
+      this.closeModal('topupCardModal');
+      return;
+    }
+    this.topupStep.set(cur + 1);
+  }
+
+  nextBulkIssStep(): void {
+    if (this.flowLoading()) return;
+    const cur = this.bulkIssStep();
+    if (cur === 2) {
+      this.flowLoading.set(true);
+      setTimeout(() => {
+        this.flowLoading.set(false);
+        this.bulkIssStep.set(3);
+      }, 1500);
+      return;
+    }
+    if (cur >= 3) {
+      this.closeModal('bulkIssueModal');
+      return;
+    }
+    this.bulkIssStep.set(cur + 1);
+  }
+
+  nextBulkTopStep(): void {
+    if (this.flowLoading()) return;
+    const cur = this.bulkTopStep();
+    if (cur === 2) {
+      this.flowLoading.set(true);
+      setTimeout(() => {
+        this.flowLoading.set(false);
+        this.bulkTopStep.set(3);
+      }, 1500);
+      return;
+    }
+    if (cur >= 3) {
+      this.closeModal('bulkTopupModal');
+      return;
+    }
+    this.bulkTopStep.set(cur + 1);
+  }
+
+  /** Reset a specific multi-step flow when its modal closes. */
+  private resetFlow(modalId: string): void {
+    switch (modalId) {
+      case 'issueCardModal':
+        this.issueStep.set(1);
+        this.issueCardType.set('virtual');
+        break;
+      case 'topupCardModal':
+        this.topupStep.set(1);
+        this.topupAmount.set(5000);
+        break;
+      case 'bulkIssueModal':
+        this.bulkIssStep.set(1);
+        break;
+      case 'bulkTopupModal':
+        this.bulkTopStep.set(1);
+        break;
+    }
+  }
+
+  /* ---------- Stepper class helper ---------- */
+  stepState(index: number, current: number): 'active' | 'completed' | '' {
+    const step = index + 1;
+    if (step < current) return 'completed';
+    if (step === current) return 'active';
+    return '';
+  }
+
+  /* ---------- Card filtering ---------- */
+  filterCards(type: 'all' | 'virtual' | 'physical' | 'frozen'): void {
+    this.cardFilter.set(type);
+  }
+
+  /* ---------- Process single-step modal action (shows receipt) ---------- */
+  processAction(modalId: string, message: string, ref: string): void {
+    this.loadingModalId.set(modalId);
+    setTimeout(() => {
+      this.loadingModalId.set(null);
+      this.processed.set({ modalId, message, ref });
+    }, 1500);
+  }
+
+  isProcessed(modalId: string): boolean {
+    return this.processed()?.modalId === modalId;
+  }
+
+  /* ---------- Select box (issue card type) ---------- */
+  selectIssueType(type: 'virtual' | 'physical'): void {
+    this.issueCardType.set(type);
+  }
+
+  /* ---------- Amount chip ---------- */
+  pickAmount(amount: number): void {
+    this.topupAmount.set(amount);
+  }
+
+  /* ---------- PIN input auto-focus next ---------- */
+  moveFocus(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.value.length === 1 && input.nextElementSibling instanceof HTMLInputElement) {
+      input.nextElementSibling.focus();
+    }
+  }
+
+  /* ---------- Reveal card details ---------- */
+  revealCardDetails(): void {
+    this.loadingModalId.set('cardDetailModal');
+    setTimeout(() => {
+      this.loadingModalId.set(null);
+      this.cardRevealed.update(v => !v);
+    }, 1500);
+  }
+
+  /* ---------- Analytics tabs ---------- */
+  setAnalyticsTab(tab: 'category' | 'merchant' | 'card'): void {
+    this.analyticsTab.set(tab);
+  }
+
+  /* ---------- Format helpers ---------- */
+  formatKes(amount: number): string {
+    return 'KES ' + amount.toLocaleString('en-KE');
+  }
+
+  gradientClass(g: CardGradient): string {
+    return 'bg-gradient-' + g;
+  }
+
+  /* ---------- Card select option label helpers ---------- */
+  /** "Card Name (Bal: KES X)" — for topup/transfer/unload selects. */
+  cardOptionBal(card: PrepaidCard): string {
+    const suffix = card.status === 'frozen' ? ' - FROZEN' : '';
+    return `${card.name} (Bal: ${this.formatKes(card.balance)})${suffix}`;
+  }
+
+  /** "Card Name (...XXXX)" — for controls/PIN/freeze/replace/limits selects. */
+  cardOptionShort(card: PrepaidCard): string {
+    let suffix = '';
+    if (card.status === 'frozen') suffix = ' - FROZEN';
+    if (card.lowBalance)          suffix = ' - Expiring Soon';
+    return `${card.name} (...${card.last4})${suffix}`;
+  }
+
+  /* ---------- Row class helpers (conditional mb-2) ---------- */
+  notificationRowClass(isLast: boolean): string {
+    return isLast ? 'p-2' : 'p-2 border-bottom';
+  }
+
+  attentionRowClass(detail: AttentionDetail, isLast: boolean): string {
+    return `p-3 border-start border-4 bg-light ${detail.borderClass}${isLast ? '' : ' mb-2'}`;
+  }
+}

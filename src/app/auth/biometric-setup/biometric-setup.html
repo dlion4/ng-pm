@@ -1,0 +1,615 @@
+<!-- Background layers -->
+<div class="blob" style="width:520px;height:520px;background:#22d3ee;top:-160px;right:-120px"></div>
+<div class="blob" style="width:420px;height:420px;background:#a78bfa;bottom:-130px;left:-90px;animation-delay:-6s">
+</div>
+<div class="grid-overlay position-fixed top-0 start-0 w-100 h-100 opacity-50 pointer-events-none"></div>
+
+<main class="page-shell">
+    <div class="container auth-panel">
+
+        <!-- ═══════════════════════════════════════════════════════
+         HERO SECTION
+         ═══════════════════════════════════════════════════════ -->
+        <section class="row g-4 align-items-stretch mb-4 reveal">
+            <div class="col-lg-6">
+                <div class="glass-strong p-4 p-lg-5 h-100">
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <span class="logo-mark">P</span>
+                        <div>
+                            <div class="fw-bold text-white">Paymo <span class="text-gradient">BAAS</span></div>
+                            <div style="font-size:.75rem;color:var(--ink-3)">Security / Biometrics</div>
+                        </div>
+                    </div>
+                    <span class="pill mb-3"><span class="pill-dot"></span> PAGE 58 · WebAuthn · FIDO2 ·
+                        Biometrics</span>
+                    <h1 class="mb-3" style="font-size:clamp(2.1rem,5vw,4.1rem);line-height:1.04;font-weight:900">
+                        Go passwordless — <span class="text-gradient">faster and more secure.</span>
+                    </h1>
+                    <p class="mb-4" style="color:var(--ink-2);font-size:1.05rem;max-width:620px">
+                        Set up passkeys and biometrics for instant, phishing-resistant login across Paymo dashboards,
+                        API console, treasury controls, and high-risk approvals.
+                    </p>
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <button class="btn btn-primary-paymo" (click)="scrollToWizard()">
+                            <i class="bi bi-fingerprint me-1"></i> Set up passkey
+                        </button>
+                        <button class="btn btn-outline-paymo" (click)="checkCompatibility()">
+                            <i class="bi bi-device-ssd me-1"></i> Check compatibility
+                        </button>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-6 col-md-3">
+                            <div class="glass p-3 h-100">
+                                <div class="text-gradient fw-bold fs-4">0</div>
+                                <div style="font-size:.72rem;color:var(--ink-3)">password leaks</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="glass p-3 h-100">
+                                <div class="text-gradient fw-bold fs-4">2s</div>
+                                <div style="font-size:.72rem;color:var(--ink-3)">avg login</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="glass p-3 h-100">
+                                <div class="text-gradient fw-bold fs-4">FIDO2</div>
+                                <div style="font-size:.72rem;color:var(--ink-3)">standard</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="glass p-3 h-100">
+                                <div class="text-gradient fw-bold fs-4">99%</div>
+                                <div style="font-size:.72rem;color:var(--ink-3)">phishing block</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-visual h-100 d-flex align-items-center justify-content-center p-4">
+                    <img src="https://i.pinimg.com/736x/81/8d/70/818d706bc8e2a226f8a4d0564be6f286.jpg"
+                        alt="Paymo biometric security visual">
+                    <div class="position-relative z-2 text-center">
+                        <div class="shield-orbit mx-auto mb-4">
+                            <div class="shield-core"><i class="bi bi-fingerprint"></i></div>
+                            <div class="orbit-chip"><i class="bi bi-phone"></i></div>
+                            <div class="orbit-chip"><i class="bi bi-key"></i></div>
+                            <div class="orbit-chip"><i class="bi bi-shield-lock"></i></div>
+                            <div class="orbit-chip"><i class="bi bi-laptop"></i></div>
+                        </div>
+                        <div class="glass p-3 mx-auto" style="max-width:380px">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="mono" style="font-size:.75rem;color:var(--ink-3)">DEVICE CHECK</span>
+                                <span class="badge-mini" [ngClass]="compatBadgeClass">{{ compatBadgeText }}</span>
+                            </div>
+                            <div class="text-start" style="font-size:.88rem;color:var(--ink-2)"
+                                [innerHTML]="compatText"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+         OVERVIEW SECTION
+         ═══════════════════════════════════════════════════════ -->
+        <section class="glass p-3 p-lg-4 mb-4 reveal" id="overview">
+            <div class="section-label">58.1 · Passkey & Biometric Overview</div>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-5">
+                    <h2 class="mb-3">Password vs. passkey vs. biometric.</h2>
+                    <p style="color:var(--ink-2)">Passkeys are cryptographic credentials tied to your device or password
+                        manager. Biometrics unlock the passkey locally; Paymo never receives your face, fingerprint, or
+                        private key.</p>
+                </div>
+                <div class="col-lg-7">
+                    <div class="table-responsive">
+                        <table class="compare-table">
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Security</th>
+                                    <th>Friction</th>
+                                    <th>Best Use</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Password</strong></td>
+                                    <td><span class="badge-mini badge-soon">Medium</span></td>
+                                    <td>Typing + memory</td>
+                                    <td>Legacy backup</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Passkey</strong></td>
+                                    <td><span class="badge-mini badge-ok">Very high</span></td>
+                                    <td>Touch or glance</td>
+                                    <td>Primary login</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Biometric</strong></td>
+                                    <td><span class="badge-mini badge-native">High</span></td>
+                                    <td>Instant unlock</td>
+                                    <td>Mobile app, approvals</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 mt-2">
+                <div class="col-md-3">
+                    <div class="device-card h-100"><i class="bi bi-shield-check text-gradient fs-3"></i>
+                        <h6 class="mt-2">Phishing-resistant</h6>
+                        <p class="mb-0" style="font-size:.83rem;color:var(--ink-2)">Won't work on fake Paymo domains.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="device-card h-100"><i class="bi bi-lightning-charge text-gradient fs-3"></i>
+                        <h6 class="mt-2">Faster login</h6>
+                        <p class="mb-0" style="font-size:.83rem;color:var(--ink-2)">No typing. Just Face ID, Touch ID,
+                            or Windows Hello.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="device-card h-100"><i class="bi bi-cloud-check text-gradient fs-3"></i>
+                        <h6 class="mt-2">Cross-device</h6>
+                        <p class="mb-0" style="font-size:.83rem;color:var(--ink-2)">Sync via iCloud, Google, or password
+                            managers.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="device-card h-100"><i class="bi bi-eye-slash text-gradient fs-3"></i>
+                        <h6 class="mt-2">Private by design</h6>
+                        <p class="mb-0" style="font-size:.83rem;color:var(--ink-2)">Biometrics stay on your device.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+         WIZARD SECTION
+         ═══════════════════════════════════════════════════════ -->
+        <section class="row g-4 mb-4 reveal" id="wizard">
+            <div class="col-lg-5">
+                <div class="glass p-3 p-lg-4 h-100">
+                    <div class="section-label">58.2 · Passkey Setup Wizard</div>
+                    <h2 class="mb-3">Create a passkey in five guided steps.</h2>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="wizard-step" *ngFor="let s of wizardSteps; let i = index"
+                            [class.active]="i === wizardIndex" [class.done]="i < wizardIndex">
+                            <div class="d-flex align-items-start gap-3">
+                                <span class="step-num">
+                                    <i class="bi bi-check-lg" *ngIf="i < wizardIndex"></i>
+                                    <span *ngIf="i >= wizardIndex">{{ i + 1 }}</span>
+                                </span>
+                                <div>
+                                    <h6 class="mb-1"><i class="bi {{ s.icon }} me-1"></i>{{ s.t }}</h6>
+                                    <p class="mb-0" style="font-size:.82rem;color:var(--ink-2)">{{ s.d }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="glass-strong p-3 p-lg-4 h-100" #wizardPanel>
+
+                    <!-- Step 0: Check compatibility -->
+                    <div *ngIf="wizardIndex === 0">
+                        <h4>{{ wizardSteps[0].t }}</h4>
+                        <p style="color:var(--ink-2)">{{ wizardSteps[0].d }}</p>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="glass p-3">
+                                    <div class="mono" style="font-size:.72rem;color:var(--ink-3)">WEB AUTHN</div>
+                                    <div class="fw-bold"
+                                        [ngClass]="webAuthnAvailable ? 'text-success' : 'text-warning'">
+                                        {{ webAuthnAvailable ? 'Available' : 'Not detected' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="glass p-3">
+                                    <div class="mono" style="font-size:.72rem;color:var(--ink-3)">SECURE CONTEXT</div>
+                                    <div class="fw-bold" [ngClass]="secureContext ? 'text-success' : 'text-warning'">
+                                        {{ secureContext ? 'Yes' : 'No' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary-paymo" (click)="nextWizard()">
+                            Continue <i class="bi bi-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+
+                    <!-- Step 1: Create passkey -->
+                    <div *ngIf="wizardIndex === 1">
+                        <h4>{{ wizardSteps[1].t }}</h4>
+                        <p style="color:var(--ink-2)">{{ wizardSteps[1].d }}</p>
+                        <div class="flow-frame mb-3">
+                            <img src="https://i.pinimg.com/736x/9e/c1/f1/9ec1f12d8d3474f7ca550168f7ef48bc.jpg"
+                                alt="Passkey setup flow">
+                            <div class="flow-label">
+                                <span class="badge-mini badge-native">Platform prompt</span>
+                                <div class="fw-bold text-white">Face ID, Touch ID, Windows Hello, or Android
+                                    fingerprint.</div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-primary-paymo" (click)="simulateCreatePasskey()"
+                                [disabled]="creatingPasskey">
+                                <span *ngIf="creatingPasskey" class="spinner-border spinner-border-sm me-2"></span>
+                                <i class="bi bi-fingerprint me-1" *ngIf="!creatingPasskey"></i>
+                                {{ creatingPasskey ? 'Creating...' : 'Create passkey' }}
+                            </button>
+                            <button class="btn btn-outline-paymo" (click)="nextWizard()">Use password manager</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Name your passkey -->
+                    <div *ngIf="wizardIndex === 2">
+                        <h4>{{ wizardSteps[2].t }}</h4>
+                        <p style="color:var(--ink-2)">{{ wizardSteps[2].d }}</p>
+                        <label class="form-label-paymo">Passkey name</label>
+                        <input class="form-input mb-3" [(ngModel)]="newPasskeyName">
+                        <button class="btn btn-primary-paymo" (click)="nameNewPasskey()">
+                            Save name <i class="bi bi-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+
+                    <!-- Step 3: Test passkey -->
+                    <div *ngIf="wizardIndex === 3">
+                        <h4>{{ wizardSteps[3].t }}</h4>
+                        <p style="color:var(--ink-2)">{{ wizardSteps[3].d }}</p>
+                        <div class="glass p-4 text-center mb-3">
+                            <i class="bi bi-fingerprint text-gradient" style="font-size:4rem"></i>
+                            <h5 class="mt-2">Touch or glance to test</h5>
+                            <p style="color:var(--ink-3);font-size:.86rem">This confirms Paymo can use the new passkey.
+                            </p>
+                        </div>
+                        <button class="btn btn-primary-paymo" (click)="testPasskey()" [disabled]="testingPasskey">
+                            <span *ngIf="testingPasskey" class="spinner-border spinner-border-sm me-2"></span>
+                            {{ testingPasskey ? 'Testing...' : 'Test passkey' }}
+                        </button>
+                    </div>
+
+                    <!-- Step 4: Success -->
+                    <div *ngIf="wizardIndex === 4" class="text-center py-4">
+                        <div class="mx-auto mb-3"
+                            style="width:82px;height:82px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;color:white;font-size:2.4rem">
+                            <i class="bi bi-check-lg"></i>
+                        </div>
+                        <h4>Your passkey is ready.</h4>
+                        <p style="color:var(--ink-2)">You can now sign in without a password on this device.</p>
+                        <button class="btn btn-primary-paymo" (click)="scrollToManage()">Manage passkeys</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+         BIOMETRICS SECTION
+         ═══════════════════════════════════════════════════════ -->
+        <section class="glass p-3 p-lg-4 mb-4 reveal" id="biometrics">
+            <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-3">
+                <div>
+                    <div class="section-label">58.3 · Biometric Enrollment</div>
+                    <h2 class="mb-0">Set up mobile biometrics.</h2>
+                </div>
+                <div class="tabs-wrap" role="tablist">
+                    <button class="tab-btn" [class.active]="activeBiometricTab === 'ios'"
+                        (click)="setBiometricTab('ios')">
+                        <i class="bi bi-apple"></i> Face ID / Touch ID
+                    </button>
+                    <button class="tab-btn" [class.active]="activeBiometricTab === 'android'"
+                        (click)="setBiometricTab('android')">
+                        <i class="bi bi-android2"></i> Android fingerprint
+                    </button>
+                </div>
+            </div>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6">
+                    <!-- iOS Tab -->
+                    <div class="tab-panel" [class.active]="activeBiometricTab === 'ios'" id="tab-ios">
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="device-card h-100"><span class="step-num">1</span>
+                                    <h6 class="mt-2">Open iOS Settings</h6>
+                                    <p style="font-size:.84rem;color:var(--ink-2)">Go to Settings > Face ID & Passcode.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="device-card h-100"><span class="step-num">2</span>
+                                    <h6 class="mt-2">Enable for Paymo</h6>
+                                    <p style="font-size:.84rem;color:var(--ink-2)">Turn on Paymo app authentication.</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="device-card h-100"><span class="step-num">3</span>
+                                    <h6 class="mt-2">Test unlock</h6>
+                                    <p style="font-size:.84rem;color:var(--ink-2)">Approve a test login with Face ID.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="device-card h-100"><span class="step-num">4</span>
+                                    <h6 class="mt-2">Keep PIN backup</h6>
+                                    <p style="font-size:.84rem;color:var(--ink-2)">PIN remains available if biometric
+                                        fails.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Android Tab -->
+                    <div class="tab-panel" [class.active]="activeBiometricTab === 'android'" id="tab-android">
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="device-card h-100"><span class="step-num">1</span>
+                                    <h6 class="mt-2">Open Security</h6>
+                                    <p style="font-size:.84rem;color:var(--ink-2)">Settings > Security > Fingerprint.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="device-card h-100"><span class="step-num">2</span>
+                                    <h6 class="mt-2">Register finger</h6>
+                                    <p style="font-size:.84rem;color:var(--ink-2)">Add at least one fingerprint.</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="device-card h-100"><span class="step-num">3</span>
+                                    <h6 class="mt-2">Enable in Paymo</h6>
+                                    <p style="font-size:.84rem;color:var(--ink-2)">Security > Biometrics > On.</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="device-card h-100"><span class="step-num">4</span>
+                                    <h6 class="mt-2">Approve test</h6>
+                                    <p style="font-size:.84rem;color:var(--ink-2)">Authorize a sample login.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="flow-frame">
+                        <img src="https://i.pinimg.com/originals/82/de/83/82de83fb86c54aa5783bbb6ca3b26938.gif"
+                            alt="Biometric enrollment flow">
+                        <div class="flow-label">
+                            <span class="badge-mini badge-native mb-1">Local unlock</span>
+                            <div class="fw-bold text-white">Biometric signal never leaves your device.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+         MANAGE PASSKEYS SECTION
+         ═══════════════════════════════════════════════════════ -->
+        <section class="row g-4 mb-4 reveal" id="manage">
+            <div class="col-lg-8">
+                <div class="glass p-3 p-lg-4 h-100">
+                    <div class="section-label">58.4 · Manage Passkeys</div>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                        <h2 class="mb-0">Registered passkeys.</h2>
+                        <button class="btn btn-outline-paymo btn-sm" (click)="addSampleDevice()">
+                            <i class="bi bi-plus-lg me-1"></i> Add sample device
+                        </button>
+                    </div>
+                    <div class="d-flex flex-column gap-2" *ngIf="passkeys.length > 0">
+                        <div class="passkey-card" *ngFor="let pk of passkeys" [class.primary]="pk.status === 'primary'">
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div
+                                        style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,rgba(34,211,238,.18),rgba(167,139,250,.1));display:flex;align-items:center;justify-content:center;color:#a5f3fc;font-size:1.25rem">
+                                        <i class="bi bi-key-fill"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-white">
+                                            {{ pk.name }}
+                                            <span class="badge-mini badge-native ms-1"
+                                                *ngIf="pk.status === 'primary'">Primary</span>
+                                        </div>
+                                        <div style="font-size:.78rem;color:var(--ink-3)">{{ pk.device }} · Created {{
+                                            pk.created }} · {{ pk.sync }}</div>
+                                        <div style="font-size:.78rem;color:var(--ink-2)">Last used: {{ pk.lastUsed }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button class="btn btn-outline-paymo btn-sm"
+                                        (click)="renamePasskey(pk.id)">Rename</button>
+                                    <button class="btn btn-outline-paymo btn-sm" (click)="setPrimary(pk.id)">Set
+                                        primary</button>
+                                    <button class="btn btn-outline-paymo btn-sm"
+                                        (click)="removePasskey(pk.id)">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center py-4" style="color:var(--ink-3)" *ngIf="passkeys.length === 0">No passkeys
+                        registered.</div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="glass p-3 p-lg-4 h-100">
+                    <h5 class="mb-3">Management rules</h5>
+                    <div class="d-flex flex-column gap-3">
+                        <div class="d-flex gap-2"><i class="bi bi-check-circle-fill" style="color:#86efac"></i>
+                            <span style="color:var(--ink-2);font-size:.9rem">At least one backup method must remain
+                                active.</span>
+                        </div>
+                        <div class="d-flex gap-2"><i class="bi bi-check-circle-fill" style="color:#86efac"></i>
+                            <span style="color:var(--ink-2);font-size:.9rem">Removing a passkey requires step-up
+                                verification.</span>
+                        </div>
+                        <div class="d-flex gap-2"><i class="bi bi-check-circle-fill" style="color:#86efac"></i>
+                            <span style="color:var(--ink-2);font-size:.9rem">Primary passkey is used for
+                                auto-prompt.</span>
+                        </div>
+                    </div>
+                    <hr style="border-color:var(--glass-border)">
+                    <button class="btn btn-primary-paymo w-100" (click)="downloadAudit()">
+                        <i class="bi bi-download me-1"></i> Download passkey audit
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+         CROSS-DEVICE SECTION
+         ═══════════════════════════════════════════════════════ -->
+        <section class="row g-4 mb-4 reveal" id="cross-device">
+            <div class="col-lg-5">
+                <div class="glass p-3 p-lg-4 h-100 position-relative overflow-hidden">
+                    <div class="section-label">58.5 · Cross-Device Passkeys</div>
+                    <h2 class="mb-3">Sign in with your phone on another device.</h2>
+                    <p style="color:var(--ink-2)">Scan the pairing QR from your phone, approve with Face ID or
+                        fingerprint, then register a new passkey for the device you're using.</p>
+                    <div class="d-flex flex-column gap-2 mt-3">
+                        <div class="device-card"><span class="badge-mini badge-native me-2">1</span>Select "another
+                            device" on desktop.</div>
+                        <div class="device-card"><span class="badge-mini badge-native me-2">2</span>Scan QR with trusted
+                            phone.</div>
+                        <div class="device-card"><span class="badge-mini badge-native me-2">3</span>Authenticate locally
+                            and approve.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="glass-strong p-4 h-100 text-center position-relative">
+                    <div class="position-relative d-inline-block mb-3">
+                        <div class="qr-box">
+                            <span class="qr-cell" *ngFor="let cell of qrCells" [class.off]="!cell"></span>
+                        </div>
+                        <div class="scan-line"></div>
+                    </div>
+                    <h5>Pair a new device</h5>
+                    <p style="color:var(--ink-2);font-size:.9rem">QR expires in <span class="mono text-gradient">{{
+                            qrTimerText }}</span></p>
+                    <button class="btn btn-primary-paymo" (click)="simulatePair()" [disabled]="pairingActive">
+                        <i class="bi bi-qr-code-scan me-1"></i> Simulate phone approval
+                    </button>
+                    <div class="progress-thin mt-3">
+                        <span [style.width.%]="pairProgress"></span>
+                    </div>
+                    <div class="mt-2" style="font-size:.85rem;color:var(--ink-3)">{{ pairStatusText }}</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+         RECOVERY SECTION
+         ═══════════════════════════════════════════════════════ -->
+        <section class="glass p-3 p-lg-4 mb-4 reveal" id="recovery">
+            <div class="section-label">58.6 · Recovery Without Passkey</div>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-5">
+                    <h2 class="mb-3">Keep a safe backup path.</h2>
+                    <p style="color:var(--ink-2)">If you lose all passkeys, you can still regain access with traditional
+                        recovery. Paymo recommends keeping at least two recovery channels active.</p>
+                </div>
+                <div class="col-lg-7">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="device-card h-100"><i class="bi bi-envelope-check text-gradient fs-3"></i>
+                                <h6 class="mt-2">Email + password + 2FA</h6>
+                                <p class="mb-0" style="font-size:.82rem;color:var(--ink-2)">Standard fallback for
+                                    low-risk recovery.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="device-card h-100"><i class="bi bi-shield-question text-gradient fs-3"></i>
+                                <h6 class="mt-2">Security questions</h6>
+                                <p class="mb-0" style="font-size:.82rem;color:var(--ink-2)">Use enrolled questions plus
+                                    step-up verification.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="device-card h-100"><i class="bi bi-person-vcard text-gradient fs-3"></i>
+                                <h6 class="mt-2">Identity verification</h6>
+                                <p class="mb-0" style="font-size:.82rem;color:var(--ink-2)">Support-assisted review for
+                                    high assurance.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+         ENTERPRISE SECTION
+         ═══════════════════════════════════════════════════════ -->
+        <section class="glass-strong p-3 p-lg-4 reveal" id="enterprise">
+            <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-3">
+                <div>
+                    <div class="section-label">58.7 · Enterprise Passkey Management</div>
+                    <h2 class="mb-0">Admin-grade enforcement.</h2>
+                </div>
+                <button class="btn btn-outline-paymo" (click)="exportEnterprise()">
+                    <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export audit CSV
+                </button>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg-3 col-md-6" *ngFor="let policy of enterprisePolicies">
+                    <div class="enterprise-card h-100 d-flex justify-content-between gap-3">
+                        <div>
+                            <h6>{{ policy.label }}</h6>
+                            <p style="font-size:.82rem;color:var(--ink-2)">{{ policy.desc }}</p>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" [(ngModel)]="policy.enabled">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 mt-2">
+                <div class="col-md-4">
+                    <div class="glass p-3">
+                        <div class="text-gradient fw-bold fs-3">83%</div>
+                        <div style="color:var(--ink-3);font-size:.78rem">team passkey enrollment</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass p-3">
+                        <div class="text-gradient-gold fw-bold fs-3">17</div>
+                        <div style="color:var(--ink-3);font-size:.78rem">users need enrollment</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass p-3">
+                        <div class="text-gradient fw-bold fs-3">0</div>
+                        <div style="color:var(--ink-3);font-size:.78rem">password-only admins</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CONFIRM MODAL
+     ═══════════════════════════════════════════════════════════ -->
+<div class="modal" tabindex="-1" [class.show]="modalVisible" [style.display]="modalVisible ? 'block' : 'none'"
+    style="background:rgba(0,0,0,.5)">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">{{ modalTitle }}</h5>
+                <button type="button" class="btn-close" (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body" style="color:var(--ink-2)" [innerHTML]="modalBody"></div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-paymo" (click)="closeModal()">Cancel</button>
+                <button type="button" class="btn btn-primary-paymo" (click)="confirmModal()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>

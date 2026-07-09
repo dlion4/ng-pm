@@ -1,0 +1,300 @@
+
+<!-- Background Blobs -->
+<div class="blob" style="width: 500px; height: 500px; background: #22d3ee; top: -160px; right: -120px;"></div>
+<div class="blob"
+    style="width: 380px; height: 380px; background: #a78bfa; bottom: -100px; left: -60px; animation-delay: -6s;"></div>
+
+<!-- Main Container -->
+<div class="container"
+    style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 0;">
+    <div class="row g-4 align-items-center w-100">
+
+        <!-- Left Side: Visual -->
+        <div class="col-lg-6 d-none d-lg-block">
+            <div class="position-relative">
+                <div
+                    style="position: absolute; inset: 0; background: url('https://i.pinimg.com/736x/81/8d/70/818d706bc8e2a226f8a4d0564be6f286.jpg') center/cover; border-radius: var(--radius-lg); opacity: 0.6; filter: blur(2px);">
+                </div>
+                <div
+                    style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4,8,26,0.3) 0%, rgba(4,8,26,0.9) 100%); border-radius: var(--radius-lg);">
+                </div>
+                <div style="position: relative; z-index: 2; padding: 3rem;">
+                    <div class="logo-mark mb-3">P</div>
+                    <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem; color: #fff;">Secure Account
+                        Recovery</h2>
+                    <p style="font-size: 1.1rem; color: var(--ink-2); max-width: 400px; line-height: 1.6;">
+                        We'll help you regain access to your account safely. Your security is our priority.
+                    </p>
+                    <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+                        <div class="d-flex align-items-center gap-3" *ngFor="let feature of leftPanelFeatures">
+                            <div
+                                style="width: 42px; height: 42px; border-radius: 12px; background: {{ feature.bgColor }}; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi {{ feature.icon }}"
+                                    style="font-size: 1.3rem; color: {{ feature.iconColor }};"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; color: var(--ink-0);">{{ feature.title }}</div>
+                                <div style="font-size: 0.85rem; color: var(--ink-3);">{{ feature.subtitle }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Recovery Form -->
+        <div class="col-lg-6">
+            <div class="glass-strong p-4 p-md-5" style="max-width: 480px; margin: 0 auto;">
+
+                <!-- Logo -->
+                <div class="d-flex align-items-center gap-2 mb-4">
+                    <div class="logo-mark">P</div>
+                    <div>
+                        <div style="font-weight: 800; color: var(--ink-0);">Paymo <span
+                                class="text-gradient">BAAS</span></div>
+                        <div style="font-size: 0.75rem; color: var(--ink-3);">Secure Recovery</div>
+                    </div>
+                </div>
+
+                <!-- Step Indicator -->
+                <div class="step-indicator" id="stepIndicator" *ngIf="showStepIndicator">
+                    <div class="step-dot" [class.active]="getStepDotClass(1) === 'active'"
+                        [class.completed]="getStepDotClass(1) === 'completed'" data-step="1">1</div>
+                    <div class="step-line"></div>
+                    <div class="step-dot" [class.active]="getStepDotClass(2) === 'active'"
+                        [class.completed]="getStepDotClass(2) === 'completed'" data-step="2">2</div>
+                    <div class="step-line"></div>
+                    <div class="step-dot" [class.active]="getStepDotClass(3) === 'active'"
+                        [class.completed]="getStepDotClass(3) === 'completed'" data-step="3">3</div>
+                </div>
+
+                <!-- Step 1: Choose Recovery Method -->
+                <div id="step1" class="recovery-step" *ngIf="currentStep === 1 && !showSuccess"
+                    [class.shake]="shakeStep1">
+                    <h3 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem;">Recover Your Account</h3>
+                    <p style="color: var(--ink-2); margin-bottom: 1.5rem;">Choose how you'd like to verify your identity
+                    </p>
+
+                    <div class="tab-container">
+                        <button class="tab-btn" *ngFor="let method of recoveryMethods"
+                            [class.active]="isMethodActive(method.key)" (click)="selectMethod(method.key)">
+                            <i class="bi {{ method.icon }}"></i>
+                            {{ method.label }}
+                        </button>
+                    </div>
+
+                    <!-- Email Recovery -->
+                    <div id="method-email" class="method-content" *ngIf="selectedMethod === 'email'">
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" [(ngModel)]="emailInput" placeholder="your@email.com"
+                                autocomplete="email">
+                        </div>
+                    </div>
+
+                    <!-- SMS Recovery -->
+                    <div id="method-sms" class="method-content" *ngIf="selectedMethod === 'sms'">
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-input" [(ngModel)]="phoneInput"
+                                placeholder="+234 800 000 0000" autocomplete="tel">
+                        </div>
+                    </div>
+
+                    <!-- Security Questions -->
+                    <div id="method-questions" class="method-content" *ngIf="selectedMethod === 'questions'">
+                        <div class="form-group">
+                            <label class="form-label">Email or Phone</label>
+                            <input type="text" class="form-input" [(ngModel)]="identifierInput"
+                                placeholder="your@email.com or +234...">
+                        </div>
+                    </div>
+
+                    <!-- Magic Link -->
+                    <div id="method-magic" class="method-content" *ngIf="selectedMethod === 'magic'">
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" [(ngModel)]="magicEmailInput"
+                                placeholder="your@email.com">
+                        </div>
+                        <div class="alert-box info"
+                            style="padding: 0.9rem; background: rgba(34,211,238,0.06); border-left: 3px solid var(--accent); border-radius: 10px; margin-top: 1rem;">
+                            <i class="bi bi-info-circle" style="color: var(--accent); margin-right: 0.5rem;"></i>
+                            <span style="font-size: 0.85rem; color: var(--ink-2);">We'll send a secure link to reset
+                                your password. Link expires in 15 minutes.</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary-paymo w-100 mt-3" id="continueBtn" (click)="handleContinue()">
+                        Continue <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+
+                    <div class="mt-4" style="text-align: center;">
+                        <a routerLink="/login" style="color: var(--ink-2); font-size: 0.9rem; text-decoration: none;">
+                            <i class="bi bi-arrow-left me-1"></i> Back to Sign In
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Step 2: Verification -->
+                <div id="step2" class="recovery-step" *ngIf="currentStep === 2 && !showSuccess">
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <div
+                            style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, rgba(34,211,238,0.2), rgba(96,165,250,0.1)); border: 1px solid rgba(34,211,238,0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="bi {{ getVerifyIcon() }}" style="font-size: 1.5rem; color: #a5f3fc;"
+                                id="verifyIcon"></i>
+                        </div>
+                        <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Verify Your Identity
+                        </h3>
+                        <p style="color: var(--ink-2); margin-bottom: 0;" id="verifySubtitle">{{ getVerifySubtitle() }}
+                        </p>
+                    </div>
+
+                    <div id="verification-method-content">
+                        <!-- OTP Input (Email/SMS) -->
+                        <div id="otp-section" *ngIf="selectedMethod === 'email' || selectedMethod === 'sms'">
+                            <div class="otp-container" [class.shake]="shakeOtp">
+                                <input type="text" class="otp-input" maxlength="1"
+                                    *ngFor="let val of otpValues; let i = index" [(ngModel)]="otpValues[i]"
+                                    [attr.data-index]="i" #otpInput (input)="onOtpInput(i, $event)"
+                                    (keydown)="onOtpKeydown(i, $event)" (paste)="onOtpPaste($event)">
+                            </div>
+
+                            <div class="timer-text" *ngIf="showTimer">
+                                Didn't receive the code? Resend in <span class="countdown" id="resendTimer">{{
+                                    resendSeconds }}</span>s
+                            </div>
+
+                            <button class="btn btn-outline-paymo w-100 mt-3" id="resendBtn" (click)="handleResend()"
+                                *ngIf="showResendBtn" [innerHTML]="resendBtnText">
+                            </button>
+                        </div>
+
+                        <!-- Security Questions -->
+                        <div id="questions-section" *ngIf="selectedMethod === 'questions'"
+                            [class.shake]="shakeQuestions">
+                            <div class="form-group" *ngFor="let question of securityQuestions">
+                                <label class="form-label">{{ question.label }}</label>
+                                <input type="text" class="form-input" [(ngModel)]="question.answer"
+                                    placeholder="Your answer">
+                            </div>
+                        </div>
+
+                        <!-- Magic Link Status -->
+                        <div id="magic-section" *ngIf="selectedMethod === 'magic'"
+                            style="text-align: center; padding: 2rem 0;">
+                            <div class="success-icon">
+                                <i class="bi bi-check-lg"></i>
+                            </div>
+                            <h4 style="font-weight: 700; margin-bottom: 0.5rem;">Check Your Email</h4>
+                            <p style="color: var(--ink-2); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                                We've sent a secure recovery link to<br>
+                                <strong style="color: var(--accent);">{{ magicEmailInput || 'your@email.com' }}</strong>
+                            </p>
+                            <div class="alert-box info"
+                                style="padding: 0.9rem; background: rgba(34,211,238,0.06); border-left: 3px solid var(--accent); border-radius: 10px;">
+                                <i class="bi bi-clock" style="color: var(--accent); margin-right: 0.5rem;"></i>
+                                <span style="font-size: 0.85rem; color: var(--ink-2);">Link expires in 15 minutes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary-paymo w-100 mt-3" id="verifyBtn" (click)="handleVerify()"
+                        *ngIf="selectedMethod !== 'magic'">
+                        Verify <i class="bi bi-check-circle ms-1"></i>
+                    </button>
+
+                    <button class="btn btn-outline-paymo w-100 mt-2" (click)="goToStep(1)">
+                        <i class="bi bi-arrow-left me-1"></i> Change Method
+                    </button>
+                </div>
+
+                <!-- Step 3: Reset Password -->
+                <div id="step3" class="recovery-step" *ngIf="currentStep === 3 && !showSuccess">
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <div
+                            style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, rgba(167,139,250,0.2), rgba(96,165,250,0.1)); border: 1px solid rgba(167,139,250,0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="bi bi-lock" style="font-size: 1.5rem; color: #c4b5fd;"></i>
+                        </div>
+                        <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Create New Password</h3>
+                        <p style="color: var(--ink-2); margin-bottom: 0;">Choose a strong, unique password</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">New Password</label>
+                        <div class="position-relative">
+                            <input [type]="showNewPassword ? 'text' : 'password'" class="form-input"
+                                [(ngModel)]="newPassword" placeholder="Enter new password" style="padding-right: 3rem;"
+                                (input)="onPasswordInput()">
+                            <button type="button" (click)="toggleNewPassword()"
+                                style="position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--ink-3); cursor: pointer;">
+                                <i class="bi" [class.bi-eye]="!showNewPassword"
+                                    [class.bi-eye-slash]="showNewPassword"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="password-strength-bar" [style.width.%]="strengthPercent"
+                                [style.background]="strengthColor"></div>
+                        </div>
+                        <div id="passwordRequirements"
+                            style="margin-top: 0.7rem; font-size: 0.8rem; color: var(--ink-3);">
+                            <div *ngFor="let req of passwordRequirements">
+                                <i class="bi" [class.bi-check-circle-fill]="req.met" [class.bi-circle]="!req.met"
+                                    style="font-size: 0.5rem; margin-right: 0.4rem;"
+                                    [style.color]="req.met ? 'var(--success)' : ''"></i>
+                                {{ req.label }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="position-relative">
+                            <input [type]="showConfirmPassword ? 'text' : 'password'" class="form-input"
+                                [(ngModel)]="confirmPassword" placeholder="Confirm new password"
+                                style="padding-right: 3rem;" (input)="onConfirmPasswordInput()">
+                            <button type="button" (click)="toggleConfirmPassword()"
+                                style="position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--ink-3); cursor: pointer;">
+                                <i class="bi" [class.bi-eye]="!showConfirmPassword"
+                                    [class.bi-eye-slash]="showConfirmPassword"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="logoutDevices" [(ngModel)]="logoutDevices"
+                            checked style="background-color: var(--glass-bg); border-color: var(--glass-border);">
+                        <label class="form-check-label" for="logoutDevices"
+                            style="color: var(--ink-2); font-size: 0.85rem;">
+                            Log out all other devices
+                        </label>
+                    </div>
+
+                    <button class="btn btn-primary-paymo w-100" id="resetBtn" (click)="handleReset()"
+                        [disabled]="resetBtnDisabled || isResetting">
+                        <span *ngIf="isResetting" class="spinner-border spinner-border-sm me-2"></span>
+                        <ng-container *ngIf="!isResetting">
+                            Reset Password <i class="bi bi-arrow-right ms-1"></i>
+                        </ng-container>
+                        <ng-container *ngIf="isResetting">Resetting...</ng-container>
+                    </button>
+                </div>
+
+                <!-- Success State -->
+                <div id="successState" *ngIf="showSuccess" style="text-align: center; padding: 2rem 0;">
+                    <div class="success-icon">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Password Reset Successfully
+                    </h3>
+                    <p style="color: var(--ink-2); margin-bottom: 1.5rem;">Your account is now secured. You can sign in
+                        with your new password.</p>
+                    <button class="btn btn-primary-paymo w-100" routerLink="/login">
+                        Go to Sign In <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

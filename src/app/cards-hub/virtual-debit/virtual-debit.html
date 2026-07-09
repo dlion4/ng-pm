@@ -1,0 +1,750 @@
+<!-- Page Bar -->
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb"><a href="javascript:void(0)">Home</a> / <a href="javascript:void(0)">Card Center</a> / <a href="javascript:void(0)">Virtual Cards</a> / <strong>Management</strong></div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 5.3 — Virtual Debit Card Center</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Create and manage multiple virtual debit cards for safer online shopping, compartmentalized subscriptions, and single-use e-commerce transactions.</p>
+  </div>
+  <div class="d-flex flex-wrap" style="gap:8px">
+    <button class="pm-btn" (click)="openModal('cardSecurityModal')"><i class="bi bi-shield-lock"></i> Security</button>
+    <button class="pm-btn" (click)="openModal('subManagerModal')"><i class="bi bi-arrow-repeat"></i> Subscriptions</button>
+    <button class="pm-btn pm-btn-primary" (click)="openModal('createCardModal')"><i class="bi bi-plus-lg"></i> Create Virtual Card</button>
+  </div>
+</div>
+
+<div class="pm-content">
+
+<!-- HERO ROW -->
+<div class="row g-3">
+  @for (stat of heroStats(); track $index) {
+  <div [class]="stat.colClass">
+    <div class="pm-card" [class.pm-card-accent]="stat.isAccent" [style.borderLeftColor]="stat.borderLeftColor" [style.minHeight]="'170px'">
+      <p [class.pm-stat-label]="!stat.isAccent" [style.color]="stat.labelColor" [style.margin]="stat.isAccent ? '0' : null" [style.fontSize]="stat.isAccent ? '12px' : null">
+        {{ stat.label }}
+        @if (stat.dotColor) { <span [style.color]="stat.dotColor">●</span> }
+      </p>
+      <div class="pm-stat-value" [style.margin]="stat.isAccent ? '8px 0' : '6px 0'" [style.color]="stat.valueColor">{{ stat.value }}</div>
+      @if (stat.badgeText) {
+        <span [class]="stat.badgeClass"><i [class]="stat.badgeIcon"></i> {{ stat.badgeText }}</span>
+      }
+      @if (stat.description) {
+        <p style="margin:0;font-size:12px" [style.color]="stat.descriptionColor">{{ stat.description }}</p>
+      }
+      @if (stat.miniBars) {
+        <div class="pm-mini-bars mt-3">
+          @for (bar of stat.miniBars; track $index) {
+            <div class="pm-mini-bar" [style.height]="bar.height" [style.background]="bar.color"></div>
+          }
+        </div>
+      }
+      @if (stat.progressPct != null) {
+        <div class="mt-2">
+          <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>{{ stat.progressLabel }}</span><span>{{ stat.progressValue }}</span></div>
+          <div class="pm-progress mt-1"><div class="pm-progress-bar" [style.width.%]="stat.progressPct" [style.background]="stat.progressColor"></div></div>
+        </div>
+      }
+      @if (stat.extraInfo) {
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+          @for (info of stat.extraInfo; track $index) {
+            <div>{{ info.label }}: <strong>{{ info.value }}</strong></div>
+          }
+        </div>
+      }
+      @if (stat.buttons) {
+        <div class="d-flex flex-wrap mt-3" style="gap:8px">
+          @for (btn of stat.buttons; track $index) {
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal(btn.modalId)">{{ btn.label }}</button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+  }
+</div>
+
+<!-- ATTENTION / SUGGESTIONS / ACTIONS -->
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Attention Required</h3><button class="pm-btn pm-btn-sm" (click)="openModal('attentionModal')">View all</button></div>
+      @for (item of attentionItems(); track $index) {
+      <div class="feed-item"><div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor" style="font-size:12px">{{ item.iconText }}</div><div style="flex:1"><div style="font-weight:600;font-size:13px">{{ item.title }}</div><div style="font-size:11px;color:var(--pm-muted)">{{ item.desc }}</div></div><button [class]="item.btnClass" (click)="openModal(item.btnModal)">{{ item.btnLabel }}</button></div>
+      }
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Smart Suggestions</h3><span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span></div>
+      @for (item of suggestionItems(); track $index) {
+      <div class="feed-item"><div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor" style="font-size:12px">{{ item.iconText }}</div><div style="flex:1"><div style="font-weight:600;font-size:13px">{{ item.title }}</div><div style="font-size:11px;color:var(--pm-muted)">{{ item.desc }}</div></div><button [class]="item.btnClass" (click)="openModal(item.btnModal)">{{ item.btnLabel }}</button></div>
+      }
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="mb-3"><h3 class="pm-section-title">Quick Actions</h3><p class="pm-section-sub">Frequent card operations</p></div>
+      <div class="quick-action-grid">
+        @for (action of quickActions(); track $index) {
+        <button class="quick-action-btn" (click)="openModal(action.modalId)"><i [class]="action.icon" [ngClass]="action.iconColorClass" [style.color]="action.iconColorStyle"></i> {{ action.label }}</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5.3.1 VIRTUAL CARD ISSUANCE & TYPES -->
+<div class="pm-card">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-credit-card-fill" style="color:var(--pm-primary)"></i> 5.3.1 — Virtual Card Issuance & Portfolio</h3><p class="pm-section-sub">Manage your active virtual cards. Click on any card to reveal details, copy numbers, or manage security settings.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('bulkCreateModal')"><i class="bi bi-files"></i> Bulk Issue</button><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('createCardModal')"><i class="bi bi-plus-lg"></i> Issue New Card</button></div></div>
+  <div class="v-card-grid">
+    @for (card of virtualCards(); track card.id) {
+      <div class="v-card" [class]="card.bgClass" (click)="openModal('viewCardDetailsModal')">
+        <div class="v-card-badge">{{ card.statusLabel }}</div>
+        <div class="v-card-logo">PayMo</div>
+        <div class="v-card-chip"></div>
+        <div class="v-card-number">{{ card.maskedNumber }}</div>
+        <div class="v-card-details"><div>{{ card.holderName }}</div><div>{{ card.expiry }}</div></div>
+        <div class="v-card-network">VISA</div>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- 5.3.2 CONTROLS & SECURITY -->
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="pm-card h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-shield-lock-fill" style="color:var(--pm-accent)"></i> 5.3.2 — Card Details & Security Controls</h3><p class="pm-section-sub">Advanced security settings for selected virtual cards.</p></div><div class="pm-tab-pills"><button class="pm-tab-pill active">Security</button><button class="pm-tab-pill" (click)="openModal('editLimitsModal')">Limits</button></div></div>
+      <div class="mb-3"><select class="pm-form-control"><option>Global Web Shopping — **3841</option><option>Subscription Master — **9021</option><option>AWS & Hosting — **4418</option></select></div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="utility-block">
+            <h4 style="font-size:13px;font-weight:700;margin:0 0 12px">State & Access</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3"><div style="font-size:13px"><strong>Card Status</strong><div style="font-size:11px;color:var(--pm-muted)">Active and accepting charges</div></div><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('freezeCardModal')">Freeze</button></div>
+            <div class="d-flex justify-content-between align-items-center mb-3"><div style="font-size:13px"><strong>Terminate Card</strong><div style="font-size:11px;color:var(--pm-muted)">Permanently delete this card</div></div><button class="pm-btn pm-btn-sm pm-btn-danger-soft" (click)="openModal('deleteCardModal')">Delete</button></div>
+            <div class="d-flex justify-content-between align-items-center"><div style="font-size:13px"><strong>Card Alias</strong><div style="font-size:11px;color:var(--pm-muted)">Global Web Shopping</div></div><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('editAliasModal')">Edit</button></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="utility-block">
+            <h4 style="font-size:13px;font-weight:700;margin:0 0 12px">Advanced Protection</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3"><div style="font-size:13px"><strong>Merchant Lock</strong><div style="font-size:11px;color:var(--pm-muted)">Lock to Amazon only</div></div><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('merchantLockModal')">Manage</button></div>
+            <div class="d-flex justify-content-between align-items-center mb-3"><div style="font-size:13px"><strong>Dynamic CVV</strong><div style="font-size:11px;color:var(--pm-muted)">Auto-rotates every 24h</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked (change)="openModal('rotateCvvModal')"></div></div>
+            <div class="d-flex justify-content-between align-items-center"><div style="font-size:13px"><strong>Spending Limit</strong><div style="font-size:11px;color:var(--pm-muted)">KES 50,000 / month</div></div><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('editLimitsModal')">Adjust</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="pm-card h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3"><div><h3 class="pm-section-title"><i class="bi bi-clock-history" style="color:var(--pm-muted)"></i> Recent Card Activity</h3></div><button class="pm-btn pm-btn-sm" (click)="openModal('cardStatementModal')">View All</button></div>
+      @for (tx of recentActivity(); track tx.id) {
+        <div class="feed-item">
+          <div class="pm-icon-circle" style="background:var(--pm-surface-2);color:var(--pm-ink);font-size:14px;border:1px solid var(--pm-border)"><i [class]="tx.icon"></i></div>
+          <div style="flex:1"><div style="font-weight:600;font-size:13px">{{ tx.merchant }}</div><div style="font-size:11px" [style.color]="tx.statusColor">{{ tx.statusText }}</div><div style="font-size:10px;color:var(--pm-muted)">{{ tx.cardRef }}</div></div>
+          <div class="text-end"><strong>{{ tx.amount }}</strong><br><span style="font-size:10px;color:var(--pm-muted)">{{ tx.time }}</span></div>
+        </div>
+      }
+      <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('disputeTxModal')"><i class="bi bi-exclamation-triangle text-warning"></i> Dispute a transaction</button>
+    </div>
+  </div>
+</div>
+
+<!-- 5.3.3 ONLINE SUBSCRIPTIONS -->
+<div class="pm-card">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-arrow-repeat" style="color:var(--pm-purple)"></i> 5.3.3 — Online Subscriptions & E-commerce</h3><p class="pm-section-sub">Auto-detected recurring payments linked to your virtual cards. Manage, block, or migrate subscriptions.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('addSubscriptionModal')"><i class="bi bi-plus"></i> Add Sub</button><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('subManagerModal')"><i class="bi bi-gear"></i> Manage All</button></div></div>
+  <div class="table-responsive">
+    <table class="pm-table">
+      <thead><tr><th>Service</th><th>Virtual Card</th><th>Billing Cycle</th><th>Avg Amount</th><th>Last Paid</th><th>Next Due</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        @for (sub of subscriptions(); track sub.id) {
+          <tr>
+            <td><div class="d-flex align-items-center gap-2"><div class="sub-icon" [ngClass]="sub.iconColorClass"><i [class]="sub.icon"></i></div><strong>{{ sub.service }}</strong></div></td>
+            <td>{{ sub.cardRef }}</td>
+            <td>{{ sub.cycle }}</td>
+            <td>{{ sub.amount }}</td>
+            <td>{{ sub.lastPaid }}</td>
+            <td>{{ sub.nextDue }}</td>
+            <td><span class="pm-badge" [class]="sub.statusClass">{{ sub.statusLabel }}</span></td>
+            <td><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal(sub.actionModal)">{{ sub.actionLabel }}</button></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+
+<!-- Toast -->
+@if (toastVisible()) {
+  <div class="pm-toast"><i class="bi bi-check-circle-fill" style="color:var(--pm-accent);font-size:18px"></i> {{ toastMsg() }}</div>
+}
+
+<!-- ====================== MODAL 1: Create Virtual Card (4 steps) ====================== -->
+@if (activeModal() === 'createCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('createCardModal')">
+  <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-credit-card text-primary me-2"></i>Create New Virtual Card</h5><button class="btn-close" (click)="closeModal('createCardModal')"></button></div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="createStep()===1" [class.completed]="createStep()>1"><div class="pm-step-num">@if(createStep()>1){<i class="bi bi-check"></i>}@else{1}</div><div class="pm-step-label">Type</div></div><div class="pm-step-line" [style.background]="createStep()>1?'var(--pm-accent)':''"></div>
+          <div class="pm-step" [class.active]="createStep()===2" [class.completed]="createStep()>2"><div class="pm-step-num">@if(createStep()>2){<i class="bi bi-check"></i>}@else{2}</div><div class="pm-step-label">Limits</div></div><div class="pm-step-line" [style.background]="createStep()>2?'var(--pm-accent)':''"></div>
+          <div class="pm-step" [class.active]="createStep()===3" [class.completed]="createStep()>3"><div class="pm-step-num">@if(createStep()>3){<i class="bi bi-check"></i>}@else{3}</div><div class="pm-step-label">Style</div></div><div class="pm-step-line" [style.background]="createStep()>3?'var(--pm-accent)':''"></div>
+          <div class="pm-step" [class.active]="createStep()===4"><div class="pm-step-num">4</div><div class="pm-step-label">Done</div></div>
+        </div>
+        @if (createStep() === 1) {
+          <h6 style="font-weight:700;margin-bottom:16px">Step 1: Card Type & Purpose</h6>
+          <div class="row g-3">
+            <div class="col-md-6"><div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="selectedCardType()==='global'?'var(--pm-primary)':''" [style.background]="selectedCardType()==='global'?'rgba(79,70,229,.04)':''" (click)="selectedCardType.set('global')"><i class="bi bi-globe d-block mb-2" style="font-size:24px;color:var(--pm-primary)"></i><strong>Global Shopping</strong><div style="font-size:11px;color:var(--pm-muted)">Multi-use, reloadable, online purchases</div></div></div>
+            <div class="col-md-6"><div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="selectedCardType()==='subscription'?'var(--pm-primary)':''" [style.background]="selectedCardType()==='subscription'?'rgba(79,70,229,.04)':''" (click)="selectedCardType.set('subscription')"><i class="bi bi-arrow-repeat d-block mb-2" style="font-size:24px;color:var(--pm-purple)"></i><strong>Subscription Manager</strong><div style="font-size:11px;color:var(--pm-muted)">Dedicated for recurring payments</div></div></div>
+            <div class="col-md-6"><div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="selectedCardType()==='single'?'var(--pm-primary)':''" [style.background]="selectedCardType()==='single'?'rgba(79,70,229,.04)':''" (click)="selectedCardType.set('single')"><i class="bi bi-lightning-charge d-block mb-2" style="font-size:24px;color:var(--pm-warning)"></i><strong>Single-Use Burner</strong><div style="font-size:11px;color:var(--pm-muted)">Auto-deletes after one transaction</div></div></div>
+            <div class="col-md-6"><div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="selectedCardType()==='business'?'var(--pm-primary)':''" [style.background]="selectedCardType()==='business'?'rgba(79,70,229,.04)':''" (click)="selectedCardType.set('business')"><i class="bi bi-briefcase d-block mb-2" style="font-size:24px;color:var(--pm-info)"></i><strong>Business / Travel</strong><div style="font-size:11px;color:var(--pm-muted)">Strict limits and MCC restrictions</div></div></div>
+          </div>
+          <div class="mt-3"><label class="pm-form-label">Card Nickname (Alias)</label><input class="pm-form-control" placeholder="e.g. Flight Bookings, Online Grocery" [value]="cardNickname()" (input)="cardNickname.set($any($event.target).value)"></div>
+        }
+        @if (createStep() === 2) {
+          <h6 style="font-weight:700;margin-bottom:16px">Step 2: Limits & Funding</h6>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Funding Source</label><select class="pm-form-control" [value]="fundingSource()" (change)="fundingSource.set($any($event.target).value)"><option value="wallet">PayMo Main Wallet (KES 120,500)</option><option value="mpesa">M-Pesa Direct</option><option value="bank">Equity Bank Linked</option></select></div>
+            <div class="col-md-6"><label class="pm-form-label">Card Currency</label><select class="pm-form-control" [value]="cardCurrency()" (change)="cardCurrency.set($any($event.target).value)"><option value="KES">KES - Kenyan Shilling</option><option value="USD">USD - US Dollar</option><option value="EUR">EUR - Euro</option><option value="GBP">GBP - British Pound</option></select></div>
+            <div class="col-md-6"><label class="pm-form-label">Monthly Spending Limit (KES)</label><input type="number" class="pm-form-control" [value]="monthlyLimit()" (input)="monthlyLimit.set(+$any($event.target).value)"></div>
+            <div class="col-md-6"><label class="pm-form-label">Per-Transaction Limit (KES)</label><input type="number" class="pm-form-control" [value]="perTxLimit()" (input)="perTxLimit.set(+$any($event.target).value)"></div>
+          </div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-surface-2);font-size:12px">Funds are not locked; they are pulled from the funding source at the exact moment of transaction up to the specified limits.</div>
+        }
+        @if (createStep() === 3) {
+          <h6 style="font-weight:700;margin-bottom:16px">Step 3: Appearance & Confirm</h6>
+          <label class="pm-form-label">Select Card Color</label>
+          <div class="d-flex gap-2 mb-3">
+            @for (bg of cardBgOptions; track bg.value) {
+              <div [class]="bg.css" style="width:40px;height:40px;border-radius:8px;cursor:pointer" [style.boxShadow]="selectedBg()===bg.value?'0 0 0 2px var(--pm-primary)':'none'" (click)="selectedBg.set(bg.value)"></div>
+            }
+          </div>
+          <div class="p-3 border rounded mb-3" style="font-size:13px"><div class="d-flex justify-content-between mb-1"><span class="text-muted">Type</span><strong>Global Shopping</strong></div><div class="d-flex justify-content-between mb-1"><span class="text-muted">Funding</span><strong>PayMo Main Wallet</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Limit</span><strong>KES 20,000 / month</strong></div></div>
+          <label class="pm-form-label">Enter PIN to authorize issuance</label>
+          <div class="pm-pin-input"><input type="password" maxlength="1" (input)="moveFocus($any($event.target))"><input type="password" maxlength="1" (input)="moveFocus($any($event.target))"><input type="password" maxlength="1" (input)="moveFocus($any($event.target))"><input type="password" maxlength="1" (input)="moveFocus($any($event.target))"></div>
+        }
+        @if (createStep() === 4) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-credit-card"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Virtual Card Issued!</h5><p style="font-size:13px;color:var(--pm-ink-soft)">Your new card is ready for immediate online use.</p>
+            <div class="v-card v-card-bg-1 mx-auto mt-3" style="max-width:320px;text-align:left"><div class="v-card-badge">ACTIVE</div><div class="v-card-logo">PayMo</div><div class="v-card-chip"></div><div class="v-card-number">4532 8821 0092 1145</div><div class="v-card-details"><div>JAMES KAMAU</div><div>12/28</div></div><div class="v-card-network">VISA</div></div>
+            <div class="d-flex justify-content-center mt-3" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="closeModal('createCardModal');openModal('viewCardDetailsModal')">Reveal CVV</button><button class="pm-btn pm-btn-sm" (click)="closeModal('createCardModal');openModal('merchantLockModal')">Lock to Merchant</button></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (createStep() > 1 && createStep() < 4) {<button class="pm-btn" (click)="createStep.set(createStep()-1)"><i class="bi bi-arrow-left"></i> Back</button>}
+        <button class="pm-btn" (click)="closeModal('createCardModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="nextCreateStep()">@if (createStep() < 4) { Continue <i class="bi bi-arrow-right"></i> } @else { Done }</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 2: View Card Details (PIN Gate) ====================== -->
+@if (activeModal() === 'viewCardDetailsModal') {
+<div class="pm-modal-overlay" (click)="closeModal('viewCardDetailsModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-eye me-2"></i>Reveal Card Details</h5><button class="btn-close" (click)="closeModal('viewCardDetailsModal')"></button></div>
+      <div class="modal-body text-center">
+        @if (!cardRevealed()) {
+          <p style="font-size:13px;color:var(--pm-muted)">Enter your PayMo PIN to reveal the full card number and CVV for Global Shopping Card.</p>
+          <div class="pm-pin-input mt-3 mb-4"><input type="password" maxlength="1" (input)="moveFocus($any($event.target))"><input type="password" maxlength="1" (input)="moveFocus($any($event.target))"><input type="password" maxlength="1" (input)="moveFocus($any($event.target))"><input type="password" maxlength="1" (input)="moveFocus($any($event.target))"></div>
+          <button class="pm-btn pm-btn-primary w-100" (click)="cardRevealed.set(true)">Authorize</button>
+        } @else {
+          <div class="v-card v-card-bg-1 mx-auto text-start" style="max-width:320px"><div class="v-card-badge">ACTIVE</div><div class="v-card-logo">PayMo</div><div class="v-card-chip"></div><div class="v-card-number">4532 8821 0092 3841</div><div class="v-card-details"><div>JAMES KAMAU</div><div>12/28</div></div><div class="v-card-network">VISA</div></div>
+          <div class="d-flex justify-content-center mt-3 gap-3"><div class="text-center"><div style="font-size:11px;color:var(--pm-muted)">CVV</div><div style="font-size:24px;font-weight:700;font-family:monospace">882</div></div></div>
+          <div class="mt-3 d-flex gap-2 justify-content-center"><button class="pm-btn pm-btn-sm" (click)="showToast('Card number copied to clipboard.')"><i class="bi bi-clipboard"></i> Copy PAN</button><button class="pm-btn pm-btn-sm" (click)="showToast('CVV copied to clipboard.')"><i class="bi bi-clipboard"></i> Copy CVV</button></div>
+          <p style="font-size:11px;color:var(--pm-danger);margin-top:16px">Details will auto-hide in 60 seconds.</p>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('viewCardDetailsModal');cardRevealed.set(false)">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 3: Single-Use Card ====================== -->
+@if (activeModal() === 'singleUseCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('singleUseCardModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-lightning-charge text-warning me-2"></i>Generate Single-Use Card</h5><button class="btn-close" (click)="closeModal('singleUseCardModal')"></button></div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft);font-size:12px">Single-use cards automatically destroy themselves after one approved transaction. Perfect for sketchy websites or free trials.</div>
+        <div class="mb-3"><label class="pm-form-label">Exact Purchase Amount (KES)</label><input type="number" class="pm-form-control" value="1500"></div>
+        <div class="mb-3"><label class="pm-form-label">Validity Period</label><select class="pm-form-control"><option>1 Hour</option><option>24 Hours</option><option>7 Days</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Funding Source</label><select class="pm-form-control"><option>PayMo Wallet</option><option>M-Pesa</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('singleUseCardModal')">Cancel</button><button class="pm-btn pm-btn-accent" (click)="showToast('Single-Use Card Generated! The card is active for 24 hours.','singleUseCardModal')">Generate Card</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 4: Top Up Card ====================== -->
+@if (activeModal() === 'topUpCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('topUpCardModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-plus-circle text-success me-2"></i>Fund Virtual Card</h5><button class="btn-close" (click)="closeModal('topUpCardModal')"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Select Card</label><select class="pm-form-control"><option>AWS & Hosting — **4418</option><option>Global Shopping — **3841</option></select></div>
+        <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft);font-size:12px"><i class="bi bi-exclamation-triangle me-1"></i> AWS is trying to charge KES 4,500. This card has insufficient funds.</div>
+        <div class="mb-3"><label class="pm-form-label">Top-up Amount (KES)</label>
+          <div class="pm-amount-chips mb-2">
+            @for (amt of [1000,3000,5000,10000]; track amt) {
+              <span class="pm-amount-chip" [class.active]="topUpAmount()===amt" (click)="topUpAmount.set(amt)">{{ amt | number }}</span>
+            }
+          </div>
+          <input type="number" class="pm-form-control" [value]="topUpAmount()" (input)="topUpAmount.set(+$any($event.target).value)">
+        </div>
+        <div class="mb-3"><label class="pm-form-label">From</label><select class="pm-form-control"><option>M-Pesa (0712***890)</option><option>Main Wallet</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('topUpCardModal')">Cancel</button><button class="pm-btn pm-btn-accent" (click)="showToast('Card funded successfully! AWS charge should clear on next retry.','topUpCardModal')">Top Up KES {{ topUpAmount() | number }}</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 5: Freeze Card (2 steps) ====================== -->
+@if (activeModal() === 'freezeCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('freezeCardModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-snow text-info me-2"></i>Freeze Virtual Card</h5><button class="btn-close" (click)="closeModal('freezeCardModal')"></button></div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="freezeStep()===1" [class.completed]="freezeStep()>1"><div class="pm-step-num">@if(freezeStep()>1){<i class="bi bi-check"></i>}@else{1}</div><div class="pm-step-label">Select</div></div><div class="pm-step-line" [style.background]="freezeStep()>1?'var(--pm-accent)':''"></div>
+          <div class="pm-step" [class.active]="freezeStep()===2"><div class="pm-step-num">2</div><div class="pm-step-label">Confirm</div></div>
+        </div>
+        @if (freezeStep() === 1) {
+          <div class="mb-3"><label class="pm-form-label">Card to Freeze</label><select class="pm-form-control" [value]="freezeCardId()" (change)="freezeCardId.set($any($event.target).value)"><option value="">-- Choose --</option>@for (c of virtualCards(); track c.id) {<option [value]="c.id">{{ c.alias }} — **{{ c.last4 }}</option>}</select></div>
+          <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px;color:#1E40AF"><i class="bi bi-info-circle me-1"></i> Frozen cards instantly decline all new charges. You can unfreeze anytime.</div>
+        }
+        @if (freezeStep() === 2) {
+          <div class="text-center p-4"><div class="pm-icon-circle mx-auto mb-3" style="width:64px;height:64px;font-size:28px;background:var(--pm-info-soft);color:var(--pm-info)"><i class="bi bi-snow"></i></div><h6 style="font-weight:700">Confirm Card Freeze</h6><p style="font-size:13px;color:var(--pm-ink-soft)">All new transactions on this card will be declined until you unfreeze it.</p></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (freezeStep() > 1) {<button class="pm-btn" (click)="freezeStep.set(1)"><i class="bi bi-arrow-left"></i> Back</button>}
+        <button class="pm-btn" (click)="closeModal('freezeCardModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="nextFreezeStep()">@if (freezeStep() < 2) { Continue } @else { Confirm Freeze }</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 6: Subscription Manager ====================== -->
+@if (activeModal() === 'subManagerModal') {
+<div class="pm-modal-overlay" (click)="closeModal('subManagerModal')">
+  <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-repeat me-2" style="color:var(--pm-purple)"></i>Subscription Manager</h5><button class="btn-close" (click)="closeModal('subManagerModal')"></button></div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between mb-3"><span style="font-size:13px;color:var(--pm-ink-soft)">Total: KES 14,500/month across 5 services</span><button class="pm-btn pm-btn-sm" (click)="closeModal('subManagerModal');openModal('addSubscriptionModal')"><i class="bi bi-plus"></i> Add Subscription</button></div>
+        @for (sub of subscriptions(); track sub.id) {
+          <div class="d-flex align-items-center gap-3 p-3 border rounded mb-2">
+            <div class="sub-icon" [ngClass]="sub.iconColorClass"><i [class]="sub.icon"></i></div>
+            <div style="flex:1"><strong style="font-size:13px">{{ sub.service }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ sub.cardRef }} · {{ sub.cycle }}</div></div>
+            <div class="text-end"><strong style="font-size:13px">{{ sub.amount }}</strong><div style="font-size:10px;color:var(--pm-muted)">Next: {{ sub.nextDue }}</div></div>
+            <button class="pm-btn pm-btn-sm" (click)="closeModal('subManagerModal');openModal(sub.actionModal)">{{ sub.actionLabel }}</button>
+          </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('subManagerModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 7: Card Security ====================== -->
+@if (activeModal() === 'cardSecurityModal') {
+<div class="pm-modal-overlay" (click)="closeModal('cardSecurityModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-check text-success me-2"></i>Card Security Overview</h5><button class="btn-close" (click)="closeModal('cardSecurityModal')"></button></div>
+      <div class="modal-body">
+        <div class="text-center mb-4"><div class="pm-icon-circle mx-auto mb-2" style="width:72px;height:72px;font-size:28px;background:var(--pm-accent-soft);color:var(--pm-accent)">92</div><h5 style="font-weight:700;margin:0">Security Score: 92/100</h5><span class="pm-badge pm-badge-success mt-1"><i class="bi bi-shield-check"></i> Very Good</span></div>
+        @for (item of securityItems(); track item.label) {
+          <div class="status-row"><div class="d-flex align-items-center gap-2"><i class="bi" [class]="item.passed?'bi-check-circle-fill text-success':'bi-exclamation-circle-fill text-warning'"></i><div><strong style="font-size:13px">{{ item.label }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ item.desc }}</div></div></div><span class="pm-badge" [class.pm-badge-success]="item.passed" [class.pm-badge-warning]="!item.passed">{{ item.passed ? 'Active' : 'Off' }}</span></div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('cardSecurityModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="closeModal('cardSecurityModal');openModal('rotateCvvModal')">Enable Dynamic CVV</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 8: Card Analytics ====================== -->
+@if (activeModal() === 'cardAnalyticsModal') {
+<div class="pm-modal-overlay" (click)="closeModal('cardAnalyticsModal')">
+  <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-graph-up text-primary me-2"></i>Card Analytics</h5><button class="btn-close" (click)="closeModal('cardAnalyticsModal')"></button></div>
+      <div class="modal-body">
+        <div class="row g-3 mb-3">
+          <div class="col-4"><div class="utility-block text-center"><p class="pm-stat-label" style="color:var(--pm-primary)">This Month</p><div class="pm-stat-value" style="font-size:22px">KES 48.2k</div></div></div>
+          <div class="col-4"><div class="utility-block text-center"><p class="pm-stat-label" style="color:var(--pm-accent)">Transactions</p><div class="pm-stat-value" style="font-size:22px">67</div></div></div>
+          <div class="col-4"><div class="utility-block text-center"><p class="pm-stat-label" style="color:var(--pm-danger)">Declined</p><div class="pm-stat-value" style="font-size:22px">3</div></div></div>
+        </div>
+        <div class="utility-block"><h4 style="font-size:13px;font-weight:700;margin:0 0 12px">Spending by Card</h4>
+          @for (s of spendingByCard(); track s.card) {
+            <div class="d-flex align-items-center gap-3 mb-3"><div style="flex:1"><div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>{{ s.card }}</span><span>{{ s.amount }}</span></div><div class="pm-progress"><div class="pm-progress-bar" [style.width]="s.pct" [style.background]="s.color"></div></div></div></div>
+          }
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('cardAnalyticsModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 9: Notifications ====================== -->
+@if (activeModal() === 'notificationsModal') {
+<div class="pm-modal-overlay" (click)="closeModal('notificationsModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notifications</h5><button class="btn-close" (click)="closeModal('notificationsModal')"></button></div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between align-items-center mb-3"><span style="font-size:13px;color:var(--pm-ink-soft)">{{ unreadCount() }} unread</span><button class="pm-btn pm-btn-sm" (click)="markAllRead()"><i class="bi bi-check2-all"></i> Mark All Read</button></div>
+        @for (n of notifications(); track n.id) {
+          <div class="d-flex gap-3 p-3 border rounded mb-2" [style.background]="!n.read?'var(--pm-surface-2)':'#fff'">
+            <div class="pm-icon-circle" [style.background]="n.iconBg" [style.color]="n.iconColor" style="font-size:12px;width:36px;height:36px;min-width:36px">{{ n.icon }}</div>
+            <div style="flex:1"><div style="font-weight:600;font-size:13px">{{ n.title }} @if (!n.read) {<span style="display:inline-block;width:8px;height:8px;background:var(--pm-primary);border-radius:50%;margin-left:6px"></span>}</div><div style="font-size:11px;color:var(--pm-muted)">{{ n.desc }}</div><div style="font-size:10px;color:var(--pm-muted);margin-top:4px">{{ n.time }}</div></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('notificationsModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 10: Attention Detail ====================== -->
+@if (activeModal() === 'attentionModal') {
+<div class="pm-modal-overlay" (click)="closeModal('attentionModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>All Attention Items</h5><button class="btn-close" (click)="closeModal('attentionModal')"></button></div>
+      <div class="modal-body">
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">AL</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Declined: Insufficient Funds</div><div style="font-size:11px;color:var(--pm-muted)">AWS Web Services · KES 4,500</div></div><button class="pm-btn pm-btn-sm pm-btn-danger" (click)="closeModal('attentionModal');openModal('topUpCardModal')">Fund</button></div>
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">EX</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Card expiring in 15 days</div><div style="font-size:11px;color:var(--pm-muted)">Global Shopping Card · **3841</div></div><button class="pm-btn pm-btn-sm" (click)="closeModal('attentionModal');openModal('renewCardModal')">Renew</button></div>
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple);font-size:12px">SB</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Subscription increased</div><div style="font-size:11px;color:var(--pm-muted)">Netflix · +KES 300 this month</div></div><button class="pm-btn pm-btn-sm" (click)="closeModal('attentionModal');openModal('subManagerModal')">Review</button></div>
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">3D</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Pending 3D Secure Auth</div><div style="font-size:11px;color:var(--pm-muted)">AliExpress · KES 2,100</div></div><button class="pm-btn pm-btn-sm" (click)="closeModal('attentionModal');openModal('auth3DSModal')">Approve</button></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('attentionModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 11: Renew Card ====================== -->
+@if (activeModal() === 'renewCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('renewCardModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-clockwise text-warning me-2"></i>Renew Virtual Card</h5><button class="btn-close" (click)="closeModal('renewCardModal')"></button></div>
+      <div class="modal-body">
+        <div class="p-3 border rounded mb-3" style="border-left:3px solid var(--pm-warning)!important"><div class="d-flex align-items-center gap-3"><div class="v-card v-card-bg-1" style="width:80px;height:52px;padding:6px;border-radius:6px"><div class="v-card-number" style="font-size:8px;margin:4px 0 0">**3841</div></div><div><strong>Global Shopping Card</strong><div style="font-size:11px;color:var(--pm-muted)">Expires in 15 days · Auto-renew available</div></div></div></div>
+        <div class="mb-3"><label class="pm-form-label">New Expiry</label><select class="pm-form-control"><option>+1 Year (12/26)</option><option>+2 Years (12/27)</option><option>+3 Years (12/28)</option></select></div>
+        <div class="p-3 rounded" style="background:var(--pm-accent-soft);font-size:12px;color:#047857"><i class="bi bi-info-circle me-1"></i> Renewal keeps the same card number. No merchant updates needed.</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('renewCardModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="showToast('Card renewed successfully. New expiry: 12/26.','renewCardModal')">Renew Card</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 12: Merchant Lock ====================== -->
+@if (activeModal() === 'merchantLockModal') {
+<div class="pm-modal-overlay" (click)="closeModal('merchantLockModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-lock text-primary me-2"></i>Merchant Lock</h5><button class="btn-close" (click)="closeModal('merchantLockModal')"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Lock Mode</label><select class="pm-form-control"><option>Lock to Single Merchant</option><option>Lock to Merchant Category</option><option>Unlock All Merchants</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Allowed Merchant</label><input class="pm-form-control" placeholder="e.g. Amazon, Netflix, AWS" value="Amazon"></div>
+        <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px;color:#1E40AF"><i class="bi bi-shield-check me-1"></i> Transactions to any other merchant will be automatically declined.</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('merchantLockModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="showToast('Card locked to Amazon. Other merchants will be declined.','merchantLockModal')">Apply Lock</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 13: Rotate CVV ====================== -->
+@if (activeModal() === 'rotateCvvModal') {
+<div class="pm-modal-overlay" (click)="closeModal('rotateCvvModal')">
+  <div class="modal-dialog" style="max-width:420px" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-repeat text-info me-2"></i>Dynamic CVV</h5><button class="btn-close" (click)="closeModal('rotateCvvModal')"></button></div>
+      <div class="modal-body text-center">
+        <div class="pm-icon-circle mx-auto mb-3" style="width:56px;height:56px;font-size:24px;background:var(--pm-info-soft);color:var(--pm-info)"><i class="bi bi-shield-lock"></i></div>
+        <h6 style="font-weight:700">Enable Dynamic CVV?</h6>
+        <p style="font-size:13px;color:var(--pm-ink-soft)">The CVV will auto-rotate every 24 hours. Any saved CVV at merchants will become invalid, adding an extra layer of security.</p>
+        <div class="mb-3"><label class="pm-form-label">Rotation Frequency</label><select class="pm-form-control"><option>Every 24 hours</option><option>Every 12 hours</option><option>Every transaction</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('rotateCvvModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="showToast('Dynamic CVV enabled. CVV rotates every 24 hours.','rotateCvvModal')">Enable</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 14: Cancel Subscription ====================== -->
+@if (activeModal() === 'cancelSubModal') {
+<div class="pm-modal-overlay" (click)="closeModal('cancelSubModal')">
+  <div class="modal-dialog" style="max-width:420px" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-x-circle text-danger me-2"></i>Cancel Subscription</h5><button class="btn-close" (click)="closeModal('cancelSubModal')"></button></div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft)"><h6 style="color:#991B1B;font-weight:700"><i class="bi bi-exclamation-triangle me-1"></i> Warning</h6><p style="font-size:13px;color:#991B1B;margin:8px 0 0">Cancelling Spotify Premium will stop access immediately. Any remaining days in this billing cycle are non-refundable.</p></div>
+        <div class="mb-3"><label class="pm-form-label">Reason for Cancellation</label><select class="pm-form-control"><option>Not using the service</option><option>Found a cheaper alternative</option><option>Financial reasons</option><option>Other</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('cancelSubModal')">Keep Subscription</button><button class="pm-btn pm-btn-danger" (click)="showToast('Spotify subscription cancelled. Access ends immediately.','cancelSubModal')">Cancel Subscription</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 15: Edit Limits ====================== -->
+@if (activeModal() === 'editLimitsModal') {
+<div class="pm-modal-overlay" (click)="closeModal('editLimitsModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-speedometer2 text-info me-2"></i>Adjust Card Limits</h5><button class="btn-close" (click)="closeModal('editLimitsModal')"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Monthly Limit (KES)</label><input class="pm-form-control" type="number" value="50000"></div>
+        <div class="mb-3"><label class="pm-form-label">Per-Transaction Limit (KES)</label><input class="pm-form-control" type="number" value="10000"></div>
+        <div class="mb-3"><label class="pm-form-label">Daily Limit (KES)</label><input class="pm-form-control" type="number" value="15000"></div>
+        <div class="mb-3"><label class="pm-form-label">Min Single Transaction (KES)</label><input class="pm-form-control" type="number" value="100"></div>
+        <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px;color:#1E40AF"><i class="bi bi-info-circle me-1"></i> Changes take effect within 5 minutes.</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('editLimitsModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="showToast('Card limits updated successfully.','editLimitsModal')">Save Limits</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 16: Card Statement ====================== -->
+@if (activeModal() === 'cardStatementModal') {
+<div class="pm-modal-overlay" (click)="closeModal('cardStatementModal')">
+  <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-file-earmark-text me-2"></i>Card Statements</h5><button class="btn-close" (click)="closeModal('cardStatementModal')"></button></div>
+      <div class="modal-body">
+        <div class="d-flex gap-2 mb-3"><select class="pm-form-control" style="max-width:250px"><option>Global Shopping — **3841</option><option>Subscription Master — **9021</option><option>AWS & Hosting — **4418</option></select><select class="pm-form-control" style="max-width:200px"><option>June 2025</option><option>May 2025</option><option>April 2025</option></select><button class="pm-btn pm-btn-sm"><i class="bi bi-download"></i> PDF</button></div>
+        @for (tx of recentActivity(); track tx.id) {
+          <div class="d-flex align-items-center gap-3 p-2 border-bottom"><div style="flex:1"><strong style="font-size:13px">{{ tx.merchant }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ tx.cardRef }} · {{ tx.time }}</div></div><div class="text-end"><strong style="font-size:13px" [style.color]="tx.statusColor">{{ tx.amount }}</strong><div style="font-size:10px;color:var(--pm-muted)">{{ tx.statusText }}</div></div></div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('cardStatementModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 17: Report Fraud ====================== -->
+@if (activeModal() === 'reportFraudModal') {
+<div class="pm-modal-overlay" (click)="closeModal('reportFraudModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-exclamation text-danger me-2"></i>Report Fraud</h5><button class="btn-close" (click)="closeModal('reportFraudModal')"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Card</label><select class="pm-form-control"><option>Global Shopping — **3841</option><option>Subscription Master — **9021</option><option>AWS & Hosting — **4418</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Suspicious Transaction</label><input class="pm-form-control" placeholder="Merchant name or amount"></div>
+        <div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" type="number" placeholder="e.g. 5000"></div>
+        <div class="mb-3"><label class="pm-form-label">Description</label><textarea class="pm-form-control" rows="3" placeholder="Describe what happened..."></textarea></div>
+        <div class="p-3 rounded" style="background:var(--pm-danger-soft);font-size:12px;color:#991B1B"><i class="bi bi-info-circle me-1"></i> The card will be temporarily frozen and our fraud team will investigate within 24 hours.</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('reportFraudModal')">Cancel</button><button class="pm-btn pm-btn-danger" (click)="showToast('Fraud report submitted. Card temporarily frozen. Investigation in progress.','reportFraudModal')">Submit Report</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 18: Bulk Create (2 steps) ====================== -->
+@if (activeModal() === 'bulkCreateModal') {
+<div class="pm-modal-overlay" (click)="closeModal('bulkCreateModal')">
+  <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-files text-primary me-2"></i>Bulk Issue Virtual Cards</h5><button class="btn-close" (click)="closeModal('bulkCreateModal')"></button></div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="bulkStep()===1" [class.completed]="bulkStep()>1"><div class="pm-step-num">@if(bulkStep()>1){<i class="bi bi-check"></i>}@else{1}</div><div class="pm-step-label">Config</div></div><div class="pm-step-line" [style.background]="bulkStep()>1?'var(--pm-accent)':''"></div>
+          <div class="pm-step" [class.active]="bulkStep()===2"><div class="pm-step-num">2</div><div class="pm-step-label">Confirm</div></div>
+        </div>
+        @if (bulkStep() === 1) {
+          <div class="row g-3"><div class="col-md-6"><div class="mb-3"><label class="pm-form-label">Number of Cards</label><input class="pm-form-control" type="number" value="5" min="1" max="100"></div></div><div class="col-md-6"><div class="mb-3"><label class="pm-form-label">Card Type</label><select class="pm-form-control"><option>Global Shopping</option><option>Subscription Manager</option><option>Business / Travel</option></select></div></div><div class="col-md-6"><div class="mb-3"><label class="pm-form-label">Monthly Limit per Card (KES)</label><input class="pm-form-control" type="number" value="20000"></div></div><div class="col-md-6"><div class="mb-3"><label class="pm-form-label">Funding Source</label><select class="pm-form-control"><option>PayMo Main Wallet</option><option>Business Wallet</option></select></div></div></div>
+        }
+        @if (bulkStep() === 2) {
+          <div class="p-3 rounded" style="background:var(--pm-surface-2)"><div class="d-flex justify-content-between mb-1"><span>Cards to Issue</span><strong>5</strong></div><div class="d-flex justify-content-between mb-1"><span>Type</span><strong>Global Shopping</strong></div><div class="d-flex justify-content-between"><span>Limit per Card</span><strong>KES 20,000/month</strong></div></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (bulkStep() > 1) {<button class="pm-btn" (click)="bulkStep.set(1)"><i class="bi bi-arrow-left"></i> Back</button>}
+        <button class="pm-btn" (click)="closeModal('bulkCreateModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="nextBulkStep()">@if (bulkStep() < 2) { Continue } @else { Issue 5 Cards }</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 19: Delete Card (2 steps) ====================== -->
+@if (activeModal() === 'deleteCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('deleteCardModal')">
+  <div class="modal-dialog" style="max-width:420px" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-trash text-danger me-2"></i>Delete Card</h5><button class="btn-close" (click)="closeModal('deleteCardModal')"></button></div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="deleteStep()===1" [class.completed]="deleteStep()>1"><div class="pm-step-num">@if(deleteStep()>1){<i class="bi bi-check"></i>}@else{1}</div><div class="pm-step-label">Warn</div></div><div class="pm-step-line" [style.background]="deleteStep()>1?'var(--pm-accent)':''"></div>
+          <div class="pm-step" [class.active]="deleteStep()===2"><div class="pm-step-num">2</div><div class="pm-step-label">Confirm</div></div>
+        </div>
+        @if (deleteStep() === 1) {
+          <div class="p-3 rounded" style="background:var(--pm-danger-soft)"><p style="font-size:13px;color:#991B1B"><i class="bi bi-exclamation-triangle me-1"></i> <strong>Permanent action.</strong> Deleting this card will cancel all linked subscriptions and decline all pending transactions. Remaining balance returns to wallet.</p></div>
+          <div class="mb-3 mt-3"><label class="pm-form-label">Card to Delete</label><select class="pm-form-control"><option>Global Shopping — **3841</option><option>Subscription Master — **9021</option><option>AWS & Hosting — **4418</option></select></div>
+        }
+        @if (deleteStep() === 2) {
+          <div class="text-center"><div class="pm-icon-circle mx-auto mb-3" style="width:56px;height:56px;font-size:24px;background:var(--pm-danger-soft);color:var(--pm-danger)"><i class="bi bi-trash"></i></div><h6 style="font-weight:700">Type DELETE to confirm</h6><input class="pm-form-control mt-2" placeholder="Type DELETE here"></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (deleteStep() > 1) {<button class="pm-btn" (click)="deleteStep.set(1)"><i class="bi bi-arrow-left"></i> Back</button>}
+        <button class="pm-btn" (click)="closeModal('deleteCardModal')">Cancel</button>
+        <button class="pm-btn pm-btn-danger" (click)="nextDeleteStep()">@if (deleteStep() < 2) { Continue } @else { Delete Permanently }</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 20: Edit Alias ====================== -->
+@if (activeModal() === 'editAliasModal') {
+<div class="pm-modal-overlay" (click)="closeModal('editAliasModal')">
+  <div class="modal-dialog" style="max-width:420px" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Edit Card Alias</h5><button class="btn-close" (click)="closeModal('editAliasModal')"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Current Alias</label><input class="pm-form-control" value="Global Web Shopping" readonly></div>
+        <div class="mb-3"><label class="pm-form-label">New Alias</label><input class="pm-form-control" placeholder="e.g. Online Grocery"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('editAliasModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="showToast('Card alias updated.','editAliasModal')">Save</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 21: Dispute Transaction ====================== -->
+@if (activeModal() === 'disputeTxModal') {
+<div class="pm-modal-overlay" (click)="closeModal('disputeTxModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>Dispute Transaction</h5><button class="btn-close" (click)="closeModal('disputeTxModal')"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Transaction</label><select class="pm-form-control"><option>AWS Web Services — KES 4,500 (Declined)</option><option>Netflix Subscription — KES 1,400</option><option>AliExpress Shopping — KES 6,240</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Dispute Reason</label><select class="pm-form-control"><option>Did not authorize</option><option>Charged wrong amount</option><option>Duplicate charge</option><option>Service not received</option><option>Other</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Additional Details</label><textarea class="pm-form-control" rows="3" placeholder="Describe the issue..."></textarea></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('disputeTxModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="showToast('Dispute submitted. We will investigate and respond within 5 business days.','disputeTxModal')">Submit Dispute</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 22: Add Subscription ====================== -->
+@if (activeModal() === 'addSubscriptionModal') {
+<div class="pm-modal-overlay" (click)="closeModal('addSubscriptionModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-plus text-primary me-2"></i>Add Subscription</h5><button class="btn-close" (click)="closeModal('addSubscriptionModal')"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Service Name</label><input class="pm-form-control" placeholder="e.g. ChatGPT Plus"></div>
+        <div class="mb-3"><label class="pm-form-label">Link to Card</label><select class="pm-form-control"><option>Global Shopping — **3841</option><option>Subscription Master — **9021</option></select></div>
+        <div class="row g-3"><div class="col-6"><div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" type="number" placeholder="e.g. 2000"></div></div><div class="col-6"><div class="mb-3"><label class="pm-form-label">Billing Cycle</label><select class="pm-form-control"><option>Monthly</option><option>Yearly</option><option>Weekly</option></select></div></div></div>
+        <div class="mb-3"><label class="pm-form-label">Billing Day</label><input class="pm-form-control" type="number" min="1" max="31" placeholder="e.g. 15"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('addSubscriptionModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="showToast('Subscription added and linked to card.','addSubscriptionModal')">Add Subscription</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 23: Manage Single Subscription ====================== -->
+@if (activeModal() === 'manageSingleSubModal') {
+<div class="pm-modal-overlay" (click)="closeModal('manageSingleSubModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-gear me-2"></i>Manage Subscription</h5><button class="btn-close" (click)="closeModal('manageSingleSubModal')"></button></div>
+      <div class="modal-body">
+        <div class="d-flex align-items-center gap-3 mb-4"><div class="sub-icon text-danger"><i class="bi bi-play-btn-fill"></i></div><div><h6 style="font-weight:700;margin:0">Netflix</h6><div style="font-size:12px;color:var(--pm-muted)">Card **9021 · Monthly · KES 1,400</div></div></div>
+        <div class="status-row"><div><strong>Change Card</strong><div style="font-size:11px;color:var(--pm-muted)">Migrate to different virtual card</div></div><button class="pm-btn pm-btn-sm" (click)="closeModal('manageSingleSubModal');openModal('createCardModal')">Migrate</button></div>
+        <div class="status-row"><div><strong>Pause Subscription</strong><div style="font-size:11px;color:var(--pm-muted)">Temporarily stop billing</div></div><button class="pm-btn pm-btn-sm" (click)="showToast('Netflix subscription paused. Resume anytime.','manageSingleSubModal')">Pause</button></div>
+        <div class="status-row"><div><strong>Cancel Subscription</strong><div style="font-size:11px;color:var(--pm-muted)">Stop permanently</div></div><button class="pm-btn pm-btn-sm pm-btn-danger-soft" (click)="closeModal('manageSingleSubModal');openModal('cancelSubModal')">Cancel</button></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('manageSingleSubModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 24: Withdraw from Card ====================== -->
+@if (activeModal() === 'withdrawCardModal') {
+<div class="pm-modal-overlay" (click)="closeModal('withdrawCardModal')">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-down-circle text-danger me-2"></i>Withdraw from Card</h5><button class="btn-close" (click)="closeModal('withdrawCardModal')"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">From Card</label><select class="pm-form-control"><option>Global Shopping — **3841 (KES 12,300)</option><option>AWS & Hosting — **4418 (KES 800)</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Withdraw Amount (KES)</label><input class="pm-form-control" type="number" placeholder="e.g. 5000"></div>
+        <div class="mb-3"><label class="pm-form-label">To</label><select class="pm-form-control"><option>PayMo Main Wallet</option><option>M-Pesa</option></select></div>
+        <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px;color:#B45309"><i class="bi bi-info-circle me-1"></i> Withdrawal returns loaded funds to your wallet. Takes 1-2 minutes.</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('withdrawCardModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="showToast('Funds withdrawn to wallet successfully.','withdrawCardModal')">Withdraw</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 25: 3D Secure Auth ====================== -->
+@if (activeModal() === 'auth3DSModal') {
+<div class="pm-modal-overlay" (click)="closeModal('auth3DSModal')">
+  <div class="modal-dialog" style="max-width:420px" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-lock text-primary me-2"></i>3D Secure Authentication</h5><button class="btn-close" (click)="closeModal('auth3DSModal')"></button></div>
+      <div class="modal-body text-center">
+        <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)"><div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Merchant</span><strong>AliExpress</strong></div><div class="d-flex justify-content-between" style="font-size:12px"><span>Amount</span><strong>KES 2,100</strong></div></div>
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Enter the OTP sent to your phone to authorize this transaction.</p>
+        <div class="pm-pin-input mt-3 mb-3"><input type="text" maxlength="1" (input)="moveFocus($any($event.target))"><input type="text" maxlength="1" (input)="moveFocus($any($event.target))"><input type="text" maxlength="1" (input)="moveFocus($any($event.target))"><input type="text" maxlength="1" (input)="moveFocus($any($event.target))"><input type="text" maxlength="1" (input)="moveFocus($any($event.target))"><input type="text" maxlength="1" (input)="moveFocus($any($event.target))"></div>
+        <button class="pm-btn pm-btn-sm" (click)="showToast('OTP resent to 0712 345 890')"><i class="bi bi-arrow-repeat"></i> Resend OTP</button>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="showToast('Transaction declined.','auth3DSModal')">Decline</button><button class="pm-btn pm-btn-primary" (click)="showToast('3D Secure authenticated. Transaction approved.','auth3DSModal')">Approve</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ====================== MODAL 26: Profile (stub) ====================== -->
+@if (activeModal() === 'profileModal') {
+<div class="pm-modal-overlay" (click)="closeModal('profileModal')">
+  <div class="modal-dialog" style="max-width:420px" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person me-2"></i>Profile</h5><button class="btn-close" (click)="closeModal('profileModal')"></button></div>
+      <div class="modal-body text-center">
+        <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px;background:var(--pm-gradient-sunset)">JK</div>
+        <h6 style="font-weight:700">James Kamau</h6>
+        <p style="font-size:13px;color:var(--pm-muted)">Cardholder · Premium Tier</p>
+        <div class="status-row mt-3"><span style="font-size:13px">Email</span><strong style="font-size:13px">james.kamau@email.com</strong></div>
+        <div class="status-row"><span style="font-size:13px">Phone</span><strong style="font-size:13px">0712 345 890</strong></div>
+        <div class="status-row"><span style="font-size:13px">KYC Status</span><span class="pm-badge pm-badge-success">Verified</span></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('profileModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}

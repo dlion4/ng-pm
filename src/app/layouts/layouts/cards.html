@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paymo V2 — Cards Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paymo-primary: #5b4ddb; --paymo-primary-600: #4338ca; --paymo-primary-light: #7c6ee6;
+      --paymo-accent: #10b981; --paymo-danger: #ef4444; --paymo-warning: #f59e0b; --paymo-info: #3b82f6;
+      --bg: #f4f3f9; --surface: #ffffff; --surface-2: #f9f8fc; --surface-3: #f0eff7;
+      --text: #1d1a2e; --text-secondary: #5a5668; --muted: #8b8796; --border: #e7e6ee;
+      --shadow-sm: 0 2px 8px rgba(29,26,46,0.06); --shadow: 0 12px 40px rgba(29,26,46,0.1);
+      --shadow-glow: 0 4px 20px rgba(91,77,219,0.18);
+      --sidebar-width: 264px; --sidebar-collapsed: 76px; --header-height: 72px; --aside-width: 420px;
+      --radius-xl: 22px; --radius: 16px; --radius-sm: 12px; --radius-xs: 8px;
+      --transition-fast: 150ms cubic-bezier(0.4,0,0.2,1); --transition-base: 250ms cubic-bezier(0.4,0,0.2,1); --transition-slow: 350ms cubic-bezier(0.4,0,0.2,1);
+    }
+    *{scrollbar-width:thin;scrollbar-color:var(--border) transparent;box-sizing:border-box}
+    ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+    html,body{min-height:100vh}
+    body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;margin:0}
+    .app-shell{display:flex;min-height:100vh}
+
+    /* Sidebar */
+    .sidebar{position:fixed;top:0;left:0;height:100vh;width:var(--sidebar-collapsed);background:var(--surface);border-right:1px solid var(--border);z-index:1040;display:flex;flex-direction:column;padding:1rem .75rem;transition:width var(--transition-slow),transform var(--transition-slow);overflow-x:hidden;overflow-y:auto}
+    .sidebar.expanded{width:var(--sidebar-width)}.sidebar.mobile-open{transform:translateX(0);width:var(--sidebar-width)}.sidebar.mobile-closed{transform:translateX(-100%)}
+    .sidebar-backdrop{position:fixed;inset:0;background:rgba(18,16,32,.45);backdrop-filter:blur(2px);z-index:1035;opacity:0;pointer-events:none;transition:opacity var(--transition-base)}.sidebar-backdrop.show{opacity:1;pointer-events:auto}
+    .brand{display:flex;align-items:center;gap:.75rem;padding:.25rem .5rem 1rem;margin-bottom:.5rem}
+    .brand-icon{flex:0 0 auto;width:40px;height:40px;border-radius:var(--radius-sm);background:linear-gradient(135deg,#1e293b,#0f172a);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;box-shadow:0 6px 18px rgba(30,41,59,.25)}
+    .brand-text{font-weight:800;font-size:1.25rem;letter-spacing:-.02em;color:var(--text);opacity:0;white-space:nowrap;transition:opacity var(--transition-base)}
+    .sidebar.expanded .brand-text,.sidebar.mobile-open .brand-text{opacity:1}
+    .brand-tag{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--paymo-info);background:rgba(59,130,246,.08);padding:.15rem .45rem;border-radius:999px;margin-left:auto;opacity:0;transition:opacity var(--transition-base)}
+    .sidebar.expanded .brand-tag,.sidebar.mobile-open .brand-tag{opacity:1}
+    .sidebar-toggle{width:36px;height:36px;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--surface-2);color:var(--text-secondary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-fast);font-size:1.05rem}
+    .sidebar-toggle:hover,.sidebar-toggle:focus{background:var(--paymo-primary);border-color:var(--paymo-primary);color:#fff;box-shadow:var(--shadow-glow);transform:scale(1.05)}
+    .nav-group-label{display:block;padding:.75rem .85rem .35rem;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);white-space:nowrap;opacity:0;transition:opacity var(--transition-base)}
+    .sidebar.expanded .nav-group-label,.sidebar.mobile-open .nav-group-label{opacity:1}
+    .nav-link{display:flex;align-items:center;gap:.85rem;padding:.72rem .85rem;margin-bottom:.2rem;border-radius:var(--radius-sm);color:var(--text-secondary);text-decoration:none;font-size:.92rem;font-weight:500;position:relative;overflow:hidden;transition:color var(--transition-fast),background var(--transition-fast),transform var(--transition-fast)}
+    .nav-link::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%) scaleY(0);width:3.5px;height:18px;background:#1e293b;border-radius:0 4px 4px 0;transition:transform var(--transition-fast)}
+    .nav-link:hover,.nav-link.active{background:linear-gradient(135deg,rgba(30,41,59,.1),rgba(30,41,59,.04));color:#1e293b}
+    .nav-link:hover{transform:translateX(2px)}.nav-link.active::before{transform:translateY(-50%) scaleY(1)}
+    .nav-link .nav-icon{flex:0 0 auto;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:1.28rem;transition:transform var(--transition-fast)}
+    .nav-link:hover .nav-icon,.nav-link.active .nav-icon{transform:scale(1.15)}
+    .nav-link .nav-label{flex:1 1 auto;white-space:nowrap;opacity:0;transform:translateX(-8px);transition:opacity var(--transition-base),transform var(--transition-base)}
+    .sidebar.expanded .nav-label,.sidebar.mobile-open .nav-label{opacity:1;transform:translateX(0)}
+    .nav-link .nav-badge{flex:0 0 auto;font-size:.65rem;font-weight:700;padding:.2rem .5rem;border-radius:999px;background:rgba(59,130,246,.1);color:var(--paymo-info);opacity:0;transform:scale(.85);transition:opacity var(--transition-base),transform var(--transition-base)}
+    .sidebar.expanded .nav-badge,.sidebar.mobile-open .nav-badge{opacity:1;transform:scale(1)}
+    .nav-link::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);pointer-events:none}
+    .nav-link:hover::after{animation:shimmer .7s ease-in-out}
+    @keyframes shimmer{100%{left:150%}}
+    .sidebar-account{margin-top:auto;padding:.85rem;border-radius:var(--radius-sm);background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;gap:.5rem;cursor:pointer;transition:background var(--transition-fast)}
+    .sidebar-account:hover{border-color:var(--paymo-primary-light);background:#fff}
+    .sidebar-account .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1e293b,#0f172a);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex:0 0 auto}
+    .sidebar-account .details{opacity:0;max-width:0;overflow:hidden;transition:opacity var(--transition-base),max-width var(--transition-slow)}
+    .sidebar.expanded .sidebar-account .details,.sidebar.mobile-open .sidebar-account .details{opacity:1;max-width:180px}
+
+    /* Header */
+    .top-header{position:fixed;top:0;right:0;height:var(--header-height);left:var(--sidebar-collapsed);background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);z-index:1020;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;transition:left var(--transition-slow)}
+    .top-header.sidebar-expanded{left:var(--sidebar-width)}
+    .global-search{position:relative;max-width:420px;width:100%}.global-search .search-icon{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1.05rem;pointer-events:none}
+    .global-search input{width:100%;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface-2);padding:.55rem 1rem .55rem 2.5rem;font-size:.9rem;color:var(--text);transition:all var(--transition-fast)}
+    .global-search input::placeholder{color:var(--muted)}.global-search input:hover{background:#fff}
+    .global-search input:focus{background:#fff;border-color:var(--paymo-primary-light);box-shadow:0 0 0 4px rgba(91,77,219,.12);outline:none}
+    .header-actions{display:flex;align-items:center;gap:.6rem}
+    .header-action{position:relative;width:42px;height:42px;border-radius:var(--radius-sm);border:1px solid var(--border);background:#fff;color:var(--text-secondary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-fast)}
+    .header-action:hover,.header-action[aria-expanded='true']{border-color:var(--paymo-primary-light);color:var(--paymo-primary);box-shadow:var(--shadow-glow);transform:translateY(-2px)}
+    .header-action .action-icon{font-size:1.2rem;transition:transform var(--transition-fast)}.header-action:hover .action-icon{transform:scale(1.12)}
+    .header-badge{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:var(--paymo-danger);color:#fff;font-size:.6rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;border:2px solid #fff}
+    .user-trigger{display:inline-flex;align-items:center;gap:.65rem;padding:.35rem .6rem .35rem .35rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:#fff;cursor:pointer;transition:all var(--transition-fast)}
+    .user-trigger:hover,.user-trigger[aria-expanded='true']{border-color:var(--paymo-primary-light);box-shadow:var(--shadow-glow)}
+    .user-trigger .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#1e293b,#0f172a);color:#fff;font-weight:700;font-size:.8rem;display:inline-flex;align-items:center;justify-content:center}
+    .user-trigger .user-meta{line-height:1.15;text-align:left}.user-trigger .user-name{font-size:.85rem;font-weight:700;color:var(--text)}.user-trigger .user-role{font-size:.7rem;color:var(--muted)}
+    .user-trigger .chev{color:var(--muted);transition:transform var(--transition-fast)}.user-trigger[aria-expanded='true'] .chev{transform:rotate(180deg)}
+
+    /* Dropdowns */
+    .dropdown-panel{position:absolute;top:calc(100% + 12px);right:0;width:380px;max-width:calc(100vw - 1.5rem);background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);opacity:0;transform:translateY(-10px) scale(.98);pointer-events:none;transition:all var(--transition-base);z-index:1080;overflow:hidden}
+    .dropdown-panel.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+    .dropdown-panel .panel-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.1rem;border-bottom:1px solid var(--border)}
+    .dropdown-panel .panel-title{font-size:.95rem;font-weight:700;color:var(--text)}.dropdown-panel .panel-body{max-height:360px;overflow-y:auto}.dropdown-panel .panel-footer{padding:.75rem 1rem;border-top:1px solid var(--border);background:var(--surface-2)}
+    .notification-item{display:flex;align-items:flex-start;gap:.85rem;padding:.9rem 1.1rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background var(--transition-fast)}
+    .notification-item:last-child{border-bottom:none}.notification-item:hover{background:var(--surface-2)}.notification-item.unread{background:rgba(59,130,246,.03)}
+    .notification-icon{flex:0 0 auto;width:38px;height:38px;border-radius:var(--radius-xs);display:inline-flex;align-items:center;justify-content:center;font-size:1.1rem}
+    .notification-icon.primary{background:rgba(91,77,219,.1);color:var(--paymo-primary)}.notification-icon.success{background:rgba(16,185,129,.1);color:var(--paymo-accent)}.notification-icon.warning{background:rgba(245,158,11,.1);color:var(--paymo-warning)}.notification-icon.danger{background:rgba(239,68,68,.1);color:var(--paymo-danger)}
+    .notification-dot{width:7px;height:7px;border-radius:50%;background:var(--paymo-info);margin-top:.35rem;flex-shrink:0}
+
+    /* Right aside */
+    .right-aside{position:fixed;top:0;right:0;height:100vh;width:var(--aside-width);max-width:100vw;background:#fff;border-left:1px solid var(--border);box-shadow:-12px 0 50px rgba(18,16,32,.12);z-index:1050;transform:translateX(100%);transition:transform var(--transition-slow);display:flex;flex-direction:column}
+    .right-aside.open{transform:translateX(0)}.aside-header{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.25rem;border-bottom:1px solid var(--border)}
+    .aside-title{font-size:1.05rem;font-weight:800;color:var(--text);display:inline-flex;align-items:center;gap:.5rem}
+    .aside-close{width:34px;height:34px;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--surface-2);color:var(--text-secondary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-fast)}
+    .aside-close:hover{background:var(--paymo-danger);border-color:var(--paymo-danger);color:#fff}
+    .aside-body{flex:1 1 auto;overflow-y:auto;padding:1.25rem}
+    .aside-backdrop{position:fixed;inset:0;background:rgba(18,16,32,.35);backdrop-filter:blur(2px);z-index:1045;opacity:0;pointer-events:none;transition:opacity var(--transition-base)}.aside-backdrop.show{opacity:1;pointer-events:auto}
+    .aside-card{padding:1rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface-2);margin-bottom:1rem;transition:border-color var(--transition-fast),transform var(--transition-fast)}
+    .aside-card:hover{border-color:var(--paymo-primary-light);transform:translateY(-1px)}
+    .aside-card h6{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.65rem}
+    .status-row{display:flex;align-items:center;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--border)}.status-row:last-child{border-bottom:none}
+    .status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:.4rem}.status-dot.active{background:var(--paymo-accent);box-shadow:0 0 0 3px rgba(16,185,129,.2)}.status-dot.warning{background:var(--paymo-warning);box-shadow:0 0 0 3px rgba(245,158,11,.2)}
+    .aside-panel-content{display:none}.aside-panel-content.active{display:block}
+
+    /* Main */
+    .main-content{margin-left:var(--sidebar-collapsed);margin-top:var(--header-height);min-height:calc(100vh - var(--header-height));padding:1.75rem;transition:margin-left var(--transition-slow)}
+    .main-content.sidebar-expanded{margin-left:var(--sidebar-width)}
+
+    /* Cards specific */
+    .card-3d{aspect-ratio:1.586/1;max-width:360px;background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);border-radius:20px;padding:2rem;color:#fff;position:relative;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.25);transition:transform .3s}
+    .card-3d:hover{transform:perspective(800px) rotateY(-5deg) rotateX(3deg)}
+    .card-3d::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.05) 0%,transparent 70%)}
+    .card-3d .chip{width:45px;height:35px;background:linear-gradient(135deg,#fbbf24,#d97706);border-radius:6px;margin-bottom:1.5rem}
+    .card-3d .number{font-family:'JetBrains Mono',monospace;font-size:1.3rem;letter-spacing:3px;margin-bottom:1rem}
+    .card-3d .details-row{display:flex;justify-content:space-between;font-size:.78rem;text-transform:uppercase;color:rgba(255,255,255,.6)}
+
+    .hub-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;transition:all var(--transition-fast);cursor:pointer}
+    .hub-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--paymo-primary-light)}
+
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;transition:all var(--transition-fast)}
+    .stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+
+    .quick-btn{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all var(--transition-fast)}
+    .quick-btn:hover{border-color:var(--paymo-primary-light);background:var(--surface-2);transform:translateX(3px)}
+
+    /* Toasts */
+    .toast-container-custom{position:fixed;bottom:1.25rem;right:1.25rem;z-index:1090;display:flex;flex-direction:column;gap:.6rem}
+    .paymo-toast{background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow);padding:.85rem 1rem;min-width:280px;display:flex;align-items:flex-start;gap:.75rem;animation:toastIn .35s ease forwards}
+    .paymo-toast.leaving{animation:toastOut .3s ease forwards}.paymo-toast .toast-ic{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem}
+    @keyframes toastIn{from{opacity:0;transform:translateX(20px) scale(.96)}to{opacity:1;transform:translateX(0) scale(1)}}
+    @keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateX(20px) scale(.96)}}
+
+    /* Modal */
+    .modal-paymo .modal-content{border-radius:var(--radius);border:1px solid var(--border)}
+    .modal-paymo .modal-header{border-bottom:1px solid var(--border);padding:1.1rem 1.25rem}
+    .modal-paymo .modal-footer{border-top:1px solid var(--border);padding:1rem 1.25rem}
+
+    @media(max-width:1199.98px){.global-search{max-width:260px}}
+    @media(max-width:991.98px){.top-header{left:0!important}.main-content{margin-left:0!important}.global-search{display:none}.user-trigger .user-meta{display:none}}
+    @media(max-width:767.98px){.dropdown-panel{position:fixed;top:var(--header-height);left:.75rem;right:.75rem;width:auto}}
+    .font-mono{font-family:'JetBrains Mono',monospace}
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar mobile-closed" id="sidebar">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <div class="brand"><div class="brand-icon"><i class="bi bi-credit-card-2-front"></i></div><span class="brand-text">Paymo</span><span class="brand-tag">Cards</span></div>
+      <button class="sidebar-toggle d-lg-none" id="sidebarMobileClose"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="flex-grow-1" id="navGroups"></div>
+    <div class="sidebar-account"><div class="avatar">JK</div><div class="details"><div class="fw-bold text-truncate" style="font-size:.82rem;color:var(--text)">James K.</div><div class="text-truncate" style="font-size:.7rem;color:var(--muted)">Card Admin</div></div></div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- HEADER -->
+  <header class="top-header" id="topHeader">
+    <div class="d-flex align-items-center gap-3">
+      <button class="sidebar-toggle" id="sidebarToggle"><i class="bi bi-list" id="toggleIcon"></i></button>
+      <div class="global-search d-none d-md-block"><i class="bi bi-search search-icon"></i><input type="text" placeholder="Search cards, holders, transactions…"/></div>
+    </div>
+    <div class="header-actions">
+      <button class="header-action" data-aside-open="cardProgram"><i class="bi bi-gear action-icon"></i></button>
+      <div class="position-relative" data-dropdown="notifications">
+        <button class="header-action" data-dropdown-trigger="notifications" aria-expanded="false"><i class="bi bi-bell action-icon"></i><span class="header-badge">9</span></button>
+        <div class="dropdown-panel" data-dropdown-panel="notifications">
+          <div class="panel-header"><span class="panel-title">Card Alerts</span><button class="btn btn-sm btn-link text-decoration-none" style="font-size:.75rem">Mark all read</button></div>
+          <div class="panel-body" id="notificationList"></div>
+          <div class="panel-footer text-center"><button class="btn btn-sm btn-link text-decoration-none fw-semibold text-primary">View all</button></div>
+        </div>
+      </div>
+      <div class="position-relative" data-dropdown="user">
+        <button class="user-trigger" data-dropdown-trigger="user" aria-expanded="false">
+          <div class="avatar">JK</div><div class="user-meta"><div class="user-name">James K.</div><div class="user-role">Card Admin</div></div><i class="bi bi-chevron-down chev" style="font-size:.8rem"></i>
+        </button>
+        <div class="dropdown-panel" data-dropdown-panel="user" style="width:280px">
+          <div class="p-3 d-flex align-items-center gap-3 border-bottom"><div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#1e293b,#0f172a);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem">JK</div><div><div class="fw-bold" style="font-size:.9rem">James K.</div><div class="text-muted" style="font-size:.75rem">james@paymo.co</div></div></div>
+          <div class="panel-body"><div class="d-flex flex-column"><button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i class="bi bi-person"></i> Profile</button><button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i class="bi bi-gear"></i> Settings</button><button class="btn btn-light text-start rounded-0 border-0 py-2 px-3" data-aside-open="security"><i class="bi bi-shield-check"></i> Security</button></div></div>
+          <div class="panel-footer"><button class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2" style="font-size:.82rem" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Log out</button></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main-content" id="mainContent">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <h1 class="fw-bold mb-1" style="font-size:1.75rem;letter-spacing:-.02em">Cards Command Center</h1>
+        <p class="mb-0" style="color:var(--text-secondary)">Manage card issuing, limits, and security across your organization.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary px-3 rounded-3 fw-semibold" onclick="addToast('Card report exported','success')"><i class="bi bi-download me-2"></i>Export</button>
+        <button class="btn btn-primary px-4 rounded-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#issueCardModal"><i class="bi bi-plus-lg me-2"></i>Issue Card</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3 col-6"><div class="stat-card"><div class="d-flex align-items-center gap-2 mb-2"><div class="rounded-3 p-2" style="background:rgba(91,77,219,.1);color:var(--paymo-primary)"><i class="bi bi-credit-card"></i></div><span class="text-muted fw-semibold" style="font-size:.78rem">Active Cards</span></div><div style="font-size:1.75rem;font-weight:800">1,240</div><div style="font-size:.72rem;color:var(--paymo-accent);font-weight:600"><i class="bi bi-arrow-up"></i> +12% this month</div></div></div>
+      <div class="col-md-3 col-6"><div class="stat-card"><div class="d-flex align-items-center gap-2 mb-2"><div class="rounded-3 p-2" style="background:rgba(16,185,129,.1);color:var(--paymo-accent)"><i class="bi bi-currency-dollar"></i></div><span class="text-muted fw-semibold" style="font-size:.78rem">Total Spent</span></div><div style="font-size:1.75rem;font-weight:800">$42,850</div><div class="text-muted" style="font-size:.72rem;font-weight:600">12 currencies</div></div></div>
+      <div class="col-md-3 col-6"><div class="stat-card"><div class="d-flex align-items-center gap-2 mb-2"><div class="rounded-3 p-2" style="background:rgba(245,158,11,.1);color:var(--paymo-warning)"><i class="bi bi-hourglass-split"></i></div><span class="text-muted fw-semibold" style="font-size:.78rem">Pending</span></div><div style="font-size:1.75rem;font-weight:800">14</div><div style="font-size:.72rem;color:var(--paymo-warning);font-weight:600"><i class="bi bi-exclamation-triangle"></i> Requires approval</div></div></div>
+      <div class="col-md-3 col-6"><div class="stat-card"><div class="d-flex align-items-center gap-2 mb-2"><div class="rounded-3 p-2" style="background:rgba(59,130,246,.1);color:var(--paymo-info)"><i class="bi bi-shield-check"></i></div><span class="text-muted fw-semibold" style="font-size:.78rem">Security</span></div><div style="font-size:1.75rem;font-weight:800">Optimal</div><div style="font-size:.72rem;color:var(--paymo-primary);font-weight:600">2FA enforced</div></div></div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Left: Card Preview + Controls -->
+      <div class="col-lg-4">
+        <div class="card-3d mb-4">
+          <div class="d-flex justify-content-between align-items-start mb-4"><i class="bi bi-fingerprint fs-2 opacity-75"></i><span class="badge bg-white bg-opacity-25 border border-white border-opacity-25 rounded-pill px-3">VISA PLATINUM</span></div>
+          <div class="chip"></div><div class="number">•••• •••• •••• 8429</div>
+          <div class="details-row"><div><div class="smaller opacity-75">Holder</div><div class="fw-bold">James Kiprop</div></div><div class="text-end"><div class="smaller opacity-75">Expires</div><div class="fw-bold">12/28</div></div></div>
+        </div>
+        <div class="hub-card mb-4">
+          <h6 class="fw-bold mb-3"><i class="bi bi-lightning me-2 text-muted"></i>Quick Controls</h6>
+          <div class="d-grid gap-2">
+            <div class="quick-btn" data-aside-open="security"><span><i class="bi bi-shield-shaded me-2 text-primary"></i>Security Controls</span><i class="bi bi-chevron-right small text-muted"></i></div>
+            <div class="quick-btn" data-aside-open="limits"><span><i class="bi bi-sliders me-2 text-success"></i>Spend Limits</span><i class="bi bi-chevron-right small text-muted"></i></div>
+            <div class="quick-btn"><span><i class="bi bi-geo-alt me-2 text-warning"></i>Geofencing</span><i class="bi bi-chevron-right small text-muted"></i></div>
+            <div class="quick-btn"><span><i class="bi bi-snow me-2 text-danger"></i>Freeze Card</span><div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Card Grid -->
+      <div class="col-lg-8">
+        <div class="hub-card mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h6 class="fw-bold mb-0">All Cards (Hub View)</h6>
+            <div class="btn-group"><button class="btn btn-sm btn-light active"><i class="bi bi-grid"></i></button><button class="btn btn-sm btn-light"><i class="bi bi-list-task"></i></button></div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6"><div class="hub-card" onclick="addToast('Selected: Corporate Exp 4920','info')"><div class="d-flex justify-content-between mb-2"><span class="badge" style="background:rgba(16,185,129,.1);color:var(--paymo-accent)">Active</span><i class="bi bi-three-dots cursor-pointer"></i></div><div class="fw-bold mb-1">Corporate Expenses</div><div class="text-muted" style="font-size:.75rem">•••• 4920</div><div class="progress mt-2 mb-1" style="height:5px"><div class="progress-bar bg-primary" style="width:45%"></div></div><div class="d-flex justify-content-between" style="font-size:.72rem"><span>$4,500</span><span class="text-muted">Limit: $10,000</span></div></div></div>
+            <div class="col-md-6"><div class="hub-card"><div class="d-flex justify-content-between mb-2"><span class="badge" style="background:rgba(239,68,68,.1);color:var(--paymo-danger)">Frozen</span><i class="bi bi-three-dots cursor-pointer"></i></div><div class="fw-bold mb-1">Travel Wallet</div><div class="text-muted" style="font-size:.75rem">•••• 2184</div><div class="progress mt-2 mb-1" style="height:5px"><div class="progress-bar bg-danger" style="width:0%"></div></div><div class="d-flex justify-content-between text-muted" style="font-size:.72rem"><span>$0</span><span>Limit: $5,000</span></div></div></div>
+            <div class="col-md-6"><div class="hub-card"><div class="d-flex justify-content-between mb-2"><span class="badge" style="background:rgba(245,158,11,.1);color:var(--paymo-warning)">Pending</span><i class="bi bi-three-dots cursor-pointer"></i></div><div class="fw-bold mb-1">Vendor Subscriptions</div><div class="text-muted" style="font-size:.75rem">Issuing…</div><div class="text-center py-2"><div class="spinner-border spinner-border-sm text-warning"></div></div></div></div>
+            <div class="col-md-6"><div class="hub-card d-flex align-items-center justify-content-center" style="border-style:dashed!important;min-height:160px" data-bs-toggle="modal" data-bs-target="#issueCardModal"><div class="text-center"><div class="rounded-circle d-inline-flex p-3 mb-2" style="background:var(--surface-3)"><i class="bi bi-plus fs-3 text-muted"></i></div><div class="fw-bold">Issue New Card</div></div></div></div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="hub-card">
+          <div class="d-flex justify-content-between align-items-center mb-3"><h6 class="fw-bold mb-0">Recent Card Transactions</h6><button class="btn btn-sm btn-link text-decoration-none fw-semibold text-primary">View All</button></div>
+          <div class="transaction-row"><div class="rounded-3 p-2 me-3" style="background:rgba(91,77,219,.1);color:var(--paymo-primary)"><i class="bi bi-cart"></i></div><div class="flex-grow-1"><div class="fw-semibold" style="font-size:.85rem">Amazon Web Services</div><div class="text-muted" style="font-size:.72rem">•••• 4920 • Online</div></div><div class="text-end"><div class="fw-bold" style="font-size:.9rem">-$1,240.00</div><div class="text-muted" style="font-size:.7rem">Today 14:32</div></div></div>
+          <div class="transaction-row"><div class="rounded-3 p-2 me-3" style="background:rgba(16,185,129,.1);color:var(--paymo-accent)"><i class="bi bi-shop"></i></div><div class="flex-grow-1"><div class="fw-semibold" style="font-size:.85rem">Naivas Supermarket</div><div class="text-muted" style="font-size:.72rem">•••• 4920 • Contactless</div></div><div class="text-end"><div class="fw-bold" style="font-size:.9rem">-$85.50</div><div class="text-muted" style="font-size:.7rem">Today 10:15</div></div></div>
+          <div class="transaction-row"><div class="rounded-3 p-2 me-3" style="background:rgba(245,158,11,.1);color:var(--paymo-warning)"><i class="bi bi-fuel-pump"></i></div><div class="flex-grow-1"><div class="fw-semibold" style="font-size:.85rem">Shell Station</div><div class="text-muted" style="font-size:.72rem">•••• 8429 • Chip & PIN</div></div><div class="text-end"><div class="fw-bold" style="font-size:.9rem">-$62.00</div><div class="text-muted" style="font-size:.7rem">Yesterday</div></div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- RIGHT ASIDE -->
+  <div class="aside-backdrop" id="asideBackdrop"></div>
+  <aside class="right-aside" id="rightAside">
+    <!-- Security Panel -->
+    <div class="aside-panel-content" data-aside-content="security">
+      <div class="aside-header"><span class="aside-title"><i class="bi bi-shield-shaded text-primary"></i> Security Controls</span><button class="aside-close" data-aside-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="aside-body">
+        <div class="aside-card"><h6>Transaction Alerts</h6>
+          <div class="d-flex justify-content-between align-items-center mb-2"><span class="fw-semibold" style="font-size:.85rem">All Transactions</span><div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked></div></div>
+          <div class="d-flex justify-content-between align-items-center mb-2"><span class="fw-semibold" style="font-size:.85rem">International Usage</span><div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked></div></div>
+          <div class="d-flex justify-content-between align-items-center"><span class="fw-semibold" style="font-size:.85rem">Large Threshold (&gt;KES 100K)</span><div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox"></div></div>
+        </div>
+        <div class="aside-card"><h6>Usage Controls</h6>
+          <div class="d-flex justify-content-between align-items-center mb-2"><span class="fw-semibold" style="font-size:.85rem">Online Payments (CNP)</span><div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked></div></div>
+          <div class="d-flex justify-content-between align-items-center mb-2"><span class="fw-semibold" style="font-size:.85rem">Contactless / NFC</span><div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked></div></div>
+          <div class="d-flex justify-content-between align-items-center"><span class="fw-semibold" style="font-size:.85rem">ATM Withdrawals</span><div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox"></div></div>
+        </div>
+        <button class="btn btn-primary w-100 py-2 rounded-3 fw-semibold" onclick="addToast('Security settings saved','success')">Save Changes</button>
+      </div>
+    </div>
+    <!-- Limits Panel -->
+    <div class="aside-panel-content" data-aside-content="limits">
+      <div class="aside-header"><span class="aside-title"><i class="bi bi-sliders text-success"></i> Spend Limits</span><button class="aside-close" data-aside-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="aside-body">
+        <div class="aside-card"><h6>Daily Limits</h6>
+          <div class="mb-3"><label class="form-label" style="font-size:.82rem;font-weight:600">Per Transaction</label><input type="text" class="form-control" value="$5,000"></div>
+          <div class="mb-3"><label class="form-label" style="font-size:.82rem;font-weight:600">Daily Total</label><input type="text" class="form-control" value="$25,000"></div>
+          <div><label class="form-label" style="font-size:.82rem;font-weight:600">Monthly Total</label><input type="text" class="form-control" value="$100,000"></div>
+        </div>
+        <button class="btn btn-primary w-100 py-2 rounded-3 fw-semibold" onclick="addToast('Limits updated','success')">Update Limits</button>
+      </div>
+    </div>
+    <!-- Card Program Panel -->
+    <div class="aside-panel-content" data-aside-content="cardProgram">
+      <div class="aside-header"><span class="aside-title"><i class="bi bi-gear text-primary"></i> Card Program Settings</span><button class="aside-close" data-aside-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="aside-body">
+        <div class="aside-card"><h6>Program Info</h6>
+          <div class="status-row"><span class="text-muted" style="font-size:.82rem">Program</span><span class="fw-semibold" style="font-size:.82rem">Paymo Platinum</span></div>
+          <div class="status-row"><span class="text-muted" style="font-size:.82rem">Issuer</span><span class="fw-semibold" style="font-size:.82rem">Visa</span></div>
+          <div class="status-row"><span class="text-muted" style="font-size:.82rem">Cards Issued</span><span class="fw-semibold" style="font-size:.82rem">1,240</span></div>
+          <div class="status-row"><span class="text-muted" style="font-size:.82rem">Status</span><span class="d-flex align-items-center" style="font-size:.75rem"><span class="status-dot active"></span>Active</span></div>
+        </div>
+        <div class="aside-card"><h6>Branding</h6>
+          <div class="mb-3"><label class="form-label" style="font-size:.82rem;font-weight:600">Card Label</label><input type="text" class="form-control" value="Paymo Platinum"></div>
+          <div><label class="form-label" style="font-size:.82rem;font-weight:600">Card Color</label><div class="d-flex gap-2"><div class="rounded-circle" style="width:32px;height:32px;background:#1e293b;cursor:pointer;border:2px solid var(--paymo-primary)"></div><div class="rounded-circle" style="width:32px;height:32px;background:#5b4ddb;cursor:pointer"></div><div class="rounded-circle" style="width:32px;height:32px;background:#10b981;cursor:pointer"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MODAL: Issue Card -->
+  <div class="modal fade modal-paymo" id="issueCardModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title fw-bold"><i class="bi bi-plus-circle me-2 text-primary"></i>Issue New Card</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="form-label fw-semibold" style="font-size:.85rem">Card Type</label><select class="form-select"><option>Virtual Card</option><option>Physical Card</option></select></div>
+        <div class="mb-3"><label class="form-label fw-semibold" style="font-size:.85rem">Cardholder Name</label><input type="text" class="form-control" placeholder="Full name as on card"></div>
+        <div class="row g-3 mb-3"><div class="col-8"><label class="form-label fw-semibold" style="font-size:.85rem">Spend Limit</label><input type="text" class="form-control" placeholder="0.00"></div><div class="col-4"><label class="form-label fw-semibold" style="font-size:.85rem">Currency</label><select class="form-select"><option>USD</option><option>KES</option><option>GBP</option></select></div></div>
+        <div class="mb-3"><label class="form-label fw-semibold" style="font-size:.85rem">Purpose / Label</label><input type="text" class="form-control" placeholder="e.g., Marketing Expenses"></div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button><button class="btn btn-primary px-4 fw-semibold" onclick="addToast('Card issuance initiated','success')" data-bs-dismiss="modal"><i class="bi bi-credit-card me-2"></i>Issue Card</button></div>
+    </div></div>
+  </div>
+
+  <div class="toast-container-custom" id="toastContainer"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+(function(){'use strict';
+const NAV_GROUPS=[{title:'Overview',items:[{key:'hub',label:'Hub Overview',icon:'bi-grid-1x2'},{key:'analytics',label:'Usage Analytics',icon:'bi-graph-up'}]},{title:'Management',items:[{key:'issue',label:'Issue Card',icon:'bi-plus-circle'},{key:'security',label:'Security Control',icon:'bi-shield-lock'},{key:'limits',label:'Spend Limits',icon:'bi-sliders'},{key:'geofencing',label:'Geofencing',icon:'bi-geo-alt'}]},{title:'Settings',items:[{key:'program',label:'Card Program',icon:'bi-gear'},{key:'support',label:'Support',icon:'bi-life-preserver'},{key:'logout',label:'Logout',icon:'bi-box-arrow-right'}]}];
+const NOTIFICATIONS=[{id:1,icon:'bi-credit-card',tone:'primary',title:'New card issued',desc:'Virtual card for John Doe created.',time:'5m',unread:true},{id:2,icon:'bi-exclamation-triangle',tone:'warning',title:'Suspicious transaction flagged',desc:'$2,800 charge from unknown merchant.',time:'1h',unread:true},{id:3,icon:'bi-check-circle',tone:'success',title:'Card activated',desc:'Corporate Exp •••• 4920 is now active.',time:'3h',unread:false}];
+let isDesktop=window.innerWidth>=992,sbExpanded=isDesktop,mobileOpen=false,activeSection='hub',openDD=null,openAP=null;
+const sidebar=document.getElementById('sidebar'),topHeader=document.getElementById('topHeader'),mainContent=document.getElementById('mainContent'),sidebarBackdrop=document.getElementById('sidebarBackdrop'),sidebarToggle=document.getElementById('sidebarToggle'),sidebarMobileClose=document.getElementById('sidebarMobileClose'),toggleIcon=document.getElementById('toggleIcon'),navGroupsEl=document.getElementById('navGroups'),notifEl=document.getElementById('notificationList'),rightAside=document.getElementById('rightAside'),asideBackdrop=document.getElementById('asideBackdrop'),toastContainer=document.getElementById('toastContainer');
+function renderNav(){navGroupsEl.innerHTML=NAV_GROUPS.map(g=>`<div class="mb-2"><span class="nav-group-label">${g.title}</span><nav class="d-flex flex-column">${g.items.map(i=>`<a href="#${i.key}" class="nav-link ${activeSection===i.key?'active':''}" data-nav="${i.key}"><span class="nav-icon"><i class="bi ${i.icon}"></i></span><span class="nav-label">${i.label}</span>${i.badge?`<span class="nav-badge">${i.badge}</span>`:''}</a>`).join('')}</nav></div>`).join('');navGroupsEl.querySelectorAll('[data-nav]').forEach(l=>l.addEventListener('click',e=>{e.preventDefault();const k=l.getAttribute('data-nav');if(k==='logout'){handleLogout();return;}activeSection=k;navGroupsEl.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));l.classList.add('active');if(!isDesktop)closeMobile();}));}
+function renderNotif(){notifEl.innerHTML=NOTIFICATIONS.map(n=>`<div class="notification-item ${n.unread?'unread':''}"><div class="notification-icon ${n.tone}"><i class="bi ${n.icon}"></i></div><div class="flex-grow-1" style="min-width:0"><div class="d-flex justify-content-between align-items-start gap-2"><span class="fw-semibold" style="font-size:.82rem;color:var(--text)">${n.title}</span>${n.unread?'<span class="notification-dot"></span>':''}</div><div class="text-muted text-truncate" style="font-size:.75rem">${n.desc}</div></div><span class="text-muted flex-shrink-0" style="font-size:.7rem">${n.time}</span></div>`).join('');}
+function applyLayout(){sidebar.classList.toggle('expanded',isDesktop&&sbExpanded);sidebar.classList.toggle('mobile-open',!isDesktop&&mobileOpen);sidebar.classList.toggle('mobile-closed',!isDesktop&&!mobileOpen);topHeader.classList.toggle('sidebar-expanded',isDesktop&&sbExpanded);mainContent.classList.toggle('sidebar-expanded',isDesktop&&sbExpanded);sidebarBackdrop.classList.toggle('show',!isDesktop&&mobileOpen);toggleIcon.className=(mobileOpen||(isDesktop&&sbExpanded))?'bi bi-x-lg':'bi bi-list';renderNav();}
+function toggleSB(){if(isDesktop)sbExpanded=!sbExpanded;else mobileOpen=!mobileOpen;applyLayout();}function closeMobile(){mobileOpen=false;applyLayout();}
+sidebarToggle.addEventListener('click',toggleSB);sidebarMobileClose.addEventListener('click',closeMobile);sidebarBackdrop.addEventListener('click',closeMobile);
+function closeAllDD(){document.querySelectorAll('[data-dropdown-panel]').forEach(p=>p.classList.remove('show'));document.querySelectorAll('[data-dropdown-trigger]').forEach(t=>t.setAttribute('aria-expanded','false'));openDD=null;}function toggleDD(n){if(openDD===n){closeAllDD();return;}closeAllDD();const p=document.querySelector(`[data-dropdown-panel="${n}"]`);const t=document.querySelector(`[data-dropdown-trigger="${n}"]`);if(p)p.classList.add('show');if(t)t.setAttribute('aria-expanded','true');openDD=n;}
+document.querySelectorAll('[data-dropdown-trigger]').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();toggleDD(t.getAttribute('data-dropdown-trigger'));}));
+document.addEventListener('click',e=>{if(!e.target.closest('[data-dropdown]'))closeAllDD();});
+function openAside(type){openAP=type;document.querySelectorAll('[data-aside-content]').forEach(c=>c.classList.toggle('active',c.getAttribute('data-aside-content')===type));rightAside.classList.add('open');asideBackdrop.classList.add('show');closeAllDD();}function closeAside(){openAP=null;rightAside.classList.remove('open');asideBackdrop.classList.remove('show');}
+document.querySelectorAll('[data-aside-open]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openAside(b.getAttribute('data-aside-open'));}));document.querySelectorAll('[data-aside-close]').forEach(b=>b.addEventListener('click',closeAside));asideBackdrop.addEventListener('click',closeAside);
+window.addToast=function(m,t){t=t||'info';const tones={success:{bg:'rgba(16,185,129,.1)',c:'var(--paymo-accent)',i:'bi-check-lg',s:'Success'},danger:{bg:'rgba(239,68,68,.1)',c:'var(--paymo-danger)',i:'bi-x-lg',s:'Error'},warning:{bg:'rgba(245,158,11,.1)',c:'var(--paymo-warning)',i:'bi-exclamation-triangle',s:'Warning'},info:{bg:'rgba(91,77,219,.1)',c:'var(--paymo-primary)',i:'bi-bell',s:'Info'}};const o=tones[t]||tones.info;const el=document.createElement('div');el.className='paymo-toast';el.innerHTML=`<div class="toast-ic" style="background:${o.bg};color:${o.c}"><i class="bi ${o.i}"></i></div><div class="flex-grow-1"><div class="fw-semibold" style="font-size:.82rem">${o.s}</div><div class="text-muted" style="font-size:.75rem">${m}</div></div><button class="btn btn-link text-muted p-0 ms-2" style="font-size:.8rem"><i class="bi bi-x-lg"></i></button>`;const rm=()=>{el.classList.add('leaving');setTimeout(()=>el.remove(),300);};el.querySelector('button').addEventListener('click',rm);toastContainer.appendChild(el);setTimeout(rm,4500);};
+function handleLogout(){addToast('Logged out','success');closeAllDD();}document.getElementById('logoutBtn').addEventListener('click',handleLogout);
+window.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='b'){e.preventDefault();toggleSB();}if(e.key==='Escape'){closeAllDD();closeAside();if(!isDesktop)closeMobile();}});
+window.addEventListener('resize',()=>{const d=window.innerWidth>=992;if(d!==isDesktop){isDesktop=d;if(d)mobileOpen=false;else sbExpanded=false;applyLayout();}});
+renderNotif();applyLayout();
+})();
+</script>
+</body>
+</html>

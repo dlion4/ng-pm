@@ -1,0 +1,1476 @@
+<div class="paymo-angular-page">
+  @if (toastMessage) {
+    <div class="pm-toast" role="status">
+      <i class="bi bi-check-circle-fill"></i>
+      <span>{{ toastMessage }}</span>
+      <button type="button" class="pm-toast-close" (click)="clearToast()">×</button>
+    </div>
+
+<div class="paymo-open-banking-body"><section class="paymo-page-source" id="openBankingPage">
+
+<div class="pm-page-bar">
+<div>
+<div class="pm-breadcrumb"><a (click)="notify('Link action handled')" role="button" tabindex="0">Home</a> / <a (click)="notify('Link action handled')" role="button" tabindex="0">Business Portal</a> / <strong>Open
+                            Banking</strong></div>
+<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE
+                        3.10 — Open Banking &amp; Account Aggregation</h2>
+<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Connect bank accounts via PesaLink, view
+                        consolidated cash positions, execute instant transfers, reconcile transactions, and analyse
+                        multi-bank cash flow — all within a single secure dashboard.</p>
+</div>
+<div class="d-flex flex-wrap" style="gap:8px"><button (click)="openModal('healthCheckModal')" class="btn-pm" type="button"><i class="bi bi-heart-pulse"></i> Health
+                        Check</button><button (click)="openModal('reconcileModal')" class="btn-pm" type="button"><i class="bi bi-list-check"></i> Reconcile</button><button (click)="openModal('transferModal')" class="btn-pm" type="button"><i class="bi bi-arrow-left-right"></i> Transfer</button><button (click)="openModal('connectBankModal')" class="btn-pm btn-pm-p" type="button"><i class="bi bi-plus-lg"></i>
+                        Connect Bank</button></div>
+</div>
+<div class="pm-content">
+<!-- HERO STATS -->
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="C C-accent" style="min-height:170px">
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Open banking hub live <span style="color:#86efac">●</span></p>
+<div class="SV" style="margin:8px 0;color:#fff">7 bank accounts connected</div>
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Equity, KCB, Co-op, Stanbic,
+                                Family, NCBA, I&amp;M — consolidated view across all business and personal accounts.</p>
+<div class="d-flex flex-wrap mt-3" style="gap:8px"><button (click)="openModal('connectBankModal')" class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Connect</button><button (click)="openModal('transferModal')" class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Transfer</button><button (click)="openModal('reconcileModal')" class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Reconcile</button></div>
+</div>
+</div>
+<div class="col-lg-2 col-md-4 col-6">
+<div class="C" style="min-height:170px">
+<p class="SL" style="color:var(--pm-accent)">TOTAL CASH POSITION</p>
+<div class="SV" style="margin:6px 0">KES 18.7M</div><span class="B B-s"><i class="bi bi-graph-up"></i> +12.4% MoM</span>
+<div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">Available: KES
+                                14.2M<br/>Pending: KES 4.5M</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4 col-6">
+<div class="C" style="min-height:170px">
+<p class="SL" style="color:var(--pm-info)">INSTANT TRANSFERS (MTD)</p>
+<div class="SV" style="margin:6px 0">KES 41.2M</div><span class="B B-i"><i class="bi bi-lightning-charge"></i> 186 transfers</span>
+<div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">Avg settlement: 12
+                                seconds<br/>Success rate: 99.7%</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4">
+<div class="C" style="min-height:170px;border-left:3px solid var(--pm-warning)">
+<p class="SL" style="color:var(--pm-warning)">RECONCILIATION STATUS</p>
+<div class="SV" style="margin:6px 0">94.8%</div><span class="B B-w"><i class="bi bi-exclamation-triangle"></i> 14 exceptions</span>
+<div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">Auto-matched:
+                                412<br/>Manual review: 14</div>
+</div>
+</div>
+</div>
+<!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h3 class="st">Attention Required</h3><button (click)="openModal('attentionModal')" class="btn-pm btn-sm" type="button">View all</button>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-danger-soft);color:var(--pm-danger);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-bank"></i></div>
+<div>
+<div style="font-weight:600;font-size:13px">KCB account balance below minimum
+                                        </div>
+<div style="font-size:11px;color:var(--pm-muted)">KES 42,100 · minimum KES
+                                            50,000</div>
+</div>
+</div><button (click)="openModal('transferModal')" class="btn-pm btn-sm" type="button">Top-up</button>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-list-check"></i></div>
+<div>
+<div style="font-weight:600;font-size:13px">14 unreconciled transactions</div>
+<div style="font-size:11px;color:var(--pm-muted)">Equity &amp; Stanbic accounts
+                                        </div>
+</div>
+</div><button (click)="openModal('reconcileModal')" class="btn-pm btn-sm" type="button">Review</button>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-info-soft);color:var(--pm-info);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-clock"></i></div>
+<div>
+<div style="font-weight:600;font-size:13px">Co-op account link expires in 7 days
+                                        </div>
+<div style="font-size:11px;color:var(--pm-muted)">Re-authenticate consent</div>
+</div>
+</div><button (click)="openModal('reauthModal')" class="btn-pm btn-sm" type="button">Re-auth</button>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h3 class="st">Smart Suggestions</h3><span class="B B-p"><i class="bi bi-stars"></i>
+                                    AI</span>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-accent-soft);color:var(--pm-accent);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-graph-up"></i></div>
+<div>
+<div style="font-weight:600;font-size:13px">Consolidate 3 low-activity accounts
+                                        </div>
+<div style="font-size:11px;color:var(--pm-muted)">Potential fee savings: KES
+                                            18,200/year</div>
+</div>
+</div><button (click)="openModal('optimizeModal')" class="btn-pm btn-sm" type="button">Analyse</button>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-clock-history"></i></div>
+<div>
+<div style="font-weight:600;font-size:13px">Schedule recurring transfers to
+                                            payroll account</div>
+<div style="font-size:11px;color:var(--pm-muted)">Reduce manual effort by 92%
+                                        </div>
+</div>
+</div><button (click)="openModal('scheduleTransferModal')" class="btn-pm btn-sm" type="button">Setup</button>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-purple-soft);color:var(--pm-purple);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-shield-check"></i></div>
+<div>
+<div style="font-weight:600;font-size:13px">Enable real-time fraud alerts on I&amp;M
+                                        </div>
+<div style="font-size:11px;color:var(--pm-muted)">High-value transfers detected
+                                        </div>
+</div>
+</div><button (click)="openModal('fraudSettingsModal')" class="btn-pm btn-sm" type="button">Enable</button>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="C">
+<div class="mb-3">
+<h3 class="st">Quick Actions</h3>
+<p class="ss">Frequent open banking workflows</p>
+</div>
+<div class="quick-grid"><button (click)="openModal('transferModal')" class="quick-btn" type="button"><i class="bi bi-arrow-left-right text-primary me-1"></i> Instant
+                                    Transfer</button><button (click)="openModal('connectBankModal')" class="quick-btn" type="button"><i class="bi bi-plus-circle text-success me-1"></i> Link Account</button><button (click)="openModal('reconcileModal')" class="quick-btn" type="button"><i class="bi bi-list-check text-info me-1"></i> Reconcile</button><button (click)="openModal('cashFlowModal')" class="quick-btn" type="button"><i class="bi bi-graph-up me-1" style="color:var(--pm-purple)"></i> Cash Flow</button><button (click)="openModal('exportStatementModal')" class="quick-btn" type="button"><i class="bi bi-download text-muted me-1"></i> Export</button><button (click)="openModal('scheduleTransferModal')" class="quick-btn" type="button"><i class="bi bi-calendar-event me-1" style="color:var(--pm-accent)"></i>
+                                    Schedule</button><button (click)="openModal('fraudSettingsModal')" class="quick-btn" type="button"><i class="bi bi-shield-exclamation text-danger me-1"></i> Fraud
+                                    Alerts</button><button (click)="openModal('manageLinksModal')" class="quick-btn" type="button"><i class="bi bi-link-45deg text-warning me-1"></i> Manage Links</button></div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.10.1 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-bank2" style="color:var(--pm-primary)"></i> 3.10.1 —
+                                Connected Bank Accounts &amp; Consolidated Cash Position</h3>
+<p class="ss">All linked bank accounts with real-time balances, consolidated view, and
+                                instant PesaLink transfer capability.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('connectBankModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-plus-lg"></i> Link
+                                Bank</button><button (click)="openModal('manageLinksModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-gear"></i> Manage</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-8">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Linked Bank Accounts</h4>
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Bank</th>
+<th>Account</th>
+<th>Nickname</th>
+<th>Balance</th>
+<th>Last Sync</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+@for (account of mockData.bankAccounts; track account.id) {
+<tr>
+<td><strong>{{ account.bank }}</strong></td><td>{{ account.maskedAccount }}</td><td>{{ account.nickname }}</td><td><strong>{{ account.balance }}</strong></td><td>{{ account.lastSync }}</td>
+<td><span [ngClass]="badgeClass(account.status)" class="B">{{ account.statusLabel }}</span></td>
+<td><div class="d-flex" style="gap:4px"><button (click)="openModal('transferModal')" class="btn-pm btn-sm" type="button">Transfer</button><button (click)="openModal('accountDetailModal')" class="btn-pm btn-sm" type="button">View</button></div></td>
+</tr>
+} @empty { <tr><td class="text-center py-4" colspan="7">No linked bank accounts available.</td></tr> }
+</tbody>
+</table>
+</div>
+}
+</div>
+</div>
+<div class="col-lg-4">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Consolidated Position</h4>
+<div class="p-3 rounded mb-3" style="background:var(--pm-accent-soft)">
+<div style="font-size:11px;color:#047857;font-weight:700">TOTAL AVAILABLE CASH</div>
+<div style="font-size:28px;font-weight:700;color:var(--pm-accent)">KES 14.2M</div>
+</div>
+<div class="p-3 rounded mb-3" style="background:var(--pm-info-soft)">
+<div style="font-size:11px;color:#1D4ED8;font-weight:700">PENDING SETTLEMENTS</div>
+<div style="font-size:28px;font-weight:700;color:var(--pm-info)">KES 4.5M</div>
+</div>
+<div class="p-3 rounded" style="background:var(--pm-surface)">
+<div style="font-size:11px;color:var(--pm-muted);font-weight:700">7-DAY FORECAST
+                                    </div>
+<div style="font-size:22px;font-weight:700;color:var(--pm-primary)">KES 22.1M</div>
+<div style="font-size:12px;color:var(--pm-ink-soft)">Expected inflows: KES 8.3M
+                                    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.10.2 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-arrow-left-right" style="color:var(--pm-accent)"></i> 3.10.2
+                                — Instant Transfers, Standing Orders &amp; Scheduled Payments</h3>
+<p class="ss">Execute real-time PesaLink transfers, create recurring payment schedules, and
+                                manage standing orders across all linked banks.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('transferModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-send"></i> New Transfer</button><button (click)="openModal('scheduleTransferModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-clock"></i> Schedule</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-5">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Recent Transfers</h4>
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Date</th>
+<th>From → To</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Ref</th>
+</tr>
+</thead>
+<tbody>
+@for (transfer of mockData.transferHistory; track transfer.ref) {
+<tr><td>{{ transfer.dateTime }}</td><td>{{ transfer.route }}</td><td><strong>{{ transfer.amount }}</strong></td><td><span [ngClass]="badgeClass(transfer.status)" class="B">{{ transfer.statusLabel }}</span></td><td><code>{{ transfer.ref }}</code></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="5">No transfer history available.</td></tr> }
+</tbody>
+</table>
+</div>
+}
+</div>
+</div>
+<div class="col-lg-4">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Standing Orders</h4>
+<div class="sr">
+<div><strong>Payroll to KCB</strong>
+<div style="font-size:11px;color:var(--pm-muted)">KES 2.4M • Every 25th</div>
+</div><button (click)="openModal('scheduleTransferModal')" class="btn-pm btn-sm" type="button">Edit</button>
+</div>
+<div class="sr">
+<div><strong>Rent to NCBA</strong>
+<div style="font-size:11px;color:var(--pm-muted)">KES 185K • Monthly 1st</div>
+</div><button (click)="openModal('scheduleTransferModal')" class="btn-pm btn-sm" type="button">Edit</button>
+</div>
+<div class="sr">
+<div><strong>Utilities to Equity</strong>
+<div style="font-size:11px;color:var(--pm-muted)">KES 320K • Auto</div>
+</div><button (click)="openModal('scheduleTransferModal')" class="btn-pm btn-sm" type="button">Edit</button>
+</div>
+<div class="sr">
+<div><strong>Insurance to Stanbic</strong>
+<div style="font-size:11px;color:var(--pm-muted)">KES 92K • Quarterly</div>
+</div><button (click)="openModal('scheduleTransferModal')" class="btn-pm btn-sm" type="button">Edit</button>
+</div>
+</div>
+</div>
+<div class="col-lg-3">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Quick Transfer</h4>
+<div class="mb-3"><label class="FL">From</label><select class="FC">
+<option>Equity ****4521</option>
+<option>Co-op ****3390</option>
+<option>Stanbic ****9912</option>
+</select></div>
+<div class="mb-3"><label class="FL">To</label><select class="FC">
+<option>KCB ****7782</option>
+<option>NCBA ****1128</option>
+<option>Family ****5543</option>
+</select></div>
+<div class="mb-3"><label class="FL">Amount (KES)</label><input class="FC" value="500000"/></div>
+<button (click)="openModal('transferModal')" class="btn-pm btn-pm-p w-100" type="button">Send Now</button>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.10.3 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-list-check" style="color:var(--pm-info)"></i> 3.10.3 —
+                                Transaction History, Reconciliation &amp; Matching Engine</h3>
+<p class="ss">Multi-bank transaction feed, auto-reconciliation engine, exception handling,
+                                and audit-ready reports.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('reconcileModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-list-check"></i>
+                                Reconcile</button><button (click)="openModal('exportStatementModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-download"></i> Export</button>
+</div>
+</div>
+<div class="row g-3">
+<div class="col-lg-8">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Multi-Bank Transaction Feed
+                                </h4>
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Date</th>
+<th>Bank</th>
+<th>Description</th>
+<th>Amount</th>
+<th>Match Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+@for (txn of mockData.transactions; track txn.id) {
+<tr><td>{{ txn.date }}</td><td>{{ txn.bank }}</td><td>{{ txn.description }}</td><td><strong>{{ txn.amount }}</strong></td><td><span [ngClass]="badgeClass(txn.matchStatus)" class="B">{{ txn.matchLabel }}</span></td><td><button (click)="openModal(txn.actionModal)" class="btn-pm btn-sm" type="button">{{ txn.actionLabel }}</button></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="6">No transactions available.</td></tr> }
+</tbody>
+</table>
+</div>
+}
+</div>
+</div>
+<div class="col-lg-4">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Reconciliation Summary</h4>
+<div class="p-3 rounded mb-3" style="background:var(--pm-accent-soft)">
+<div style="font-size:11px;color:#047857;font-weight:700">AUTO-MATCHED</div>
+<div style="font-size:24px;font-weight:700;color:var(--pm-accent)">412 txns</div>
+<div style="font-size:12px;color:#065F46">KES 38.4M</div>
+</div>
+<div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft)">
+<div style="font-size:11px;color:#B45309;font-weight:700">UNMATCHED</div>
+<div style="font-size:24px;font-weight:700;color:var(--pm-warning)">14 txns</div>
+<div style="font-size:12px;color:#92400E">KES 235,000</div>
+</div>
+<div class="p-3 rounded" style="background:var(--pm-info-soft)">
+<div style="font-size:11px;color:#1D4ED8;font-weight:700">EXCEPTIONS</div>
+<div style="font-size:24px;font-weight:700;color:var(--pm-info)">3 txns</div>
+<div style="font-size:12px;color:#1E40AF">KES 150,000</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.10.4 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-graph-up-arrow" style="color:var(--pm-purple)"></i> 3.10.4 —
+                                Cash Flow Analytics, Forecasting &amp; Bank Performance</h3>
+<p class="ss">Multi-bank cash flow trends, 90-day forecasts, bank performance benchmarking,
+                                and liquidity risk indicators.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('cashFlowModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-graph-up"></i> Forecast</button><button (click)="openModal('bankBenchmarkModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-bar-chart"></i> Benchmark</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-5">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">90-Day Cash Flow Forecast
+                                </h4>
+<div class="chart-bars">
+<div class="chart-bar" style="height:55%;background:var(--pm-info)"><span class="bar-label">W1</span></div>
+<div class="chart-bar" style="height:68%;background:var(--pm-info)"><span class="bar-label">W2</span></div>
+<div class="chart-bar" style="height:82%;background:var(--pm-warning)"><span class="bar-label">W3</span></div>
+<div class="chart-bar" style="height:74%;background:var(--pm-info)"><span class="bar-label">W4</span></div>
+<div class="chart-bar" style="height:90%;background:var(--pm-primary)"><span class="bar-label">W5</span></div>
+<div class="chart-bar" style="height:65%;background:var(--pm-accent)"><span class="bar-label">W6</span></div>
+<div class="chart-bar" style="height:78%;background:var(--pm-primary)"><span class="bar-label">W7</span></div>
+<div class="chart-bar" style="height:85%;background:var(--pm-info)"><span class="bar-label">W8</span></div>
+<div class="chart-bar" style="height:72%;background:var(--pm-accent)"><span class="bar-label">W9</span></div>
+<div class="chart-bar" style="height:95%;background:var(--pm-primary)"><span class="bar-label">W10</span></div>
+<div class="chart-bar" style="height:60%;background:var(--pm-info)"><span class="bar-label">W11</span></div>
+<div class="chart-bar" style="height:88%;background:var(--pm-accent)"><span class="bar-label">W12</span></div>
+</div>
+<div class="d-flex flex-wrap mt-3" style="gap:12px;font-size:11px"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pm-primary);margin-right:4px"></span>Inflows</span><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pm-accent);margin-right:4px"></span>Outflows</span><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pm-warning);margin-right:4px"></span>Peak</span>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Bank Performance</h4>
+<div class="sr">
+<div><strong>Equity Bank</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Fastest settlement • 8s avg
+                                        </div>
+</div><span class="B B-s">Best</span>
+</div>
+<div class="sr">
+<div><strong>Co-op Bank</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Highest volume • KES 18.2M
+                                        </div>
+</div><span class="B B-s">Top</span>
+</div>
+<div class="sr">
+<div><strong>KCB Bank</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Lowest fee • KES 0</div>
+</div><span class="B B-i">Good</span>
+</div>
+<div class="sr">
+<div><strong>Stanbic Bank</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Slowest sync • 15 min</div>
+</div><span class="B B-w">Review</span>
+</div>
+</div>
+</div>
+<div class="col-lg-3">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Liquidity Risk</h4>
+<div class="p-3 rounded mb-3" style="background:var(--pm-accent-soft)">
+<div style="font-size:11px;color:#047857;font-weight:700">MINIMUM BALANCE ALERT
+                                    </div>
+<div style="font-size:20px;font-weight:700;color:var(--pm-accent)">2 accounts</div>
+</div>
+<div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft)">
+<div style="font-size:11px;color:#B45309;font-weight:700">OVERDRAFT UTILISATION
+                                    </div>
+<div style="font-size:20px;font-weight:700;color:var(--pm-warning)">12%</div>
+</div>
+<div class="p-3 rounded" style="background:var(--pm-info-soft)">
+<div style="font-size:11px;color:#1D4ED8;font-weight:700">FORECASTED LOW</div>
+<div style="font-size:20px;font-weight:700;color:var(--pm-info)">Week 8</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.10.5 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-shield-check" style="color:var(--pm-danger)"></i> 3.10.5 —
+                                Security, Consent Management &amp; Fraud Controls</h3>
+<p class="ss">Consent lifecycle, fraud detection, transaction limits, and security audit
+                                logs across all linked banks.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('fraudSettingsModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-shield"></i> Fraud</button><button (click)="openModal('consentModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-key"></i>
+                                Consents</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Active Consents</h4>
+<div class="sr">
+<div><strong>Equity Bank</strong>
+<div style="font-size:11px;color:var(--pm-muted)">View + Transfer • Expires 15
+                                            Aug</div>
+</div><span class="B B-s">Valid</span>
+</div>
+<div class="sr">
+<div><strong>KCB Bank</strong>
+<div style="font-size:11px;color:var(--pm-muted)">View + Transfer • Expires 12
+                                            Sep</div>
+</div><span class="B B-s">Valid</span>
+</div>
+<div class="sr">
+<div><strong>Co-op Bank</strong>
+<div style="font-size:11px;color:var(--pm-muted)">View only • Expires 20 Jul
+                                        </div>
+</div><span class="B B-w">Expiring</span>
+</div>
+<div class="sr">
+<div><strong>Family Bank</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Expired • Re-auth required
+                                        </div>
+</div><span class="B B-d">Expired</span>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Fraud Controls</h4>
+<div class="form-check form-switch mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Real-time fraud alerts</label></div>
+<div class="form-check form-switch mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Large transfer verification</label>
+</div>
+<div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox"/><label class="form-check-label">New beneficiary approval</label>
+</div>
+<div class="form-check form-switch"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Daily transfer limit (KES 5M)</label>
+</div>
+<div class="mt-3"><label class="FL">High-value threshold</label><input class="FC" value="1,000,000"/></div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Security Log (Last 7 Days)
+                                </h4>
+<div class="sr">
+<div><strong>New device login</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Equity — 24 Jun</div>
+</div><span class="B B-s">Approved</span>
+</div>
+<div class="sr">
+<div><strong>Consent revoked</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Family Bank — 22 Jun</div>
+</div><span class="B B-d">Action</span>
+</div>
+<div class="sr">
+<div><strong>Transfer limit changed</strong>
+<div style="font-size:11px;color:var(--pm-muted)">KCB — 20 Jun</div>
+</div><span class="B B-s">Approved</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.10.6 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-gear-fill" style="color:var(--pm-muted)"></i> 3.10.6 — Open
+                                Banking Settings, Preferences &amp; Support</h3>
+<p class="ss">Notification preferences, reconciliation rules, bank connection health, and
+                                dedicated open banking support.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('obSettingsModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-gear"></i> Settings</button><button (click)="openModal('obSupportModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-headset"></i>
+                                Support</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Notification Preferences</h4>
+<div class="sr">
+<div><strong>Transfer completed</strong></div>
+<div class="form-check form-switch"><input checked="" class="form-check-input" type="checkbox"/></div>
+</div>
+<div class="sr">
+<div><strong>Reconciliation exception</strong></div>
+<div class="form-check form-switch"><input checked="" class="form-check-input" type="checkbox"/></div>
+</div>
+<div class="sr">
+<div><strong>Consent expiring</strong></div>
+<div class="form-check form-switch"><input checked="" class="form-check-input" type="checkbox"/></div>
+</div>
+<div class="sr">
+<div><strong>Fraud alert</strong></div>
+<div class="form-check form-switch"><input checked="" class="form-check-input" type="checkbox"/></div>
+</div>
+<div class="sr">
+<div><strong>Bank link failure</strong></div>
+<div class="form-check form-switch"><input checked="" class="form-check-input" type="checkbox"/></div>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Reconciliation Rules</h4>
+<div class="form-check mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Auto-match by
+                                        exact amount + reference</label></div>
+<div class="form-check mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Auto-match by
+                                        amount within ±KES 100</label></div>
+<div class="form-check mb-2"><input class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Flag duplicates across
+                                        banks</label></div>
+<div class="form-check"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Auto-create exceptions for
+                                        unmatched</label></div>
+<div class="mt-3"><label class="FL">Auto-reconcile window</label><select class="FC">
+<option>7 days</option>
+<option>14 days</option>
+<option>30 days</option>
+</select></div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Connection Health</h4>
+<div class="sr">
+<div><strong>Equity Bank</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Uptime 99.9% • Last sync: Now
+                                        </div>
+</div><span class="B B-s">Healthy</span>
+</div>
+<div class="sr">
+<div><strong>KCB Bank</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Uptime 99.8% • Last sync: Now
+                                        </div>
+</div><span class="B B-s">Healthy</span>
+</div>
+<div class="sr">
+<div><strong>Family Bank</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Connection issue • 3 hr ago
+                                        </div>
+</div><span class="B B-w">Issue</span>
+</div>
+<div class="mt-3"><button (click)="openModal('obSupportModal')" class="btn-pm btn-sm w-100" type="button">Contact Open Banking Support</button></div>
+</div>
+</div>
+</div>
+</div>
+</div><!-- pm-content -->
+</section><section class="paymo-page-modals" id="openBankingModals"><div (click)="closeModal('connectBankModal')" [attr.aria-hidden]="isModalOpen('connectBankModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('connectBankModal') ? 'true' : null" [class.show]="isModalOpen('connectBankModal')" [style.display]="isModalOpen('connectBankModal') ? 'block' : 'none'" class="modal fade R" id="connectBankModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Connect New Bank Account
+                    </h5><button (click)="closeModal('connectBankModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="stepper" id="connectStepper">
+@for (step of stepperItems('connect'); track step.index) {
+  <div [class.active]="step.index === currentStep('connect')" [class.done]="step.index < currentStep('connect')" class="step">
+<div class="step-n">@if (step.index < currentStep('connect')) { <i class="bi bi-check"></i> } @else { {{ step.index }} }</div>
+<div class="step-l">{{ step.label }}</div>
+</div>
+}
+  @if (!step.last) { <div class="step-line"></div> } {
+}
+</div>
+<div [class.active]="isStep('connect', 1)" [style.display]="isStep('connect', 1) ? 'block' : 'none'" class="fstep active" id="connectS1">
+<h6 style="font-weight:700">Step 1: Select Bank</h6>
+<div class="row g-2">
+<div class="col-md-4 col-6">
+<div (click)="selectBox($event)" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-bank d-block mb-1" style="font-size:22px;color:var(--pm-primary)"></i><strong style="font-size:12px">Equity Bank</strong></div>
+</div>
+<div class="col-md-4 col-6">
+<div (click)="selectBox($event)" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-bank d-block mb-1" style="font-size:22px;color:var(--pm-primary)"></i><strong style="font-size:12px">KCB Bank</strong></div>
+</div>
+<div class="col-md-4 col-6">
+<div (click)="selectBox($event)" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-bank d-block mb-1" style="font-size:22px;color:var(--pm-primary)"></i><strong style="font-size:12px">Co-op Bank</strong></div>
+</div>
+<div class="col-md-4 col-6">
+<div (click)="selectBox($event)" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-bank d-block mb-1" style="font-size:22px;color:var(--pm-primary)"></i><strong style="font-size:12px">Stanbic Bank</strong></div>
+</div>
+<div class="col-md-4 col-6">
+<div (click)="selectBox($event)" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-bank d-block mb-1" style="font-size:22px;color:var(--pm-primary)"></i><strong style="font-size:12px">Family Bank</strong></div>
+</div>
+<div class="col-md-4 col-6">
+<div (click)="selectBox($event)" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-bank d-block mb-1" style="font-size:22px;color:var(--pm-primary)"></i><strong style="font-size:12px">NCBA Bank</strong></div>
+</div>
+<div class="col-md-4 col-6">
+<div (click)="selectBox($event)" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-bank d-block mb-1" style="font-size:22px;color:var(--pm-primary)"></i><strong style="font-size:12px">I&amp;M Bank</strong></div>
+</div>
+<div class="col-md-4 col-6">
+<div (click)="selectBox($event)" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-bank d-block mb-1" style="font-size:22px;color:var(--pm-primary)"></i><strong style="font-size:12px">Absa Bank</strong></div>
+</div>
+</div>
+</div>
+<div [class.active]="isStep('connect', 2)" [style.display]="isStep('connect', 2) ? 'block' : 'none'" class="fstep" id="connectS2">
+<h6 style="font-weight:700">Step 2: Account Details</h6>
+<div class="mb-3"><label class="FL">Account Number</label><input class="FC" placeholder="Enter account number"/></div>
+<div class="mb-3"><label class="FL">Account Name</label><input class="FC" placeholder="Auto-filled from bank"/></div>
+<div class="mb-3"><label class="FL">Account Type</label><select class="FC">
+<option>Business Current</option>
+<option>Business Savings</option>
+<option>Escrow / Trust</option>
+<option>Project Account</option>
+</select></div>
+<div class="mb-3"><label class="FL">Nickname</label><input class="FC" placeholder="e.g. Operating Account"/></div>
+</div>
+<div [class.active]="isStep('connect', 3)" [style.display]="isStep('connect', 3) ? 'block' : 'none'" class="fstep" id="connectS3">
+<h6 style="font-weight:700">Step 3: Authorise Consent</h6>
+<div class="p-3 rounded mb-3" style="background:var(--pm-info-soft);font-size:13px"><i class="bi bi-shield-check me-1"></i> You will be redirected to the bank's secure portal
+                            to authorise read + transfer access. PayMo will never see your banking credentials.</div>
+<div class="form-check mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Allow view balance &amp;
+                                transactions</label></div>
+<div class="form-check mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Allow instant transfers
+                                (PesaLink)</label></div>
+<div class="form-check"><input class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Allow standing order creation</label>
+</div>
+</div>
+<div [class.active]="isStep('connect', 4)" [style.display]="isStep('connect', 4) ? 'block' : 'none'" class="fstep" id="connectS4">
+<div class="receipt">
+<div class="ri"><i class="bi bi-check-lg"></i></div>
+<h5 style="font-weight:700;color:var(--pm-accent)">Bank Connected Successfully</h5>
+<p style="font-size:13px;color:var(--pm-ink-soft)">Equity Bank account ****4521 is now live.
+                                Real-time balance and transactions are enabled.</p>
+<div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Bank</span><strong>Equity Bank</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Account</span><strong>****4521</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Consent</span><strong>Valid until 15 Aug 2025</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">Status</span><span class="B B-s">Live</span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-footer" id="connectFoot"><button (click)="closeModal('connectBankModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="nextFlow('connect', 4)" class="btn-pm btn-pm-p" id="connectNext" type="button">Continue <i class="bi bi-arrow-right"></i></button></div>
+</div>
+</div>
+</div><div (click)="closeModal('transferModal')" [attr.aria-hidden]="isModalOpen('transferModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('transferModal') ? 'true' : null" [class.show]="isModalOpen('transferModal')" [style.display]="isModalOpen('transferModal') ? 'block' : 'none'" class="modal fade R" id="transferModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-arrow-left-right text-primary me-2"></i>Instant Bank
+                        Transfer (PesaLink)</h5><button (click)="closeModal('transferModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="stepper" id="transferStepper">
+@for (step of stepperItems('transfer'); track step.index) {
+  <div [class.active]="step.index === currentStep('transfer')" [class.done]="step.index < currentStep('transfer')" class="step">
+<div class="step-n">@if (step.index < currentStep('transfer')) { <i class="bi bi-check"></i> } @else { {{ step.index }} }</div>
+<div class="step-l">{{ step.label }}</div>
+</div>
+}
+  @if (!step.last) { <div class="step-line"></div> } {
+}
+</div>
+<div [class.active]="isStep('transfer', 1)" [style.display]="isStep('transfer', 1) ? 'block' : 'none'" class="fstep active" id="transferS1">
+<h6 style="font-weight:700">Step 1: Transfer Details</h6>
+<div class="row g-3">
+<div class="col-md-6"><label class="FL">From Account</label><select class="FC">
+<option>Equity ****4521 (KES 6,842,100)</option>
+<option>Co-op ****3390 (KES 4,892,300)</option>
+<option>Stanbic ****9912 (KES 1,204,750)</option>
+</select></div>
+<div class="col-md-6"><label class="FL">To Bank</label><select class="FC">
+<option>KCB Bank</option>
+<option>NCBA Bank</option>
+<option>Family Bank</option>
+<option>I&amp;M Bank</option>
+<option>Equity Bank</option>
+</select></div>
+<div class="col-md-6"><label class="FL">Recipient Account Number</label><input class="FC" placeholder="Enter account number"/></div>
+<div class="col-md-6"><label class="FL">Recipient Name</label><input class="FC" placeholder="Auto-filled"/></div>
+<div class="col-md-6"><label class="FL">Amount (KES)</label><input class="FC" value="500000"/></div>
+<div class="col-md-6"><label class="FL">Reference</label><input class="FC" value="INV-2025-4421"/></div>
+</div>
+</div>
+<div [class.active]="isStep('transfer', 2)" [style.display]="isStep('transfer', 2) ? 'block' : 'none'" class="fstep" id="transferS2">
+<h6 style="font-weight:700">Step 2: Review &amp; Security</h6>
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:13px">
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">From</span><strong>Equity ****4521</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">To</span><strong>KCB ****7782 (James Kamau)</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 500,000</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Fee</span><strong>KES 0 (PesaLink)</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">Settlement</span><strong>Instant (T+0)</strong></div>
+</div><label class="FL">Enter PIN to Authorise</label>
+<div class="pin-row"><input (input)="moveFocus($event)" maxlength="1" type="password"/><input (input)="moveFocus($event)" maxlength="1" type="password"/><input (input)="moveFocus($event)" maxlength="1" type="password"/><input (input)="moveFocus($event)" maxlength="1" type="password"/></div>
+</div>
+<div [class.active]="isStep('transfer', 3)" [style.display]="isStep('transfer', 3) ? 'block' : 'none'" class="fstep" id="transferS3">
+<div class="receipt">
+<div class="ri"><i class="bi bi-check-lg"></i></div>
+<h5 style="font-weight:700;color:var(--pm-accent)">Transfer Successful</h5>
+<p style="font-size:13px;color:var(--pm-ink-soft)">KES 500,000 sent instantly via PesaLink
+                                to KCB ****7782.</p>
+<div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Reference</span><strong>PL-442189</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">UTR</span><strong>EQKCB202506271432</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">Time</span><strong>27 Jun 2025, 14:32 EAT</strong></div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-footer" id="transferFoot"><button (click)="closeModal('transferModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="nextFlow('transfer', 3)" class="btn-pm btn-pm-p" id="transferNext" type="button">Continue <i class="bi bi-arrow-right"></i></button></div>
+</div>
+</div>
+</div><div (click)="closeModal('reconcileModal')" [attr.aria-hidden]="isModalOpen('reconcileModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('reconcileModal') ? 'true' : null" [class.show]="isModalOpen('reconcileModal')" [style.display]="isModalOpen('reconcileModal') ? 'block' : 'none'" class="modal fade R" id="reconcileModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-xl modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-list-check text-info me-2"></i>Reconciliation Engine</h5>
+<button (click)="closeModal('reconcileModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="stepper" id="reconStepper">
+@for (step of stepperItems('recon'); track step.index) {
+  <div [class.active]="step.index === currentStep('recon')" [class.done]="step.index < currentStep('recon')" class="step">
+<div class="step-n">@if (step.index < currentStep('recon')) { <i class="bi bi-check"></i> } @else { {{ step.index }} }</div>
+<div class="step-l">{{ step.label }}</div>
+</div>
+}
+  @if (!step.last) { <div class="step-line"></div> } {
+}
+</div>
+<div [class.active]="isStep('recon', 1)" [style.display]="isStep('recon', 1) ? 'block' : 'none'" class="fstep active" id="reconS1">
+<h6 style="font-weight:700">Step 1: Select Period &amp; Banks</h6>
+<div class="row g-3">
+<div class="col-md-4"><label class="FL">From Date</label><input class="FC" type="date" value="2025-06-01"/></div>
+<div class="col-md-4"><label class="FL">To Date</label><input class="FC" type="date" value="2025-06-27"/></div>
+<div class="col-md-4"><label class="FL">Banks</label><select class="FC" multiple="">
+<option selected="">Equity Bank</option>
+<option selected="">KCB Bank</option>
+<option selected="">Co-op Bank</option>
+<option>Stanbic Bank</option>
+</select></div>
+</div>
+<div class="mt-3"><button (click)="setStep('recon', 2); setStep('recon', 2)" class="btn-pm btn-sm" type="button">Start
+                                Auto-Reconciliation</button></div>
+</div>
+<div [class.active]="isStep('recon', 2)" [style.display]="isStep('recon', 2) ? 'block' : 'none'" class="fstep" id="reconS2">
+<h6 style="font-weight:700">Step 2: Review Matches</h6>
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Date</th>
+<th>Bank</th>
+<th>Description</th>
+<th>Amount</th>
+<th>Match</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+@for (match of mockData.reconciliationMatches; track match.id) {
+<tr><td>{{ match.date }}</td><td>{{ match.bank }}</td><td>{{ match.description }}</td><td>{{ match.amount }}</td><td><span [ngClass]="badgeClass(match.status)" class="B">{{ match.match }}</span></td><td><button (click)="openModal(match.actionModal)" class="btn-pm btn-sm" type="button">{{ match.action }}</button></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="6">No reconciliation matches found.</td></tr> }
+</tbody>
+</table>
+</div>
+}
+</div>
+<div [class.active]="isStep('recon', 3)" [style.display]="isStep('recon', 3) ? 'block' : 'none'" class="fstep" id="reconS3">
+<div class="receipt">
+<div class="ri"><i class="bi bi-check-lg"></i></div>
+<h5 style="font-weight:700;color:var(--pm-accent)">Reconciliation Complete</h5>
+<p style="font-size:13px;color:var(--pm-ink-soft)">412 transactions auto-matched. 14
+                                exceptions require manual review.</p>
+<div class="d-flex justify-content-center mt-3" style="gap:8px"><button (click)="openModal('exportStatementModal')" class="btn-pm btn-sm" type="button">Download
+                                    Report</button><button (click)="openModal('exceptionModal')" class="btn-pm btn-sm" type="button">Review Exceptions</button></div>
+</div>
+</div>
+</div>
+<div class="modal-footer" id="reconFoot"><button (click)="closeModal('reconcileModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button><button (click)="nextFlow('recon', 3)" class="btn-pm btn-pm-p" id="reconNext" type="button">Continue <i class="bi bi-arrow-right"></i></button></div>
+</div>
+</div>
+</div><div (click)="closeModal('scheduleTransferModal')" [attr.aria-hidden]="isModalOpen('scheduleTransferModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('scheduleTransferModal') ? 'true' : null" [class.show]="isModalOpen('scheduleTransferModal')" [style.display]="isModalOpen('scheduleTransferModal') ? 'block' : 'none'" class="modal fade R" id="scheduleTransferModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-clock text-primary me-2"></i>Schedule Recurring Transfer
+                    </h5><button (click)="closeModal('scheduleTransferModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="row g-3">
+<div class="col-md-6"><label class="FL">From Account</label><select class="FC">
+<option>Equity ****4521</option>
+<option>Co-op ****3390</option>
+</select></div>
+<div class="col-md-6"><label class="FL">To Account</label><select class="FC">
+<option>KCB ****7782</option>
+<option>NCBA ****1128</option>
+</select></div>
+<div class="col-md-6"><label class="FL">Amount (KES)</label><input class="FC" value="2400000"/>
+</div>
+<div class="col-md-6"><label class="FL">Frequency</label><select class="FC">
+<option>Monthly (25th)</option>
+<option>Weekly (Every Monday)</option>
+<option>Quarterly</option>
+<option>Custom</option>
+</select></div>
+<div class="col-md-6"><label class="FL">Start Date</label><input class="FC" type="date" value="2025-07-25"/></div>
+<div class="col-md-6"><label class="FL">End Date / Occurrences</label><input class="FC" type="date" value="2026-06-25"/></div>
+<div class="col-12"><label class="FL">Reference</label><input class="FC" value="PAYROLL-TRANSFER"/></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('scheduleTransferModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('scheduleTransferModal', 'Standing order created successfully. First transfer scheduled for 25 Jul 2025.', 'SO-20250627-1128')" class="btn-pm btn-pm-p" type="button">Create
+                        Standing Order</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('accountDetailModal')" [attr.aria-hidden]="isModalOpen('accountDetailModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('accountDetailModal') ? 'true' : null" [class.show]="isModalOpen('accountDetailModal')" [style.display]="isModalOpen('accountDetailModal') ? 'block' : 'none'" class="modal fade R" id="accountDetailModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-bank me-2"></i>Account Detail</h5><button (click)="closeModal('accountDetailModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="row g-3">
+<div class="col-md-6">
+<div class="p-3 rounded" style="background:var(--pm-surface-2)">
+<div style="font-size:11px;color:var(--pm-muted)">Bank</div>
+<div style="font-size:18px;font-weight:700">Equity Bank</div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="p-3 rounded" style="background:var(--pm-surface-2)">
+<div style="font-size:11px;color:var(--pm-muted)">Account Number</div>
+<div style="font-size:18px;font-weight:700">****4521</div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="p-3 rounded" style="background:var(--pm-surface-2)">
+<div style="font-size:11px;color:var(--pm-muted)">Balance</div>
+<div style="font-size:22px;font-weight:700;color:var(--pm-accent)">KES 6,842,100</div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="p-3 rounded" style="background:var(--pm-surface-2)">
+<div style="font-size:11px;color:var(--pm-muted)">Last Sync</div>
+<div style="font-size:18px;font-weight:700">Just now</div>
+</div>
+</div>
+</div>
+<div class="mt-3"><label class="FL">Recent Transactions</label>
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Date</th>
+<th>Description</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+@for (entry of mockData.accountDetailTransactions; track entry.id) {
+<tr><td>{{ entry.date }}</td><td>{{ entry.description }}</td><td><strong>{{ entry.amount }}</strong></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="3">No account transactions available.</td></tr> }
+</tbody>
+</table>
+</div>
+}
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('accountDetailModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button><button (click)="openModal('transferModal')" class="btn-pm btn-pm-p" type="button">Transfer from this account</button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('exceptionModal')" [attr.aria-hidden]="isModalOpen('exceptionModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('exceptionModal') ? 'true' : null" [class.show]="isModalOpen('exceptionModal')" [style.display]="isModalOpen('exceptionModal') ? 'block' : 'none'" class="modal fade R" id="exceptionModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>Resolve
+                        Exception</h5><button (click)="closeModal('exceptionModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="FL">Transaction</label>
+<div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">26 Jun • Stanbic
+                            • Unknown credit • KES 85,000</div>
+</div>
+<div class="mb-3"><label class="FL">Match To</label><select class="FC">
+<option>Invoice INV-4428 (KES 85,000)</option>
+<option>Invoice INV-4431 (KES 85,000)</option>
+<option>Create new invoice</option>
+</select></div>
+<div class="mb-3"><label class="FL">Notes</label><textarea class="FC" rows="3">Amount matches invoice exactly. Reference slightly different due to bank truncation.</textarea>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('exceptionModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('exceptionModal', 'Exception resolved and transaction matched successfully.', 'EXC-20250627-0044')" class="btn-pm btn-pm-p" type="button">Resolve
+                        Exception</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('cashFlowModal')" [attr.aria-hidden]="isModalOpen('cashFlowModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('cashFlowModal') ? 'true' : null" [class.show]="isModalOpen('cashFlowModal')" [style.display]="isModalOpen('cashFlowModal') ? 'block' : 'none'" class="modal fade R" id="cashFlowModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-xl modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-graph-up-arrow text-purple me-2"></i>90-Day Cash Flow
+                        Forecast</h5><button (click)="closeModal('cashFlowModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="row g-3">
+<div class="col-md-8">
+<div class="chart-bars" style="height:140px">
+<div class="chart-bar" style="height:55%;background:var(--pm-info)"><span class="bar-label">W1</span></div>
+<div class="chart-bar" style="height:68%;background:var(--pm-info)"><span class="bar-label">W2</span></div>
+<div class="chart-bar" style="height:82%;background:var(--pm-warning)"><span class="bar-label">W3</span></div>
+<div class="chart-bar" style="height:74%;background:var(--pm-info)"><span class="bar-label">W4</span></div>
+<div class="chart-bar" style="height:90%;background:var(--pm-primary)"><span class="bar-label">W5</span></div>
+<div class="chart-bar" style="height:65%;background:var(--pm-accent)"><span class="bar-label">W6</span></div>
+<div class="chart-bar" style="height:78%;background:var(--pm-primary)"><span class="bar-label">W7</span></div>
+<div class="chart-bar" style="height:85%;background:var(--pm-info)"><span class="bar-label">W8</span></div>
+<div class="chart-bar" style="height:72%;background:var(--pm-accent)"><span class="bar-label">W9</span></div>
+<div class="chart-bar" style="height:95%;background:var(--pm-primary)"><span class="bar-label">W10</span></div>
+<div class="chart-bar" style="height:60%;background:var(--pm-info)"><span class="bar-label">W11</span></div>
+<div class="chart-bar" style="height:88%;background:var(--pm-accent)"><span class="bar-label">W12</span></div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="p-3 rounded mb-2" style="background:var(--pm-accent-soft)">
+<div style="font-size:11px;color:#047857;font-weight:700">PEAK CASH</div>
+<div style="font-size:22px;font-weight:700;color:var(--pm-accent)">Week 10</div>
+<div style="font-size:14px;color:#065F46">KES 22.1M</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-warning-soft)">
+<div style="font-size:11px;color:#B45309;font-weight:700">LOWEST POINT</div>
+<div style="font-size:22px;font-weight:700;color:var(--pm-warning)">Week 8</div>
+<div style="font-size:14px;color:#92400E">KES 11.4M</div>
+</div>
+<div class="p-3 rounded" style="background:var(--pm-info-soft)">
+<div style="font-size:11px;color:#1D4ED8;font-weight:700">NET CHANGE</div>
+<div style="font-size:22px;font-weight:700;color:var(--pm-info)">+KES 3.4M</div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('cashFlowModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button><button (click)="openModal('scheduleTransferModal')" class="btn-pm btn-pm-p" type="button">Schedule Transfers</button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('fraudSettingsModal')" [attr.aria-hidden]="isModalOpen('fraudSettingsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('fraudSettingsModal') ? 'true' : null" [class.show]="isModalOpen('fraudSettingsModal')" [style.display]="isModalOpen('fraudSettingsModal') ? 'block' : 'none'" class="modal fade R" id="fraudSettingsModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-shield-exclamation text-danger me-2"></i>Fraud &amp; Security
+                        Settings</h5><button (click)="closeModal('fraudSettingsModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="form-check form-switch mb-3"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Real-time fraud detection on all banks</label></div>
+<div class="form-check form-switch mb-3"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Large transfer verification (KES 1M+)</label></div>
+<div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox"/><label class="form-check-label">New beneficiary approval workflow</label></div>
+<div class="mb-3"><label class="FL">Daily transfer limit (KES)</label><input class="FC" value="5000000"/></div>
+<div class="mb-3"><label class="FL">Single transfer limit (KES)</label><input class="FC" value="2000000"/></div>
+<div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> All changes require 2FA confirmation and are logged in
+                        the security audit trail.</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('fraudSettingsModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('fraudSettingsModal', 'Fraud settings updated and applied across all banks.', '')" class="btn-pm btn-pm-p" type="button">Save
+                        Settings</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('consentModal')" [attr.aria-hidden]="isModalOpen('consentModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('consentModal') ? 'true' : null" [class.show]="isModalOpen('consentModal')" [style.display]="isModalOpen('consentModal') ? 'block' : 'none'" class="modal fade R" id="consentModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-key text-primary me-2"></i>Consent Management</h5><button (click)="closeModal('consentModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Bank</th>
+<th>Consent</th>
+<th>Expires</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+@for (consent of mockData.consents; track consent.bank) {
+<tr><td>{{ consent.bank }}</td><td>{{ consent.scope }}</td><td>{{ consent.expires }}</td><td><span [ngClass]="badgeClass(consent.status)" class="B">{{ consent.statusLabel }}</span></td><td><button (click)="handleConsentAction(consent)" class="btn-pm btn-sm" type="button">{{ consent.actionLabel }}</button></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="5">No bank consents available.</td></tr> }
+</tbody>
+</table>
+</div>
+}
+</div>
+<div class="modal-footer"><button (click)="closeModal('consentModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('reauthModal')" [attr.aria-hidden]="isModalOpen('reauthModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('reauthModal') ? 'true' : null" [class.show]="isModalOpen('reauthModal')" [style.display]="isModalOpen('reauthModal') ? 'block' : 'none'" class="modal fade R" id="reauthModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-arrow-repeat text-warning me-2"></i>Re-authenticate Bank
+                        Consent</h5><button (click)="closeModal('reauthModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="FL">Bank</label><select class="FC">
+<option>Family Bank</option>
+<option>Co-op Bank</option>
+</select></div>
+<div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:13px"><i class="bi bi-info-circle me-1"></i> You will be redirected to the bank's secure portal to
+                        renew consent. Your existing consent will remain active until the new one is granted.</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('reauthModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('reauthModal', 'Re-authorisation request sent. Please complete on the bank portal.', '')" class="btn-pm btn-pm-p" type="button">Start
+                        Re-auth</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('healthCheckModal')" [attr.aria-hidden]="isModalOpen('healthCheckModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('healthCheckModal') ? 'true' : null" [class.show]="isModalOpen('healthCheckModal')" [style.display]="isModalOpen('healthCheckModal') ? 'block' : 'none'" class="modal fade R" id="healthCheckModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>Open Banking Health Check
+                    </h5><button (click)="closeModal('healthCheckModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="row g-3 mb-3">
+<div class="col-md-3 col-6">
+<div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)">
+<div style="font-size:28px;font-weight:800;color:var(--pm-accent);font-family:var(--pm-font-display)">
+                                    96</div>
+<div style="font-size:10px;font-weight:700;color:#047857">HEALTH SCORE</div>
+</div>
+</div>
+<div class="col-md-3 col-6">
+<div class="p-3 rounded text-center" style="background:var(--pm-info-soft)">
+<div style="font-size:24px;font-weight:700;color:var(--pm-info)">7/7</div>
+<div style="font-size:10px;font-weight:700;color:#1D4ED8">LINKED</div>
+</div>
+</div>
+<div class="col-md-3 col-6">
+<div class="p-3 rounded text-center" style="background:var(--pm-warning-soft)">
+<div style="font-size:24px;font-weight:700;color:var(--pm-warning)">1</div>
+<div style="font-size:10px;font-weight:700;color:#B45309">EXPIRING</div>
+</div>
+</div>
+<div class="col-md-3 col-6">
+<div class="p-3 rounded text-center" style="background:var(--pm-purple-soft)">
+<div style="font-size:24px;font-weight:700;color:var(--pm-purple)">99.8%</div>
+<div style="font-size:10px;font-weight:700;color:#6D28D9">UPTIME</div>
+</div>
+</div>
+</div>
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Bank</th>
+<th>Connection</th>
+<th>Sync</th>
+<th>Consent</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+@for (row of mockData.healthRows; track row.bank) {
+<tr><td>{{ row.bank }}</td><td><span [ngClass]="badgeClass(row.connectionStatus)" class="B">{{ row.connection }}</span></td><td>{{ row.sync }}</td><td><span [ngClass]="badgeClass(row.consentStatus)" class="B">{{ row.consent }}</span></td><td><strong>{{ row.score }}</strong></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="5">No health records available.</td></tr> }
+</tbody>
+</table>
+</div>
+}
+</div>
+<div class="modal-footer"><button (click)="closeModal('healthCheckModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button><button (click)="openModal('reauthModal')" class="btn-pm btn-pm-p" type="button">Fix Issues</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('bankBenchmarkModal')" [attr.aria-hidden]="isModalOpen('bankBenchmarkModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('bankBenchmarkModal') ? 'true' : null" [class.show]="isModalOpen('bankBenchmarkModal')" [style.display]="isModalOpen('bankBenchmarkModal') ? 'block' : 'none'" class="modal fade R" id="bankBenchmarkModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-bar-chart text-purple me-2"></i>Bank Performance Benchmark
+                    </h5><button (click)="closeModal('bankBenchmarkModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Bank</th>
+<th>Settlement</th>
+<th>Fee</th>
+<th>Uptime</th>
+<th>Sync Speed</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+@for (bank of mockData.bankBenchmarks; track bank.bank) {
+<tr><td>{{ bank.bank }}</td><td>{{ bank.settlement }}</td><td>{{ bank.fee }}</td><td>{{ bank.uptime }}</td><td>{{ bank.syncSpeed }}</td><td><strong>{{ bank.score }}</strong></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="6">No benchmark data available.</td></tr> }
+</tbody>
+</table>
+</div>
+}
+</div>
+<div class="modal-footer"><button (click)="closeModal('bankBenchmarkModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('matchDetailModal')" [attr.aria-hidden]="isModalOpen('matchDetailModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('matchDetailModal') ? 'true' : null" [class.show]="isModalOpen('matchDetailModal')" [style.display]="isModalOpen('matchDetailModal') ? 'block' : 'none'" class="modal fade R" id="matchDetailModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-link-45deg me-2"></i>Transaction Match Details</h5><button (click)="closeModal('matchDetailModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:13px">
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Bank
+                                Transaction</span><strong>Equity • 27 Jun • KES 1,850,000</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">Matched
+                                To</span><strong>Invoice INV-4421 • ABC Ltd</strong></div>
+</div>
+<div class="row g-3">
+<div class="col-md-6">
+<div class="p-2 rounded" style="background:var(--pm-accent-soft)">
+<div style="font-size:11px;color:#047857;font-weight:700">MATCH CONFIDENCE</div>
+<div style="font-size:24px;font-weight:700;color:var(--pm-accent)">98%</div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="p-2 rounded" style="background:var(--pm-info-soft)">
+<div style="font-size:11px;color:#1D4ED8;font-weight:700">MATCH METHOD</div>
+<div style="font-size:18px;font-weight:700;color:var(--pm-info)">Amount + Reference
+                                </div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('matchDetailModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('exportStatementModal')" [attr.aria-hidden]="isModalOpen('exportStatementModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('exportStatementModal') ? 'true' : null" [class.show]="isModalOpen('exportStatementModal')" [style.display]="isModalOpen('exportStatementModal') ? 'block' : 'none'" class="modal fade R" id="exportStatementModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-download me-2"></i>Export Multi-Bank Statement</h5><button (click)="closeModal('exportStatementModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="FL">Banks</label><select class="FC" multiple="">
+<option selected="">Equity Bank</option>
+<option selected="">KCB Bank</option>
+<option>Co-op Bank</option>
+<option>Stanbic Bank</option>
+</select></div>
+<div class="row g-3 mb-3">
+<div class="col-6"><label class="FL">From</label><input class="FC" type="date" value="2025-06-01"/></div>
+<div class="col-6"><label class="FL">To</label><input class="FC" type="date" value="2025-06-27"/>
+</div>
+</div>
+<div class="mb-3"><label class="FL">Format</label><select class="FC">
+<option>PDF (Consolidated)</option>
+<option>Excel (Multi-sheet)</option>
+<option>CSV (Combined)</option>
+<option>MT940 (Bank format)</option>
+</select></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('exportStatementModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('exportStatementModal', 'Multi-bank statement exported successfully.', '')" class="btn-pm btn-pm-p" type="button">Export</button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('obSettingsModal')" [attr.aria-hidden]="isModalOpen('obSettingsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('obSettingsModal') ? 'true' : null" [class.show]="isModalOpen('obSettingsModal')" [style.display]="isModalOpen('obSettingsModal') ? 'block' : 'none'" class="modal fade R" id="obSettingsModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-gear me-2"></i>Open Banking Preferences</h5><button (click)="closeModal('obSettingsModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="FL">Default Transfer Bank</label><select class="FC">
+<option>Equity Bank ****4521</option>
+<option>Co-op Bank ****3390</option>
+</select></div>
+<div class="mb-3"><label class="FL">Reconciliation Auto-Run</label><select class="FC">
+<option>Daily at 6:00 AM</option>
+<option>Twice daily</option>
+<option>Manual only</option>
+</select></div>
+<div class="form-check form-switch mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Email daily reconciliation summary</label></div>
+<div class="form-check form-switch mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">SMS for large unmatched amounts</label></div>
+<div class="form-check form-switch"><input class="form-check-input" type="checkbox"/><label class="form-check-label">Auto-create exceptions for unmatched</label></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('obSettingsModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('obSettingsModal', 'Open banking preferences saved.', '')" class="btn-pm btn-pm-p" type="button">Save
+                        Settings</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('obSupportModal')" [attr.aria-hidden]="isModalOpen('obSupportModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('obSupportModal') ? 'true' : null" [class.show]="isModalOpen('obSupportModal')" [style.display]="isModalOpen('obSupportModal') ? 'block' : 'none'" class="modal fade R" id="obSupportModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-headset me-2"></i>Open Banking Support</h5><button (click)="closeModal('obSupportModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="FL">Issue Type</label><select class="FC">
+<option>Bank connection issue</option>
+<option>Reconciliation problem</option>
+<option>Transfer failure</option>
+<option>Consent / Security</option>
+<option>Other</option>
+</select></div>
+<div class="mb-3"><label class="FL">Bank (if applicable)</label><select class="FC">
+<option>Any / All</option>
+<option>Equity Bank</option>
+<option>KCB Bank</option>
+<option>Family Bank</option>
+</select></div>
+<div class="mb-3"><label class="FL">Description</label><textarea class="FC" rows="4">Describe the issue in detail...</textarea></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('obSupportModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('obSupportModal', 'Support ticket created. Reference OB-20250627-8812. A specialist will respond within 30 minutes.', 'OB-20250627-8812')" class="btn-pm btn-pm-p" type="button">Submit
+                        Ticket</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('attentionModal')" [attr.aria-hidden]="isModalOpen('attentionModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('attentionModal') ? 'true' : null" [class.show]="isModalOpen('attentionModal')" [style.display]="isModalOpen('attentionModal') ? 'block' : 'none'" class="modal fade R" id="attentionModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>All Items
+                        Requiring Attention</h5><button (click)="closeModal('attentionModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="sr">
+<div><strong>KCB balance below minimum</strong>
+<div style="font-size:11px;color:var(--pm-muted)">KES 42,100 (min KES 50,000)</div>
+</div><button (click)="openModal('transferModal')" class="btn-pm btn-sm" type="button">Top-up</button>
+</div>
+<div class="sr">
+<div><strong>14 unreconciled transactions</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Equity &amp; Stanbic</div>
+</div><button (click)="openModal('reconcileModal')" class="btn-pm btn-sm" type="button">Review</button>
+</div>
+<div class="sr">
+<div><strong>Co-op consent expires in 7 days</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Re-authenticate required</div>
+</div><button (click)="openModal('reauthModal')" class="btn-pm btn-sm" type="button">Re-auth</button>
+</div>
+<div class="sr">
+<div><strong>Family Bank link expired</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Reconnect to resume sync</div>
+</div><button (click)="openModal('reauthModal')" class="btn-pm btn-sm" type="button">Reconnect</button>
+</div>
+<div class="sr">
+<div><strong>Unknown credit KES 85,000</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Stanbic • Needs matching</div>
+</div><button (click)="openModal('exceptionModal')" class="btn-pm btn-sm" type="button">Match</button>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('attentionModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('optimizeModal')" [attr.aria-hidden]="isModalOpen('optimizeModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('optimizeModal') ? 'true' : null" [class.show]="isModalOpen('optimizeModal')" [style.display]="isModalOpen('optimizeModal') ? 'block' : 'none'" class="modal fade R" id="optimizeModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-lightbulb text-warning me-2"></i>Account Optimisation
+                        Analysis</h5><button (click)="closeModal('optimizeModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="p-3 rounded mb-3" style="background:var(--pm-accent-soft)">
+<div style="font-size:11px;color:#047857;font-weight:700">RECOMMENDED ACTIONS</div>
+<div style="font-size:20px;font-weight:700;color:var(--pm-accent)">Close 3 low-activity accounts
+                        </div>
+<div style="font-size:14px;color:#065F46">Potential annual fee savings: KES 18,200</div>
+</div>
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Account</th>
+<th>Avg Monthly Txns</th>
+<th>Annual Fees</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+@for (item of mockData.optimizationAccounts; track item.account) {
+<tr><td>{{ item.account }}</td><td>{{ item.averageMonthlyTransactions }}</td><td>{{ item.annualFees }}</td><td><span class="B B-w">{{ item.recommendation }}</span></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="4">No optimization recommendations available.</td></tr> }
+</tbody>
+</table>
+</div>
+}
+</div>
+<div class="modal-footer"><button (click)="closeModal('optimizeModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button><button (click)="processAction('optimizeModal', 'Optimisation plan saved. Accounts scheduled for closure review.', '')" class="btn-pm btn-pm-p" type="button">Adopt
+                        Plan</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('manageLinksModal')" [attr.aria-hidden]="isModalOpen('manageLinksModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('manageLinksModal') ? 'true' : null" [class.show]="isModalOpen('manageLinksModal')" [style.display]="isModalOpen('manageLinksModal') ? 'block' : 'none'" class="modal fade R" id="manageLinksModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-link-45deg me-2"></i>Manage Bank Links</h5><button (click)="closeModal('manageLinksModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Bank</th>
+<th>Account</th>
+<th>Consent</th>
+<th>Sync</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+@for (link of mockData.managedLinks; track link.bank + link.account) {
+<tr><td>{{ link.bank }}</td><td>{{ link.account }}</td><td><span [ngClass]="badgeClass(link.consentStatus)" class="B">{{ link.consent }}</span></td><td><span [ngClass]="badgeClass(link.syncStatus)" class="B">{{ link.sync }}</span></td><td><button (click)="openModal('reauthModal')" class="btn-pm btn-sm" type="button">Re-auth</button><button (click)="processAction('manageLinksModal', link.secondaryActionMessage, '')" class="btn-pm btn-sm" type="button">{{ link.secondaryAction }}</button></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="5">No bank links configured.</td></tr> }
+</tbody>
+</table>
+</div>
+}
+</div>
+<div class="modal-footer"><button (click)="closeModal('manageLinksModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('profileModal')" [attr.aria-hidden]="isModalOpen('profileModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('profileModal') ? 'true' : null" [class.show]="isModalOpen('profileModal')" [style.display]="isModalOpen('profileModal') ? 'block' : 'none'" class="modal fade R" id="profileModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile</h5><button (click)="closeModal('profileModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body text-center">
+<div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">JK</div>
+<h5 style="font-weight:700;margin-bottom:2px">James Kamau</h5>
+<p style="font-size:13px;color:var(--pm-muted)">james.k&#64;email.com · +254 712 345 890</p>
+<div class="row g-2 text-start mt-3" style="font-size:13px">
+<div class="col-6">
+<div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Linked Banks</span><br/><strong>7 accounts</strong></div>
+</div>
+<div class="col-6">
+<div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Health Score</span><br/><strong style="color:var(--pm-accent)">96/100</strong></div>
+</div>
+<div class="col-6">
+<div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Transfers (MTD)</span><br/><strong>186</strong></div>
+</div>
+<div class="col-6">
+<div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Open Exceptions</span><br/><strong>14</strong></div>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('profileModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('notifModal')" [attr.aria-hidden]="isModalOpen('notifModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('notifModal') ? 'true' : null" [class.show]="isModalOpen('notifModal')" [style.display]="isModalOpen('notifModal') ? 'block' : 'none'" class="modal fade R" id="notifModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notifications (9)</h5><button (click)="closeModal('notifModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body" style="max-height:500px;overflow-y:auto">
+<div class="p-3 rounded mb-2" style="background:var(--pm-danger-soft);font-size:13px"><strong>KCB
+                            balance below minimum</strong>
+<div style="font-size:11px;color:#7F1D1D">KES 42,100 (min KES 50,000)</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-warning-soft);font-size:13px"><strong>Co-op
+                            consent expires in 7 days</strong>
+<div style="font-size:11px;color:#92400E">Re-authenticate before 04 Jul</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-info-soft);font-size:13px"><strong>14
+                            transactions unmatched</strong>
+<div style="font-size:11px;color:#1E40AF">Requires reconciliation review</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-accent-soft);font-size:13px">
+<strong>Transfer PL-442189 completed</strong>
+<div style="font-size:11px;color:#065F46">KES 850,000 to KCB ****7782</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:#fff;border:1px solid var(--pm-border);font-size:13px"><strong>Family Bank
+                            link expired</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Reconnect to resume sync</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="openModal('obSettingsModal')" class="btn-pm" type="button"><i class="bi bi-gear"></i> Settings</button><button (click)="closeModal('notifModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('optimizeModal2')" [attr.aria-hidden]="isModalOpen('optimizeModal2') ? null : 'true'" [attr.aria-modal]="isModalOpen('optimizeModal2') ? 'true' : null" [class.show]="isModalOpen('optimizeModal2')" [style.display]="isModalOpen('optimizeModal2') ? 'block' : 'none'" class="modal fade R" id="optimizeModal2" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-lightbulb text-warning me-2"></i>Account Optimisation</h5>
+<button (click)="closeModal('optimizeModal2')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<p style="font-size:13px;color:var(--pm-ink-soft)">Analysis shows 3 low-activity accounts can be
+                        closed with minimal operational impact, saving KES 18,200 annually in fees.</p>
+</div>
+<div class="modal-footer"><button (click)="closeModal('optimizeModal2')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button><button (click)="processAction('optimizeModal2', 'Optimisation plan saved.', '')" class="btn-pm btn-pm-p" type="button">Adopt
+                        Plan</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('testModal')" [attr.aria-hidden]="isModalOpen('testModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('testModal') ? 'true' : null" [class.show]="isModalOpen('testModal')" [style.display]="isModalOpen('testModal') ? 'block' : 'none'" class="modal fade R" id="testModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-eye me-2"></i>Test Modal</h5><button (click)="closeModal('testModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<p style="font-size:13px;color:var(--pm-ink-soft)">This is a placeholder modal used for testing. All
+                        production modals are fully functional.</p>
+</div>
+<div class="modal-footer"><button (click)="closeModal('testModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div></section></div>
+
+  @if (hasOpenModal()) {
+    <div class="modal-backdrop fade show" (click)="closeAllModals()"></div>
+  }
+</div>
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}

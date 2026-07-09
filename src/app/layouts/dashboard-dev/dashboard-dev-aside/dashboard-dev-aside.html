@@ -1,0 +1,68 @@
+<!-- Aside Backdrop -->
+<div class="aside-backdrop" [class.show]="openPanel !== null" (click)="onClose()"></div>
+
+<!-- Right Aside Panel -->
+<aside class="right-aside" [class.open]="openPanel !== null" aria-label="Context panel">
+
+    <!-- System Status Panel -->
+    <div class="aside-panel-content" [class.active]="openPanel === 'systemStatus'">
+        <div class="aside-header">
+            <span class="aside-title"><i class="bi bi-activity text-primary"></i> System Status</span>
+            <button class="aside-close" (click)="onClose()"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="aside-body">
+            <div class="aside-card">
+                <h6>Service Health</h6>
+                <div class="status-row"><div class="d-flex align-items-center"><span class="status-dot active"></span><span class="fw-semibold" style="font-size:0.82rem">Core Payments API</span></div><span style="font-size:0.72rem;color:var(--paymo-accent)">Operational</span></div>
+                <div class="status-row"><div class="d-flex align-items-center"><span class="status-dot warning"></span><span class="fw-semibold" style="font-size:0.82rem">Webhook Delivery</span></div><span style="font-size:0.72rem;color:var(--paymo-warning)">Degraded</span></div>
+                <div class="status-row"><div class="d-flex align-items-center"><span class="status-dot active"></span><span class="fw-semibold" style="font-size:0.82rem">Card Issuance</span></div><span style="font-size:0.72rem;color:var(--paymo-accent)">Operational</span></div>
+                <div class="status-row"><div class="d-flex align-items-center"><span class="status-dot active"></span><span class="fw-semibold" style="font-size:0.82rem">KYC Verification</span></div><span style="font-size:0.72rem;color:var(--paymo-accent)">Operational</span></div>
+            </div>
+            <div class="aside-card">
+                <h6>API Latency (ms)</h6>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted" style="font-size:0.82rem">p50</span><span class="fw-bold" style="font-size:0.82rem">67ms</span></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted" style="font-size:0.82rem">p95</span><span class="fw-bold" style="font-size:0.82rem">189ms</span></div>
+                <div class="d-flex justify-content-between"><span class="text-muted" style="font-size:0.82rem">p99</span><span class="fw-bold" style="font-size:0.82rem">342ms</span></div>
+            </div>
+            <button class="btn btn-primary w-100" (click)="onToast('Status refreshed','success')">Refresh Services</button>
+        </div>
+    </div>
+
+    <!-- API Explorer Panel -->
+    <div class="aside-panel-content" [class.active]="openPanel === 'apiExplorer'">
+        <div class="aside-header">
+            <span class="aside-title"><i class="bi bi-terminal text-primary"></i> API Explorer</span>
+            <button class="aside-close" (click)="onClose()"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="aside-body">
+            <div class="aside-card">
+                <h6>Test Request</h6>
+                <div class="mb-2"><label class="form-label fw-semibold" style="font-size:0.82rem">Method</label><select class="form-select form-select-sm"><option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option></select></div>
+                <div class="mb-2"><label class="form-label fw-semibold" style="font-size:0.82rem">Endpoint</label><input type="text" class="form-control form-control-sm" value="/v1/accounts"></div>
+                <div class="mb-2"><label class="form-label fw-semibold" style="font-size:0.82rem">Body (JSON)</label><textarea class="form-control form-control-sm" rows="3" style="font-family:monospace;font-size:0.8rem" placeholder='{"key": "value"}'></textarea></div>
+                <button class="btn btn-primary w-100" (click)="onToast('Request sent — 200 OK','success')"><i class="bi bi-play me-2"></i>Send Request</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Keys Panel -->
+    <div class="aside-panel-content" [class.active]="openPanel === 'apiKeys'">
+        <div class="aside-header">
+            <span class="aside-title"><i class="bi bi-key text-primary"></i> Manage API Keys</span>
+            <button class="aside-close" (click)="onClose()"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="aside-body">
+            <div class="aside-card">
+                <h6>Key Management</h6>
+                <div class="mb-3"><label class="form-label fw-semibold" style="font-size:0.82rem">Key Name</label><input type="text" class="form-control form-control-sm" value="Production Key"></div>
+                <div class="mb-3"><label class="form-label fw-semibold" style="font-size:0.82rem">Permissions</label>
+                    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:0.82rem">Read accounts</label></div>
+                    <div class="form-check mb-1"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:0.82rem">Create transfers</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label" style="font-size:0.82rem">Manage webhooks</label></div>
+                </div>
+            </div>
+            <button class="btn btn-primary w-100" (click)="onToast('Key permissions updated','success')">Save Permissions</button>
+        </div>
+    </div>
+
+</aside>

@@ -1,0 +1,1225 @@
+<!-- PayMo Multi-Currency & FX — Angular Template -->
+
+<!-- ===== PAGE BAR ===== -->
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb">
+      <a href="#">Home</a> / <a href="#">Transactions Hub</a> / <strong>Multi-Currency & FX</strong>
+    </div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 1.13 — Multi-Currency & FX Management</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Manage multi-currency wallets, execute instant FX conversions, set up forward contracts, monitor live rates, and optimise cross-border cash flow across 20+ currencies.</p>
+  </div>
+  <div class="d-flex flex-wrap" style="gap:8px">
+    <button class="btn-pm" (click)="openModal(fxHealthModal)"><i class="bi bi-heart-pulse"></i> Health Check</button>
+    <button class="btn-pm" (click)="openModal(rateAlertsModal)"><i class="bi bi-bell"></i> Rate Alerts</button>
+    <button class="btn-pm" (click)="openModal(convertModal)"><i class="bi bi-arrow-left-right"></i> Convert</button>
+    <button class="btn-pm btn-pm-p" (click)="openModal(newWalletModal)"><i class="bi bi-plus-lg"></i> New Wallet</button>
+  </div>
+</div>
+
+<!-- ===== CONTENT ===== -->
+<div class="pm-content">
+
+  <!-- HERO STATS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C C-accent" style="min-height:170px">
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">FX command center is live <span style="color:#86efac">●</span></p>
+        <div class="SV" style="margin:8px 0;color:#fff">{{ heroStats.totalEquivalent }}</div>
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Across {{ heroStats.currencies }} currencies in {{ heroStats.wallets }} wallets. USD, EUR, GBP, ZAR, UGX, TZS, GHS, NGN, AED.</p>
+        <div class="d-flex flex-wrap mt-3" style="gap:8px">
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal(convertModal)">Convert</button>
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal(hedgeModal)">Hedge</button>
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal(newWalletModal)">Add Wallet</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-info)">TODAY'S FX VOLUME</p>
+        <div class="SV" style="margin:6px 0">{{ heroStats.fxVolume }}</div>
+        <span class="B B-s"><i class="bi bi-graph-up-arrow"></i> +{{ heroStats.volumeChange }}% vs yesterday</span>
+        <div class="mt-2">
+          <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>USD</span><span>KES 9.2M</span></div>
+          <div class="pm-progress mt-1">
+            <div class="pm-progress-bar" style="width:50%;background:var(--pm-info)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-accent)">BEST RATE TODAY</p>
+        <div class="SV" style="margin:6px 0">{{ heroStats.bestRate }}</div>
+        <span class="B B-s"><i class="bi bi-clock"></i> Live • Updated 14s ago</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+          <div>USD/EUR: {{ heroStats.usdEur }} <span [class.text-success]="heroStats.usdEurPositive" [class.text-danger]="!heroStats.usdEurPositive">{{ heroStats.usdEurPositive ? '+0.4%' : '-0.4%' }}</span></div>
+          <div>USD/GBP: {{ heroStats.usdGbp }} <span [class.text-success]="heroStats.usdGbpPositive" [class.text-danger]="!heroStats.usdGbpPositive">{{ heroStats.usdGbpPositive ? '+0.2%' : '-0.2%' }}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4">
+      <div class="C" style="min-height:170px;border-left:3px solid var(--pm-warning)">
+        <p class="SL" style="color:var(--pm-warning)">FX SAVINGS THIS MONTH</p>
+        <div class="SV" style="margin:6px 0">{{ heroStats.savings }}</div>
+        <span class="B B-s"><i class="bi bi-piggy-bank"></i> Smart routing active</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+          <div>Rate optimisation: <strong>{{ heroStats.rateOpt }}</strong></div>
+          <div>Forward contracts: <strong>{{ heroStats.forwardSavings }}</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Attention Required</h3>
+          <button class="btn-pm btn-sm" (click)="openModal(attentionModal)">View all</button>
+        </div>
+        <div class="sr" *ngFor="let item of attentionItems">
+          <div class="d-flex align-items-center gap-3">
+            <div [style.width]="'36px'" [style.height]="'36px'" [style.borderRadius]="'50%'" [style.background]="item.iconBg" [style.color]="item.iconColor" style="display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi" [class]="item.icon"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+            </div>
+          </div>
+          <button class="btn-pm btn-sm" [class.btn-pm-d]="item.actionStyle === 'btn-pm-d'" (click)="openModal(item.actionModal === 'convertModal' ? convertModal : item.actionModal === 'hedgeModal' ? hedgeModal : rateAlertsModal)">{{ item.actionLabel }}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Smart Suggestions</h3>
+          <span class="B B-p"><i class="bi bi-stars"></i> AI</span>
+        </div>
+        <div class="sr" *ngFor="let s of suggestions">
+          <div class="d-flex align-items-center gap-3">
+            <div [style.width]="'36px'" [style.height]="'36px'" [style.borderRadius]="'50%'" [style.background]="s.iconBg" [style.color]="s.iconColor" style="display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi" [class]="s.icon"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px">{{ s.title }}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ s.subtitle }}</div>
+            </div>
+          </div>
+          <button class="btn-pm btn-sm" (click)="openModal(s.actionModal === 'convertModal' ? convertModal : s.actionModal === 'hedgeModal' ? hedgeModal : newWalletModal)">{{ s.actionLabel }}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="mb-3">
+          <h3 class="st">Quick Actions</h3>
+          <p class="ss">Frequent FX workflows</p>
+        </div>
+        <div class="quick-grid">
+          <button class="quick-btn" *ngFor="let qa of quickActions" (click)="openModal(
+            qa.modal === 'convertModal' ? convertModal :
+            qa.modal === 'hedgeModal' ? hedgeModal :
+            qa.modal === 'bulkFxModal' ? bulkFxModal :
+            qa.modal === 'rateAlertsModal' ? rateAlertsModal :
+            qa.modal === 'fxTransferModal' ? fxTransferModal :
+            qa.modal === 'fxStatementModal' ? fxStatementModal :
+            qa.modal === 'swapModal' ? swapModal :
+            fxAnalyticsModal
+          )">
+            <i class="bi" [class]="qa.icon" [class.text-danger]="qa.iconColor === 'text-danger'" [class.text-warning]="qa.iconColor === 'text-warning'" [class.text-primary]="qa.iconColor === 'text-primary'" [class.text-success]="qa.iconColor === 'text-success'" [class.text-info]="qa.iconColor === 'text-info'" [style.color]="qa.customColor"></i> {{ qa.label }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1.13.1 -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-wallet2" style="color:var(--pm-primary)"></i> 1.13.1 — Multi-Currency Portfolio Overview</h3>
+        <p class="ss">Real-time balances across all currency wallets with equivalent values, performance, and quick actions.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(fxAnalyticsModal)"><i class="bi bi-bar-chart"></i> Analytics</button>
+        <button class="btn-pm btn-sm btn-pm-p" (click)="openModal(newWalletModal)"><i class="bi bi-plus-lg"></i> New Wallet</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="T">
+        <thead><tr><th>Currency</th><th>Wallet</th><th>Balance</th><th>KES Equivalent</th><th>24h Change</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let w of wallets">
+            <td><strong>{{ w.currency }}</strong></td>
+            <td>{{ w.name }}</td>
+            <td><strong>{{ w.balance }}</strong></td>
+            <td>{{ w.kesEquivalent }}</td>
+            <td [class.text-success]="w.changePositive" [class.text-danger]="!w.changePositive">{{ w.change24h }}</td>
+            <td><span class="B" [class.B-s]="w.status === 'active'" [class.B-w]="w.status === 'low'">{{ w.status === 'active' ? 'Active' : 'Low' }}</span></td>
+            <td>
+              <div class="d-flex" style="gap:4px">
+                <button class="btn-pm btn-sm" (click)="openModal(convertModal)">Convert</button>
+                <button class="btn-pm btn-sm" (click)="openModal(fxTransferModal)">Transfer</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 1.13.2 -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-graph-up-arrow" style="color:var(--pm-accent)"></i> 1.13.2 — Live FX Rates & Market Center</h3>
+        <p class="ss">Real-time interbank and retail rates, historical charts, rate alerts, and market insights.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(rateAlertsModal)"><i class="bi bi-bell"></i> Alerts</button>
+        <button class="btn-pm btn-sm" (click)="openModal(fxMarketModal)"><i class="bi bi-globe"></i> Market Depth</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Live Retail Rates (KES)</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>Pair</th><th>Buy</th><th>Sell</th><th>Spread</th><th>24h</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let r of fxRates">
+                  <td><strong>{{ r.pair }}</strong></td>
+                  <td>{{ r.buy }}</td>
+                  <td>{{ r.sell }}</td>
+                  <td>{{ r.spread }}</td>
+                  <td [class.text-success]="r.changePositive" [class.text-danger]="!r.changePositive">{{ r.change24h }}</td>
+                  <td><button class="btn-pm btn-sm" (click)="openModal(convertModal)">Trade</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Rate Alerts Active</h4>
+          <div class="sr" *ngFor="let a of rateAlerts">
+            <div>
+              <strong>{{ a.pair }} {{ a.condition }} {{ a.threshold }}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Current: {{ a.current }} • Trigger: {{ a.trigger }}</div>
+            </div>
+            <span class="B" [class.B-s]="a.status === 'Active'" [class.B-w]="a.status === 'Paused'">{{ a.status }}</span>
+          </div>
+          <button class="btn-pm btn-sm w-100 mt-2" (click)="openModal(rateAlertsModal)">Manage All Alerts</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1.13.3 -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-arrow-left-right" style="color:var(--pm-info)"></i> 1.13.3 — FX Transfers & Conversions</h3>
+        <p class="ss">Instant and scheduled currency conversions with smart routing, fee transparency, and receipt generation.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(fxTransferModal)"><i class="bi bi-send"></i> Transfer</button>
+        <button class="btn-pm btn-sm btn-pm-p" (click)="openModal(convertModal)">Convert Now</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Recent FX Transactions</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>Date</th><th>From</th><th>To</th><th>Rate</th><th>Amount</th><th>Fee</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let t of fxTransactions">
+                  <td>{{ t.date }}</td>
+                  <td>{{ t.type }}</td>
+                  <td>{{ t.details }}</td>
+                  <td>{{ t.rate }}</td>
+                  <td><strong>{{ t.amount }}</strong></td>
+                  <td>{{ t.fee }}</td>
+                  <td><span class="B" [class.B-s]="t.status === 'Completed'" [class.B-w]="t.status === 'Pending'">{{ t.status }}</span></td>
+                  <td><button class="btn-pm btn-sm" (click)="openModal(t.status === 'Completed' ? fxReceiptModal : fxTransferModal)">{{ getTxnActionLabel(t.status) }}</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Quick Convert</h4>
+          <div class="mb-2"><label class="FL">From</label>
+            <select class="FC" [(ngModel)]="convertForm.fromWallet">
+              <option>USD Wallet (48,200)</option>
+              <option>EUR Wallet (18,400)</option>
+              <option>GBP Wallet (9,100)</option>
+            </select>
+          </div>
+          <div class="mb-2"><label class="FL">To</label>
+            <select class="FC" [(ngModel)]="convertForm.toWallet">
+              <option>KES Wallet</option>
+              <option>ZAR Wallet</option>
+              <option>UGX Wallet</option>
+            </select>
+          </div>
+          <div class="mb-2"><label class="FL">Amount</label><input class="FC" type="number" [(ngModel)]="convertForm.amount"></div>
+          <button class="btn-pm btn-pm-p w-100" (click)="openModal(convertModal)">Convert Instantly</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1.13.4 -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-shield-check" style="color:var(--pm-purple)"></i> 1.13.4 — Hedging, Forwards & Risk Management</h3>
+        <p class="ss">Forward contracts, options, hedging strategies, and exposure monitoring for treasury teams.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(hedgeModal)">New Contract</button>
+        <button class="btn-pm btn-sm" (click)="openModal(fxRiskModal)">Risk Dashboard</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Forward Contracts</h4>
+          <div class="sr" *ngFor="let c of forwardContracts">
+            <div>
+              <strong>{{ c.pair }} • {{ c.id }}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ c.amount }} @ {{ c.rate }} • Expires {{ c.expiry }}</div>
+            </div>
+            <span class="B" [class.B-s]="c.status === 'Active'" [class.B-d]="c.status === 'Settled'">{{ c.status }}</span>
+          </div>
+          <button class="btn-pm btn-sm w-100 mt-2" (click)="openModal(hedgeModal)">Manage Contracts</button>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">FX Exposure Summary</h4>
+          <div class="mb-3" *ngFor="let e of fxExposures">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>{{ e.currency }} Net Position</span><span [class.text-success]="e.position.includes('Long')" [class.text-danger]="e.position.includes('Short')">{{ e.position }}</span></div>
+            <div class="pm-progress">
+              <div class="pm-progress-bar" [style.width.%]="e.width" [style.background]="e.color"></div>
+            </div>
+          </div>
+          <button class="btn-pm btn-sm w-100" (click)="openModal(fxRiskModal)">View Full Exposure</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1.13.5 -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-bar-chart-line" style="color:var(--pm-info)"></i> 1.13.5 — FX Analytics & Reporting</h3>
+        <p class="ss">Comprehensive FX performance reports, cost analysis, and predictive insights.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(fxStatementModal)"><i class="bi bi-download"></i> Export</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-5">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Monthly FX Cost Breakdown</h4>
+          <div class="chart-bars" style="height:90px">
+            <div class="chart-bar" *ngFor="let bar of chartBars" [style.height.%]="bar.height" [style.background]="bar.color">
+              <span class="bar-label">{{ bar.month }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Key Metrics</h4>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="p-3 rounded" style="background:var(--pm-accent-soft)">
+                <div style="font-size:11px;color:#047857">Avg Spread</div>
+                <div style="font-size:22px;font-weight:700;color:var(--pm-accent)">0.48%</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 rounded" style="background:var(--pm-info-soft)">
+                <div style="font-size:11px;color:#1D4ED8">Best Execution</div>
+                <div style="font-size:22px;font-weight:700;color:var(--pm-info)">99.2%</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 rounded" style="background:var(--pm-purple-soft)">
+                <div style="font-size:11px;color:#6D28D9">Hedging Ratio</div>
+                <div style="font-size:22px;font-weight:700;color:var(--pm-purple)">64%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1.13.6 -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-gear" style="color:var(--pm-muted)"></i> 1.13.6 — FX Automation & Preferences</h3>
+        <p class="ss">Auto-conversion rules, rate alerts, wallet preferences, and permission controls.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal(fxAutomationModal)"><i class="bi bi-robot"></i> Automation</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Auto-Conversion Rules</h4>
+          <div class="sr" *ngFor="let r of autoRules">
+            <div><strong>{{ r.name }}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ r.description }}</div>
+            </div>
+            <span class="B" [class.B-s]="r.status === 'Active'" [class.B-w]="r.status === 'Paused'">{{ r.status }}</span>
+          </div>
+          <button class="btn-pm btn-sm w-100 mt-2" (click)="openModal(fxAutomationModal)">Manage Rules</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Rate Alert Settings</h4>
+          <div class="sr" *ngFor="let a of alertSettings">
+            <div><strong>{{ a.pair }}</strong></div>
+            <span class="B B-s">{{ a.channels }}</span>
+          </div>
+          <button class="btn-pm btn-sm w-100 mt-2" (click)="openModal(rateAlertsModal)">Edit Alerts</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Wallet Preferences</h4>
+          <div class="sr" *ngFor="let p of walletPrefs">
+            <div><strong>{{ p.label }}</strong></div><strong>{{ p.value }}</strong>
+          </div>
+          <button class="btn-pm btn-sm w-100 mt-2" (click)="openModal(fxPreferencesModal)">Preferences</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1.13.7 -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="st"><i class="bi bi-clock-history" style="color:var(--pm-muted)"></i> Recent FX Activity</h3>
+      <button class="btn-pm btn-sm" (click)="openModal(fxStatementModal)">Full History</button>
+    </div>
+    <div class="table-responsive">
+      <table class="T">
+        <thead><tr><th>Date</th><th>Type</th><th>Details</th><th>Amount</th><th>Rate</th><th>Fee</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let a of fxActivities">
+            <td>{{ a.date }}</td>
+            <td>{{ a.type }}</td>
+            <td>{{ a.details }}</td>
+            <td><strong>{{ a.amount }}</strong></td>
+            <td>{{ a.rate }}</td>
+            <td>{{ a.fee }}</td>
+            <td><span class="B" [class.B-s]="a.status === 'Completed'" [class.B-w]="a.status === 'Pending'">{{ a.status }}</span></td>
+            <td><button class="btn-pm btn-sm" (click)="openModal(a.status === 'Completed' ? fxReceiptModal : fxTransferModal)">{{ getTxnActionLabel(a.status) }}</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- pm-content -->
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!--  MODALS — All 24+ with steps, tabs, no dead ends, no sticky        -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+
+<!-- M1: Convert (4-step) -->
+<ng-template #convertModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-arrow-left-right text-primary me-2"></i>Instant Currency Conversion</h5>
+      <button class="btn-close" (click)="modal.dismiss(); resetAllSteppers()"></button>
+    </div>
+    <div class="modal-body" style="position:relative;min-height:300px">
+      <div *ngIf="convStepLoading" class="loading-ov">
+        <div class="spinner"></div>
+        <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+      </div>
+      <div *ngIf="actionResult.show && actionResult.message" class="receipt">
+        <div class="ri"><i class="bi bi-check-lg"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-accent)">{{ actionResult.message }}</h5>
+        <p *ngIf="actionResult.ref" style="font-size:12px;color:var(--pm-muted)">Reference: {{ actionResult.ref }}</p>
+        <div class="d-flex justify-content-center mt-3" style="gap:8px">
+          <button class="btn-pm btn-sm" (click)="resetActionResult(); resetAllSteppers()"><i class="bi bi-arrow-left"></i> Back</button>
+          <button class="btn-pm btn-sm btn-pm-p" (click)="modal.close(); resetActionResult(); resetAllSteppers()">Done</button>
+        </div>
+      </div>
+      <div class="stepper" *ngIf="!actionResult.show">
+        <ng-container *ngFor="let label of convStepLabels; let i = index">
+          <div class="step" [class.active]="convStepCurrent === i + 1" [class.done]="convStepCurrent > i + 1">
+            <div class="step-n">{{ convStepCurrent > i + 1 ? '✓' : i + 1 }}</div>
+            <div class="step-l">{{ label }}</div>
+          </div>
+          <div class="step-line" *ngIf="i < convStepLabels.length - 1"></div>
+        </ng-container>
+      </div>
+      <div *ngIf="isStepActive('conv', 1) && !actionResult.show" class="fstep active">
+        <h6 style="font-weight:700">Step 1: Select Wallets</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="FL">From Wallet</label>
+            <select class="FC" [(ngModel)]="convertForm.fromWallet">
+              <option>USD Wallet (48,200.00)</option>
+              <option>EUR Wallet (18,400.00)</option>
+              <option>GBP Wallet (9,100.00)</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="FL">To Wallet</label>
+            <select class="FC" [(ngModel)]="convertForm.toWallet">
+              <option>KES Wallet (124,800,000)</option>
+              <option>ZAR Wallet (2,140,000)</option>
+              <option>UGX Wallet (68,200,000)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isStepActive('conv', 2) && !actionResult.show" class="fstep active">
+        <h6 style="font-weight:700">Step 2: Amount & Rate</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="FL">Amount to Convert</label>
+            <input class="FC" type="number" [(ngModel)]="convertForm.amount">
+          </div>
+          <div class="col-md-6">
+            <label class="FL">Live Rate</label>
+            <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+              <strong>{{ convertForm.liveRate }}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Spread: {{ convertForm.spread }} • Updated 14s ago</div>
+            </div>
+          </div>
+        </div>
+        <div class="p-3 rounded mt-3" style="background:var(--pm-accent-soft)">
+          <div class="d-flex justify-content-between"><span>You will receive</span><strong>{{ convertForm.willReceive }}</strong></div>
+        </div>
+      </div>
+      <div *ngIf="isStepActive('conv', 3) && !actionResult.show" class="fstep active">
+        <h6 style="font-weight:700">Step 3: Confirmation</h6>
+        <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+          <div class="d-flex justify-content-between mb-2"><span>From</span><strong>USD {{ convertForm.amount | number }}.00</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span>To</span><strong>{{ convertForm.willReceive }}</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span>Rate</span><strong>129.45</strong></div>
+          <div class="d-flex justify-content-between"><span>Fee</span><strong>KES 1,200</strong></div>
+        </div>
+        <label class="FL mt-3">Enter PIN</label>
+        <div class="pin-row">
+          <input type="password" maxlength="1" [(ngModel)]="convertForm.pin[0]" (input)="onPinInput(0, $event)">
+          <input type="password" maxlength="1" [(ngModel)]="convertForm.pin[1]" (input)="onPinInput(1, $event)">
+          <input type="password" maxlength="1" [(ngModel)]="convertForm.pin[2]" (input)="onPinInput(2, $event)">
+          <input type="password" maxlength="1" [(ngModel)]="convertForm.pin[3]" (input)="onPinInput(3, $event)">
+        </div>
+      </div>
+      <div *ngIf="isStepActive('conv', 4) && !actionResult.show" class="fstep active">
+        <div class="receipt">
+          <div class="ri"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">Conversion Successful</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft)">{{ convertForm.willReceive }} credited to your KES wallet.</p>
+          <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Reference</span><strong>{{ convertForm.receipt.ref }}</strong></div>
+            <div class="d-flex justify-content-between"><span class="text-muted">Completed</span><strong>{{ convertForm.receipt.completed }}</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" *ngIf="!actionResult.show">
+      <button class="btn-pm" (click)="modal.dismiss(); resetAllSteppers()">Cancel</button>
+      <button class="btn-pm" *ngIf="convStepCurrent > 1 && convStepCurrent < convStepTotal" (click)="prevStep('conv')"><i class="bi bi-arrow-left"></i> Back</button>
+      <button class="btn-pm btn-pm-p" (click)="nextStep('conv')">
+        {{ getStepButtonLabel('conv') }} <i class="bi bi-arrow-right" *ngIf="convStepCurrent < convStepTotal"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M2: Hedge / Forward (3-step) -->
+<ng-template #hedgeModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-shield-check text-success me-2"></i>Create Forward Contract</h5>
+      <button class="btn-close" (click)="modal.dismiss(); resetAllSteppers()"></button>
+    </div>
+    <div class="modal-body" style="position:relative;min-height:300px">
+      <div *ngIf="hedgeStepLoading" class="loading-ov">
+        <div class="spinner"></div>
+        <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+      </div>
+      <div *ngIf="actionResult.show && actionResult.message" class="receipt">
+        <div class="ri"><i class="bi bi-check-lg"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-accent)">{{ actionResult.message }}</h5>
+        <p *ngIf="actionResult.ref" style="font-size:12px;color:var(--pm-muted)">Reference: {{ actionResult.ref }}</p>
+        <div class="d-flex justify-content-center mt-3" style="gap:8px">
+          <button class="btn-pm btn-sm" (click)="resetActionResult(); resetAllSteppers()"><i class="bi bi-arrow-left"></i> Back</button>
+          <button class="btn-pm btn-sm btn-pm-p" (click)="modal.close(); resetActionResult(); resetAllSteppers()">Done</button>
+        </div>
+      </div>
+      <div class="stepper" *ngIf="!actionResult.show">
+        <ng-container *ngFor="let label of hedgeStepLabels; let i = index">
+          <div class="step" [class.active]="hedgeStepCurrent === i + 1" [class.done]="hedgeStepCurrent > i + 1">
+            <div class="step-n">{{ hedgeStepCurrent > i + 1 ? '✓' : i + 1 }}</div>
+            <div class="step-l">{{ label }}</div>
+          </div>
+          <div class="step-line" *ngIf="i < hedgeStepLabels.length - 1"></div>
+        </ng-container>
+      </div>
+      <div *ngIf="isStepActive('hedge', 1) && !actionResult.show" class="fstep active">
+        <h6 style="font-weight:700">Step 1: Contract Details</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="FL">Currency Pair</label>
+            <select class="FC" [(ngModel)]="hedgeForm.pair">
+              <option>USD/KES</option>
+              <option>EUR/KES</option>
+              <option>GBP/KES</option>
+            </select>
+          </div>
+          <div class="col-md-6"><label class="FL">Amount</label><input class="FC" type="number" [(ngModel)]="hedgeForm.amount"></div>
+          <div class="col-md-6">
+            <label class="FL">Contract Type</label>
+            <select class="FC" [(ngModel)]="hedgeForm.contractType">
+              <option>Forward (Fixed Rate)</option>
+              <option>Option (Right to Buy)</option>
+              <option>Collar</option>
+            </select>
+          </div>
+          <div class="col-md-6"><label class="FL">Expiry Date</label><input type="date" class="FC" [(ngModel)]="hedgeForm.expiry"></div>
+        </div>
+      </div>
+      <div *ngIf="isStepActive('hedge', 2) && !actionResult.show" class="fstep active">
+        <h6 style="font-weight:700">Step 2: Rate & Margin</h6>
+        <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+          <div class="d-flex justify-content-between mb-2"><span>Indicative Rate</span><strong>{{ hedgeForm.indicativeRate }}</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span>Margin Required (5%)</span><strong>{{ hedgeForm.margin }}</strong></div>
+          <div class="d-flex justify-content-between"><span>Settlement Date</span><strong>{{ hedgeForm.settlementDate }}</strong></div>
+        </div>
+        <div class="mb-3">
+          <label class="FL">Accept Rate</label>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="hedgeForm.acceptTerms"><label class="form-check-label">I accept the indicative rate and margin terms</label></div>
+        </div>
+      </div>
+      <div *ngIf="isStepActive('hedge', 3) && !actionResult.show" class="fstep active">
+        <div class="receipt">
+          <div class="ri"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">Forward Contract Created</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Contract {{ hedgeForm.receipt.ref }} locked at {{ hedgeForm.receipt.rate }} for {{ hedgeForm.receipt.amount }}.</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" *ngIf="!actionResult.show">
+      <button class="btn-pm" (click)="modal.dismiss(); resetAllSteppers()">Cancel</button>
+      <button class="btn-pm" *ngIf="hedgeStepCurrent > 1 && hedgeStepCurrent < hedgeStepTotal" (click)="prevStep('hedge')"><i class="bi bi-arrow-left"></i> Back</button>
+      <button class="btn-pm btn-pm-p" (click)="nextStep('hedge')">
+        {{ getStepButtonLabel('hedge') }} <i class="bi bi-arrow-right" *ngIf="hedgeStepCurrent < hedgeStepTotal"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M3: New Wallet -->
+<ng-template #newWalletModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Open New Currency Wallet</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="FL">Currency</label>
+        <select class="FC" [(ngModel)]="newWalletForm.currency">
+          <option>USD — United States Dollar</option>
+          <option>EUR — Euro</option>
+          <option>GBP — British Pound</option>
+          <option>ZAR — South African Rand</option>
+          <option>UGX — Ugandan Shilling</option>
+          <option>TZS — Tanzanian Shilling</option>
+          <option>GHS — Ghanaian Cedi</option>
+          <option>NGN — Nigerian Naira</option>
+          <option>AED — UAE Dirham</option>
+        </select>
+      </div>
+      <div class="mb-3"><label class="FL">Wallet Nickname</label><input class="FC" [(ngModel)]="newWalletForm.nickname"></div>
+      <div class="mb-3"><label class="FL">Initial Funding</label><input class="FC" type="number" [(ngModel)]="newWalletForm.initialFunding"></div>
+      <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="newWalletForm.rateAlerts"><label class="form-check-label" style="font-size:13px">Enable rate alerts for this wallet</label></div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="newWalletForm.autoConvert"><label class="form-check-label" style="font-size:13px">Auto-convert incoming funds to KES</label></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('New USD wallet created successfully!', 'WAL-20250627-4421')">Create Wallet</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M4: Rate Alerts (multi-tab) -->
+<ng-template #rateAlertsModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-bell text-warning me-2"></i>FX Rate Alerts</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="pills mb-3">
+        <button class="pill" [class.active]="isRateAlertsTab('active')" (click)="setRateAlertsTab('active')">Active</button>
+        <button class="pill" [class.active]="isRateAlertsTab('history')" (click)="setRateAlertsTab('history')">History</button>
+        <button class="pill" [class.active]="isRateAlertsTab('create')" (click)="setRateAlertsTab('create')">Create New</button>
+      </div>
+      <div *ngIf="isRateAlertsTab('active')" class="tpanel active">
+        <div class="sr" *ngFor="let a of rateAlerts">
+          <div><strong>{{ a.pair }} {{ a.condition }} {{ a.threshold }}</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">Notify when {{ a.condition.toLowerCase() }} {{ a.threshold }}</div>
+          </div>
+          <span class="B" [class.B-s]="a.status === 'Active'" [class.B-w]="a.status === 'Paused'">{{ a.status }}</span>
+        </div>
+      </div>
+      <div *ngIf="isRateAlertsTab('history')" class="tpanel active">
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Alert</th><th>Triggered</th><th>Rate</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let h of alertHistory">
+                <td>{{ h.alert }}</td><td>{{ h.triggered }}</td><td>{{ h.rate }}</td>
+                <td><button class="btn-pm btn-sm">{{ h.actionLabel }}</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="isRateAlertsTab('create')" class="tpanel active">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="FL">Currency Pair</label>
+            <select class="FC" [(ngModel)]="newAlertForm.pair">
+              <option>USD/KES</option><option>EUR/KES</option><option>GBP/KES</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="FL">Condition</label>
+            <select class="FC" [(ngModel)]="newAlertForm.condition">
+              <option>Rate above</option><option>Rate below</option><option>Volatility %</option>
+            </select>
+          </div>
+          <div class="col-md-6"><label class="FL">Threshold</label><input class="FC" type="number" [(ngModel)]="newAlertForm.threshold"></div>
+          <div class="col-md-6">
+            <label class="FL">Channels</label>
+            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" [(ngModel)]="newAlertForm.push"><label class="form-check-label">Push</label></div>
+            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" [(ngModel)]="newAlertForm.sms"><label class="form-check-label">SMS</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('Rate alert created successfully!', '')">Create Alert</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M5: FX Transfer (3-step) -->
+<ng-template #fxTransferModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-send text-info me-2"></i>Cross-Border FX Transfer</h5>
+      <button class="btn-close" (click)="modal.dismiss(); resetAllSteppers()"></button>
+    </div>
+    <div class="modal-body" style="position:relative;min-height:300px">
+      <div *ngIf="fxTransStepLoading" class="loading-ov">
+        <div class="spinner"></div>
+        <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+      </div>
+      <div *ngIf="actionResult.show && actionResult.message" class="receipt">
+        <div class="ri"><i class="bi bi-check-lg"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-accent)">{{ actionResult.message }}</h5>
+        <p *ngIf="actionResult.ref" style="font-size:12px;color:var(--pm-muted)">Reference: {{ actionResult.ref }}</p>
+        <div class="d-flex justify-content-center mt-3" style="gap:8px">
+          <button class="btn-pm btn-sm" (click)="resetActionResult(); resetAllSteppers()"><i class="bi bi-arrow-left"></i> Back</button>
+          <button class="btn-pm btn-sm btn-pm-p" (click)="modal.close(); resetActionResult(); resetAllSteppers()">Done</button>
+        </div>
+      </div>
+      <div class="stepper" *ngIf="!actionResult.show">
+        <ng-container *ngFor="let label of fxTransStepLabels; let i = index">
+          <div class="step" [class.active]="fxTransStepCurrent === i + 1" [class.done]="fxTransStepCurrent > i + 1">
+            <div class="step-n">{{ fxTransStepCurrent > i + 1 ? '✓' : i + 1 }}</div>
+            <div class="step-l">{{ label }}</div>
+          </div>
+          <div class="step-line" *ngIf="i < fxTransStepLabels.length - 1"></div>
+        </ng-container>
+      </div>
+      <div *ngIf="isStepActive('fxTrans', 1) && !actionResult.show" class="fstep active">
+        <h6 style="font-weight:700">Step 1: Transfer Details</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="FL">From Wallet</label>
+            <select class="FC" [(ngModel)]="fxTransferForm.fromWallet">
+              <option>USD Wallet (48,200)</option>
+              <option>KES Wallet (124.8M)</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="FL">To Wallet / Beneficiary</label>
+            <select class="FC" [(ngModel)]="fxTransferForm.toWallet">
+              <option>ZAR Wallet (Own)</option>
+              <option>External Bank (South Africa)</option>
+            </select>
+          </div>
+          <div class="col-md-6"><label class="FL">Amount</label><input class="FC" type="number" [(ngModel)]="fxTransferForm.amount"></div>
+          <div class="col-md-6">
+            <label class="FL">Purpose</label>
+            <select class="FC" [(ngModel)]="fxTransferForm.purpose">
+              <option>Supplier Payment</option><option>Salary</option><option>Investment</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isStepActive('fxTrans', 2) && !actionResult.show" class="fstep active">
+        <h6 style="font-weight:700">Step 2: Review & Fees</h6>
+        <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+          <div class="d-flex justify-content-between mb-2"><span>Transfer Amount</span><strong>{{ fxTransferForm.transferAmount }}</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span>FX Rate</span><strong>{{ fxTransferForm.fxRate }}</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span>Fee</span><strong>{{ fxTransferForm.fee }}</strong></div>
+          <div class="d-flex justify-content-between"><span>Recipient Gets</span><strong>{{ fxTransferForm.recipientGets }}</strong></div>
+        </div>
+      </div>
+      <div *ngIf="isStepActive('fxTrans', 3) && !actionResult.show" class="fstep active">
+        <div class="receipt">
+          <div class="ri"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">Transfer Initiated</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Reference: {{ fxTransferForm.receiptRef }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" *ngIf="!actionResult.show">
+      <button class="btn-pm" (click)="modal.dismiss(); resetAllSteppers()">Cancel</button>
+      <button class="btn-pm" *ngIf="fxTransStepCurrent > 1 && fxTransStepCurrent < fxTransStepTotal" (click)="prevStep('fxTrans')"><i class="bi bi-arrow-left"></i> Back</button>
+      <button class="btn-pm btn-pm-p" (click)="nextStep('fxTrans')">
+        {{ getStepButtonLabel('fxTrans') }} <i class="bi bi-arrow-right" *ngIf="fxTransStepCurrent < fxTransStepTotal"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M6: Bulk FX -->
+<ng-template #bulkFxModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-collection me-2" style="color:var(--pm-purple)"></i>Bulk FX Conversion</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="FL">Upload CSV or select multiple</label><input type="file" class="FC"></div>
+      <div class="table-responsive">
+        <table class="T">
+          <thead><tr><th>From</th><th>To</th><th>Amount</th><th>Est. Received</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let row of bulkFxRows">
+              <td>{{ row.from }}</td><td>{{ row.to }}</td><td>{{ row.amount }}</td><td>{{ row.estReceived }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('Bulk FX batch submitted! 3 conversions queued.', 'BULK-FX-20250627-1122')">Execute Batch</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M7: FX Receipt -->
+<ng-template #fxReceiptModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-receipt me-2"></i>FX Transaction Receipt</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="receipt">
+        <div class="ri"><i class="bi bi-check-lg"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-accent)">Transaction Confirmed</h5>
+        <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Reference</span><strong>{{ convertForm.receipt.ref }}</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">From</span><strong>USD 5,000.00</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">To</span><strong>KES 647,250.00</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Rate</span><strong>129.45</strong></div>
+          <div class="d-flex justify-content-between"><span class="text-muted">Completed</span><strong>{{ convertForm.receipt.completed }}</strong></div>
+        </div>
+        <div class="d-flex justify-content-center mt-3" style="gap:8px">
+          <button class="btn-pm btn-sm"><i class="bi bi-download"></i> PDF</button>
+          <button class="btn-pm btn-sm"><i class="bi bi-whatsapp"></i> Share</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn-pm" (click)="modal.dismiss()">Close</button></div>
+  </div>
+</ng-template>
+
+<!-- M8: FX Analytics (multi-tab) -->
+<ng-template #fxAnalyticsModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-bar-chart-line me-2"></i>FX Analytics Dashboard</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="pills mb-3">
+        <button class="pill" [class.active]="isFxAnalyticsTab('perf')" (click)="setFxAnalyticsTab('perf')">Performance</button>
+        <button class="pill" [class.active]="isFxAnalyticsTab('cost')" (click)="setFxAnalyticsTab('cost')">Cost Analysis</button>
+        <button class="pill" [class.active]="isFxAnalyticsTab('predict')" (click)="setFxAnalyticsTab('predict')">Predictions</button>
+      </div>
+      <div *ngIf="isFxAnalyticsTab('perf')" class="tpanel active">
+        <div class="chart-bars" style="height:110px">
+          <div class="chart-bar" *ngFor="let bar of chartBars" [style.height.%]="bar.height" [style.background]="bar.color">
+            <span class="bar-label">{{ bar.month }}</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isFxAnalyticsTab('cost')" class="tpanel active">
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Month</th><th>Volume</th><th>Fees</th><th>Avg Spread</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let m of fxCostMonths">
+                <td>{{ m.month }}</td><td>{{ m.volume }}</td><td>{{ m.fees }}</td><td>{{ m.spread }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="isFxAnalyticsTab('predict')" class="tpanel active">
+        <div class="p-3 rounded" style="background:var(--pm-info-soft)">
+          <div style="font-size:13px;color:#1E40AF">Next 30 days forecast: <strong>KES 142M volume</strong> with expected savings of <strong>KES 380,000</strong> if current hedging strategy continues.</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="modal.dismiss(); openModal(fxStatementModal)">Export Full Report</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M9: FX Risk -->
+<ng-template #fxRiskModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-shield-exclamation text-danger me-2"></i>FX Risk Dashboard</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="p-3 rounded" style="background:var(--pm-danger-soft)">
+            <div style="font-size:11px;font-weight:700;color:#991B1B">NET EXPOSURE</div>
+            <div style="font-size:24px;font-weight:700;color:var(--pm-danger)">KES 42.8M</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-3 rounded" style="background:var(--pm-warning-soft)">
+            <div style="font-size:11px;font-weight:700;color:#B45309">HEDGED</div>
+            <div style="font-size:24px;font-weight:700;color:var(--pm-warning)">64%</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-3 rounded" style="background:var(--pm-accent-soft)">
+            <div style="font-size:11px;font-weight:700;color:#047857">RISK SCORE</div>
+            <div style="font-size:24px;font-weight:700;color:var(--pm-accent)">42/100</div>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive mt-3">
+        <table class="T">
+          <thead><tr><th>Currency</th><th>Position</th><th>Exposure</th><th>VaR</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let e of fxExposures">
+              <td>{{ e.currency }}</td><td>{{ e.position }}</td><td>{{ e.exposure }}</td><td>{{ e.var }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="modal.dismiss(); openModal(hedgeModal)">Hedge Exposure</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M10: FX Automation (multi-tab) -->
+<ng-template #fxAutomationModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-robot me-2"></i>FX Automation Rules</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="pills mb-3">
+        <button class="pill" [class.active]="isFxAutomationTab('rules')" (click)="setFxAutomationTab('rules')">Rules</button>
+        <button class="pill" [class.active]="isFxAutomationTab('schedule')" (click)="setFxAutomationTab('schedule')">Schedule</button>
+        <button class="pill" [class.active]="isFxAutomationTab('history')" (click)="setFxAutomationTab('history')">History</button>
+      </div>
+      <div *ngIf="isFxAutomationTab('rules')" class="tpanel active">
+        <div class="sr" *ngFor="let r of autoRules">
+          <div><strong>{{ r.name }}</strong></div>
+          <span class="B" [class.B-s]="r.status === 'Active'" [class.B-w]="r.status === 'Paused'">{{ r.status }}</span>
+        </div>
+      </div>
+      <div *ngIf="isFxAutomationTab('schedule')" class="tpanel active">
+        <div class="mb-3"><label class="FL">Run Time</label>
+          <select class="FC">
+            <option>Daily 09:00 EAT</option>
+            <option>Every 4 hours</option>
+            <option>Weekly Monday 08:00</option>
+          </select>
+        </div>
+      </div>
+      <div *ngIf="isFxAutomationTab('history')" class="tpanel active">
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Rule</th><th>Last Run</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let h of autoHistory">
+                <td>{{ h.rule }}</td><td>{{ h.lastRun }}</td><td>{{ h.result }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('Automation rule saved!', '')">Save Rule</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M11: FX Preferences -->
+<ng-template #fxPreferencesModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-gear me-2"></i>FX Preferences</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="FL">Default Display Currency</label>
+        <select class="FC">
+          <option>KES</option><option>USD</option><option>EUR</option>
+        </select>
+      </div>
+      <div class="mb-3"><label class="FL">Show Equivalent In</label>
+        <select class="FC">
+          <option>USD</option><option>KES</option>
+        </select>
+      </div>
+      <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Auto-hide balances below KES 10,000</label></div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Show live rate ticker</label></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('Preferences saved!', '')">Save</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M12: FX Statement -->
+<ng-template #fxStatementModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-download me-2"></i>Export FX Statement</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="FL">Report Type</label>
+        <select class="FC" [(ngModel)]="statementForm.reportType">
+          <option>Full FX Activity</option>
+          <option>Conversion History</option>
+          <option>Forward Contracts</option>
+          <option>Risk & Exposure</option>
+        </select>
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="col-6"><label class="FL">From</label><input type="date" class="FC" [(ngModel)]="statementForm.dateFrom"></div>
+        <div class="col-6"><label class="FL">To</label><input type="date" class="FC" [(ngModel)]="statementForm.dateTo"></div>
+      </div>
+      <div class="mb-3"><label class="FL">Format</label>
+        <select class="FC" [(ngModel)]="statementForm.format">
+          <option>PDF</option><option>Excel</option><option>CSV</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('FX statement generated and downloading...', '')">Generate</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M13: FX Market Depth -->
+<ng-template #fxMarketModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-globe me-2"></i>Market Depth — USD/KES</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="table-responsive">
+        <table class="T">
+          <thead><tr><th>Bid</th><th>Amount</th><th>Ask</th><th>Amount</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let row of marketDepth">
+              <td>{{ row.bid }}</td><td>{{ row.bidAmount }}</td><td>{{ row.ask }}</td><td>{{ row.askAmount }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn-pm" (click)="modal.dismiss()">Close</button></div>
+  </div>
+</ng-template>
+
+<!-- M14: Swap -->
+<ng-template #swapModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-shuffle text-danger me-2"></i>Currency Swap</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="FL">Swap From</label>
+        <select class="FC" [(ngModel)]="swapForm.from">
+          <option>USD Wallet</option><option>EUR Wallet</option>
+        </select>
+      </div>
+      <div class="mb-3"><label class="FL">Swap To</label>
+        <select class="FC" [(ngModel)]="swapForm.to">
+          <option>EUR Wallet</option><option>USD Wallet</option>
+        </select>
+      </div>
+      <div class="mb-3"><label class="FL">Amount</label><input class="FC" type="number" [(ngModel)]="swapForm.amount"></div>
+      <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+        <div class="d-flex justify-content-between"><span>Estimated Received</span><strong>{{ swapForm.estReceived }}</strong></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn-pm btn-pm-p" (click)="doAction('Currency swap executed successfully!', 'SWAP-20250627-7712')">Execute Swap</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M15: Attention Modal -->
+<ng-template #attentionModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>All Items Requiring Attention</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="sr" *ngFor="let item of attentionFullItems">
+        <div><strong>{{ item.title }}</strong></div>
+        <button class="btn-pm btn-sm" (click)="modal.dismiss(); openModal(item.actionModal === 'hedgeModal' ? hedgeModal : item.actionModal === 'convertModal' ? convertModal : rateAlertsModal)">{{ item.actionLabel }}</button>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn-pm" (click)="modal.dismiss()">Close</button></div>
+  </div>
+</ng-template>
+
+<!-- M16: FX Health -->
+<ng-template #fxHealthModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>FX Portfolio Health Check</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row g-3 mb-3">
+        <div class="col-md-3 col-6" *ngFor="let h of healthStats">
+          <div class="p-3 rounded text-center" [style.background]="h.bg">
+            <div [style.fontSize]="h.size" [style.fontWeight]="'800'" [style.color]="h.color" style="font-family:var(--pm-font-display)">{{ h.value }}</div>
+            <div [style.fontSize]="'10px'" [style.fontWeight]="'700'" [style.color]="h.textColor">{{ h.label }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="T">
+          <thead><tr><th>Wallet</th><th>Status</th><th>Issue</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let issue of healthIssues">
+              <td>{{ issue.wallet }}</td>
+              <td><span class="B" [class.B-w]="issue.status === 'Low'" [class.B-d]="issue.status === 'Expiring'">{{ issue.status }}</span></td>
+              <td>{{ issue.issue }}</td>
+              <td><button class="btn-pm btn-sm" (click)="modal.dismiss(); openModal(issue.actionModal === 'convertModal' ? convertModal : hedgeModal)">{{ issue.actionLabel }}</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+      <button class="btn-pm btn-pm-p" (click)="modal.dismiss(); openModal(fxRiskModal)">View Risk Dashboard</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M17: FX Notif -->
+<ng-template #fxNotifModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-bell me-2"></i>FX Notifications ({{ notifications.length }})</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body" style="max-height:500px;overflow-y:auto">
+      <div class="p-3 rounded mb-2" *ngFor="let n of notifications" [style.background]="n.bgClass" style="font-size:13px">
+        <strong>{{ n.title }}</strong>
+        <div [style.fontSize]="'11px'" [style.color]="n.textClass">{{ n.subtitle }}</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-pm" (click)="modal.dismiss(); openModal(rateAlertsModal)">Manage Alerts</button>
+      <button class="btn-pm" (click)="modal.dismiss()">Close</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- M18: Profile -->
+<ng-template #profileModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile</h5>
+      <button class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body text-center">
+      <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">{{ profile.initials }}</div>
+      <h5 style="font-weight:700;margin-bottom:2px">{{ profile.name }}</h5>
+      <p style="font-size:13px;color:var(--pm-muted)">{{ profile.email }} · {{ profile.phone }}</p>
+      <div class="row g-2 text-start mt-3" style="font-size:13px">
+        <div class="col-6"><div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">FX Wallets</span><br><strong>{{ profile.fxWallets }}</strong></div></div>
+        <div class="col-6"><div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">FX Score</span><br><strong style="color:var(--pm-accent)">{{ profile.fxScore }}</strong></div></div>
+        <div class="col-6"><div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Member Since</span><br><strong>{{ profile.memberSince }}</strong></div></div>
+        <div class="col-6"><div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Forward Contracts</span><br><strong>{{ profile.forwardContracts }}</strong></div></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn-pm" (click)="modal.dismiss()">Close</button></div>
+  </div>
+</ng-template>

@@ -1,0 +1,583 @@
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb">
+      <a (click)="navigateTo('portal')">Developer Portal</a> / <strong>Support, Escalation & Service Levels</strong>
+    </div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 4.11 — Support, Escalation & SLAs</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Manage technical support tickets, track SLA compliance, declare incidents, and access escalation matrices.</p>
+  </div>
+  <div class="d-flex gap-2 flex-wrap">
+    <button class="pm-btn" (click)="openModal('troubleshootingWizardModal')"><i class="bi bi-magic"></i> AI Troubleshooter</button>
+    <button class="pm-btn" (click)="openModal('declareIncidentModal')"><i class="bi bi-exclamation-triangle text-danger"></i> Declare Incident</button>
+    <button class="pm-btn pm-btn-primary" (click)="openModal('submitTicketModal')"><i class="bi bi-plus-lg"></i> New Ticket</button>
+  </div>
+</div>
+
+<div class="pm-content">
+
+  <!-- HERO STATS ROW -->
+  <div class="row g-3">
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card" style="border-left: 3px solid var(--pm-primary)">
+        <p class="pm-stat-label" style="color:var(--pm-primary)">CURRENT SUPPORT TIER</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="pm-stat-value" style="font-size: 24px; margin: 6px 0;">Premium Support</div>
+        </div>
+        <div class="d-flex align-items-center gap-2 mt-2" style="font-size: 12px; color: var(--pm-ink-soft);">
+          <i class="bi bi-check-circle-fill text-success"></i> 4hr SLA for Critical Issues
+        </div>
+        <button class="pm-btn pm-btn-sm mt-3 w-100" (click)="openModal('upgradeTierModal')">Upgrade Tier</button>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card">
+        <p class="pm-stat-label">OPEN TICKETS</p>
+        <div class="pm-stat-value" style="margin: 6px 0;">2 Active</div>
+        <div class="mt-2" style="font-size: 12px;">
+          <span class="pm-badge pm-badge-warning">1 Awaiting Reply</span>
+          <span class="pm-badge pm-badge-info">1 In Progress</span>
+        </div>
+        <button class="pm-btn pm-btn-sm mt-3 w-100" (click)="openModal('ticketDetailModal')">View Tickets</button>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card" style="border-left: 3px solid var(--pm-accent)">
+        <p class="pm-stat-label" style="color:var(--pm-accent)">MONTHLY UPTIME (API)</p>
+        <div class="pm-stat-value" style="margin: 6px 0;">99.98%</div>
+        <div class="mt-2" style="font-size: 12px; color: var(--pm-ink-soft);">
+          <i class="bi bi-shield-check text-success"></i> Exceeds 99.9% SLA target
+        </div>
+        <button class="pm-btn pm-btn-sm mt-3 w-100" (click)="openModal('viewSlaReportModal')">Download SLA Report</button>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="pm-card">
+        <p class="pm-stat-label">SYSTEM STATUS</p>
+        <div class="pm-stat-value" style="margin: 6px 0; color: var(--pm-accent);">All Systems Operational</div>
+        <div class="mt-2" style="font-size: 12px; color: var(--pm-muted);">
+          Last incident: 14 days ago
+        </div>
+        <button class="pm-btn pm-btn-sm mt-3 w-100" (click)="openModal('incidentHistoryModal')">View Incident History</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN SECTIONS -->
+  <div class="row g-3">
+    <!-- LEFT COL: Tiers & Support -->
+    <div class="col-lg-6">
+      <div class="pm-card h-100">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="pm-section-title"><i class="bi bi-headset" style="color:var(--pm-primary)"></i> 4.11.1 — Technical Support</h3>
+          <div>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('chatSupportModal')"><i class="bi bi-chat-dots"></i> Live Chat</button>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('contactAmModal')"><i class="bi bi-person-badge"></i> Contact TAM</button>
+          </div>
+        </div>
+
+        <div class="pm-tab-pills mb-3">
+          <button class="pm-tab-pill" [class.active]="supportTab==='overview'" (click)="supportTab='overview'">Plan Overview</button>
+          <button class="pm-tab-pill" [class.active]="supportTab==='premium'" (click)="supportTab='premium'">Premium Benefits</button>
+          <button class="pm-tab-pill" [class.active]="supportTab==='enterprise'" (click)="supportTab='enterprise'">Enterprise Add-ons</button>
+        </div>
+
+        <div [class.active]="supportTab==='overview'" class="tab-panel">
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead><tr><th>Feature</th><th>Standard</th><th><span class="pm-badge pm-badge-purple">Premium (Current)</span></th><th>Enterprise</th></tr></thead>
+              <tbody>
+                <tr><td>Response SLA (Critical)</td><td>24 hours</td><td><strong>4 hours</strong></td><td>1 hour</td></tr>
+                <tr><td>Support Channels</td><td>Email, Forum</td><td><strong>Email, Phone, Chat</strong></td><td>24/7 Slack, On-site</td></tr>
+                <tr><td>Account Manager</td><td>None</td><td><strong>Dedicated TAM</strong></td><td>TAM + Solutions Eng.</td></tr>
+                <tr><td>Architecture Reviews</td><td>Community</td><td><strong>Quarterly</strong></td><td>Monthly</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3 text-center">
+            <button class="pm-btn pm-btn-sm" (click)="openModal('upgradeTierModal')">Compare All Plans</button>
+          </div>
+        </div>
+
+        <div [class.active]="supportTab==='premium'" class="tab-panel">
+          <div class="row g-2">
+            <div class="col-6">
+              <div class="p-3 border rounded h-100" style="background: var(--pm-surface-2);">
+                <h6 style="font-size:13px; font-weight:700;"><i class="bi bi-person-workspace text-primary"></i> Tech Account Manager</h6>
+                <p style="font-size:11px; color:var(--pm-muted); margin-bottom: 8px;">Your dedicated TAM is Sarah Ndungu. Available 8AM-6PM EAT.</p>
+                <button class="pm-btn pm-btn-sm w-100" (click)="openModal('contactAmModal')">Message Sarah</button>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-3 border rounded h-100" style="background: var(--pm-surface-2);">
+                <h6 style="font-size:13px; font-weight:700;"><i class="bi bi-diagram-3 text-info"></i> Architecture Review</h6>
+                <p style="font-size:11px; color:var(--pm-muted); margin-bottom: 8px;">Schedule a session to review your integration patterns.</p>
+                <button class="pm-btn pm-btn-sm w-100" (click)="openModal('requestArchitectureReviewModal')">Schedule Review</button>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="p-3 border rounded d-flex justify-content-between align-items-center" style="background: var(--pm-surface-2);">
+                <div>
+                  <h6 style="font-size:13px; font-weight:700; margin:0;"><i class="bi bi-calendar-check text-warning"></i> Quarterly Business Review</h6>
+                  <p style="font-size:11px; color:var(--pm-muted); margin:0;">Next review due: Oct 2026</p>
+                </div>
+                <button class="pm-btn pm-btn-sm" (click)="openModal('quarterlyBusinessReviewModal')">Book QBR</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div [class.active]="supportTab==='enterprise'" class="tab-panel">
+          <div class="p-3 border rounded mb-2 text-center" style="background: var(--pm-surface-2);">
+            <i class="bi bi-rocket-takeoff text-purple" style="font-size: 24px;"></i>
+            <h6 style="font-size:14px; font-weight:700; margin-top:8px;">Unlock Enterprise Features</h6>
+            <p style="font-size:12px; color:var(--pm-muted);">Upgrade to Enterprise to access 24/7 dedicated support, shared Slack channels, and on-site assistance.</p>
+            <div class="d-flex gap-2 justify-content-center mt-3">
+              <button class="pm-btn pm-btn-sm" (click)="openModal('slackIntegrationModal')">Setup Slack (Locked)</button>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('onSiteSupportModal')">On-Site Support (Locked)</button>
+              <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('upgradeTierModal')">Upgrade Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COL: Incidents & SLAs -->
+    <div class="col-lg-6">
+      <div class="pm-card mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="pm-section-title"><i class="bi bi-exclamation-triangle" style="color:var(--pm-warning)"></i> 4.11.2 — Incident Management</h3>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('escalationMatrixModal')"><i class="bi bi-ladder"></i> Escalation Matrix</button>
+        </div>
+        <div class="row g-2 mb-3">
+          <div class="col-md-6">
+            <div class="sev-block sev-1">
+              <div class="d-flex justify-content-between align-items-center">
+                <strong style="font-size:12px;">SEV1: Critical</strong>
+                <span class="pm-badge pm-badge-danger">1hr SLA</span>
+              </div>
+              <p style="font-size:11px; margin:4px 0 0; color:var(--pm-muted);">Complete outage, payments down.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="sev-block sev-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <strong style="font-size:12px;">SEV2: Major</strong>
+                <span class="pm-badge pm-badge-warning">4hr SLA</span>
+              </div>
+              <p style="font-size:11px; margin:4px 0 0; color:var(--pm-muted);">Major degradation, high impact.</p>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="pm-btn pm-btn-sm w-100" (click)="openModal('declareIncidentModal')">Declare Incident</button>
+          <button class="pm-btn pm-btn-sm w-100" (click)="openModal('viewRcaModal')">View Recent RCAs</button>
+        </div>
+      </div>
+
+      <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="pm-section-title"><i class="bi bi-shield-check" style="color:var(--pm-accent)"></i> 4.11.3 — Service Level Agreements</h3>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('slaExclusionsModal')">Exclusions</button>
+        </div>
+        <div class="table-responsive">
+          <table class="pm-table">
+            <tbody>
+              <tr><td><strong>Core Payments API Uptime</strong></td><td>99.9% Target</td><td><span class="pm-badge pm-badge-success">99.98% Actual</span></td></tr>
+              <tr><td><strong>Non-Critical Services Uptime</strong></td><td>99.5% Target</td><td><span class="pm-badge pm-badge-success">99.85% Actual</span></td></tr>
+              <tr><td><strong>API Response Time (p95)</strong></td><td>< 500ms</td><td><span class="pm-badge pm-badge-success">210ms</span></td></tr>
+              <tr><td><strong>Webhook Delivery Latency</strong></td><td>< 2s (99%)</td><td><span class="pm-badge pm-badge-warning">2.4s (98%)</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="d-flex gap-2 mt-3">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('uptimeCalcMethodologyModal')">Uptime Methodology</button>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('maintenanceCalendarModal')">Maintenance Calendar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT TICKETS ROW -->
+  <div class="pm-card mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="pm-section-title"><i class="bi bi-ticket-detailed" style="color:var(--pm-muted)"></i> Recent Support Tickets</h3>
+      <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('submitTicketModal')">New Ticket</button>
+    </div>
+    <div class="ticket-item" (click)="openModal('ticketDetailModal')">
+      <div>
+        <div class="d-flex align-items-center gap-2">
+          <span class="pm-badge pm-badge-warning">Awaiting Reply</span>
+          <strong style="font-size:14px;">[TIC-8821] Webhook payloads dropping occasionally</strong>
+        </div>
+        <div style="font-size:11px; color:var(--pm-muted); margin-top:4px;">Opened: 2 days ago · Category: Webhooks · Assignee: Sarah N.</div>
+      </div>
+      <i class="bi bi-chevron-right text-muted"></i>
+    </div>
+    <div class="ticket-item" (click)="openModal('ticketDetailModal')">
+      <div>
+        <div class="d-flex align-items-center gap-2">
+          <span class="pm-badge pm-badge-info">In Progress</span>
+          <strong style="font-size:14px;">[TIC-8845] Request limit increase for Disbursements API</strong>
+        </div>
+        <div style="font-size:11px; color:var(--pm-muted); margin-top:4px;">Opened: 5 hours ago · Category: Quotas · Assignee: DevOps Team</div>
+      </div>
+      <i class="bi bi-chevron-right text-muted"></i>
+    </div>
+    <div class="ticket-item" style="opacity: 0.7;" (click)="openModal('ticketDetailModal')">
+      <div>
+        <div class="d-flex align-items-center gap-2">
+          <span class="pm-badge pm-badge-dark">Resolved</span>
+          <strong style="font-size:14px;">[TIC-8711] Sandbox authentication returning 401</strong>
+        </div>
+        <div style="font-size:11px; color:var(--pm-muted); margin-top:4px;">Opened: 12 days ago · Category: Authentication · Resolved: 11 days ago</div>
+      </div>
+      <i class="bi bi-chevron-right text-muted"></i>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- 1. submitTicketModal (Multi-step 4) -->
+<div class="modal fade" id="submitTicketModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-plus-lg text-primary me-2"></i>Submit Support Ticket</h5><button class="btn-close" (click)="closeModal('submitTicketModal')"></button></div>
+  <div class="modal-body">
+    <div class="pm-stepper">
+      <div class="pm-step" [class.active]="ticketStep===1" [class.completed]="ticketStep>1"><div class="pm-step-num">{{ticketStep>1?'✓':1}}</div><span class="pm-step-label">Category</span></div>
+      <div class="pm-step-line" [style.background]="ticketStep>1?'var(--pm-accent)':'var(--pm-border)'"></div>
+      <div class="pm-step" [class.active]="ticketStep===2" [class.completed]="ticketStep>2"><div class="pm-step-num">{{ticketStep>2?'✓':2}}</div><span class="pm-step-label">Details</span></div>
+      <div class="pm-step-line" [style.background]="ticketStep>2?'var(--pm-accent)':'var(--pm-border)'"></div>
+      <div class="pm-step" [class.active]="ticketStep===3" [class.completed]="ticketStep>3"><div class="pm-step-num">{{ticketStep>3?'✓':3}}</div><span class="pm-step-label">Attachments</span></div>
+      <div class="pm-step-line" [style.background]="ticketStep>3?'var(--pm-accent)':'var(--pm-border)'"></div>
+      <div class="pm-step" [class.active]="ticketStep===4"><div class="pm-step-num">4</div><span class="pm-step-label">Done</span></div>
+    </div>
+    <div [class.active]="ticketStep===1" class="fade-step">
+      <div class="mb-3"><label class="pm-form-label">Category</label><select class="pm-form-control"><option>API Integration</option><option>Authentication / Auth</option><option>Webhooks</option><option>Quotas & Limits</option><option>Sandbox Environment</option><option>Other</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Severity Level</label><select class="pm-form-control"><option>SEV4 - General Inquiry / Cosmetic</option><option>SEV3 - Minor Degradation (Workaround available)</option><option class="text-warning">SEV2 - Major Degradation</option><option class="text-danger">SEV1 - Complete Outage</option></select></div>
+      <div class="p-3 rounded" style="background:var(--pm-info-soft); font-size:12px;">For SEV1/SEV2 issues affecting production, please use the <a (click)="closeModal('submitTicketModal');openModal('declareIncidentModal')">Declare Incident</a> process for immediate pager routing.</div>
+    </div>
+    <div [class.active]="ticketStep===2" class="fade-step">
+      <div class="mb-3"><label class="pm-form-label">Subject</label><input class="pm-form-control" placeholder="Brief summary of the issue"></div>
+      <div class="mb-3"><label class="pm-form-label">Description</label><textarea class="pm-form-control" rows="4" placeholder="Detailed description, steps to reproduce, expected vs actual behavior..."></textarea></div>
+      <div class="mb-3"><label class="pm-form-label">API Endpoint / URL</label><input class="pm-form-control" placeholder="e.g. /v1/disbursements"></div>
+    </div>
+    <div [class.active]="ticketStep===3" class="fade-step">
+      <div class="mb-3"><label class="pm-form-label">Request ID / Correlation ID (if applicable)</label><input class="pm-form-control" placeholder="req_xxxxxxxxx"></div>
+      <div class="mb-3"><label class="pm-form-label">Attach Logs / Screenshots</label><input type="file" class="pm-form-control" multiple></div>
+      <div class="form-check mt-3"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Notify TAM (Sarah Ndungu)</label></div>
+    </div>
+    <div [class.active]="ticketStep===4" class="fade-step">
+      <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Ticket Submitted</h5><p style="font-size:13px;color:var(--pm-ink-soft)">Your ticket has been routed to the API support queue.</p>
+      <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px"><div class="d-flex justify-content-between mb-2"><span class="text-muted">Ticket ID</span><strong>TIC-8850</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">SLA Response Time</span><strong>Within 4 hours (Premium)</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Status</span><span class="pm-badge pm-badge-warning">Open</span></div></div></div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="pm-btn" (click)="closeModal('submitTicketModal')">Cancel</button>
+    <button class="pm-btn" *ngIf="ticketStep>1" (click)="ticketStep = ticketStep - 1"><i class="bi bi-arrow-left"></i> Back</button>
+    <button class="pm-btn pm-btn-primary" *ngIf="ticketStep<4" (click)="ticketStep = ticketStep + 1">Continue <i class="bi bi-arrow-right"></i></button>
+    <button class="pm-btn pm-btn-primary" *ngIf="ticketStep===4" (click)="processAction('submitTicketModal','Ticket submitted successfully.')"><i class="bi bi-check-lg"></i> Done</button>
+  </div>
+</div></div></div>
+
+<!-- 2. declareIncidentModal (Multi-step 3) -->
+<div class="modal fade" id="declareIncidentModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Declare Production Incident</h5><button class="btn-close" (click)="closeModal('declareIncidentModal')"></button></div>
+  <div class="modal-body">
+    <div class="pm-stepper">
+      <div class="pm-step" [class.active]="incidentStep===1" [class.completed]="incidentStep>1"><div class="pm-step-num">{{incidentStep>1?'✓':1}}</div><span class="pm-step-label">Severity</span></div>
+      <div class="pm-step-line" [style.background]="incidentStep>1?'var(--pm-accent)':'var(--pm-border)'"></div>
+      <div class="pm-step" [class.active]="incidentStep===2" [class.completed]="incidentStep>2"><div class="pm-step-num">{{incidentStep>2?'✓':2}}</div><span class="pm-step-label">Details</span></div>
+      <div class="pm-step-line" [style.background]="incidentStep>2?'var(--pm-accent)':'var(--pm-border)'"></div>
+      <div class="pm-step" [class.active]="incidentStep===3"><div class="pm-step-num">3</div><span class="pm-step-label">Declared</span></div>
+    </div>
+    <div [class.active]="incidentStep===1" class="fade-step">
+      <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft); font-size:12px; border:1px solid var(--pm-danger);"><i class="bi bi-shield-exclamation text-danger"></i> <strong>Warning:</strong> Declaring an incident triggers on-call pages to PayMo engineering leadership. Use only for complete production outages (SEV1) or major degradations (SEV2).</div>
+      <div class="mb-3"><label class="pm-form-label">Incident Severity</label>
+        <div class="p-3 border rounded mb-2 sev-1" style="cursor:pointer" (click)="selectRadioCard($event)"><input type="radio" name="sev" checked> <strong>SEV1: Complete Outage</strong><br><small class="text-muted">No transactions can be processed.</small></div>
+        <div class="p-3 border rounded sev-2" style="cursor:pointer" (click)="selectRadioCard($event)"><input type="radio" name="sev"> <strong>SEV2: Major Degradation</strong><br><small class="text-muted">Significant features broken, no workaround.</small></div>
+      </div>
+    </div>
+    <div [class.active]="incidentStep===2" class="fade-step">
+      <div class="mb-3"><label class="pm-form-label">Affected Service</label><select class="pm-form-control"><option>Collections API (M-Pesa)</option><option>Disbursements API</option><option>Card Processing</option><option>Webhooks</option><option>Developer Dashboard</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Estimated Impact</label><input class="pm-form-control" placeholder="e.g. 100% of checkouts failing"></div>
+      <div class="mb-3"><label class="pm-form-label">Symptoms / Error Codes</label><textarea class="pm-form-control" rows="3" placeholder="e.g. Receiving 503 Gateway Timeout consistently"></textarea></div>
+    </div>
+    <div [class.active]="incidentStep===3" class="fade-step">
+      <div class="pm-receipt"><div class="receipt-icon" style="background:var(--pm-danger-soft); color:var(--pm-danger);"><i class="bi bi-broadcast"></i></div><h5 style="font-weight:700;color:var(--pm-danger)">Incident Declared</h5><p style="font-size:13px;color:var(--pm-ink-soft)">On-call engineers have been paged. War room activated.</p>
+      <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px"><div class="d-flex justify-content-between mb-2"><span class="text-muted">Incident ID</span><strong>INC-202608-01</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Communication Channel</span><strong>Email & TAM Contact</strong></div></div>
+      <button class="pm-btn pm-btn-sm mt-3 pm-btn-danger w-100" (click)="closeModal('declareIncidentModal');openModal('statusPageSubscribeModal')">Check Status Page</button></div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="pm-btn" (click)="closeModal('declareIncidentModal')">Cancel</button>
+    <button class="pm-btn" *ngIf="incidentStep>1" (click)="incidentStep = incidentStep - 1"><i class="bi bi-arrow-left"></i> Back</button>
+    <button class="pm-btn pm-btn-danger" *ngIf="incidentStep<3" (click)="incidentStep = incidentStep + 1">Acknowledge & Proceed</button>
+    <button class="pm-btn pm-btn-primary" *ngIf="incidentStep===3" (click)="processAction('declareIncidentModal','Incident declared and comms sent.')"><i class="bi bi-check-lg"></i> Done</button>
+  </div>
+</div></div></div>
+
+<!-- 3. upgradeTierModal -->
+<div class="modal fade" id="upgradeTierModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-up-circle text-primary me-2"></i>Upgrade Support Tier</h5><button class="btn-close" (click)="closeModal('upgradeTierModal')"></button></div>
+  <div class="modal-body">
+    <div class="row g-3 mb-3">
+      <div class="col-md-4"><div class="tier-card h-100" (click)="selectTierCard($event)"><input type="radio" name="tier" class="d-none"><h6 style="font-weight:700; color:var(--pm-muted)">Standard</h6><div style="font-size:24px; font-weight:700; margin:10px 0;">Free</div><ul style="font-size:11px; color:var(--pm-muted); padding-left:16px;"><li>Community Forum</li><li>Email Support (24h SLA)</li><li>Standard Documentation</li></ul></div></div>
+      <div class="col-md-4"><div class="tier-card active h-100" (click)="selectTierCard($event)"><input type="radio" name="tier" class="d-none" checked><h6 style="font-weight:700; color:var(--pm-primary)">Premium (Current)</h6><div style="font-size:24px; font-weight:700; margin:10px 0;">$499<span style="font-size:12px; color:var(--pm-muted)">/mo</span></div><ul style="font-size:11px; color:var(--pm-muted); padding-left:16px;"><li>Dedicated TAM</li><li>4hr SLA (Critical)</li><li>Phone & Chat Support</li><li>Quarterly Reviews</li></ul></div></div>
+      <div class="col-md-4"><div class="tier-card h-100" style="border-color:var(--pm-purple)" (click)="selectTierCard($event)"><input type="radio" name="tier" class="d-none"><h6 style="font-weight:700; color:var(--pm-purple)">Enterprise</h6><div style="font-size:24px; font-weight:700; margin:10px 0;">Custom</div><ul style="font-size:11px; color:var(--pm-muted); padding-left:16px;"><li>1hr SLA (Critical)</li><li>24/7 Dedicated Slack</li><li>On-site support options</li><li>Custom integration help</li></ul></div></div>
+    </div>
+    <div class="p-3 rounded" style="background:var(--pm-surface-2); font-size:12px;">Upgrading to Enterprise requires a contract review. Our sales engineering team will contact you to align on SLAs and pricing.</div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('upgradeTierModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('upgradeTierModal','Upgrade request sent. Our team will contact you shortly.')">Request Upgrade</button></div>
+</div></div></div>
+
+<!-- 4. troubleshootingWizardModal -->
+<div class="modal fade" id="troubleshootingWizardModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-magic text-purple me-2"></i>AI Troubleshooting Wizard</h5><button class="btn-close" (click)="closeModal('troubleshootingWizardModal')"></button></div>
+  <div class="modal-body" style="height: 400px; display: flex; flex-direction: column;">
+    <div style="flex:1; overflow-y:auto; background:var(--pm-surface-2); border-radius:var(--pm-r-sm); padding:16px; margin-bottom:16px; font-size:13px;">
+      <div class="mb-3 d-flex gap-2"><div class="pm-avatar" style="width:24px; height:24px; font-size:10px; background:var(--pm-gradient-hero)">AI</div><div class="p-2 rounded bg-white border" style="max-width:80%">Hi John. I'm the PayMo integration assistant. What issue are you experiencing today?</div></div>
+      <div class="mb-3 d-flex gap-2 justify-content-end"><div class="p-2 rounded border text-white" style="max-width:80%; background:var(--pm-primary)">I am getting a 401 Unauthorized error on the Sandbox Disbursements API.</div><div class="pm-avatar" style="width:24px; height:24px; font-size:10px; background:#0284C7">JD</div></div>
+      <div class="mb-3 d-flex gap-2"><div class="pm-avatar" style="width:24px; height:24px; font-size:10px; background:var(--pm-gradient-hero)">AI</div><div class="p-2 rounded bg-white border" style="max-width:80%">A 401 on Sandbox usually means an invalid or expired JWT token, or you are using Production keys in the Sandbox environment.<br><br>Please check:<br>1. Are your API keys prefixed with <code>sk_test_</code>?<br>2. Have you refreshed the token in the last hour?<br><br><button class="pm-btn pm-btn-sm mt-2" (click)="closeModal('troubleshootingWizardModal');openModal('submitTicketModal')">Still not working? Open Ticket</button></div></div>
+    </div>
+    <div class="d-flex gap-2"><input type="text" class="pm-form-control" placeholder="Describe your issue..."><button class="pm-btn pm-btn-primary"><i class="bi bi-send"></i></button></div>
+  </div>
+</div></div></div>
+
+<!-- 5. viewSlaReportModal -->
+<div class="modal fade" id="viewSlaReportModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-file-earmark-bar-graph me-2"></i>Monthly SLA Report</h5><button class="btn-close" (click)="closeModal('viewSlaReportModal')"></button></div>
+  <div class="modal-body">
+    <div class="mb-3"><label class="pm-form-label">Select Month</label><select class="pm-form-control"><option>August 2026</option><option>July 2026</option><option>June 2026</option></select></div>
+    <div class="p-3 border rounded mb-3 text-center"><h3 style="margin:0; color:var(--pm-accent); font-family:var(--pm-font-display);">99.98%</h3><p style="font-size:12px; color:var(--pm-muted); margin:0;">API Uptime Achieved</p></div>
+    <div class="table-responsive mb-3"><table class="pm-table"><tbody><tr><td>Target SLA</td><td>99.90%</td></tr><tr><td>Total Downtime</td><td>8m 14s</td></tr><tr><td>SLA Credits Owed</td><td>$0.00</td></tr></tbody></table></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Include incident RCA summaries in report</label></div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('viewSlaReportModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('viewSlaReportModal','Report generated and downloading...')"><i class="bi bi-download"></i> Download PDF</button></div>
+</div></div></div>
+
+<!-- 6. viewRcaModal -->
+<div class="modal fade" id="viewRcaModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-file-text me-2"></i>Post-Incident Reviews (RCAs)</h5><button class="btn-close" (click)="closeModal('viewRcaModal')"></button></div>
+  <div class="modal-body">
+    <div class="table-responsive"><table class="pm-table"><thead><tr><th>Date</th><th>Incident</th><th>Impact</th><th>Status</th><th>Action</th></tr></thead><tbody>
+      <tr><td>14 Aug 2026</td><td>Webhook Delivery Latency Spike</td><td>15 min delay on 5% payloads</td><td><span class="pm-badge pm-badge-success">Published</span></td><td><button class="pm-btn pm-btn-sm" (click)="processAction('viewRcaModal','RCA document opened.')">Read RCA</button></td></tr>
+      <tr><td>02 Jul 2026</td><td>SEV2: PesaLink Collections Timeout</td><td>30 min API timeout (504 errors)</td><td><span class="pm-badge pm-badge-success">Published</span></td><td><button class="pm-btn pm-btn-sm" (click)="processAction('viewRcaModal','RCA document opened.')">Read RCA</button></td></tr>
+      <tr><td>15 Jun 2026</td><td>Sandbox Environment Down</td><td>2 hours Sandbox unavailability</td><td><span class="pm-badge pm-badge-success">Published</span></td><td><button class="pm-btn pm-btn-sm" (click)="processAction('viewRcaModal','RCA document opened.')">Read RCA</button></td></tr>
+    </tbody></table></div>
+    <div class="p-3 mt-3 rounded" style="background:var(--pm-surface-2); font-size:12px;"><strong>Transparency Promise:</strong> PayMo publishes full Root Cause Analyses (RCAs) for all SEV1 and SEV2 incidents within 72 hours of resolution.</div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('viewRcaModal')">Close</button></div>
+</div></div></div>
+
+<!-- 7. contactAmModal -->
+<div class="modal fade" id="contactAmModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-badge text-primary me-2"></i>Contact Technical Account Manager</h5><button class="btn-close" (click)="closeModal('contactAmModal')"></button></div>
+  <div class="modal-body text-center">
+    <div class="pm-avatar mx-auto mb-3" style="width:80px; height:80px; font-size:24px; background:var(--pm-gradient-rose);">SN</div>
+    <h4 style="font-family:var(--pm-font-display); font-weight:700; margin:0;">Sarah Ndungu</h4>
+    <p style="font-size:13px; color:var(--pm-muted);">Senior Technical Account Manager</p>
+    <div class="d-flex justify-content-center gap-2 mt-3 mb-4"><span class="pm-badge pm-badge-success"><i class="bi bi-circle-fill" style="font-size:8px;"></i> Online</span><span class="pm-badge pm-badge-dark">Premium Tier Support</span></div>
+    <div class="text-start">
+      <div class="mb-3"><label class="pm-form-label">Message Subject</label><input class="pm-form-control" placeholder="e.g. Question about new API rate limits"></div>
+      <div class="mb-3"><label class="pm-form-label">Message</label><textarea class="pm-form-control" rows="4"></textarea></div>
+    </div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('contactAmModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('contactAmModal','Message sent to Sarah. She will reply within 4 hours.')">Send Message</button></div>
+</div></div></div>
+
+<!-- 8. escalationMatrixModal -->
+<div class="modal fade" id="escalationMatrixModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-ladder me-2"></i>Escalation Matrix</h5><button class="btn-close" (click)="closeModal('escalationMatrixModal')"></button></div>
+  <div class="modal-body">
+    <p style="font-size:13px; color:var(--pm-ink-soft);">Defined escalation paths for unresolved support tickets based on your Premium support tier.</p>
+    <div class="table-responsive"><table class="pm-table"><thead><tr><th>Level</th><th>Role</th><th>Time to Escalate (SEV1/SEV2)</th><th>Time to Escalate (SEV3/SEV4)</th></tr></thead><tbody>
+      <tr><td>L1</td><td>Technical Support Engineer</td><td>Immediate routing</td><td>Immediate routing</td></tr>
+      <tr><td>L2</td><td>Technical Account Manager</td><td>+ 1 Hour</td><td>+ 24 Hours</td></tr>
+      <tr><td>L3</td><td>Platform Engineering Lead</td><td>+ 2 Hours</td><td>+ 48 Hours</td></tr>
+      <tr><td>L4</td><td>VP of Engineering</td><td>+ 4 Hours</td><td>N/A</td></tr>
+    </tbody></table></div>
+    <div class="mt-3 p-3 rounded" style="background:var(--pm-warning-soft); font-size:12px;"><i class="bi bi-info-circle text-warning me-1"></i> If an active ticket breaches its SLA, you can manually trigger an escalation via the ticket detail page.</div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('escalationMatrixModal')">Close</button></div>
+</div></div></div>
+
+<!-- 9. slaExclusionsModal -->
+<div class="modal fade" id="slaExclusionsModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-info-circle me-2"></i>SLA Exclusions</h5><button class="btn-close" (click)="closeModal('slaExclusionsModal')"></button></div>
+  <div class="modal-body">
+    <p style="font-size:13px;">The 99.9% Uptime SLA commitment excludes downtime resulting from the following scenarios:</p>
+    <ul style="font-size:13px; color:var(--pm-ink-soft); line-height:1.6;">
+      <li><strong>Scheduled Maintenance:</strong> Maintenance windows communicated at least 7 days in advance.</li>
+      <li><strong>Third-Party Outages:</strong> Outages caused by underlying telecom networks (e.g. Safaricom M-Pesa core downtime) or banking partners.</li>
+      <li><strong>Force Majeure:</strong> Events outside our reasonable control (natural disasters, nationwide internet outages, regulatory freezes).</li>
+      <li><strong>API Abuse:</strong> Downtime resulting from your breach of our rate limits or acceptable use policy.</li>
+      <li><strong>Sandbox Environment:</strong> The Sandbox is provided "as-is" and is excluded from production SLA guarantees.</li>
+    </ul>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('slaExclusionsModal')">Close</button></div>
+</div></div></div>
+
+<!-- 10. maintenanceCalendarModal -->
+<div class="modal fade" id="maintenanceCalendarModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-calendar-event text-info me-2"></i>Scheduled Maintenance Calendar</h5><button class="btn-close" (click)="closeModal('maintenanceCalendarModal')"></button></div>
+  <div class="modal-body">
+    <div class="status-row"><div><strong>Database Optimization (Core Services)</strong><div style="font-size:11px; color:var(--pm-muted);">Impact: Minor latency spikes expected. No downtime.</div></div><div class="text-end"><div style="font-size:12px; font-weight:600;">14 Sep 2026</div><div style="font-size:11px; color:var(--pm-muted);">02:00 AM - 03:00 AM EAT</div></div></div>
+    <div class="status-row"><div><strong>Disbursements Gateway Upgrade</strong><div style="font-size:11px; color:var(--pm-muted);">Impact: B2C disbursements paused for 15 mins.</div></div><div class="text-end"><div style="font-size:12px; font-weight:600;">28 Sep 2026</div><div style="font-size:11px; color:var(--pm-muted);">01:00 AM - 01:15 AM EAT</div></div></div>
+    <div class="p-3 mt-3 rounded text-center" style="background:var(--pm-surface-2); font-size:12px;">Subscribe to maintenance alerts to receive calendar invites automatically.</div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('maintenanceCalendarModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('maintenanceCalendarModal','Subscribed to maintenance alerts.')">Subscribe to Alerts</button></div>
+</div></div></div>
+
+<!-- 11. statusPageSubscribeModal -->
+<div class="modal fade" id="statusPageSubscribeModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-activity text-success me-2"></i>System Status & Subscriptions</h5><button class="btn-close" (click)="closeModal('statusPageSubscribeModal')"></button></div>
+  <div class="modal-body">
+    <div class="p-3 rounded mb-3 text-center" style="background:var(--pm-accent-soft); color:#047857;"><h4 style="font-family:var(--pm-font-display); font-weight:700; margin:0;">All Systems Operational</h4><p style="margin:0; font-size:12px;">Last checked: Just now</p></div>
+    <div class="mb-3"><label class="pm-form-label">Email for Status Notifications</label><input type="email" class="pm-form-control" placeholder="ops@company.com"></div>
+    <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Incident Updates (SEV1/SEV2)</label></div>
+    <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Scheduled Maintenance Notices</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label" style="font-size:13px">API Deprecation Warnings</label></div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('statusPageSubscribeModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('statusPageSubscribeModal','Subscribed to status updates.')">Subscribe</button></div>
+</div></div></div>
+
+<!-- 12. communityForumModal -->
+<div class="modal fade" id="communityForumModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-people me-2 text-primary"></i>Developer Community</h5><button class="btn-close" (click)="closeModal('communityForumModal')"></button></div>
+  <div class="modal-body text-center">
+    <i class="bi bi-chat-left-text d-block mb-3" style="font-size: 48px; color: var(--pm-primary);"></i>
+    <h5 style="font-weight:700;">Join the PayMo Developer Forum</h5>
+    <p style="font-size:13px; color:var(--pm-ink-soft);">Connect with other developers, share integration patterns, and get help from the community.</p>
+    <div class="d-flex gap-2 justify-content-center mt-3">
+      <button class="pm-btn pm-btn-primary" (click)="processAction('communityForumModal','Redirecting to community forum...')">Open Forum</button>
+      <button class="pm-btn" (click)="processAction('communityForumModal','Discord invite link copied!')">Join Discord</button>
+    </div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('communityForumModal')">Close</button></div>
+</div></div></div>
+
+<!-- 13. ticketDetailModal -->
+<div class="modal fade" id="ticketDetailModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-ticket-detailed me-2"></i>Ticket Details</h5><button class="btn-close" (click)="closeModal('ticketDetailModal')"></button></div>
+  <div class="modal-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div><h4 style="margin:0; font-weight:700;">TIC-8821</h4><p style="margin:0; font-size:12px; color:var(--pm-muted);">Opened: 2 days ago by John Doe</p></div>
+      <span class="pm-badge pm-badge-warning">Awaiting Reply</span>
+    </div>
+    <h6 style="font-weight:700; font-size:14px;">Webhook payloads dropping occasionally</h6>
+    <div class="p-3 border rounded mb-3" style="background:var(--pm-surface-2); font-size:13px;">We are seeing intermittent drops in webhook payloads for payment.success events. Approximately 5% of payloads are not reaching our endpoint.</div>
+    <h6 style="font-weight:700; font-size:13px; margin-top:16px;">Activity</h6>
+    <div class="border rounded p-2 mb-2" style="font-size:12px;"><strong>You:</strong> We are seeing intermittent drops... <span class="text-muted float-end">2 days ago</span></div>
+    <div class="border rounded p-2 mb-2" style="font-size:12px; background:var(--pm-info-soft);"><strong>Sarah N. (PayMo):</strong> Hi John, we've identified a retry queue bottleneck. Can you share your endpoint logs? <span class="text-muted float-end">1 day ago</span></div>
+    <div class="mt-3"><label class="pm-form-label">Add Reply</label><textarea class="pm-form-control" rows="3" placeholder="Type your reply..."></textarea></div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('ticketDetailModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('ticketDetailModal','Reply sent to support team.')"><i class="bi bi-send"></i> Send Reply</button></div>
+</div></div></div>
+
+<!-- 14. manageSupportContactsModal -->
+<div class="modal fade" id="manageSupportContactsModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-lines-fill me-2 text-info"></i>Manage Support Contacts</h5><button class="btn-close" (click)="closeModal('manageSupportContactsModal')"></button></div>
+  <div class="modal-body">
+    <div class="mb-3"><label class="pm-form-label">Primary Contact Name</label><input class="pm-form-control" value="John Doe"></div>
+    <div class="mb-3"><label class="pm-form-label">Primary Contact Email</label><input type="email" class="pm-form-control" value="john.doe@company.com"></div>
+    <div class="mb-3"><label class="pm-form-label">Secondary / Escalation Contact</label><input class="pm-form-control" placeholder="Name and email for urgent escalations"></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Receive ticket notifications via email</label></div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('manageSupportContactsModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('manageSupportContactsModal','Support contacts updated.')">Save Contacts</button></div>
+</div></div></div>
+
+<!-- 15. chatSupportModal -->
+<div class="modal fade" id="chatSupportModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-chat-dots text-success me-2"></i>Live Chat Support</h5><button class="btn-close" (click)="closeModal('chatSupportModal')"></button></div>
+  <div class="modal-body text-center py-4">
+    <div class="pm-avatar mx-auto mb-3" style="width:60px; height:60px; font-size:20px; background:var(--pm-accent-soft); color:var(--pm-accent);"><i class="bi bi-headset"></i></div>
+    <h5 style="font-weight:700;">Premium Live Chat</h5>
+    <p style="font-size:13px; color:var(--pm-muted);">Available Monday - Friday, 8AM - 6PM EAT.<br>Current wait time: <strong style="color:var(--pm-accent);">~2 minutes</strong></p>
+    <button class="pm-btn pm-btn-primary mt-3" (click)="processAction('chatSupportModal','Connecting you to a live agent...')"><i class="bi bi-chat-dots"></i> Start Chat Session</button>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('chatSupportModal')">Close</button></div>
+</div></div></div>
+
+<!-- 16. requestArchitectureReviewModal -->
+<div class="modal fade" id="requestArchitectureReviewModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-diagram-3 text-info me-2"></i>Request Architecture Review</h5><button class="btn-close" (click)="closeModal('requestArchitectureReviewModal')"></button></div>
+  <div class="modal-body">
+    <div class="mb-3"><label class="pm-form-label">Preferred Date & Time</label><input type="datetime-local" class="pm-form-control"></div>
+    <div class="mb-3"><label class="pm-form-label">Topics to Cover</label><textarea class="pm-form-control" rows="3" placeholder="e.g., High availability setup, caching strategies..."></textarea></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Include TAM (Sarah Ndungu) in the invite</label></div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('requestArchitectureReviewModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('requestArchitectureReviewModal','Architecture review request sent.')">Submit Request</button></div>
+</div></div></div>
+
+<!-- 17. quarterlyBusinessReviewModal -->
+<div class="modal fade" id="quarterlyBusinessReviewModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-calendar-check text-warning me-2"></i>Book Quarterly Business Review (QBR)</h5><button class="btn-close" (click)="closeModal('quarterlyBusinessReviewModal')"></button></div>
+  <div class="modal-body">
+    <p style="font-size:13px; color:var(--pm-ink-soft);">QBRs are executive-level reviews of your integration health, usage metrics, and upcoming PayMo features.</p>
+    <div class="mb-3"><label class="pm-form-label">Proposed Date</label><input type="date" class="pm-form-control"></div>
+    <div class="mb-3"><label class="pm-form-label">Attendees from Your Side</label><input class="pm-form-control" placeholder="e.g., CTO, VP Engineering, Lead Dev"></div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('quarterlyBusinessReviewModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('quarterlyBusinessReviewModal','QBR booking request sent to your TAM.')">Book QBR</button></div>
+</div></div></div>
+
+<!-- 18. slackIntegrationModal -->
+<div class="modal fade" id="slackIntegrationModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-slack me-2" style="color:var(--pm-purple)"></i>Slack Integration (Enterprise Only)</h5><button class="btn-close" (click)="closeModal('slackIntegrationModal')"></button></div>
+  <div class="modal-body text-center">
+    <i class="bi bi-lock-fill d-block mb-3" style="font-size: 32px; color: var(--pm-muted);"></i>
+    <h5 style="font-weight:700;">Feature Locked</h5>
+    <p style="font-size:13px; color:var(--pm-muted);">24/7 dedicated Slack channels are available on the Enterprise support tier.</p>
+    <button class="pm-btn pm-btn-primary mt-3" (click)="closeModal('slackIntegrationModal');openModal('upgradeTierModal')"><i class="bi bi-arrow-up-circle"></i> Upgrade to Enterprise</button>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('slackIntegrationModal')">Close</button></div>
+</div></div></div>
+
+<!-- 19. onSiteSupportModal -->
+<div class="modal fade" id="onSiteSupportModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-building me-2 text-danger"></i>On-Site Support (Enterprise Only)</h5><button class="btn-close" (click)="closeModal('onSiteSupportModal')"></button></div>
+  <div class="modal-body text-center">
+    <i class="bi bi-lock-fill d-block mb-3" style="font-size: 32px; color: var(--pm-muted);"></i>
+    <h5 style="font-weight:700;">Feature Locked</h5>
+    <p style="font-size:13px; color:var(--pm-muted);">On-site technical assistance from PayMo Solutions Engineers is available on the Enterprise tier.</p>
+    <button class="pm-btn pm-btn-primary mt-3" (click)="closeModal('onSiteSupportModal');openModal('upgradeTierModal')"><i class="bi bi-arrow-up-circle"></i> Upgrade to Enterprise</button>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('onSiteSupportModal')">Close</button></div>
+</div></div></div>
+
+<!-- 20. uptimeCalcMethodologyModal -->
+<div class="modal fade" id="uptimeCalcMethodologyModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-calculator me-2 text-primary"></i>Uptime Calculation Methodology</h5><button class="btn-close" (click)="closeModal('uptimeCalcMethodologyModal')"></button></div>
+  <div class="modal-body">
+    <p style="font-size:13px; color:var(--pm-ink-soft);">Uptime is calculated per minute over the calendar month. A minute is considered "down" if more than 50% of API requests to the core payment endpoints return 5xx errors or time out.</p>
+    <div class="p-3 border rounded mt-3" style="background:var(--pm-surface-2); font-family:monospace; font-size:12px;">
+      Uptime % = (Total Minutes - Downtime Minutes) / Total Minutes * 100
+    </div>
+    <ul style="font-size:13px; color:var(--pm-ink-soft); margin-top:16px; padding-left:20px;">
+      <li>Downtime is measured across all PayMo-managed core API nodes.</li>
+      <li>Planned maintenance (communicated 7 days in advance) is excluded.</li>
+      <li>Third-party failures (e.g., M-Pesa core down) are excluded.</li>
+    </ul>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('uptimeCalcMethodologyModal')">Close</button></div>
+</div></div></div>
+
+<!-- 21. incidentHistoryModal -->
+<div class="modal fade" id="incidentHistoryModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-clock-history me-2 text-warning"></i>Incident History</h5><button class="btn-close" (click)="closeModal('incidentHistoryModal')"></button></div>
+  <div class="modal-body">
+    <div class="table-responsive"><table class="pm-table"><thead><tr><th>ID</th><th>Date</th><th>Title</th><th>Severity</th><th>Duration</th><th>Status</th></tr></thead><tbody>
+      <tr><td>INC-0814</td><td>14 Aug 2026</td><td>Webhook Delivery Latency</td><td><span class="pm-badge pm-badge-warning">SEV2</span></td><td>45 mins</td><td><span class="pm-badge pm-badge-success">Resolved</span></td></tr>
+      <tr><td>INC-0702</td><td>02 Jul 2026</td><td>PesaLink Collections Timeout</td><td><span class="pm-badge pm-badge-warning">SEV2</span></td><td>30 mins</td><td><span class="pm-badge pm-badge-success">Resolved</span></td></tr>
+      <tr><td>INC-0615</td><td>15 Jun 2026</td><td>Sandbox Downtime</td><td><span class="pm-badge pm-badge-info">SEV3</span></td><td>2 hours</td><td><span class="pm-badge pm-badge-success">Resolved</span></td></tr>
+    </tbody></table></div>
+  </div>
+  <div class="modal-footer"><button class="pm-btn" (click)="closeModal('incidentHistoryModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="closeModal('incidentHistoryModal');openModal('viewRcaModal')"><i class="bi bi-file-text"></i> View RCAs</button></div>
+</div></div></div>
+
+<!-- Toast Notification -->
+<div class="pm-toast" *ngIf="toast.visible" [class.hide]="toast.hiding">
+  <i class="bi bi-check-circle-fill" style="color:var(--pm-accent); font-size:18px;"></i>
+  <span>{{toast.message}}</span>
+  <button style="margin-left:auto; background:none; border:none; color:var(--pm-muted); cursor:pointer; font-size:16px;" (click)="dismissToast()"><i class="bi bi-x-lg"></i></button>
+</div>

@@ -1,0 +1,1118 @@
+<!-- Toast Notification -->
+@if (toast.show) {
+<div class="position-fixed top-0 end-0 p-3" style="z-index:9999">
+  <div class="pm-card d-flex align-items-center gap-2"
+    style="padding:12px 20px;border-left:3px solid var(--pm-accent);box-shadow:var(--pm-shadow-lg);min-width:320px">
+    <i class="bi bi-check-circle-fill text-success" style="font-size:18px"></i>
+    <span style="font-size:13px;font-weight:500">{{toast.message}}</span>
+    <button class="btn-close btn-close-sm ms-auto" (click)="toast.show = false"></button>
+  </div>
+</div>
+}
+
+<div class="pm-main">
+  <header class="pm-header">
+    <div class="pm-header-title" style="flex-shrink:0">
+      <div class="d-flex align-items-center gap-2">
+        <div class="pm-avatar" style="width:36px;height:36px;font-size:13px;background:var(--pm-gradient-slate)"><i
+            class="bi bi-terminal"></i></div>
+        <div>
+          <h1>API Governance & Roadmap</h1>
+          <p>Manage API lifecycle, standards, versions, and product evolution</p>
+        </div>
+      </div>
+    </div>
+    <div class="pm-header-search">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Search API endpoints, version docs, RFCs...">
+    </div>
+    <div class="pm-header-actions">
+      <button class="pm-header-btn" (click)="openModal('healthCheckModal')" title="System Status"><i
+          class="bi bi-activity"></i></button>
+      <button class="pm-header-btn" (click)="openModal('developerAlertsModal')" title="Alerts"><i
+          class="bi bi-bell"></i><span class="counter">3</span></button>
+    </div>
+  </header>
+
+  <div class="pm-page-bar">
+    <div>
+      <div class="pm-breadcrumb"><a href="javascript:void(0)">Developer Portal</a> / <a
+          href="javascript:void(0)">Operations</a> / <strong>Governance & Roadmap</strong></div>
+      <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 4.10 — API
+        Governance, Versioning & Roadmap</h2>
+      <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Control API lifecycles, enforce design standards
+        (OpenAPI 3.0), publish release notes, and track the developer roadmap.</p>
+    </div>
+    <div class="d-flex flex-wrap" style="gap:8px">
+      <button class="pm-btn" (click)="openModal('exportSpecModal')"><i class="bi bi-download"></i> Export Spec</button>
+      <button class="pm-btn" (click)="openModal('apiGovernanceAuditModal')"><i class="bi bi-shield-check"></i> Audit
+        Report</button>
+      <button class="pm-btn-primary pm-btn" (click)="openModal('publishReleaseModal')"><i
+          class="bi bi-rocket-takeoff"></i> Publish Release</button>
+    </div>
+  </div>
+
+  <div class="pm-content">
+    <!-- HERO STATS -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card pm-card-accent" style="min-height:170px">
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">API Gateway routing is optimal <span
+              style="color:#86efac">●</span></p>
+          <div class="pm-stat-value" style="margin:8px 0;color:#fff">v2.4.1 (Current)</div>
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Handling 94% of all production traffic. v1
+            deprecation scheduled in 180 days.</p>
+          <div class="d-flex flex-wrap mt-3" style="gap:8px">
+            <button class="pm-btn pm-btn-sm"
+              style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+              (click)="openModal('changelogDetailModal')">View Changelog</button>
+            <button class="pm-btn pm-btn-sm"
+              style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+              (click)="openModal('migrationGuideModal')">Migration Docs</button>
+            <button class="pm-btn pm-btn-sm"
+              style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+              (click)="openModal('deprecateVersionModal')">Deprecate v1</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-info)">ACTIVE VERSIONS</p>
+          <div class="pm-stat-value" style="margin:6px 0">3 APIs</div>
+          <span class="pm-badge pm-badge-info"><i class="bi bi-diagram-2"></i> v1, v2, v3-beta</span>
+          <div class="mt-3" style="font-size:11px;color:var(--pm-muted)">
+            <div class="d-flex justify-content-between mb-1"><span>v2.x Traffic</span><span>94%</span></div>
+            <div class="pm-progress mb-2">
+              <div class="pm-progress-bar" style="width:94%;background:var(--pm-info)"></div>
+            </div>
+            <div class="d-flex justify-content-between mb-1"><span>v1.x Traffic</span><span>6%</span></div>
+            <div class="pm-progress">
+              <div class="pm-progress-bar" style="width:6%;background:var(--pm-warning)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-warning)">GOVERNANCE COMPLIANCE</p>
+          <div class="pm-stat-value" style="margin:6px 0">98.5%</div>
+          <span class="pm-badge pm-badge-success"><i class="bi bi-shield-check"></i> Passed OAS 3.0</span>
+          <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+            <div class="d-flex justify-content-between mb-1"><span>Linter Warnings</span><strong
+                style="color:var(--pm-warning)">12</strong></div>
+            <div class="d-flex justify-content-between mb-1"><span>Breaking Changes</span><strong>0</strong></div>
+            <div class="mt-2"><button class="pm-btn pm-btn-sm w-100" (click)="openModal('runLinterModal')">Run
+                Linter</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-purple)">
+          <p class="pm-stat-label" style="color:var(--pm-purple)">COMMUNITY FEEDBACK</p>
+          <div class="pm-stat-value" style="margin:6px 0">142</div>
+          <span class="pm-badge pm-badge-purple"><i class="bi bi-chat-text"></i> Open Requests</span>
+          <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+            <div>Highest voted: <strong>GraphQL Support (89 votes)</strong></div>
+            <div class="mt-2"><button class="pm-btn pm-btn-sm w-100" (click)="openModal('submitFeatureModal')">New
+                Request</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <!-- 4.10.1 API Lifecycle -->
+      <div class="col-lg-6">
+        <div class="pm-card" style="height:100%">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h3 class="pm-section-title"><i class="bi bi-arrow-repeat text-primary"></i> 4.10.1 — API Lifecycle &
+                Versions</h3>
+              <p class="pm-section-sub">Manage version rollouts, deprecation policies, and backward compatibility.</p>
+            </div>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('versionActionModal')"><i
+                class="bi bi-three-dots-vertical"></i> Actions</button>
+          </div>
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead>
+                <tr>
+                  <th>Version</th>
+                  <th>Status</th>
+                  <th>Adoption</th>
+                  <th>Sunset Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (v of apiVersions; track v.version) {
+                <tr>
+                  <td><strong style="font-size:14px">{{v.version}}</strong><br><span
+                      style="font-size:10px;color:var(--pm-muted)">{{v.desc}}</span></td>
+                  <td><span class="pm-badge" [ngClass]="v.statusClass">{{v.status}}</span></td>
+                  <td>
+                    <div class="pm-progress mt-1" style="width:50px">
+                      <div class="pm-progress-bar" [style.width]="v.traffic + '%'" [style.background]="v.trafficColor">
+                      </div>
+                    </div><span style="font-size:10px">{{v.traffic}}%</span>
+                  </td>
+                  <td [style.color]="v.sunsetColor"><strong style="font-size:12px">{{v.sunset}}</strong></td>
+                  <td><button class="pm-btn pm-btn-sm" (click)="openModal(v.actionModal)">{{v.actionText}}</button></td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex gap-2 mt-3">
+            <button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('broadcastChangeModal')"><i
+                class="bi bi-broadcast"></i> Notify Devs</button>
+            <button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('migrationGuideModal')"><i
+                class="bi bi-journal-code"></i> Migration Guides</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.10.2 API Governance -->
+      <div class="col-lg-6">
+        <div class="pm-card" style="height:100%">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h3 class="pm-section-title"><i class="bi bi-shield-check text-success"></i> 4.10.2 — API Governance &
+                Standards</h3>
+              <p class="pm-section-sub">Enforce REST principles, documentation quality, and performance targets.</p>
+            </div>
+          </div>
+          <div class="row g-2 mb-3">
+            @for (g of govStats; track g.label) {
+            <div class="col-6 utility-block text-center" style="padding:12px;cursor:pointer"
+              [ngClass]="{'border border-primary': g.clickable}" (click)="g.clickable ? openModal(g.modal) : null">
+              <div style="font-size:11px;color:var(--pm-muted);font-weight:700">{{g.label}}</div>
+              <div style="font-size:20px;font-weight:700" [style.color]="g.color" [innerHTML]="g.value"></div>
+            </div>
+            }
+          </div>
+          <div class="d-flex gap-2">
+            <button class="pm-btn pm-btn-sm" (click)="openModal('apiGovernanceAuditModal')">View Audit
+              Checklist</button>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('testAutomationConfigModal')">Test Config</button>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('sdkGenerationModal')">Generate SDKs</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.10.3 Product Roadmap -->
+    <div class="pm-card mt-3">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-map text-warning"></i> 4.10.3 — Product Roadmap & Developer
+            Feedback</h3>
+          <p class="pm-section-sub">Public tracking of planned API features, beta programs, and community voting.</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('featureListModal')"><i class="bi bi-list-ul"></i> All
+            Requests</button>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('submitFeatureModal')"><i
+              class="bi bi-plus-lg"></i> Submit Idea</button>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="kanban-col">
+            <h6
+              style="font-weight:700;font-size:13px;border-bottom:2px solid var(--pm-purple);padding-bottom:8px;margin-bottom:12px">
+              UNDER REVIEW (Votes)</h6>
+            @for (r of roadmapReview; track r.title) {
+            <div class="roadmap-card" (click)="openModal('featureDetailModal')">
+              <div class="d-flex justify-content-between"><strong>{{r.title}}</strong><span class="pm-badge"
+                  style="background:#f3f4f6;color:var(--pm-ink)"><i class="bi bi-arrow-up"></i> {{r.votes}}</span></div>
+              <div style="font-size:11px;color:var(--pm-muted);margin-top:4px">{{r.desc}}</div>
+            </div>
+            }
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="kanban-col">
+            <h6
+              style="font-weight:700;font-size:13px;border-bottom:2px solid var(--pm-info);padding-bottom:8px;margin-bottom:12px">
+              PLANNED (Q3 2026)</h6>
+            @for (p of roadmapPlanned; track p.title) {
+            <div class="roadmap-card" (click)="openModal('roadmapItemModal')">
+              <div class="d-flex justify-content-between"><strong>{{p.title}}</strong><span
+                  class="pm-badge pm-badge-info">Q3</span></div>
+              <div style="font-size:11px;color:var(--pm-muted);margin-top:4px">{{p.desc}}</div>
+              <div class="mt-2">
+                <div class="pm-progress">
+                  <div class="pm-progress-bar" [style.width]="p.progress + '%'" style="background:var(--pm-info)"></div>
+                </div>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="kanban-col">
+            <h6
+              style="font-weight:700;font-size:13px;border-bottom:2px solid var(--pm-accent);padding-bottom:8px;margin-bottom:12px">
+              BETA / ROLLOUT</h6>
+            @for (b of roadmapBeta; track b.title) {
+            <div class="roadmap-card" (click)="openModal('roadmapItemModal')">
+              <div class="d-flex justify-content-between"><strong>{{b.title}}</strong><span
+                  class="pm-badge pm-badge-success">{{b.tag}}</span></div>
+              <div style="font-size:11px;color:var(--pm-muted);margin-top:4px">{{b.desc}}</div>
+              @if (b.showJoin) {
+              <button class="pm-btn pm-btn-sm pm-btn-outline w-100 mt-2"
+                (click)="$event.stopPropagation(); openModal('enrollBetaModal')">Join Beta</button>
+              }
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 1: Publish Release (Multi-step) -->
+@if (modals['publishReleaseModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'publishReleaseModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-rocket-takeoff text-primary me-2"></i>Publish API Release</h5><button
+          class="btn-close" (click)="closeModal('publishReleaseModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="relStep===1" [class.completed]="relStep>1">
+            <div class="pm-step-num">1</div><span class="pm-step-label">Version</span>
+          </div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="relStep===2" [class.completed]="relStep>2">
+            <div class="pm-step-num">2</div><span class="pm-step-label">Changelog</span>
+          </div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="relStep===3" [class.completed]="relStep>3">
+            <div class="pm-step-num">3</div><span class="pm-step-label">Notify</span>
+          </div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="relStep===4">
+            <div class="pm-step-num">4</div><span class="pm-step-label">Publish</span>
+          </div>
+        </div>
+        @if (relStep===1) {
+        <div class="fade-step active">
+          <div class="mb-3"><label class="pm-form-label">Version Number (Semantic)</label><input class="pm-form-control"
+              value="2.4.2" placeholder="Major.Minor.Patch"></div>
+          <div class="mb-3"><label class="pm-form-label">Release Type</label><select class="pm-form-control">
+              <option>Patch (Bug fixes, non-breaking)</option>
+              <option>Minor (New features, non-breaking)</option>
+              <option>Major (Breaking changes)</option>
+            </select></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" checked><label
+              class="form-check-label" style="font-size:13px">Maintain backwards compatibility with v2.x</label></div>
+        </div>
+        }
+        @if (relStep===2) {
+        <div class="fade-step active">
+          <div class="mb-3"><label class="pm-form-label">Changelog Notes (Markdown)</label><textarea
+              class="pm-form-control" rows="6" style="font-family:monospace;font-size:12px">### Added
+- `GET /v2/payroll/status` endpoint to check async bulk processing
+### Fixed
+- Idempotency key conflict on `POST /v2/disbursements`</textarea></div>
+        </div>
+        }
+        @if (relStep===3) {
+        <div class="fade-step active">
+          <div class="mb-3"><label class="pm-form-label">Developer Notification</label>
+            <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked><label
+                class="form-check-label">Publish to Developer Portal Changelog</label></div>
+            <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked><label
+                class="form-check-label">Email notification to all registered developers</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">Post
+                to community Slack/Discord</label></div>
+          </div>
+        </div>
+        }
+        @if (relStep===4) {
+        <div class="fade-step active">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Release Ready</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Version <strong>v2.4.2</strong> is ready to be published.
+              The OpenAPI spec will be updated automatically.</p>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (relStep > 1) {
+        <button class="pm-btn" (click)="prevRelStep()"><i class="bi bi-arrow-left"></i> Back</button>
+        }
+        <button class="pm-btn" (click)="closeModal('publishReleaseModal'); relStep = 1">Cancel</button>
+        @if (relStep < 4) {
+        <button class="pm-btn pm-btn-primary" (click)="nextRelStep()">Next <i class="bi bi-arrow-right"></i></button>
+        }
+        @if (relStep === 4) {
+        <button class="pm-btn pm-btn-accent"
+          (click)="processAction('publishReleaseModal','Release v2.4.2 published successfully!'); relStep = 1">Publish
+          Release</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('publishReleaseModal')"></div>
+}
+
+<!-- MODAL 2: Deprecate Version (Multi-step) -->
+@if (modals['deprecateVersionModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'deprecateVersionModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-trash text-warning me-2"></i>Deprecate API Version</h5><button
+          class="btn-close" (click)="closeModal('deprecateVersionModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="depStep===1" [class.completed]="depStep>1">
+            <div class="pm-step-num">1</div><span class="pm-step-label">Select</span>
+          </div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="depStep===2" [class.completed]="depStep>2">
+            <div class="pm-step-num">2</div><span class="pm-step-label">Dates</span>
+          </div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="depStep===3" [class.completed]="depStep>3">
+            <div class="pm-step-num">3</div><span class="pm-step-label">Actions</span>
+          </div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="depStep===4">
+            <div class="pm-step-num">4</div><span class="pm-step-label">Done</span>
+          </div>
+        </div>
+        @if (depStep===1) {
+        <div class="fade-step active">
+          <div class="mb-3"><label class="pm-form-label">Select Version to Deprecate</label><select
+              class="pm-form-control">
+              <option>v1.8.4</option>
+              <option>v2.0.0 (Old Minor)</option>
+            </select></div>
+          <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px"><i
+              class="bi bi-exclamation-triangle"></i> Deprecating a version initiates the sunset period. It does not
+            immediately turn off the API.</div>
+        </div>
+        }
+        @if (depStep===2) {
+        <div class="fade-step active">
+          <div class="mb-3"><label class="pm-form-label">Sunset Date (Minimum 6 months)</label><input type="date"
+              class="pm-form-control" value="2026-12-31"></div>
+          <div class="mb-3"><label class="pm-form-label">Replacement Version</label><select class="pm-form-control">
+              <option>v2.x</option>
+              <option>v3.x</option>
+            </select></div>
+        </div>
+        }
+        @if (depStep===3) {
+        <div class="fade-step active">
+          <div class="mb-3"><label class="pm-form-label">Automated Actions</label>
+            <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked disabled><label
+                class="form-check-label">Inject <code>Deprecation: true</code> header</label></div>
+            <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked disabled><label
+                class="form-check-label">Inject <code>Sunset: Date</code> header</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked><label
+                class="form-check-label">Send 6-month notice email to active consumers (6% traffic)</label></div>
+          </div>
+        </div>
+        }
+        @if (depStep===4) {
+        <div class="fade-step active">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Deprecation Scheduled</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">v1.8.4 sunset date set to Dec 31, 2026. Notices will be
+              sent.</p>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (depStep > 1) {
+        <button class="pm-btn" (click)="prevDepStep()"><i class="bi bi-arrow-left"></i> Back</button>
+        }
+        <button class="pm-btn" (click)="closeModal('deprecateVersionModal'); depStep = 1">Cancel</button>
+        @if (depStep < 4) {
+        <button class="pm-btn text-white"
+          style="background:var(--pm-warning);border-color:var(--pm-warning)" (click)="nextDepStep()">Next <i
+            class="bi bi-arrow-right"></i></button>
+        }
+        @if (depStep === 4) {
+        <button class="pm-btn pm-btn-accent"
+          (click)="processAction('deprecateVersionModal','Deprecation scheduled successfully.'); depStep = 1">Confirm</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('deprecateVersionModal')"></div>
+}
+
+<!-- MODAL 3: Migration Guide (Tabs) -->
+@if (modals['migrationGuideModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'migrationGuideModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-journal-code me-2"></i>Migration Guides</h5><button class="btn-close"
+          (click)="closeModal('migrationGuideModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-tab-pills mb-3">
+          <button class="pm-tab-pill" [class.active]="migTab==='v1v2'" (click)="migTab='v1v2'">Migrating v1 to
+            v2</button>
+          <button class="pm-tab-pill" [class.active]="migTab==='v2v3'" (click)="migTab='v2v3'">Preparing for v3</button>
+        </div>
+        @if (migTab==='v1v2') {
+        <div class="tab-panel active">
+          <h6 style="font-weight:700">Key Changes</h6>
+          <ul style="font-size:13px">
+            <li>All amount fields are now integers (minor units/cents) instead of floats.</li>
+            <li><code>phoneNumber</code> must include country code without '+'.</li>
+            <li>Idempotency keys are now mandatory in headers.</li>
+          </ul>
+          <label class="pm-form-label mt-3">Payload Example (v2)</label>
+          <pre [innerText]="migrationPayloadV2"></pre>
+        </div>
+        }
+        @if (migTab==='v2v3') {
+        <div class="tab-panel active">
+          <h6 style="font-weight:700">Looking Ahead to v3</h6>
+          <p style="font-size:13px">v3 will introduce GraphQL alongside REST. The REST endpoints will adopt stricter
+            JSON:API formatting for relationships.</p>
+        </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary"
+          (click)="closeModal('migrationGuideModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('migrationGuideModal')"></div>
+}
+
+<!-- MODAL 4: Changelog Detail -->
+@if (modals['changelogDetailModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'changelogDetailModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-card-text me-2"></i>Release Notes: v2.4.1</h5><button class="btn-close"
+          (click)="closeModal('changelogDetailModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between mb-3"><span class="pm-badge pm-badge-success">Current
+            Release</span><span style="font-size:12px;color:var(--pm-muted)">Released: Jun 15, 2025</span></div>
+        <div style="font-size:13px">
+          <h6 style="color:var(--pm-primary);font-weight:700">New Features</h6>
+          <ul>
+            <li>Added <code>GET /v2/analytics/cashflow</code> endpoint.</li>
+            <li>Enabled dynamic QR code generation via API.</li>
+          </ul>
+          <h6 style="color:var(--pm-accent);font-weight:700">Improvements</h6>
+          <ul>
+            <li>Webhooks now retry up to 5 times using exponential backoff.</li>
+            <li>P95 latency reduced to 112ms.</li>
+          </ul>
+          <h6 style="color:var(--pm-warning);font-weight:700">Bug Fixes</h6>
+          <ul>
+            <li>Fixed pagination cursor failure on large invoice sets.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary"
+          (click)="closeModal('changelogDetailModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('changelogDetailModal')"></div>
+}
+
+<!-- MODAL 5: Run Linter (Stateful) -->
+@if (modals['runLinterModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'runLinterModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-check text-success me-2"></i>API Governance Linter</h5><button
+          class="btn-close" (click)="closeModal('runLinterModal'); linterState='pre'"></button>
+      </div>
+      <div class="modal-body">
+        @if (linterState==='pre') {
+        <div class="text-center">
+          <i class="bi bi-braces text-muted" style="font-size:48px"></i>
+          <p class="mt-3" style="font-size:13px">Scan the current OpenAPI specification against PayMo's REST governance
+            policies.</p>
+          <button class="pm-btn pm-btn-primary mt-2" (click)="simulateLinter()">Run Scan Now</button>
+        </div>
+        }
+        @if (linterState==='loading') {
+        <div class="text-center">
+          <div class="pm-spinner mx-auto mb-3"></div>
+          <p style="font-size:13px;color:var(--pm-primary)">Scanning 214 endpoints...</p>
+        </div>
+        }
+        @if (linterState==='result') {
+        <div>
+          <div class="p-3 rounded mb-3" style="background:var(--pm-accent-soft);border:1px solid var(--pm-accent)">
+            <div style="font-size:18px;font-weight:700;color:#047857"><i class="bi bi-check-circle"></i> Passed (Score:
+              98/100)</div>
+          </div>
+          <h6 style="font-size:12px;font-weight:700">Warnings (2)</h6>
+          <div class="feed-item">
+            <div class="pm-icon-circle"
+              style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px;width:24px;height:24px"><i
+                class="bi bi-exclamation"></i></div>
+            <div style="font-size:12px"><code>GET /v2/temp/stats</code> is missing a description.</div>
+          </div>
+          <div class="feed-item">
+            <div class="pm-icon-circle"
+              style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px;width:24px;height:24px"><i
+                class="bi bi-exclamation"></i></div>
+            <div style="font-size:12px">Operation <code>cancelSubscription</code> should use <code>POST</code> not
+              <code>PUT</code>.</div>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn"
+          (click)="closeModal('runLinterModal'); linterState='pre'">Close</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('runLinterModal')"></div>
+}
+
+<!-- MODAL 6: Export Spec -->
+@if (modals['exportSpecModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'exportSpecModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-download me-2"></i>Export API Specification</h5><button
+          class="btn-close" (click)="closeModal('exportSpecModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Select API Version</label><select class="pm-form-control">
+            <option>v2.4.1 (Current)</option>
+            <option>v1.8.4 (Deprecated)</option>
+            <option>v3.0.0-beta</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Export Format</label>
+          <div class="p-2 border rounded mb-2 d-flex align-items-center gap-2"
+            [style.borderColor]="selectedExportFmt==='json'?'var(--pm-primary)':''" (click)="selectedExportFmt='json'">
+            <input type="radio" name="exp" [checked]="selectedExportFmt==='json'"> <span
+              style="font-size:13px;font-weight:600">OpenAPI 3.0 (JSON)</span></div>
+          <div class="p-2 border rounded mb-2 d-flex align-items-center gap-2"
+            [style.borderColor]="selectedExportFmt==='yaml'?'var(--pm-primary)':''" (click)="selectedExportFmt='yaml'">
+            <input type="radio" name="exp" [checked]="selectedExportFmt==='yaml'"> <span
+              style="font-size:13px;font-weight:600">OpenAPI 3.0 (YAML)</span></div>
+          <div class="p-2 border rounded d-flex align-items-center gap-2"
+            [style.borderColor]="selectedExportFmt==='postman'?'var(--pm-primary)':''"
+            (click)="selectedExportFmt='postman'"><input type="radio" name="exp"
+              [checked]="selectedExportFmt==='postman'"> <span style="font-size:13px;font-weight:600">Postman Collection
+              v2.1</span></div>
+        </div>
+        <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label"
+            style="font-size:13px">Include code generation extensions</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('exportSpecModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('exportSpecModal','Specification downloaded successfully.')"><i
+            class="bi bi-download"></i> Download File</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('exportSpecModal')"></div>
+}
+
+<!-- MODAL 7: Submit Feature Request -->
+@if (modals['submitFeatureModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'submitFeatureModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-lightbulb text-warning me-2"></i>Submit Feature Request</h5><button
+          class="btn-close" (click)="closeModal('submitFeatureModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12"><label class="pm-form-label">Feature Title</label><input class="pm-form-control"
+              placeholder="e.g., Bulk employee import via API"></div>
+          <div class="col-md-6"><label class="pm-form-label">Category</label><select class="pm-form-control">
+              <option>Payroll APIs</option>
+              <option>Collections</option>
+              <option>Webhooks</option>
+              <option>SDKs</option>
+              <option>Other</option>
+            </select></div>
+          <div class="col-md-6"><label class="pm-form-label">Business Priority</label><select class="pm-form-control">
+              <option>Nice to have</option>
+              <option>Important</option>
+              <option>Critical / Blocker</option>
+            </select></div>
+          <div class="col-12"><label class="pm-form-label">Use Case / Problem Statement</label><textarea
+              class="pm-form-control" rows="4" placeholder="Describe the problem..."></textarea></div>
+          <div class="col-12"><label class="pm-form-label">Proposed Solution (Optional)</label><textarea
+              class="pm-form-control" rows="3" placeholder="How do you envision this working?"></textarea></div>
+        </div>
+        <div class="p-3 rounded mt-3" style="background:var(--pm-surface-2);font-size:12px"><i
+            class="bi bi-info-circle me-1"></i> Submissions are public and can be upvoted by other developers.</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('submitFeatureModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('submitFeatureModal','Feature request submitted for review!')">Submit Idea</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('submitFeatureModal')"></div>
+}
+
+<!-- MODAL 8: Feature Detail -->
+@if (modals['featureDetailModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'featureDetailModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-chat-text me-2"></i>Feature Request</h5><button class="btn-close"
+          (click)="closeModal('featureDetailModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div>
+            <h4 style="font-weight:700;font-size:18px;margin-bottom:4px">GraphQL API Support</h4><span class="pm-badge"
+              style="background:var(--pm-surface-2);color:var(--pm-ink)">Core Architecture</span> <span
+              class="pm-badge pm-badge-info">Under Review</span>
+          </div>
+          <div class="text-center p-2 rounded" style="background:var(--pm-surface-2);border:1px solid var(--pm-border)">
+            <i class="bi bi-arrow-up" style="font-size:20px"></i><br><strong>89</strong></div>
+        </div>
+        <p style="font-size:13px;line-height:1.6"><strong>Use Case:</strong> Our mobile app requires data from 4
+          different REST endpoints. This causes over-fetching on 3G networks.</p>
+        <hr class="pm-divider">
+        <h6 style="font-weight:700;font-size:13px">Official Response</h6>
+        <div class="p-3 rounded mb-3" style="background:var(--pm-info-soft);border-left:3px solid var(--pm-info)">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <div class="pm-avatar" style="width:24px;height:24px;font-size:10px">SD</div><strong
+              style="font-size:12px">Sarah D. (PM)</strong>
+          </div>
+          <p style="font-size:12px;margin:0">Thanks! GraphQL support is moving to our "Planned" roadmap for v3.0.</p>
+        </div>
+        <div class="mb-3"><textarea class="pm-form-control" rows="2" placeholder="Add a comment..."></textarea><button
+            class="pm-btn pm-btn-sm mt-2" (click)="processAction('featureDetailModal','Comment posted.')">Post
+            Comment</button></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('featureDetailModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('featureDetailModal')"></div>
+}
+
+<!-- MODAL 9: Roadmap Item -->
+@if (modals['roadmapItemModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'roadmapItemModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-map text-warning me-2"></i>Roadmap Details</h5><button class="btn-close"
+          (click)="closeModal('roadmapItemModal')"></button>
+      </div>
+      <div class="modal-body">
+        <h4 style="font-weight:700;font-size:18px;margin-bottom:4px">Webhooks v2</h4>
+        <span class="pm-badge pm-badge-info">Target: Q3 2026</span> <span class="pm-badge"
+          style="background:var(--pm-surface-2);color:var(--pm-muted)">In Development</span>
+        <p style="font-size:13px;margin-top:12px">Complete rewrite of event notifications. Introduces HMAC-SHA256
+          verification and dead letter queues.</p>
+        <h6 style="font-weight:700;font-size:13px;margin-top:20px">Technical Specs</h6>
+        <ul style="font-size:13px;color:var(--pm-ink-soft)">
+          <li>New header: <code>X-PayMo-Signature</code></li>
+          <li>Retry interval: 1m, 5m, 1h, 6h, 24h</li>
+        </ul>
+        <div class="pm-progress mt-3">
+          <div class="pm-progress-bar" style="width:15%;background:var(--pm-info)"></div>
+        </div>
+        <div style="font-size:11px;color:var(--pm-muted);text-align:right;margin-top:4px">15% Complete</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('roadmapItemModal')">Close</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('roadmapItemModal','You are now following this item.')"><i class="bi bi-bell"></i>
+          Follow Progress</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('roadmapItemModal')"></div>
+}
+
+<!-- MODAL 10: Enroll Beta -->
+@if (modals['enrollBetaModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'enrollBetaModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-flask text-purple me-2"></i>Join Beta Program</h5><button
+          class="btn-close" (click)="closeModal('enrollBetaModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-3" style="background:var(--pm-purple-soft);border:1px solid var(--pm-purple)">
+          <h6 style="font-weight:700;margin:0 0 4px">PesaLink B2B API (Beta)</h6>
+          <p style="font-size:12px;margin:0">Gain early access to real-time corporate bank transfers.</p>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">Select Sandbox Environment</label><select
+            class="pm-form-control">
+            <option>Dev Sandbox A</option>
+            <option>Create new sandbox instance...</option>
+          </select></div>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label"
+            style="font-size:13px">I understand beta APIs are subject to breaking changes.</label></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label"
+            style="font-size:13px">I agree to provide engineering feedback.</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('enrollBetaModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('enrollBetaModal','Successfully enrolled in Beta!')">Confirm Enrollment</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('enrollBetaModal')"></div>
+}
+
+<!-- MODAL 11: Performance Benchmark -->
+@if (modals['performanceBenchmarkModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'performanceBenchmarkModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-activity text-primary me-2"></i>API Performance Benchmarks</h5><button
+          class="btn-close" (click)="closeModal('performanceBenchmarkModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between mb-3"><span style="font-size:13px">Region: <strong>Nairobi
+              (af-east-1)</strong></span><span style="font-size:13px">SLA Target: <strong>&lt; 200ms</strong></span>
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-4">
+            <div class="p-3 border rounded text-center">
+              <div style="font-size:11px;color:var(--pm-muted)">P50</div>
+              <div style="font-size:20px;font-weight:700;color:var(--pm-accent)">45ms</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="p-3 border rounded text-center">
+              <div style="font-size:11px;color:var(--pm-muted)">P95</div>
+              <div style="font-size:20px;font-weight:700;color:var(--pm-primary)">112ms</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="p-3 border rounded text-center">
+              <div style="font-size:11px;color:var(--pm-muted)">P99</div>
+              <div style="font-size:20px;font-weight:700;color:var(--pm-warning)">185ms</div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Endpoint</th>
+                <th>Method</th>
+                <th>P95</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (b of benchmarks; track b.endpoint) {
+              <tr>
+                <td><code>{{b.endpoint}}</code></td>
+                <td>{{b.method}}</td>
+                <td>{{b.p95}}ms</td>
+                <td><span class="pm-badge" [ngClass]="b.statusClass">{{b.status}}</span></td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('performanceBenchmarkModal')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('performanceBenchmarkModal')"></div>
+}
+
+<!-- MODAL 12: Health Check -->
+@if (modals['healthCheckModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'healthCheckModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-heart-pulse text-success me-2"></i>System Status</h5><button
+          class="btn-close" (click)="closeModal('healthCheckModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between align-items-center p-3 border rounded mb-2">
+          <div class="d-flex align-items-center gap-2"><span
+              style="width:10px;height:10px;background:var(--pm-accent);border-radius:50%;display:inline-block"></span><strong>API
+              Gateway</strong></div><span class="pm-badge pm-badge-success">Healthy</span>
+        </div>
+        <div class="d-flex justify-content-between align-items-center p-3 border rounded">
+          <div class="d-flex align-items-center gap-2"><span
+              style="width:10px;height:10px;background:var(--pm-accent);border-radius:50%;display:inline-block"></span><strong>Database
+              Cluster</strong></div><span class="pm-badge pm-badge-success">Healthy</span>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('healthCheckModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('healthCheckModal')"></div>
+}
+
+<!-- MODAL 13: Developer Alerts -->
+@if (modals['developerAlertsModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'developerAlertsModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-bell me-2"></i>Developer Alerts</h5><button class="btn-close"
+          (click)="closeModal('developerAlertsModal')"></button>
+      </div>
+      <div class="modal-body">
+        @for (a of alerts; track a.title) {
+        <div class="feed-item">
+          <i class="bi bi-circle-fill" [style.color]="a.color" style="font-size:8px;margin-top:6px"></i>
+          <div style="flex:1"><strong style="font-size:13px">{{a.title}}</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">{{a.time}}</div>
+          </div>
+          <button class="pm-btn pm-btn-sm"
+            (click)="processAction('developerAlertsModal', a.title+' dismissed.')">Dismiss</button>
+        </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('developerAlertsModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('developerAlertsModal')"></div>
+}
+
+<!-- MODAL 14: Version Action -->
+@if (modals['versionActionModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'versionActionModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Version Actions</h5><button class="btn-close"
+          (click)="closeModal('versionActionModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex flex-column gap-2"><button class="pm-btn w-100"
+            (click)="closeModal('versionActionModal');openModal('publishReleaseModal')"><i
+              class="bi bi-plus-circle"></i> Create New Version</button><button class="pm-btn w-100"
+            (click)="closeModal('versionActionModal');openModal('deprecateVersionModal')"><i class="bi bi-archive"></i>
+            Deprecate a Version</button><button class="pm-btn w-100"
+            (click)="closeModal('versionActionModal');openModal('exportSpecModal')"><i class="bi bi-download"></i>
+            Export Spec</button></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('versionActionModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('versionActionModal')"></div>
+}
+
+<!-- MODAL 15: Broadcast Change -->
+@if (modals['broadcastChangeModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'broadcastChangeModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-broadcast me-2"></i>Broadcast Change</h5><button class="btn-close"
+          (click)="closeModal('broadcastChangeModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Target Version</label><select class="pm-form-control">
+            <option>v1.8.4 (Deprecated)</option>
+            <option>All Versions</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Message</label><textarea class="pm-form-control" rows="3"
+            placeholder="Notify developers about..."></textarea></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn"
+          (click)="closeModal('broadcastChangeModal')">Cancel</button><button class="pm-btn pm-btn-primary"
+          (click)="processAction('broadcastChangeModal','Broadcast sent to affected developers.')">Send
+          Broadcast</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('broadcastChangeModal')"></div>
+}
+
+<!-- MODAL 16: Configure Deprecation -->
+@if (modals['configureDeprecationModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'configureDeprecationModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Deprecation Headers</h5><button class="btn-close"
+          (click)="closeModal('configureDeprecationModal')"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px">Customize the HTTP headers injected into deprecated API responses.</p>
+        <div class="mb-3"><label class="pm-form-label">Sunset Header Format</label><input class="pm-form-control"
+            value="Sat, 31 Dec 2026 23:59:59 GMT" readonly></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label"
+            style="font-size:13px">Include link to migration guide in header body</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn"
+          (click)="closeModal('configureDeprecationModal')">Close</button><button class="pm-btn pm-btn-primary"
+          (click)="processAction('configureDeprecationModal','Deprecation headers updated.')">Save</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('configureDeprecationModal')"></div>
+}
+
+<!-- MODAL 17: API Governance Audit -->
+@if (modals['apiGovernanceAuditModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'apiGovernanceAuditModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-check me-2"></i>Governance Audit</h5><button class="btn-close"
+          (click)="closeModal('apiGovernanceAuditModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Rule</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (a of auditChecks; track a.rule) {
+              <tr>
+                <td>{{a.rule}}</td>
+                <td><i class="bi bi-check-circle-fill text-success"></i></td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('apiGovernanceAuditModal')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('apiGovernanceAuditModal')"></div>
+}
+
+<!-- MODAL 18: Test Automation Config -->
+@if (modals['testAutomationConfigModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'testAutomationConfigModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Test Automation Config</h5><button class="btn-close"
+          (click)="closeModal('testAutomationConfigModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">CI/CD Pipeline URL</label><input class="pm-form-control"
+            value="https://github.com/org/api-tests/actions"></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label"
+            style="font-size:13px">Trigger tests on spec publish</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn"
+          (click)="closeModal('testAutomationConfigModal')">Cancel</button><button class="pm-btn pm-btn-primary"
+          (click)="processAction('testAutomationConfigModal','Test config saved.')">Save</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('testAutomationConfigModal')"></div>
+}
+
+<!-- MODAL 19: SDK Generation -->
+@if (modals['sdkGenerationModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'sdkGenerationModal')">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Generate SDKs</h5><button class="btn-close"
+          (click)="closeModal('sdkGenerationModal')"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px">Auto-generate client SDKs from the OpenAPI specification.</p>
+        <div class="quick-action-grid mt-3">
+          <button class="quick-action-btn" (click)="processAction('sdkGenerationModal','Node.js SDK generated.')"><i
+              class="bi bi-braces d-block mb-1"></i>Node.js</button>
+          <button class="quick-action-btn" (click)="processAction('sdkGenerationModal','Python SDK generated.')"><i
+              class="bi bi-filetype-py d-block mb-1"></i>Python</button>
+          <button class="quick-action-btn" (click)="processAction('sdkGenerationModal','PHP SDK generated.')"><i
+              class="bi bi-filetype-php d-block mb-1"></i>PHP</button>
+          <button class="quick-action-btn" (click)="processAction('sdkGenerationModal','Go SDK generated.')"><i
+              class="bi bi-filetype-go d-block mb-1"></i>Go</button>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('sdkGenerationModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('sdkGenerationModal')"></div>
+}
+
+<!-- MODAL 20: Feature List -->
+
+<!-- MODAL 20: Feature List -->
+@if (modals['featureListModal']) {
+<div class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'featureListModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-list-ul me-2"></i>All Feature Requests</h5><button class="btn-close"
+          (click)="closeModal('featureListModal')"></button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="pm-form-control mb-3" placeholder="Search requests...">
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Votes</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of roadmapReview; track r.title) {
+              <tr>
+                <td><strong>{{r.title}}</strong><br><span style="font-size:11px;color:var(--pm-muted)">{{r.desc}}</span>
+                </td>
+                <td>{{r.votes}}</td>
+                <td><span class="pm-badge pm-badge-info">Under Review</span></td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('featureListModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" (click)="closeModal('featureListModal')"></div>
+}

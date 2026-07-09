@@ -1,0 +1,1422 @@
+<div class="pm-content">
+
+  <!-- HERO STATS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C C-accent" style="min-height:170px">
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Mobile Money command center live <span style="color:#86efac">●</span></p>
+        <div class="SV" style="margin:8px 0;color:#fff">12 wallets linked</div>
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">M-Pesa, Airtel Money, T-Kash, Pesalink, 8 PSPs and 3 bank integrations — all reconciled in real time.</p>
+        <div class="d-flex flex-wrap mt-3" style="gap:8px">
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('sendMoneyModal')">Send</button>
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('bulkTransferModal')">Bulk</button>
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('reconcileModal')">Reconcile</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-warning)">PENDING SETTLEMENT</p>
+        <div class="SV" style="margin:6px 0">KES 4.82M</div>
+        <span class="B B-w"><i class="bi bi-clock"></i> 7 batches</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">Next auto-settle: Today 6 PM</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-info)">TODAY'S VOLUME</p>
+        <div class="SV" style="margin:6px 0">KES 18.4M</div>
+        <span class="B B-s"><i class="bi bi-graph-up-arrow"></i> +31% vs yesterday</span>
+        <div class="mt-2">
+          <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>Success rate</span><span>99.2%</span></div>
+          <div class="pm-progress mt-1">
+            <div class="pm-progress-bar" style="width:99.2%;background:var(--pm-accent)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4">
+      <div class="C" style="min-height:170px;border-left:3px solid var(--pm-accent)">
+        <p class="SL" style="color:var(--pm-accent)">COMPLIANCE HEALTH</p>
+        <div class="SV" style="margin:6px 0">98.7</div>
+        <span class="B B-s"><i class="bi bi-shield-check"></i> All clear</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">Last audit: 12 Jun 2025<br>Next KYC refresh: 45 accounts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Attention Required</h3>
+          <button class="btn-pm btn-sm" (click)="openModal('attentionModal')">View all</button>
+        </div>
+        <div class="sr" *ngFor="let item of attentionItems">
+          <div class="d-flex align-items-center gap-3">
+            <div [style.width]="'36px'" [style.height]="'36px'" style="border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0" [style.background]="item.iconBg" [style.color]="item.iconColor">
+              <i class="bi {{item.icon}}"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px">{{item.title}}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{item.subtitle}}</div>
+            </div>
+          </div>
+          <button class="btn-pm btn-sm" [class.btn-pm-d]="item.btnClass === 'btn-pm-d'" (click)="openModal(item.modalTarget)">{{item.btnText}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Smart Suggestions</h3>
+          <span class="B B-p"><i class="bi bi-stars"></i> AI</span>
+        </div>
+        <div class="sr" *ngFor="let item of suggestions">
+          <div class="d-flex align-items-center gap-3">
+            <div [style.width]="'36px'" [style.height]="'36px'" style="border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0" [style.background]="item.iconBg" [style.color]="item.iconColor">
+              <i class="bi {{item.icon}}"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px">{{item.title}}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{item.subtitle}}</div>
+            </div>
+          </div>
+          <button class="btn-pm btn-sm" (click)="openModal(item.modalTarget)">{{item.btnText}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="mb-3">
+          <h3 class="st">Quick Actions</h3>
+          <p class="ss">Frequent mobile money workflows</p>
+        </div>
+        <div class="quick-grid">
+          <button class="quick-btn" *ngFor="let action of quickActions" (click)="openModal(action.modal)">
+            <i class="bi {{action.icon}} me-1" [style.color]="action.color === 'text-success' ? '#10B981' : action.color === 'text-primary' ? '#4F46E5' : action.color === 'text-info' ? '#3B82F6' : action.color === 'text-warning' ? '#F59E0B' : action.color === 'text-danger' ? '#EF4444' : action.color === 'text-purple' ? '#8B5CF6' : action.color"></i> {{action.text}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: Portfolio Overview -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-wallet2" style="color:var(--pm-primary)"></i> 1.11.1 — Mobile Money Portfolio Overview</h3>
+        <p class="ss">Real-time balances, limits, health scores and transaction velocity across all connected mobile money wallets.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('linkWalletModal')"><i class="bi bi-plus-lg"></i> Link</button>
+        <button class="btn-pm btn-sm btn-pm-p" (click)="openModal('walletHealthModal')">Health</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="UB">
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr>
+                  <th>Wallet</th>
+                  <th>Provider</th>
+                  <th>Balance</th>
+                  <th>Daily Limit</th>
+                  <th>Health</th>
+                  <th>24h Txns</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let wallet of wallets">
+                  <td><strong>{{wallet.name}}</strong></td>
+                  <td><span class="B" [class.B-s]="wallet.provider === 'M-Pesa'" [class.B-i]="wallet.provider === 'Airtel Money'" [class.B-w]="wallet.provider === 'T-Kash'" [class.B-p]="wallet.provider === 'Pesalink'">{{wallet.provider}}</span></td>
+                  <td><strong>{{wallet.balance}}</strong></td>
+                  <td>{{wallet.dailyLimit}}</td>
+                  <td><span class="B" [class.B-s]="wallet.health >= 95" [class.B-w]="wallet.health >= 85 && wallet.health < 95" [class.B-d]="wallet.health < 85">{{wallet.health}}</span></td>
+                  <td>{{wallet.txns24h}}</td>
+                  <td><button class="btn-pm btn-sm" (click)="openModal('walletDetailModal')">Manage</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Portfolio Snapshot</h4>
+          <div class="p-3 rounded mb-2" style="background:var(--pm-accent-soft)">
+            <div style="font-size:11px;color:#047857;font-weight:700">TOTAL MOBILE BALANCE</div>
+            <div style="font-size:24px;font-weight:700;color:var(--pm-accent)">KES 24.05M</div>
+          </div>
+          <div class="p-3 rounded mb-2" style="background:var(--pm-info-soft)">
+            <div style="font-size:11px;color:#1D4ED8;font-weight:700">TODAY'S NET FLOW</div>
+            <div style="font-size:22px;font-weight:700;color:var(--pm-info)">+ KES 3.82M</div>
+          </div>
+          <div class="p-3 rounded" style="background:var(--pm-warning-soft)">
+            <div style="font-size:11px;color:#B45309;font-weight:700">PENDING SETTLEMENT</div>
+            <div style="font-size:22px;font-weight:700;color:var(--pm-warning)">KES 4.82M</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Linked Wallets -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-link-45deg" style="color:var(--pm-accent)"></i> 1.11.2 — Linked Wallets & Accounts</h3>
+        <p class="ss">View, edit, pause, or remove all connected mobile money accounts with full KYC status and permission levels.</p>
+      </div>
+      <button class="btn-pm btn-sm btn-pm-p" (click)="openModal('linkWalletModal')">Link New Wallet</button>
+    </div>
+    <div class="table-responsive">
+      <table class="T">
+        <thead>
+          <tr>
+            <th>Wallet</th>
+            <th>Provider</th>
+            <th>Owner</th>
+            <th>KYC</th>
+            <th>Status</th>
+            <th>Permissions</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let wallet of linkedWallets">
+            <td><strong>{{wallet.phone}}</strong></td>
+            <td>{{wallet.provider}}</td>
+            <td>{{wallet.owner}}</td>
+            <td><span class="B" [class.B-s]="wallet.kyc === 'Full'" [class.B-w]="wallet.kyc === 'Partial'" [class.B-d]="wallet.kyc === 'Expired'">{{wallet.kyc}}</span></td>
+            <td><span class="B" [class.B-s]="wallet.status === 'Active'" [class.B-w]="wallet.status === 'Pending KYC'" [class.B-d]="wallet.status === 'Paused'">{{wallet.status}}</span></td>
+            <td>{{wallet.permissions}}</td>
+            <td>
+              <div class="d-flex" style="gap:4px">
+                <button class="btn-pm btn-sm" (click)="openModal('walletDetailModal')">Edit</button>
+                <button class="btn-pm btn-sm" (click)="openModal('walletPermissionsModal')">Perms</button>
+                <button class="btn-pm btn-sm btn-pm-d" (click)="openModal('pauseWalletModal')">Pause</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Transfer Hub -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-send" style="color:var(--pm-primary)"></i> 1.11.3 — Transfer & Payment Hub</h3>
+        <p class="ss">Execute single, bulk, scheduled and recurring transfers across all mobile money networks with full audit trails.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('scheduleTransferModal')">Schedule</button>
+        <button class="btn-pm btn-sm btn-pm-p" (click)="openModal('sendMoneyModal')">New Transfer</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-5">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Quick Transfer</h4>
+          <div class="mb-3">
+            <label class="FL">From</label>
+            <select class="FC" [(ngModel)]="sendFrom">
+              <option>M-Pesa Business (KES 8.42M)</option>
+              <option>Airtel Disbursement (KES 2.18M)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="FL">To</label>
+            <select class="FC" [(ngModel)]="sendTo">
+              <option>0712 345 890 — James Kamau</option>
+              <option>0733 112 445 — Finance</option>
+              <option>0700 998 112 — Procurement</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Amount</label>
+            <input class="FC" [(ngModel)]="sendAmount">
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn-pm btn-sm" (click)="openModal('sendMoneyModal')">Send Now</button>
+            <button class="btn-pm btn-sm" (click)="openModal('scheduleTransferModal')">Schedule</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Recent Transfers</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>From → To</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Ref</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let transfer of recentTransfers">
+                  <td>{{transfer.date}}</td>
+                  <td>{{transfer.fromTo}}</td>
+                  <td>{{transfer.amount}}</td>
+                  <td><span class="B" [class.B-s]="transfer.status === 'Success'" [class.B-w]="transfer.status === 'Partial'" [class.B-d]="transfer.status === 'Failed'">{{transfer.status}}</span></td>
+                  <td>{{transfer.ref}}</td>
+                  <td>
+                    <button class="btn-pm btn-sm" *ngIf="transfer.status === 'Success'" (click)="openModal('transferReceiptModal')">Receipt</button>
+                    <button class="btn-pm btn-sm" *ngIf="transfer.status === 'Partial'" (click)="openModal('bulkRetryModal')">Retry 47</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: PSP Integration -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-plug" style="color:var(--pm-purple)"></i> 1.11.4 — PSP Integration Management</h3>
+        <p class="ss">Connect, monitor, and manage 20+ Payment Service Providers with API health, credentials, and settlement rules.</p>
+      </div>
+      <button class="btn-pm btn-sm btn-pm-p" (click)="openModal('addPspModal')">Add PSP</button>
+    </div>
+    <div class="table-responsive">
+      <table class="T">
+        <thead>
+          <tr>
+            <th>PSP</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>API Health</th>
+            <th>Settlement</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let psp of psps">
+            <td><strong>{{psp.name}}</strong></td>
+            <td>{{psp.type}}</td>
+            <td><span class="B" [class.B-s]="psp.status === 'Live'" [class.B-w]="psp.status === 'Maintenance'" [class.B-d]="psp.status === 'Down'">{{psp.status}}</span></td>
+            <td><span class="B" [class.B-s]="psp.apiHealth >= '99%'" [class.B-w]="psp.apiHealth < '99%' && psp.apiHealth >= '95%'" [class.B-d]="psp.apiHealth < '95%'">{{psp.apiHealth}}</span></td>
+            <td>{{psp.settlement}}</td>
+            <td>
+              <div class="d-flex" style="gap:4px">
+                <button class="btn-pm btn-sm" (click)="openModal('pspSettingsModal')">Settings</button>
+                <button class="btn-pm btn-sm" (click)="openModal('pspHealthModal')">Health</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Compliance -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-shield-check" style="color:var(--pm-info)"></i> 1.11.5 — Compliance, KYC & Limits</h3>
+        <p class="ss">Manage KYC status, transaction limits, AML flags, and regulatory reporting for all mobile money activity.</p>
+      </div>
+      <button class="btn-pm btn-sm btn-pm-p" (click)="openModal('kycBulkModal')">Bulk KYC</button>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">KYC Status</h4>
+          <div class="sr">
+            <div><strong>Full KYC</strong></div><span class="B B-s">187 accounts</span>
+          </div>
+          <div class="sr">
+            <div><strong>Partial KYC</strong></div><span class="B B-w">45 accounts</span>
+          </div>
+          <div class="sr">
+            <div><strong>Expired KYC</strong></div><span class="B B-d">12 accounts</span>
+          </div>
+          <div class="mt-3"><button class="btn-pm btn-sm w-100" (click)="openModal('kycBulkModal')">Refresh 45 Partial + 12 Expired</button></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Transaction Limits</h4>
+          <div class="sr">
+            <div><strong>Per Transaction</strong></div><strong>KES 1,000,000</strong>
+          </div>
+          <div class="sr">
+            <div><strong>Daily Limit</strong></div><strong>KES 50,000,000</strong>
+          </div>
+          <div class="sr">
+            <div><strong>Monthly Limit</strong></div><strong>KES 500,000,000</strong>
+          </div>
+          <div class="mt-3"><button class="btn-pm btn-sm w-100" (click)="openModal('limitSettingsModal')">Adjust Limits</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: Analytics -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-bar-chart-line" style="color:var(--pm-warning)"></i> 1.11.6 — Analytics, Reconciliation & Reporting</h3>
+        <p class="ss">Reconciliation engine, volume trends, fee analysis, and regulatory reports.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('reconcileModal')">Run Reconciliation</button>
+        <button class="btn-pm btn-sm" (click)="openModal('statementModal')">Export Reports</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">7-Day Volume Trend</h4>
+          <div class="d-flex align-items-end gap-2" style="height:80px">
+            <div style="flex:1;background:var(--pm-primary);height:65%;border-radius:4px 4px 0 0"></div>
+            <div style="flex:1;background:var(--pm-primary);height:78%;border-radius:4px 4px 0 0"></div>
+            <div style="flex:1;background:var(--pm-primary);height:92%;border-radius:4px 4px 0 0"></div>
+            <div style="flex:1;background:var(--pm-primary);height:71%;border-radius:4px 4px 0 0"></div>
+            <div style="flex:1;background:var(--pm-primary);height:85%;border-radius:4px 4px 0 0"></div>
+            <div style="flex:1;background:var(--pm-primary);height:100%;border-radius:4px 4px 0 0"></div>
+            <div style="flex:1;background:var(--pm-accent);height:88%;border-radius:4px 4px 0 0"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Reconciliation Status</h4>
+          <div class="p-3 rounded mb-2" style="background:var(--pm-accent-soft)">
+            <div style="font-size:11px;color:#047857;font-weight:700">LAST RECONCILIATION</div>
+            <div style="font-size:18px;font-weight:700;color:var(--pm-accent)">27 Jun 2025, 06:00</div>
+            <div style="font-size:12px;color:#065F46">0 mismatches • 100% matched</div>
+          </div>
+          <button class="btn-pm btn-sm w-100" (click)="openModal('reconcileModal')">Run Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: Support -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-headset" style="color:var(--pm-danger)"></i> 1.11.7 — Support, Alerts & Settings</h3>
+        <p class="ss">24/7 support, alert configuration, API credentials, and integration health monitoring.</p>
+      </div>
+      <button class="btn-pm btn-sm btn-pm-d" (click)="openModal('contactSupportModal')">Contact Support</button>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">24/7 Support</h4>
+          <div class="sr">
+            <div><strong>Phone</strong></div><strong>+254 800 723 001</strong>
+          </div>
+          <div class="sr">
+            <div><strong>WhatsApp</strong></div><strong>+254 712 000 001</strong>
+          </div>
+          <div class="sr">
+            <div><strong>Email</strong></div><strong>psp@paymo.co.ke</strong>
+          </div>
+          <div class="sr">
+            <div><strong>In-app Chat</strong></div><button class="btn-pm btn-sm" (click)="openModal('contactSupportModal')">Start Chat</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Alert Settings</h4>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="alertFailed">
+            <label class="form-check-label">Failed transactions</label>
+          </div>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="alertDowntime">
+            <label class="form-check-label">API downtime</label>
+          </div>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="alertSettlement">
+            <label class="form-check-label">Settlement delays</label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="alertKyc">
+            <label class="form-check-label">KYC expiry</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Integration Health</h4>
+          <div class="sr">
+            <div><strong>M-Pesa API</strong></div><span class="B B-s">Healthy</span>
+          </div>
+          <div class="sr">
+            <div><strong>Airtel API</strong></div><span class="B B-s">Healthy</span>
+          </div>
+          <div class="sr">
+            <div><strong>Pesalink</strong></div><span class="B B-w">Degraded</span>
+          </div>
+          <button class="btn-pm btn-sm w-100 mt-2" (click)="openModal('pspHealthModal')">View All</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 25+ MODALS ==================== -->
+
+<!-- Modal 1: Send Money (Multi-step) -->
+<div class="modal fade R" id="sendMoneyModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-send text-success me-2"></i>Send Money</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="stepper" id="sendStepper"></div>
+        <div id="sendS1" class="fstep active">
+          <h6 style="font-weight:700">Step 1: Select Wallets</h6>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="FL">From</label>
+              <select class="FC" [(ngModel)]="sendFrom">
+                <option>M-Pesa Business (KES 8.42M)</option>
+                <option>Airtel Disbursement (KES 2.18M)</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="FL">To</label>
+              <select class="FC" [(ngModel)]="sendTo">
+                <option>0712 345 890 — James Kamau</option>
+                <option>0733 112 445 — Finance Dept</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div id="sendS2" class="fstep">
+          <h6 style="font-weight:700">Step 2: Amount & Reason</h6>
+          <div class="mb-3">
+            <label class="FL">Amount (KES)</label>
+            <input class="FC" [(ngModel)]="sendAmount">
+          </div>
+          <div class="mb-3">
+            <label class="FL">Reason / Reference</label>
+            <input class="FC" [(ngModel)]="sendReason">
+          </div>
+          <div class="mb-3">
+            <label class="FL">Charge Bearer</label>
+            <select class="FC" [(ngModel)]="sendChargeBearer">
+              <option>Sender pays fee</option>
+              <option>Recipient pays fee</option>
+              <option>Shared</option>
+            </select>
+          </div>
+        </div>
+        <div id="sendS3" class="fstep">
+          <h6 style="font-weight:700">Step 3: Confirm & Authorize</h6>
+          <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+            <div class="d-flex justify-content-between mb-2"><span>From</span><strong>M-Pesa Business</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span>To</span><strong>0712 345 890</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span>Amount</span><strong>KES 250,000</strong></div>
+            <div class="d-flex justify-content-between"><span>Fee</span><strong>KES 0</strong></div>
+          </div>
+          <label class="FL mt-3">Enter PIN</label>
+          <div class="pin-row">
+            <input #pin1 type="password" maxlength="1" (input)="onPinInput(0, $event)">
+            <input #pin2 type="password" maxlength="1" (input)="onPinInput(1, $event)">
+            <input #pin3 type="password" maxlength="1" (input)="onPinInput(2, $event)">
+            <input #pin4 type="password" maxlength="1" (input)="onPinInput(3, $event)">
+          </div>
+        </div>
+        <div id="sendS4" class="fstep">
+          <div class="receipt">
+            <div class="ri"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Transfer Successful</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">KES 250,000 sent to 0712 345 890</p>
+            <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Reference</span><strong>MP-882910</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">Time</span><strong>27 Jun 2025, 14:32</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" id="sendFoot">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" id="sendNext" (click)="nextFlow('send')">Continue <i class="bi bi-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 2: Bulk Transfer -->
+<div class="modal fade R" id="bulkTransferModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-collection text-primary me-2"></i>Bulk Transfer</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="stepper" id="bulkStepper"></div>
+        <div id="bulkS1" class="fstep active">
+          <h6 style="font-weight:700">Step 1: Upload Recipients</h6>
+          <div class="mb-3">
+            <label class="FL">Upload CSV (Name, Phone, Amount, Reason)</label>
+            <input type="file" class="FC" (change)="onFileChange($event, 'bulk')">
+          </div>
+          <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px">
+            <i class="bi bi-info-circle me-1"></i> 200 recipients detected • Total KES 4,820,000
+          </div>
+        </div>
+        <div id="bulkS2" class="fstep">
+          <h6 style="font-weight:700">Step 2: Review & Fund</h6>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Name</th><th>Phone</th><th>Amount</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>John Doe</td><td>0712***890</td><td>KES 25,000</td><td><span class="B B-s">Ready</span></td></tr>
+                <tr><td>Jane Smith</td><td>0733***112</td><td>KES 18,500</td><td><span class="B B-s">Ready</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="bulkS3" class="fstep">
+          <div class="receipt">
+            <div class="ri"><i class="bi bi-check-all"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Bulk Transfer Initiated</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">200 transfers queued. 153 completed, 47 failed (will retry automatically).</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" id="bulkFoot">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" id="bulkNext" (click)="nextFlow('bulk')">Continue <i class="bi bi-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 3: Link Wallet -->
+<div class="modal fade R" id="linkWalletModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-plus-circle text-info me-2"></i>Link New Mobile Money Wallet</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="FL">Provider</label>
+          <select class="FC" [(ngModel)]="linkProvider">
+            <option>M-Pesa</option>
+            <option>Airtel Money</option>
+            <option>T-Kash</option>
+            <option>Pesalink</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="FL">Phone Number</label>
+          <input class="FC" [(ngModel)]="linkPhone">
+        </div>
+        <div class="mb-3">
+          <label class="FL">Account Type</label>
+          <select class="FC" [(ngModel)]="linkAccountType">
+            <option>Business Paybill</option>
+            <option>Personal Till</option>
+            <option>Disbursement Account</option>
+          </select>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="linkNotifications">
+          <label class="form-check-label">Enable instant notifications</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="linkAutoReconcile">
+          <label class="form-check-label">Auto-reconcile daily</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('linkWalletModal','Wallet linked successfully! KYC verification in progress.','')">Link Wallet</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 4: Wallet Detail -->
+<div class="modal fade R" id="walletDetailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-wallet2 me-2"></i>Wallet Details</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="walletDetailTab === 'overview'" (click)="switchTab('wd','overview')">Overview</button>
+          <button class="pill" [class.active]="walletDetailTab === 'txns'" (click)="switchTab('wd','txns')">Transactions</button>
+          <button class="pill" [class.active]="walletDetailTab === 'limits'" (click)="switchTab('wd','limits')">Limits</button>
+          <button class="pill" [class.active]="walletDetailTab === 'kyc'" (click)="switchTab('wd','kyc')">KYC</button>
+        </div>
+        <div id="wd-overview" class="tpanel" [class.active]="walletDetailTab === 'overview'">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                <div style="font-size:11px;color:var(--pm-muted)">Balance</div>
+                <div style="font-size:24px;font-weight:700">KES 8,420,500</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                <div style="font-size:11px;color:var(--pm-muted)">24h Volume</div>
+                <div style="font-size:24px;font-weight:700">KES 12.4M</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="wd-txns" class="tpanel" [class.active]="walletDetailTab === 'txns'">
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>27 Jun</td><td>B2C Payment</td><td>KES 250,000</td><td><span class="B B-s">Success</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="wd-limits" class="tpanel" [class.active]="walletDetailTab === 'limits'">
+          <div class="mb-3"><label class="FL">Daily Limit</label><input class="FC" value="50000000"></div>
+          <div class="mb-3"><label class="FL">Per Transaction</label><input class="FC" value="1000000"></div>
+        </div>
+        <div id="wd-kyc" class="tpanel" [class.active]="walletDetailTab === 'kyc'">
+          <div class="sr"><div><strong>KYC Status</strong></div><span class="B B-s">Full</span></div>
+          <div class="sr"><div><strong>Last Verified</strong></div><strong>12 Mar 2025</strong></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('walletDetailModal','Wallet settings updated!','')">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 5: Bulk Retry -->
+<div class="modal fade R" id="bulkRetryModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-repeat text-warning me-2"></i>Retry Failed Transfers</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft)">47 transfers failed in the last batch. Reason: Insufficient float on Airtel Money.</p>
+        <div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft)">
+          <div class="d-flex justify-content-between"><span>Total Amount</span><strong>KES 1,240,000</strong></div>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" checked><label class="form-check-label">Retry all 47</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox"><label class="form-check-label">Skip and notify recipients</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('bulkRetryModal','47 transfers queued for retry. ETA: 15 minutes.','')">Retry Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 6: Reconcile -->
+<div class="modal fade R" id="reconcileModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-repeat me-2"></i>Run Reconciliation</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="FL">Select Wallets</label>
+          <select class="FC" multiple [(ngModel)]="reconcileWallets">
+            <option selected>M-Pesa Business</option>
+            <option selected>Airtel Disbursement</option>
+            <option>T-Kash Collections</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="FL">Date Range</label>
+          <div class="row g-2">
+            <div class="col-6"><input type="date" class="FC" [(ngModel)]="reconcileFromDate"></div>
+            <div class="col-6"><input type="date" class="FC" [(ngModel)]="reconcileToDate"></div>
+          </div>
+        </div>
+        <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px">
+          <i class="bi bi-info-circle me-1"></i> Reconciliation typically takes 2–5 minutes. You will receive a detailed report via email.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('reconcileModal','Reconciliation started. Report will be emailed in 5 minutes.','REC-20250627-9912')">Start Reconciliation</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 7: PSP Settings -->
+<div class="modal fade R" id="pspSettingsModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-gear me-2"></i>PSP Integration Settings</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="pspSettingsTab === 'creds'" (click)="switchTab('psp','creds')">Credentials</button>
+          <button class="pill" [class.active]="pspSettingsTab === 'limits'" (click)="switchTab('psp','limits')">Limits</button>
+          <button class="pill" [class.active]="pspSettingsTab === 'webhooks'" (click)="switchTab('psp','webhooks')">Webhooks</button>
+        </div>
+        <div id="psp-creds" class="tpanel" [class.active]="pspSettingsTab === 'creds'">
+          <div class="mb-3"><label class="FL">API Key</label><input class="FC" value="sk_live_****************************"></div>
+          <div class="mb-3"><label class="FL">Secret</label><input class="FC" type="password" value="••••••••••••••••"></div>
+        </div>
+        <div id="psp-limits" class="tpanel" [class.active]="pspSettingsTab === 'limits'">
+          <div class="mb-3"><label class="FL">Daily Settlement Cap</label><input class="FC" value="100000000"></div>
+        </div>
+        <div id="psp-webhooks" class="tpanel" [class.active]="pspSettingsTab === 'webhooks'">
+          <div class="mb-3"><label class="FL">Webhook URL</label><input class="FC" value="https://api.paymo.co.ke/webhooks/mpesa"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('pspSettingsModal','PSP settings updated successfully!','')">Save Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 8: KYC Bulk -->
+<div class="modal fade R" id="kycBulkModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-check text-info me-2"></i>Bulk KYC Refresh</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="FL">Select Accounts</label>
+          <select class="FC" multiple>
+            <option>45 Partial KYC accounts</option>
+            <option>12 Expired KYC accounts</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="FL">Method</label>
+          <select class="FC">
+            <option>Send eKYC link via SMS</option>
+            <option>Send eKYC link via WhatsApp</option>
+            <option>Require branch visit</option>
+          </select>
+        </div>
+        <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px">
+          <i class="bi bi-clock me-1"></i> eKYC links expire in 72 hours. Recipients must complete within the window.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('kycBulkModal','eKYC links sent to 57 accounts. Tracking dashboard updated.','KYC-20250627-1128')">Send Links</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 9: Dispute -->
+<div class="modal fade R" id="disputeModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger me-2"></i>File Mobile Money Dispute</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="stepper" id="dispStepper"></div>
+        <div id="dispS1" class="fstep active">
+          <h6 style="font-weight:700">Step 1: Transaction</h6>
+          <div class="mb-3">
+            <label class="FL">Transaction Reference</label>
+            <input class="FC" [(ngModel)]="disputeRef">
+          </div>
+          <div class="mb-3">
+            <label class="FL">Dispute Reason</label>
+            <select class="FC" [(ngModel)]="disputeReason">
+              <option>Amount not received by recipient</option>
+              <option>Duplicate transfer</option>
+              <option>Wrong recipient</option>
+              <option>Fraudulent transaction</option>
+            </select>
+          </div>
+        </div>
+        <div id="dispS2" class="fstep">
+          <h6 style="font-weight:700">Step 2: Evidence</h6>
+          <div class="mb-3">
+            <label class="FL">Description</label>
+            <textarea class="FC" rows="3" [(ngModel)]="disputeDescription"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="FL">Upload Screenshot / Proof</label>
+            <input type="file" class="FC" (change)="onFileChange($event, 'dispute')">
+          </div>
+        </div>
+        <div id="dispS3" class="fstep">
+          <div class="receipt">
+            <div class="ri"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Dispute Filed</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Case #MMD-44987 created. Expected resolution: 5–10 business days.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" id="dispFoot">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" id="dispNext" (click)="nextFlow('disp')">Continue <i class="bi bi-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 10: Wallet Permissions -->
+<div class="modal fade R" id="walletPermissionsModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-lock me-2"></i>Wallet Permissions</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="permSend"><label class="form-check-label">Send Money</label>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="permReceive"><label class="form-check-label">Receive Money</label>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="permBulk"><label class="form-check-label">Bulk Transfers</label>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="permView"><label class="form-check-label">View Balance</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="permManage"><label class="form-check-label">Manage Settings</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('walletPermissionsModal','Permissions updated successfully!','')">Save Permissions</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 11: Schedule Transfer -->
+<div class="modal fade R" id="scheduleTransferModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-calendar-event me-2"></i>Schedule Transfer</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="FL">From</label>
+          <select class="FC" [(ngModel)]="scheduleFrom">
+            <option>M-Pesa Business</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="FL">To</label>
+          <select class="FC" [(ngModel)]="scheduleTo">
+            <option>0712 345 890</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="FL">Amount</label>
+          <input class="FC" [(ngModel)]="scheduleAmount">
+        </div>
+        <div class="mb-3">
+          <label class="FL">Schedule Date</label>
+          <input type="datetime-local" class="FC" [(ngModel)]="scheduleDate">
+        </div>
+        <div class="mb-3">
+          <label class="FL">Frequency</label>
+          <select class="FC" [(ngModel)]="scheduleFrequency">
+            <option>One-time</option>
+            <option>Weekly</option>
+            <option>Monthly</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('scheduleTransferModal','Transfer scheduled successfully!','SCH-20250701-001')">Schedule</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 12: PSP Health -->
+<div class="modal fade R" id="pspHealthModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-heart-pulse me-2"></i>PSP Health Dashboard</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="T">
+            <thead>
+              <tr><th>PSP</th><th>Uptime</th><th>Latency</th><th>Error Rate</th><th>Last Incident</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>M-Pesa</td><td><span class="B B-s">99.98%</span></td><td>120ms</td><td>0.02%</td><td>12 Jun</td></tr>
+              <tr><td>Airtel Money</td><td><span class="B B-s">99.71%</span></td><td>180ms</td><td>0.12%</td><td>25 Jun</td></tr>
+              <tr><td>Pesalink</td><td><span class="B B-w">94.2%</span></td><td>450ms</td><td>1.8%</td><td>27 Jun</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 13: Limit Settings -->
+<div class="modal fade R" id="limitSettingsModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-sliders me-2"></i>Transaction Limits</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="FL">Per Transaction Limit</label><input class="FC" [(ngModel)]="limitPerTxn"></div>
+        <div class="mb-3"><label class="FL">Daily Limit</label><input class="FC" [(ngModel)]="limitDaily"></div>
+        <div class="mb-3"><label class="FL">Monthly Limit</label><input class="FC" [(ngModel)]="limitMonthly"></div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="limitApproval"><label class="form-check-label">Require approval for amounts above KES 500,000</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('limitSettingsModal','Limits updated successfully!','')">Save Limits</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 14: Transfer Receipt -->
+<div class="modal fade R" id="transferReceiptModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Transfer Receipt</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="receipt">
+          <div class="ri"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">Transfer Successful</h5>
+          <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Reference</span><strong>MP-882910</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">From</span><strong>M-Pesa Business</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">To</span><strong>0712 345 890</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 250,000</strong></div>
+            <div class="d-flex justify-content-between"><span class="text-muted">Date</span><strong>27 Jun 2025, 14:32</strong></div>
+          </div>
+          <div class="d-flex justify-content-center mt-3" style="gap:8px">
+            <button class="btn-pm btn-sm"><i class="bi bi-download"></i> PDF</button>
+            <button class="btn-pm btn-sm"><i class="bi bi-whatsapp"></i> Share</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 15: Pause Wallet -->
+<div class="modal fade R" id="pauseWalletModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-pause-circle text-warning me-2"></i>Pause Wallet</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="FL">Reason</label>
+          <select class="FC" [(ngModel)]="pauseReason">
+            <option>Security review</option>
+            <option>Suspicious activity</option>
+            <option>Compliance hold</option>
+            <option>Maintenance</option>
+          </select>
+        </div>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="pauseOutgoing"><label class="form-check-label">Block all outgoing transfers</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="pauseIncoming"><label class="form-check-label">Block all incoming transfers</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('pauseWalletModal','Wallet paused successfully. All transactions blocked.','')">Pause Wallet</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 16: Statement -->
+<div class="modal fade R" id="statementModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-download me-2"></i>Export Statements</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="FL">Wallet</label>
+          <select class="FC" [(ngModel)]="statementWallet">
+            <option>All Wallets</option>
+            <option>M-Pesa Business</option>
+            <option>Airtel Disbursement</option>
+          </select>
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-6"><label class="FL">From</label><input type="date" class="FC" [(ngModel)]="statementFrom"></div>
+          <div class="col-6"><label class="FL">To</label><input type="date" class="FC" [(ngModel)]="statementTo"></div>
+        </div>
+        <div class="mb-3">
+          <label class="FL">Format</label>
+          <select class="FC" [(ngModel)]="statementFormat">
+            <option>PDF</option>
+            <option>Excel</option>
+            <option>CSV</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('statementModal','Statement generated and downloading...','')">Export</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 17: Wallet Health -->
+<div class="modal fade R" id="walletHealthModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-heart-pulse me-2"></i>Wallet Health Dashboard</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)">
+              <div style="font-size:28px;font-weight:800;color:var(--pm-accent)">96</div>
+              <div style="font-size:10px;font-weight:700;color:#047857">AVG HEALTH</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 rounded text-center" style="background:var(--pm-info-soft)">
+              <div style="font-size:24px;font-weight:700;color:var(--pm-info)">4</div>
+              <div style="font-size:10px;font-weight:700;color:#1D4ED8">ACTIVE</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 rounded text-center" style="background:var(--pm-warning-soft)">
+              <div style="font-size:24px;font-weight:700;color:var(--pm-warning)">1</div>
+              <div style="font-size:10px;font-weight:700;color:#B45309">DEGRADED</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 18: Add PSP -->
+<div class="modal fade R" id="addPspModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-plug me-2"></i>Add New PSP</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="FL">PSP Name</label><input class="FC" [(ngModel)]="pspName" placeholder="e.g. Flutterwave"></div>
+        <div class="mb-3">
+          <label class="FL">Type</label>
+          <select class="FC" [(ngModel)]="pspType">
+            <option>B2C Aggregator</option>
+            <option>C2B Aggregator</option>
+            <option>Bank Switch</option>
+          </select>
+        </div>
+        <div class="mb-3"><label class="FL">API Endpoint</label><input class="FC" [(ngModel)]="pspEndpoint" placeholder="https://api.psp.com"></div>
+        <div class="mb-3">
+          <label class="FL">Settlement Cycle</label>
+          <select class="FC" [(ngModel)]="pspSettlement">
+            <option>T+0</option>
+            <option>T+1</option>
+            <option>T+2</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('addPspModal','PSP added successfully! API credentials required next.','')">Add PSP</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 19: Contact Support -->
+<div class="modal fade R" id="contactSupportModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-headset me-2"></i>Contact PSP Support</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="FL">Subject</label>
+          <select class="FC" [(ngModel)]="supportSubject">
+            <option>API Integration Issue</option>
+            <option>Settlement Delay</option>
+            <option>Transaction Failure</option>
+            <option>Compliance Query</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="FL">Message</label>
+          <textarea class="FC" rows="4" [(ngModel)]="supportMessage"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('contactSupportModal','Support ticket created. Reference: PSP-8821','')">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 20: Health Check -->
+<div class="modal fade R" id="healthCheckModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>Mobile Money Health Check</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-3 col-6">
+            <div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)">
+              <div style="font-size:28px;font-weight:800;color:var(--pm-accent)">97</div>
+              <div style="font-size:10px;font-weight:700;color:#047857">OVERALL</div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="p-3 rounded text-center" style="background:var(--pm-info-soft)">
+              <div style="font-size:24px;font-weight:700;color:var(--pm-info)">12</div>
+              <div style="font-size:10px;font-weight:700;color:#1D4ED8">WALLETS</div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="p-3 rounded text-center" style="background:var(--pm-warning-soft)">
+              <div style="font-size:24px;font-weight:700;color:var(--pm-warning)">1</div>
+              <div style="font-size:10px;font-weight:700;color:#B45309">DEGRADED</div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="p-3 rounded text-center" style="background:var(--pm-purple-soft)">
+              <div style="font-size:24px;font-weight:700;color:var(--pm-purple)">0</div>
+              <div style="font-size:10px;font-weight:700;color:#6D28D9">CRITICAL</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="openModal('walletHealthModal')">View Details</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 21: Attention Full -->
+<div class="modal fade R" id="attentionModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>All Attention Items</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="sr">
+          <div><strong>M-Pesa B2C batch failed</strong></div>
+          <button class="btn-pm btn-sm btn-pm-d" (click)="openModal('bulkRetryModal')">Retry</button>
+        </div>
+        <div class="sr">
+          <div><strong>45 KYC pending</strong></div>
+          <button class="btn-pm btn-sm" (click)="openModal('kycBulkModal')">Start</button>
+        </div>
+        <div class="sr">
+          <div><strong>Airtel API token expiring</strong></div>
+          <button class="btn-pm btn-sm" (click)="openModal('pspSettingsModal')">Renew</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 22: PSP Compare -->
+<div class="modal fade R" id="pspCompareModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-left-right me-2"></i>PSP Comparison</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="T">
+            <thead>
+              <tr><th>Feature</th><th>M-Pesa</th><th>Airtel Money</th><th>T-Kash</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Fee (KES 10k)</td><td>KES 25</td><td>KES 20</td><td>KES 15</td></tr>
+              <tr><td>Success Rate</td><td>99.98%</td><td>99.71%</td><td>99.4%</td></tr>
+              <tr><td>Settlement</td><td>T+0</td><td>T+1</td><td>T+0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('pspCompareModal','Recommendation noted. Switching 18% volume to T-Kash.','')">Switch to T-Kash</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 23: Notification -->
+<div class="modal fade R" id="notifModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notifications (14)</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="max-height:500px;overflow-y:auto">
+        <div class="p-3 rounded mb-2" style="background:var(--pm-danger-soft);font-size:13px">
+          <strong>M-Pesa B2C batch failed</strong>
+          <div style="font-size:11px;color:#7F1D1D">47 transactions • KES 1.24M</div>
+        </div>
+        <div class="p-3 rounded mb-2" style="background:var(--pm-warning-soft);font-size:13px">
+          <strong>Airtel API token expiring</strong>
+          <div style="font-size:11px;color:#92400E">Expires in 6 days</div>
+        </div>
+        <div class="p-3 rounded mb-2" style="background:var(--pm-info-soft);font-size:13px">
+          <strong>Reconciliation completed</strong>
+          <div style="font-size:11px;color:#1E40AF">0 mismatches found</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 24: Profile -->
+<div class="modal fade R" id="profileModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">JK</div>
+        <h5 style="font-weight:700;margin-bottom:2px">James Kamau</h5>
+        <p style="font-size:13px;color:var(--pm-muted)">james.kamau@email.com</p>
+        <div class="row g-2 text-start mt-3" style="font-size:13px">
+          <div class="col-6">
+            <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Wallets</span><br><strong>12 linked</strong></div>
+          </div>
+          <div class="col-6">
+            <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Health</span><br><strong style="color:var(--pm-accent)">97/100</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 25: Pause Confirmation -->
+<div class="modal fade R" id="pauseConfirmModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-pause-circle text-warning me-2"></i>Confirm Pause</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to pause this wallet? All transfers will be blocked until resumed.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-pm btn-pm-d" (click)="doAction('pauseConfirmModal','Wallet paused successfully.','')">Pause</button>
+      </div>
+    </div>
+  </div>
+</div>

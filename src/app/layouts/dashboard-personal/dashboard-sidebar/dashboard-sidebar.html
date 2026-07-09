@@ -1,0 +1,50 @@
+<!-- Sidebar Backdrop (mobile) -->
+<div class="sidebar-backdrop" [class.show]="mobileOpen" (click)="onBackdropClick()"></div>
+
+<!-- Sidebar -->
+<aside [class]="sidebarClasses" aria-label="Primary navigation">
+
+    <!-- Brand -->
+    <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="brand">
+            <div class="brand-icon">PM</div>
+            <span class="brand-text">Paymo</span>
+            <span class="brand-tag">BaaS</span>
+        </div>
+        <button class="sidebar-toggle d-lg-none" (click)="onCloseMobile()" aria-label="Close menu">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+    <!-- Navigation Groups -->
+    <div class="flex-grow-1">
+        <ng-container *ngFor="let group of navGroups">
+            <div class="mb-2">
+                <span class="nav-group-label">{{ group.title }}</span>
+                <nav class="d-flex flex-column">
+                    <ng-container *ngFor="let item of group.items">
+                        <a [routerLink]="item.route"
+                           routerLinkActive="active"
+                           class="nav-link"
+                           [class.active]="activeSection === item.key"
+                           (click)="onNavItemClick(item)">
+                            <span class="nav-icon"><i class="bi" [ngClass]="item.icon"></i></span>
+                            <span class="nav-label">{{ item.label }}</span>
+                            <span class="nav-badge" *ngIf="item.badge">{{ item.badge }}</span>
+                        </a>
+                    </ng-container>
+                </nav>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- Sidebar Account -->
+    <div class="sidebar-account">
+        <div class="avatar">JK</div>
+        <div class="details">
+            <div class="fw-bold text-truncate" style="font-size:0.82rem;color:var(--text)">James K.</div>
+            <div class="text-truncate" style="font-size:0.7rem;color:var(--muted)">Account Holder</div>
+        </div>
+    </div>
+
+</aside>

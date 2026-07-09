@@ -1,0 +1,515 @@
+<div class="pm-main">
+  <header class="pm-header">
+    <div class="pm-header-title" style="flex-shrink:0">
+      <div class="d-flex align-items-center gap-2">
+        <div class="pm-avatar" style="width:36px;height:36px;font-size:13px">MN</div>
+        <div>
+          <h1>Internet & Connectivity</h1>
+          <p>Home fibre, 4G/5G mobile data, airtime, and broadband networks</p>
+        </div>
+      </div>
+    </div>
+    <div class="pm-header-search">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Search accounts, SIMs, bundles, numbers..." [(ngModel)]="searchQuery">
+    </div>
+    <div class="pm-header-actions">
+      <button class="pm-header-btn" (click)="openModal('connectivityHealthModal')" title="Network Health"><i class="bi bi-activity"></i></button>
+      <button class="pm-header-btn" (click)="openModal('billInboxModal')" title="Inbox"><i class="bi bi-envelope"></i><span class="counter">3</span></button>
+      <button class="pm-header-btn" (click)="openModal('notificationsModal')" title="Alerts"><i class="bi bi-bell"></i><span class="counter">8</span></button>
+    </div>
+  </header>
+
+  <div class="pm-page-bar">
+    <div>
+      <div class="pm-breadcrumb"><span>Home</span> / <span>Utilities Hub</span> / <span>Internet</span> / <strong>Management</strong></div>
+      <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 2.4 — Internet & Connectivity Management</h2>
+      <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Manage home broadband, mobile data SIMs, bundle subscriptions, network outages and auto-renewals.</p>
+    </div>
+    <div class="d-flex flex-wrap" style="gap:8px">
+      <button class="pm-btn" (click)="openModal('connectivityHealthModal')"><i class="bi bi-activity"></i> Net Health</button>
+      <button class="pm-btn" (click)="openModal('dataUsageAnalyticsModal')"><i class="bi bi-pie-chart"></i> Usage</button>
+      <button class="pm-btn" (click)="openModal('bulkTopupModal')"><i class="bi bi-collection"></i> Bulk Pay</button>
+      <button class="pm-btn pm-btn-primary" (click)="openModal('addConnectionModal')"><i class="bi bi-plus-lg"></i> Add Connection</button>
+    </div>
+  </div>
+
+  <div class="pm-content">
+    <!-- HERO STATS ROW -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card pm-card-accent" style="min-height:170px">
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Connectivity hub is online <span style="color:#86efac">●</span></p>
+          <div class="pm-stat-value" style="margin:8px 0;color:#fff">{{networks.length}} networks linked</div>
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Safaricom Home, Zuku, Starlink, and 3 mobile SIMs managed in one view.</p>
+          <div class="d-flex flex-wrap mt-3" style="gap:8px">
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('buyDataModal')">Buy Data</button>
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('payFibreModal')">Pay Fibre</button>
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('shareDataModal')">Sambaza</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-primary)">MONTHLY DATA USAGE</p>
+          <div class="pm-stat-value" style="margin:6px 0">1.2 TB</div>
+          <span class="pm-badge pm-badge-info"><i class="bi bi-wifi"></i> 92% Fibre</span>
+          <div class="pm-mini-bars mt-3"><div class="pm-mini-bar" style="height:60%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:70%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:55%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:90%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:85%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:40%;background:var(--pm-info)"></div></div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-warning)">RENEWALS IN 7 DAYS</p>
+          <div class="pm-stat-value" style="margin:6px 0">KES 9,850</div>
+          <span class="pm-badge pm-badge-warning"><i class="bi bi-clock"></i> 3 subscriptions</span>
+          <div class="mt-2"><div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>Safaricom Gold Due</span><span>01 Jul</span></div><div class="pm-progress mt-1"><div class="pm-progress-bar" style="width:85%;background:var(--pm-warning)"></div></div></div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-accent)">
+          <p class="pm-stat-label" style="color:var(--pm-accent)">ACTIVE AUTO-RENEWALS</p>
+          <div class="pm-stat-value" style="margin:6px 0">4 Rules</div>
+          <span class="pm-badge pm-badge-success"><i class="bi bi-shield-check"></i> Seamless</span>
+          <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)"><div>Next execution: <strong>Tomorrow 8AM</strong></div><div>Coverage: <strong>Home + 2 SIMs</strong></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEED ROW -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Attention Required</h3><button class="pm-btn pm-btn-sm" (click)="openModal('attentionDetailModal')">View all</button></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">SF</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Safaricom Fibre expires soon</div><div style="font-size:11px;color:var(--pm-muted)">Acc #SF-40812 · KES 5,999 · 3 days left</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('payFibreModal')">Renew</button></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">AL</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Airtel Data below 500MB</div><div style="font-size:11px;color:var(--pm-muted)">0733***456 · Auto-renew paused</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('buyDataModal')">Top-up</button></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">ZK</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Zuku outage reported in area</div><div style="font-size:11px;color:var(--pm-muted)">Kilimani zone · expected fix 4PM</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('networkOutagesModal')">Track</button></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Smart Suggestions</h3><span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent);font-size:12px">UP</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Upgrade to Faiba 40Mbps</div><div style="font-size:11px;color:var(--pm-muted)">Save KES 2,149/mo vs current plan</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('serviceComparisonModal')">Compare</button></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple);font-size:12px">BN</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Switch to 30-day data bundle</div><div style="font-size:11px;color:var(--pm-muted)">Your daily bundles cost 20% more</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('suggestionsModal')">Review</button></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">AR</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Automate Airtel Airtime</div><div style="font-size:11px;color:var(--pm-muted)">Never run out during calls</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('autoRenewSetupModal')">Setup</button></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="mb-3"><h3 class="pm-section-title">Quick Actions</h3><p class="pm-section-sub">Frequent connectivity workflows</p></div>
+          <div class="quick-action-grid">
+            <button class="quick-action-btn" (click)="openModal('payFibreModal')"><i class="bi bi-router text-primary me-1"></i> Pay Home Fibre</button>
+            <button class="quick-action-btn" (click)="openModal('buyDataModal')"><i class="bi bi-reception-4 text-success me-1"></i> Buy Data / Airtime</button>
+            <button class="quick-action-btn" (click)="openModal('shareDataModal')"><i class="bi bi-share text-info me-1"></i> Sambaza (Share)</button>
+            <button class="quick-action-btn" (click)="openModal('runSpeedTestModal')"><i class="bi bi-speedometer text-warning me-1"></i> Speed Test</button>
+            <button class="quick-action-btn" (click)="openModal('upgradePlanModal')"><i class="bi bi-arrow-up-circle me-1" style="color:var(--pm-purple)"></i> Upgrade Plan</button>
+            <button class="quick-action-btn" (click)="openModal('reportFaultModal')"><i class="bi bi-exclamation-triangle text-danger me-1"></i> Report Fault</button>
+            <button class="quick-action-btn" (click)="openModal('bulkTopupModal')"><i class="bi bi-collection text-secondary me-1"></i> Bulk Top-up</button>
+            <button class="quick-action-btn" (click)="openModal('starlinkManageModal')"><i class="bi bi-globe text-dark me-1"></i> Starlink</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2.4.1 -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-router-fill" style="color:var(--pm-primary)"></i> 2.4.1 — Broadband & Fiber Connections</h3><p class="pm-section-sub">Manage your fixed home and office internet connections.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('reportFaultModal')"><i class="bi bi-headset"></i> Support</button><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('addConnectionModal')"><i class="bi bi-plus-lg"></i> Add Connection</button></div></div>
+      <div class="table-responsive"><table class="pm-table"><thead><tr><th>Provider</th><th>Account</th><th>Location / Plan</th><th>Speed</th><th>Status</th><th>Next Bill</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let conn of fibreConnections"><td><strong>{{conn.provider}}</strong></td><td style="font-family:monospace">{{conn.account}}</td><td>{{conn.location}}</td><td>{{conn.speed}}</td><td><span class="pm-badge" [ngClass]="conn.statusClass">{{conn.status}}</span></td><td>{{conn.nextBill}}</td><td><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('payFibreModal')">Pay</button> <button class="pm-btn pm-btn-sm" (click)="openModal('manageSimModal')">Manage</button></td></tr>
+        <tr *ngIf="fibreConnections.length === 0"><td colspan="7" style="text-align:center;color:var(--pm-muted);padding:24px">No fibre connections linked.</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <!-- SECTION 2.4.2 -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-sim" style="color:#10B981"></i> 2.4.2 — Mobile Data & Airtime Management</h3><p class="pm-section-sub">Manage multiple SIM cards, track data balances, and automate bundle renewals.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('bulkTopupModal')"><i class="bi bi-collection"></i> Bulk Pay</button><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('buyDataModal')"><i class="bi bi-phone"></i> Buy Bundle</button></div></div>
+      <div class="row g-3">
+        <div class="col-lg-4 col-md-6" *ngFor="let sim of simCards">
+          <div class="meter-card" (click)="openModal('manageSimModal')">
+            <div class="status-dot" [style.background]="sim.statusColor"></div>
+            <div class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-phone" style="font-size:20px" [style.color]="sim.iconColor"></i> <strong style="font-size:13px">{{sim.number}}</strong></div>
+            <div style="font-size:11px;color:var(--pm-muted)">{{sim.provider}} · {{sim.nickname}}</div>
+            <div class="d-flex justify-content-between mt-2" style="font-size:12px"><span>Data Bal: <strong>{{sim.dataBal}}</strong></span> <span class="pm-badge" [ngClass]="sim.statusClass" style="font-size:10px">{{sim.status}}</span></div>
+            <div class="d-flex gap-1 mt-2">
+              <button class="pm-btn pm-btn-sm flex-fill" (click)="openModal('buyDataModal'); $event.stopPropagation()">Top-up</button>
+              <button class="pm-btn pm-btn-sm flex-fill" (click)="openModal('shareDataModal'); $event.stopPropagation()">Sambaza</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2.4.3 -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-bar-chart-line" style="color:var(--pm-info)"></i> 2.4.3 — Analytics, Subscriptions & Automation</h3><p class="pm-section-sub">Analyze bandwidth usage, manage auto-renew schedules, and track network outages.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('dataUsageAnalyticsModal')"><i class="bi bi-graph-up"></i> Full Report</button></div></div>
+      <div class="row g-3">
+        <div class="col-lg-5">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Total Data Usage (GB)</h4>
+            <div class="chart-bars">
+              <div *ngFor="let bar of usageChart" class="chart-bar" [style.height]="bar.height" [style.background]="bar.color" (click)="openModal('dataUsageAnalyticsModal')"><span class="bar-label">{{bar.label}}</span></div>
+            </div>
+            <div class="d-flex flex-wrap mt-3 justify-content-between" style="font-size:12px"><span><strong>Total:</strong> 1.2 TB</span><span><strong>Peak:</strong> Streaming (68%)</span><span><strong>Cost:</strong> KES 14,200</span></div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Auto-Renewals</h4>
+            <div *ngFor="let r of autoRenewals" class="status-row"><div><strong>{{r.name}}</strong><div style="font-size:11px;color:var(--pm-muted)">{{r.details}}</div></div><span class="pm-badge" [ngClass]="r.statusClass">{{r.status}}</span></div>
+            <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('autoRenewSetupModal')">Manage Rules</button>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Network Status & Outages</h4>
+            <div *ngFor="let net of networkStatus" class="p-3 rounded mb-2" [style.background]="net.bg" [style.border]="'1px solid ' + net.borderColor">
+              <div style="font-weight:600;color:var(--pm-ink)"><i [ngClass]="net.icon" class="me-1"></i> {{net.name}}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{net.details}}</div>
+            </div>
+            <button class="pm-btn pm-btn-sm w-100" (click)="openModal('networkOutagesModal')">View Outage Map</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS BACKDROP -->
+<div *ngIf="activeModal" class="modal-backdrop show" style="position:fixed;inset:0;z-index:1040" (click)="closeModal()"></div>
+
+<!-- 1. Pay Fibre (Multistep) -->
+<div class="modal" [class.show]="activeModal === 'payFibreModal'" [style.display]="activeModal === 'payFibreModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-router text-primary me-2"></i>Pay Home Fibre</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="pm-stepper">
+        <div class="pm-step" [ngClass]="{'active': fibreStep===1, 'completed': fibreStep>1}"><div class="pm-step-num">1</div><span class="pm-step-label">Connection</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': fibreStep===2, 'completed': fibreStep>2}"><div class="pm-step-num">2</div><span class="pm-step-label">Payment</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': fibreStep===3}"><div class="pm-step-num">3</div><span class="pm-step-label">Receipt</span></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': fibreStep === 1}">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 1: Select Connection</h6>
+        <div class="mb-3"><label class="pm-form-label">Saved Account</label><select class="pm-form-control" [(ngModel)]="selectedFibre"><option *ngFor="let c of fibreConnections" [value]="c.account">{{c.account}} — {{c.provider}} ({{c.location}})</option></select></div>
+        <div class="p-3 rounded mb-3" style="background:var(--pm-info-soft);font-size:13px"><div class="d-flex justify-content-between mb-1"><span>Current Plan</span><strong>Gold 40Mbps</strong></div><div class="d-flex justify-content-between mb-1"><span>Amount Due</span><strong>KES 5,999</strong></div><div class="d-flex justify-content-between"><span>Expiry Date</span><strong style="color:var(--pm-danger)">01 Jul 2025</strong></div></div>
+        <button class="pm-btn pm-btn-sm mb-2" (click)="openModal('upgradePlanModal')">Upgrade Plan</button>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': fibreStep === 2}">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 2: Payment Details</h6>
+        <div class="mb-3"><label class="pm-form-label">Amount</label><input class="pm-form-control" value="5999" disabled></div>
+        <div class="mb-3"><label class="pm-form-label">Payment Method</label>
+          <div class="pm-pay-option" [ngClass]="{'selected': payMethod==='mpesa'}" (click)="payMethod='mpesa'"><input type="radio" [checked]="payMethod==='mpesa'"> <i class="bi bi-phone" style="font-size:20px;color:var(--pm-accent)"></i><div><strong>M-Pesa STK</strong><div style="font-size:11px;color:var(--pm-muted)">0712***890</div></div></div>
+          <div class="pm-pay-option" [ngClass]="{'selected': payMethod==='wallet'}" (click)="payMethod='wallet'"><input type="radio" [checked]="payMethod==='wallet'"> <i class="bi bi-wallet2" style="font-size:20px;color:var(--pm-primary)"></i><div><strong>PayMo Wallet</strong><div style="font-size:11px;color:var(--pm-muted)">KES 24,500</div></div></div>
+        </div>
+        <div class="form-check mt-3"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Enable auto-renewal next month</label></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': fibreStep === 3}">
+        <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Fibre Renewed Successfully</h5><p style="font-size:13px;color:var(--pm-ink-soft)">Your internet connection is active until 01 Aug 2025.</p><div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px"><div class="d-flex justify-content-between mb-2"><span class="text-muted">Account</span><strong>{{selectedFibre}}</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 5,999</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Ref</span><strong>FIB-20250627-1182</strong></div></div><div class="mt-3"><button class="pm-btn pm-btn-sm" (click)="openModal('receiptModal')">View Receipt</button></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="pm-btn" *ngIf="fibreStep > 1 && fibreStep < 3" (click)="fibreStep = fibreStep - 1"><i class="bi bi-arrow-left"></i> Back</button>
+      <div style="flex:1"></div>
+      <button class="pm-btn" (click)="closeModal()">Cancel</button>
+      <button class="pm-btn pm-btn-primary" *ngIf="fibreStep === 1" (click)="fibreStep = 2">Continue <i class="bi bi-arrow-right"></i></button>
+      <button class="pm-btn pm-btn-accent" *ngIf="fibreStep === 2" (click)="fibreStep = 3"><i class="bi bi-lock"></i> Pay & Renew</button>
+      <button class="pm-btn pm-btn-primary" *ngIf="fibreStep === 3" (click)="closeModal()">Done</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- 2. Buy Data / Airtime -->
+<div class="modal" [class.show]="activeModal === 'buyDataModal'" [style.display]="activeModal === 'buyDataModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-phone text-success me-2"></i>Buy Data & Airtime</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="pm-tab-pills mb-3">
+        <button class="pm-tab-pill" [ngClass]="{'active': activeDataTab === 'saf'}" (click)="activeDataTab = 'saf'">Safaricom</button>
+        <button class="pm-tab-pill" [ngClass]="{'active': activeDataTab === 'airtel'}" (click)="activeDataTab = 'airtel'">Airtel</button>
+        <button class="pm-tab-pill" [ngClass]="{'active': activeDataTab === 'telkom'}" (click)="activeDataTab = 'telkom'">Telkom</button>
+      </div>
+      <div class="mb-3"><label class="pm-form-label">Type</label><select class="pm-form-control"><option>Data Bundles</option><option>Airtime</option><option>Minutes / SMS</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Phone Number</label><select class="pm-form-control"><option>0712 *** 890 (My Line)</option><option>0722 *** 111 (Wife)</option></select></div>
+      <div [ngClass]="{'tab-panel': true, 'active': activeDataTab === 'saf'}">
+        <label class="pm-form-label">Select Bundle</label>
+        <div class="row g-2 mb-3">
+          <div class="col-6"><div class="p-2 border rounded" style="cursor:pointer;font-size:12px" [ngClass]="{'selected': selectedBundle==='99'}" (click)="selectedBundle='99'"><strong>1GB / 24hrs</strong><br>KES 99</div></div>
+          <div class="col-6"><div class="p-2 border rounded" style="cursor:pointer;font-size:12px" [ngClass]="{'selected': selectedBundle==='1000'}" (click)="selectedBundle='1000'"><strong>12GB / 30 Days</strong><br>KES 1,000</div></div>
+          <div class="col-6"><div class="p-2 border rounded" style="cursor:pointer;font-size:12px" [ngClass]="{'selected': selectedBundle==='2000'}" (click)="selectedBundle='2000'"><strong>25GB / 30 Days</strong><br>KES 2,000</div></div>
+          <div class="col-6"><div class="p-2 border rounded" style="cursor:pointer;font-size:12px" [ngClass]="{'selected': selectedBundle==='1500'}" (click)="selectedBundle='1500'"><strong>No Expiry 5GB</strong><br>KES 1,500</div></div>
+        </div>
+      </div>
+      <div [ngClass]="{'tab-panel': true, 'active': activeDataTab === 'airtel'}"><div class="row g-2 mb-3"><div class="col-6"><div class="p-2 border rounded" style="cursor:pointer;font-size:12px"><strong>Amazing 15GB</strong><br>KES 1,000</div></div></div></div>
+      <div [ngClass]="{'tab-panel': true, 'active': activeDataTab === 'telkom'}"><div class="row g-2 mb-3"><div class="col-6"><div class="p-2 border rounded" style="cursor:pointer;font-size:12px"><strong>Freedom 10GB</strong><br>KES 1,000</div></div></div></div>
+      <div class="mb-3"><label class="pm-form-label">Payment Method</label><select class="pm-form-control"><option>PayMo Wallet</option><option>M-Pesa</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="openModal('receiptModal')">Buy KES 1,000</button></div>
+  </div></div>
+</div>
+
+<!-- 3. Share Data -->
+<div class="modal" [class.show]="activeModal === 'shareDataModal'" [style.display]="activeModal === 'shareDataModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-share text-info me-2"></i>Sambaza Data / Airtime</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">From Line</label><select class="pm-form-control"><option>Safaricom (0712***890) - Bal: 4.2GB</option><option>Airtel (0733***456) - Bal: 1.1GB</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Send To</label><input class="pm-form-control" placeholder="Enter phone number"></div>
+      <div class="mb-3"><label class="pm-form-label">Amount (MBs / KES)</label><input class="pm-form-control" value="500"></div>
+      <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:12px">Note: Safaricom allows sharing max 2GB per day. Valid for 24 hours upon receipt.</div>
+      <div class="mb-3"><label class="pm-form-label">Enter SIM PIN</label><input type="password" class="pm-form-control" placeholder="****"></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="openModal('receiptModal')">Sambaza</button></div>
+  </div></div>
+</div>
+
+<!-- 4. Speed Test -->
+<div class="modal" [class.show]="activeModal === 'runSpeedTestModal'" [style.display]="activeModal === 'runSpeedTestModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-speedometer text-warning me-2"></i>Network Speed Test</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body text-center">
+      <div class="pm-icon-circle mx-auto mb-3" style="width:80px;height:80px;font-size:32px;background:var(--pm-surface-2);color:var(--pm-primary)"><i class="bi bi-wifi"></i></div>
+      <h4 style="font-weight:700">Safaricom Home Fibre</h4><p style="color:var(--pm-muted);font-size:13px">Plan: 40 Mbps</p>
+      <div *ngIf="!speedTestDone"><button class="pm-btn pm-btn-primary pm-btn-lg mt-3" (click)="speedTestDone = true">Start Test</button></div>
+      <div *ngIf="speedTestDone">
+        <div class="pm-stat-value" style="color:var(--pm-accent)">42.5 Mbps</div>
+        <p style="color:var(--pm-muted);font-size:12px">Download: 45.2 Mbps | Upload: 12.1 Mbps | Ping: 8ms</p>
+        <button class="pm-btn pm-btn-sm mt-3" (click)="speedTestDone = false">Run Again</button>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 5. Upgrade Plan -->
+<div class="modal" [class.show]="activeModal === 'upgradePlanModal'" [style.display]="activeModal === 'upgradePlanModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-up-circle me-2" style="color:var(--pm-purple)"></i>Upgrade Broadband Plan</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Connection</label><input class="pm-form-control" value="Safaricom Home Fibre (SF-40812)" disabled></div>
+      <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:13px"><strong>Current Plan:</strong> Gold 40Mbps (KES 5,999/mo)</div>
+      <label class="pm-form-label">Available Upgrades</label>
+      <div class="row g-3">
+        <div class="col-md-6"><div class="p-3 border rounded text-center" style="cursor:pointer" [ngClass]="{'selected': selectedUpgrade==='platinum'}" (click)="selectedUpgrade='platinum'"><strong style="font-size:16px">Platinum 100Mbps</strong><div style="font-size:20px;font-weight:700;color:var(--pm-primary);margin:8px 0">KES 8,999</div><div style="font-size:12px;color:var(--pm-muted)">Prorated upgrade fee: KES 1,500 today</div></div></div>
+        <div class="col-md-6"><div class="p-3 border rounded text-center opacity-50"><strong style="font-size:16px">Diamond 250Mbps</strong><div style="font-size:20px;font-weight:700;color:var(--pm-muted);margin:8px 0">KES 12,500</div><div style="font-size:12px;color:var(--pm-muted)">Not available in your area</div></div></div>
+      </div>
+      <div class="mt-4"><label class="pm-form-label">Payment for Prorated Amount</label><select class="pm-form-control"><option>PayMo Wallet</option><option>M-Pesa</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="openModal('receiptModal')">Pay & Upgrade</button></div>
+  </div></div>
+</div>
+
+<!-- 6. Report Fault -->
+<div class="modal" [class.show]="activeModal === 'reportFaultModal'" [style.display]="activeModal === 'reportFaultModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger me-2"></i>Report Network Fault</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Connection</label><select class="pm-form-control"><option *ngFor="let c of fibreConnections">{{c.provider}} ({{c.account}})</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Issue Type</label><select class="pm-form-control"><option>Red LOS light on router</option><option>Slow speeds</option><option>Intermittent drops</option><option>Billing issue</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Description</label><textarea class="pm-form-control" rows="3">Internet drops every 10 minutes. LOS light blinks red.</textarea></div>
+      <div class="p-3 rounded" style="background:var(--pm-danger-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> A support ticket will be generated and tracked. SLA is 24 hours.</div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-danger" (click)="openModal('receiptModal')">Submit Ticket</button></div>
+  </div></div>
+</div>
+
+<!-- 7. Network Outages -->
+<div class="modal" [class.show]="activeModal === 'networkOutagesModal'" [style.display]="activeModal === 'networkOutagesModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-broadcast-pin text-warning me-2"></i>Network Outages</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="pm-tab-pills mb-3"><button class="pm-tab-pill active">Known Outages</button><button class="pm-tab-pill">My Area</button><button class="pm-tab-pill">Scheduled Maintenance</button></div>
+      <div *ngFor="let out of outages" class="p-3 border rounded mb-2" [style.borderLeft]="'4px solid ' + out.color + '!important'">
+        <div class="d-flex justify-content-between"><strong>{{out.name}}</strong><span class="pm-badge" [ngClass]="out.statusClass">{{out.status}}</span></div>
+        <div style="font-size:12px;color:var(--pm-muted);margin-top:4px">{{out.details}}</div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 8. Add Connection (Multistep) -->
+<div class="modal" [class.show]="activeModal === 'addConnectionModal'" [style.display]="activeModal === 'addConnectionModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Add Connection</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="pm-stepper">
+        <div class="pm-step" [ngClass]="{'active': addConnStep===1, 'completed': addConnStep>1}"><div class="pm-step-num">1</div><span class="pm-step-label">Type</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': addConnStep===2, 'completed': addConnStep>2}"><div class="pm-step-num">2</div><span class="pm-step-label">Details</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': addConnStep===3}"><div class="pm-step-num">3</div><span class="pm-step-label">Done</span></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': addConnStep === 1}">
+        <h6 style="font-weight:700">Select Connection Type</h6>
+        <div class="row g-3 mt-2">
+          <div class="col-md-4"><div class="p-3 border rounded text-center" style="cursor:pointer" [ngClass]="{'selected': connType==='fibre'}" (click)="connType='fibre'"><i class="bi bi-router d-block mb-2" style="font-size:24px;color:var(--pm-primary)"></i><strong>Home / Office Fibre</strong></div></div>
+          <div class="col-md-4"><div class="p-3 border rounded text-center" style="cursor:pointer" [ngClass]="{'selected': connType==='sim'}" (click)="connType='sim'"><i class="bi bi-sim d-block mb-2" style="font-size:24px;color:#10B981"></i><strong>Mobile SIM</strong></div></div>
+          <div class="col-md-4"><div class="p-3 border rounded text-center" style="cursor:pointer" [ngClass]="{'selected': connType==='starlink'}" (click)="connType='starlink'"><i class="bi bi-globe d-block mb-2" style="font-size:24px;color:var(--pm-ink)"></i><strong>Satellite / Starlink</strong></div></div>
+        </div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': addConnStep === 2}">
+        <h6 style="font-weight:700">Account Details</h6>
+        <div class="mb-3"><label class="pm-form-label">Provider</label><select class="pm-form-control"><option>Safaricom Home</option><option>Zuku</option><option>Faiba JTL</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Account Number</label><input class="pm-form-control" placeholder="e.g. SF-12345"></div>
+        <div class="mb-3"><label class="pm-form-label">Nickname</label><input class="pm-form-control" placeholder="e.g. Home Wi-Fi"></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': addConnStep === 3}">
+        <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Connection Linked!</h5><p style="font-size:13px">You can now pay bills and monitor this connection.</p></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="pm-btn" *ngIf="addConnStep > 1 && addConnStep < 3" (click)="addConnStep = addConnStep - 1">Back</button>
+      <div style="flex:1"></div>
+      <button class="pm-btn" (click)="closeModal()">Cancel</button>
+      <button class="pm-btn pm-btn-primary" *ngIf="addConnStep < 3" (click)="addConnStep = addConnStep + 1">Continue <i class="bi bi-arrow-right"></i></button>
+      <button class="pm-btn pm-btn-primary" *ngIf="addConnStep === 3" (click)="closeModal()">Done</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- 9. Manage SIM -->
+<div class="modal" [class.show]="activeModal === 'manageSimModal'" [style.display]="activeModal === 'manageSimModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-sim me-2"></i>Manage SIM Profile</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="d-flex align-items-center gap-3 mb-4"><div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:#10B981;font-size:20px"><i class="bi bi-phone"></i></div><div><h5 style="margin:0;font-weight:700">0712 345 890</h5><span class="pm-badge pm-badge-success mt-1">Safaricom Prepaid</span></div></div>
+      <div class="mb-3"><label class="pm-form-label">Nickname</label><input class="pm-form-control" value="My Primary Line"></div>
+      <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Allow Sambaza requests from family</label></div>
+      <div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Alert on low data (< 500MB)</label></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary">Save Changes</button></div>
+  </div></div>
+</div>
+
+<!-- 10. Bulk Top-up -->
+<div class="modal" [class.show]="activeModal === 'bulkTopupModal'" [style.display]="activeModal === 'bulkTopupModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-collection me-2"></i>Bulk Top-up</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div *ngFor="let sim of simCards" class="status-row"><div><input type="checkbox"> <strong>{{sim.number}}</strong> - {{sim.nickname}}</div></div>
+      <div class="p-3 mt-3 rounded" style="background:var(--pm-surface-2)"><div class="d-flex justify-content-between"><strong>Select Amount</strong><input type="number" class="pm-form-control" style="width:150px" value="1000"></div></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="openModal('receiptModal')">Top-up Selected</button></div>
+  </div></div>
+</div>
+
+<!-- 11. Auto-Renew Setup -->
+<div class="modal" [class.show]="activeModal === 'autoRenewSetupModal'" [style.display]="activeModal === 'autoRenewSetupModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-repeat text-primary me-2"></i>Setup Auto-Renewal</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Select Account</label><select class="pm-form-control"><option *ngFor="let s of simCards">{{s.number}} ({{s.nickname}})</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Trigger</label><select class="pm-form-control"><option>When balance drops below 500MB</option><option>On specific date monthly</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Bundle to Buy</label><select class="pm-form-control"><option>12GB / 30 Days (KES 1,000)</option></select></div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Use PayMo Wallet for payment</label></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Save Rule</button></div>
+  </div></div>
+</div>
+
+<!-- 12. Data Analytics -->
+<div class="modal" [class.show]="activeModal === 'dataUsageAnalyticsModal'" [style.display]="activeModal === 'dataUsageAnalyticsModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-graph-up text-info me-2"></i>Data Usage Analytics</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="chart-bars" style="height:180px">
+        <div *ngFor="let bar of usageChart" class="chart-bar" [style.height]="bar.height" [style.background]="bar.color"><span class="bar-label">{{bar.label}}</span></div>
+      </div>
+      <div class="mt-4 p-3 rounded" style="background:var(--pm-surface-2)"><strong>Summary:</strong> You consumed 1.2TB this month. 68% was streaming (Netflix, YouTube), 22% browsing, 10% other.</div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 13. Service Comparison -->
+<div class="modal" [class.show]="activeModal === 'serviceComparisonModal'" [style.display]="activeModal === 'serviceComparisonModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-left-right text-primary me-2"></i>Compare ISPs</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body"><div class="row g-3">
+      <div class="col-md-4"><div class="pm-card text-center"><h5>Safaricom</h5><div class="pm-stat-value">KES 5,999</div><p>40Mbps</p><button class="pm-btn pm-btn-sm pm-btn-outline w-100">Current</button></div></div>
+      <div class="col-md-4"><div class="pm-card text-center" style="border-color:var(--pm-primary)"><h5>Faiba</h5><div class="pm-stat-value" style="color:var(--pm-primary)">KES 3,850</div><p>40Mbps</p><button class="pm-btn pm-btn-sm pm-btn-primary w-100">Switch</button></div></div>
+      <div class="col-md-4"><div class="pm-card text-center"><h5>Zuku</h5><div class="pm-stat-value">KES 4,999</div><p>20Mbps</p><button class="pm-btn pm-btn-sm pm-btn-outline w-100">View</button></div></div>
+    </div></div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button></div>
+  </div></div>
+</div>
+
+<!-- 14. Starlink Manage -->
+<div class="modal" [class.show]="activeModal === 'starlinkManageModal'" [style.display]="activeModal === 'starlinkManageModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-globe text-dark me-2"></i>Starlink Management</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)"><div class="d-flex justify-content-between mb-1"><strong>Status</strong><span class="pm-badge pm-badge-success">Online</span></div><div class="d-flex justify-content-between mb-1"><strong>Latency</strong><span>45ms</span></div><div class="d-flex justify-content-between"><strong>Data Used</strong><span>50GB / Unlimited</span></div></div>
+      <button class="pm-btn pm-btn-sm w-100" (click)="openModal('payFibreModal')">Pay Roam Subscription</button>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 15. Health Check -->
+<div class="modal" [class.show]="activeModal === 'connectivityHealthModal'" [style.display]="activeModal === 'connectivityHealthModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-activity text-primary me-2"></i>System Health</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="status-row"><div><strong>Safaricom Fibre API</strong></div><span class="pm-badge pm-badge-success">Healthy</span></div>
+      <div class="status-row"><div><strong>M-Pesa STK</strong></div><span class="pm-badge pm-badge-success">Healthy</span></div>
+      <div class="status-row"><div><strong>Zuku API</strong></div><span class="pm-badge pm-badge-warning">Degraded</span></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 16. Bill Inbox -->
+<div class="modal" [class.show]="activeModal === 'billInboxModal'" [style.display]="activeModal === 'billInboxModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-envelope text-primary me-2"></i>Bill Inbox</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i class="bi bi-file-earmark-text"></i></div><div style="flex:1"><div style="font-weight:600">Safaricom Fibre Invoice</div><div style="font-size:11px;color:var(--pm-muted)">Due 01 Jul · KES 5,999</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('payFibreModal')">Pay</button></div>
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info)"><i class="bi bi-file-earmark-text"></i></div><div style="flex:1"><div style="font-weight:600">Zuku Invoice</div><div style="font-size:11px;color:var(--pm-muted)">Due 05 Jul · KES 4,999</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('payFibreModal')">Pay</button></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 17. Notifications -->
+<div class="modal" [class.show]="activeModal === 'notificationsModal'" [style.display]="activeModal === 'notificationsModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell text-warning me-2"></i>Notifications</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i class="bi bi-clock"></i></div><div style="flex:1"><div style="font-weight:600">Safaricom Fibre expiring</div><div style="font-size:11px;color:var(--pm-muted)">3 days left</div></div></div>
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger)"><i class="bi bi-exclamation-triangle"></i></div><div style="flex:1"><div style="font-weight:600">Zuku Outage detected</div><div style="font-size:11px;color:var(--pm-muted)">2 hours ago</div></div></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Mark Read & Close</button></div>
+  </div></div>
+</div>
+
+<!-- 18. Attention Detail -->
+<div class="modal" [class.show]="activeModal === 'attentionDetailModal'" [style.display]="activeModal === 'attentionDetailModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>All Attention Items</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body"><p style="font-size:13px;color:var(--pm-ink-soft)">Consolidated view of all items needing your attention.</p><div class="status-row"><div><strong>Safaricom Fibre expires</strong><div style="font-size:11px;color:var(--pm-muted)">KES 5,999 · 3 days</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('payFibreModal')">Pay</button></div><div class="status-row"><div><strong>Airtel Data low</strong><div style="font-size:11px;color:var(--pm-muted)">0733***456</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('buyDataModal')">Top-up</button></div></div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 19. Suggestions Detail -->
+<div class="modal" [class.show]="activeModal === 'suggestionsModal'" [style.display]="activeModal === 'suggestionsModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-lightbulb text-warning me-2"></i>Savings Plan</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body"><p style="font-size:13px">Switching from daily 500MB bundles to a 30-day 12GB bundle saves you KES 200/month.</p><div class="p-3 rounded mt-3" style="background:var(--pm-accent-soft)"><strong>Estimated Savings: KES 2,400/year</strong></div></div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary" (click)="openModal('buyDataModal')">Accept Plan</button></div>
+  </div></div>
+</div>
+
+<!-- 20. Receipt -->
+<div class="modal" [class.show]="activeModal === 'receiptModal'" [style.display]="activeModal === 'receiptModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Receipt</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="pm-receipt">
+        <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-accent)">Successful</h5>
+        <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px"><div class="d-flex justify-content-between mb-2"><span class="text-muted">Ref</span><strong>TXN-INT-29381</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Date</span><strong>27 Jun 2025</strong></div></div>
+        <div class="d-flex gap-2 justify-content-center mt-3" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-download"></i> PDF</button><button class="pm-btn pm-btn-sm"><i class="bi bi-whatsapp"></i> Share</button></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button></div>
+  </div></div>
+</div>

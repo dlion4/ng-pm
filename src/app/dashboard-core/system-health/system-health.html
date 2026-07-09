@@ -1,0 +1,1339 @@
+<div class="pm-content">
+
+  <!-- HERO STATS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C C-accent" style="min-height:170px">
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Platform status <span style="color:#86efac">●</span> All systems operational</p>
+        <div class="SV" style="margin:8px 0;color:#fff">99.97% Uptime</div>
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Last 30 days • 4 minor incidents resolved • 0 critical outages</p>
+        <div class="d-flex flex-wrap mt-3" style="gap:8px">
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('uptimeHistoryModal')">History</button>
+          <button class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('slaReportModal')">SLA Report</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-accent)">TRANSACTION SUCCESS</p>
+        <div class="SV" style="margin:6px 0">99.4%</div>
+        <span class="B B-s"><i class="bi bi-check-circle"></i> 1.24M txns today</span>
+        <div class="mt-2">
+          <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>Failed</span><span>7,412 (0.6%)</span></div>
+          <div class="pm-progress mt-1"><div class="pm-progress-bar" style="width:99.4%;background:var(--pm-accent)"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-info)">API RESPONSE (P95)</p>
+        <div class="SV" style="margin:6px 0">187ms</div>
+        <span class="B B-i"><i class="bi bi-speedometer2"></i> Within SLA</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+          <div>Current load: <strong>42,800 req/min</strong></div>
+          <div>Peak today: <strong>68,200 req/min</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4">
+      <div class="C" style="min-height:170px;border-left:3px solid var(--pm-warning)">
+        <p class="SL" style="color:var(--pm-warning)">OPEN INCIDENTS</p>
+        <div class="SV" style="margin:6px 0">7</div>
+        <span class="B B-w"><i class="bi bi-exclamation-triangle"></i> 2 high priority</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+          <div>Settlement delay: <strong>2</strong></div>
+          <div>Fraud alert spike: <strong>1</strong></div>
+          <div>API degradation: <strong>4</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Attention Required</h3>
+          <button class="btn-pm btn-sm" (click)="openModal('incidentQueueModal')">View all</button>
+        </div>
+        <div class="sr" *ngFor="let item of attentionItems">
+          <div class="d-flex align-items-center gap-3">
+            <div [style.background]="item.iconBg" [style.color]="item.iconColor" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi {{item.icon}}"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px">{{item.title}}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{item.detail}}</div>
+            </div>
+          </div>
+          <button class="btn-pm btn-sm" [class.btn-pm-d]="item.actionClass === 'btn-pm-d'" (click)="openModal(item.actionModal)">{{item.actionLabel}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Smart Suggestions</h3>
+          <span class="B B-p"><i class="bi bi-stars"></i> AI</span>
+        </div>
+        <div class="sr" *ngFor="let item of suggestions">
+          <div class="d-flex align-items-center gap-3">
+            <div [style.background]="item.iconBg" [style.color]="item.iconColor" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi {{item.icon}}"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px">{{item.title}}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{item.detail}}</div>
+            </div>
+          </div>
+          <button class="btn-pm btn-sm" (click)="openModal(item.actionModal)">{{item.actionLabel}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="mb-3">
+          <h3 class="st">Quick Actions</h3>
+          <p class="ss">Frequent operations workflows</p>
+        </div>
+        <div class="quick-grid">
+          <button class="quick-btn" *ngFor="let action of quickActions" (click)="openModal(action.modal)">
+            <i class="bi {{action.icon}} {{action.iconColor}} me-1" [style.color]="action.iconColor.startsWith('text-') ? '' : action.iconColor"></i> {{action.label}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: System Status Dashboard -->
+  <!-- SECTION 1: System Status Dashboard -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-heart-pulse-fill" style="color:var(--pm-primary)"></i> 1.17.1 — System Status Dashboard</h3>
+        <p class="ss">Real-time health of all B2B transaction services, APIs, settlement engines and fraud systems.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('globalStatusModal')"><i class="bi bi-globe"></i> Global View</button>
+        <button class="btn-pm btn-sm btn-pm-p" (click)="openModal('runHealthCheckModal')"><i class="bi bi-play"></i> Run Full Check</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Service Health Overview</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Service</th><th>Status</th><th>Uptime</th><th>Latency (P95)</th><th>Error Rate</th><th>Last Incident</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let svc of services">
+                  <td><strong>{{svc.name}}</strong></td>
+                  <td><span class="B {{svc.statusClass}}"><i class="bi bi-check-circle" *ngIf="svc.statusClass === 'B-s'"></i><i class="bi bi-exclamation-triangle" *ngIf="svc.statusClass === 'B-w'"></i> {{svc.status}}</span></td>
+                  <td>{{svc.uptime}}</td>
+                  <td>{{svc.latency}}</td>
+                  <td>{{svc.errorRate}}</td>
+                  <td>{{svc.lastIncident}}</td>
+                  <td><button class="btn-pm btn-sm" [class.btn-pm-d]="svc.actionClass === 'btn-pm-d'" (click)="openModal(svc.actionModal)">{{svc.actionLabel}}</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Regional Status</h4>
+          <div class="sr" *ngFor="let region of regions">
+            <div><strong>{{region.region}}</strong></div>
+            <span class="B {{region.statusClass}}">{{region.status}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Transaction Health Monitor -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-activity" style="color:var(--pm-accent)"></i> 1.17.2 — Transaction Health Monitor</h3>
+        <p class="ss">Live transaction volume, success rates, failure reasons, and channel performance across all corridors.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('liveTransactionFeedModal')">Live Feed</button>
+        <button class="btn-pm btn-sm" (click)="openModal('failureAnalysisModal')">Failure Analysis</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Live Transaction Metrics (Last 60 min)</h4>
+          <div class="row g-3">
+            <div class="col-4">
+              <div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)">
+                <div style="font-size:22px;font-weight:700;color:var(--pm-accent)">42,811</div>
+                <div style="font-size:11px;font-weight:600;color:#047857">Transactions</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="p-3 rounded text-center" style="background:var(--pm-info-soft)">
+                <div style="font-size:22px;font-weight:700;color:var(--pm-info)">KES 8.42B</div>
+                <div style="font-size:11px;font-weight:600;color:#1D4ED8">Volume</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="p-3 rounded text-center" style="background:var(--pm-purple-soft)">
+                <div style="font-size:22px;font-weight:700;color:var(--pm-purple)">99.41%</div>
+                <div style="font-size:11px;font-weight:600;color:#6D28D9">Success Rate</div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive mt-3">
+            <table class="T">
+              <thead>
+                <tr><th>Corridor</th><th>Count</th><th>Success</th><th>Avg Time</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let corridor of corridors">
+                  <td>{{corridor.corridor}}</td>
+                  <td>{{corridor.count}}</td>
+                  <td>{{corridor.success}}</td>
+                  <td>{{corridor.avgTime}}</td>
+                  <td><button class="btn-pm btn-sm" [class.btn-pm-w]="corridor.actionClass === 'btn-pm-w'" (click)="openModal('corridorDetailModal')">{{corridor.actionClass === 'btn-pm-w' ? 'Investigate' : 'View'}}</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Failure Breakdown (Last Hour)</h4>
+          <div class="sr" *ngFor="let failure of failures">
+            <div><strong>{{failure.reason}}</strong></div>
+            <div><span class="B {{failure.badgeClass}}">{{failure.count}}</span></div>
+          </div>
+          <button class="btn-pm btn-sm w-100 mt-3" (click)="openModal('failureAnalysisModal')">Deep Dive into Failures</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: API & Integration Health -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-plug" style="color:var(--pm-info)"></i> 1.17.3 — API & Integration Health</h3>
+        <p class="ss">Partner API performance, webhook delivery, integration status and rate limiting.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('apiPerformanceModal')">Performance</button>
+        <button class="btn-pm btn-sm" (click)="openModal('webhookMonitorModal')">Webhooks</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Partner API Status</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Partner</th><th>Status</th><th>Latency</th><th>Success</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let partner of partners">
+                  <td>{{partner.partner}}</td>
+                  <td><span class="B {{partner.statusClass}}">{{partner.status}}</span></td>
+                  <td>{{partner.latency}}</td>
+                  <td>{{partner.success}}</td>
+                  <td><button class="btn-pm btn-sm" [class.btn-pm-w]="partner.statusClass === 'B-w'" (click)="openModal('partnerApiDetailModal')">{{partner.statusClass === 'B-w' ? 'Investigate' : 'Logs'}}</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Webhook Delivery</h4>
+          <div class="sr">
+            <div><strong>Delivered (Last 24h)</strong></div>
+            <div><span class="B B-s">184,291</span></div>
+          </div>
+          <div class="sr">
+            <div><strong>Failed (Retries exhausted)</strong></div>
+            <div><span class="B B-d">312</span></div>
+          </div>
+          <div class="sr">
+            <div><strong>Pending Retry Queue</strong></div>
+            <div><span class="B B-w">1,842</span></div>
+          </div>
+          <button class="btn-pm btn-sm w-100 mt-3" (click)="openModal('webhookMonitorModal')">Monitor Queue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Settlement & Reconciliation -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-bank2" style="color:var(--pm-primary)"></i> 1.17.4 — Settlement & Reconciliation</h3>
+        <p class="ss">Real-time settlement status, batch reconciliation, pending items and dispute resolution.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('settlementDetailModal')">Settlement Batches</button>
+        <button class="btn-pm btn-sm" (click)="openModal('reconciliationModal')">Run Reconciliation</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Active Settlement Batches</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Batch ID</th><th>Corridor</th><th>Amount</th><th>Status</th><th>Progress</th><th>ETA</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let batch of settlementBatches">
+                  <td>{{batch.id}}</td>
+                  <td>{{batch.corridor}}</td>
+                  <td>{{batch.amount}}</td>
+                  <td><span class="B {{batch.statusClass}}">{{batch.status}}</span></td>
+                  <td>
+                    <div class="pm-progress">
+                      <div class="pm-progress-bar" [style.width.%]="batch.progress" [style.background]="batch.progressColor"></div>
+                    </div>
+                  </td>
+                  <td>{{batch.eta}}</td>
+                  <td><button class="btn-pm btn-sm" [class.btn-pm-d]="batch.status === 'Delayed'" (click)="openModal('settlementDetailModal')">{{batch.status === 'Delayed' ? 'Investigate' : (batch.status === 'Completed' ? 'Receipt' : 'Details')}}</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Reconciliation Summary</h4>
+          <div class="sr">
+            <div><strong>Matched Today</strong></div>
+            <div><span class="B B-s">1,241,892</span></div>
+          </div>
+          <div class="sr">
+            <div><strong>Unmatched</strong></div>
+            <div><span class="B B-w">4,812</span></div>
+          </div>
+          <div class="sr">
+            <div><strong>Disputed Items</strong></div>
+            <div><span class="B B-d">187</span></div>
+          </div>
+          <button class="btn-pm btn-sm w-100 mt-3" (click)="openModal('reconciliationModal')">Run Full Reconciliation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Fraud & Security Operations -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-shield-exclamation" style="color:var(--pm-danger)"></i> 1.17.5 — Fraud & Security Operations</h3>
+        <p class="ss">Real-time fraud detection, alert queue, model performance and manual review cases.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('fraudModelModal')">Model Console</button>
+        <button class="btn-pm btn-sm btn-pm-d" (click)="openModal('fraudAlertQueueModal')">Alert Queue</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Fraud Detection Performance</h4>
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="p-3 rounded" style="background:var(--pm-danger-soft)">
+                <div style="font-size:11px;font-weight:700;color:#991B1B">ALERTS TODAY</div>
+                <div style="font-size:26px;font-weight:700;color:var(--pm-danger)">1,842</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-3 rounded" style="background:var(--pm-accent-soft)">
+                <div style="font-size:11px;font-weight:700;color:#047857">BLOCKED TRANSACTIONS</div>
+                <div style="font-size:26px;font-weight:700;color:var(--pm-accent)">421</div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive mt-3">
+            <table class="T">
+              <thead>
+                <tr><th>Rule</th><th>Triggered</th><th>Blocked</th><th>FP Rate</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let rule of fraudRules">
+                  <td>{{rule.rule}}</td>
+                  <td>{{rule.triggered}}</td>
+                  <td>{{rule.blocked}}</td>
+                  <td>{{rule.fpRate}}</td>
+                  <td><button class="btn-pm btn-sm" (click)="openModal('fraudModelModal')">Tune</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Manual Review Queue</h4>
+          <div class="sr">
+            <div><strong>High Risk Cases</strong></div>
+            <div><span class="B B-d">87</span></div>
+          </div>
+          <div class="sr">
+            <div><strong>Medium Risk Cases</strong></div>
+            <div><span class="B B-w">214</span></div>
+          </div>
+          <div class="sr">
+            <div><strong>Low Risk Cases</strong></div>
+            <div><span class="B B-i">312</span></div>
+          </div>
+          <button class="btn-pm btn-sm w-100 mt-3 btn-pm-d" (click)="openModal('fraudAlertQueueModal')">Review Queue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: Infrastructure & Uptime -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-server" style="color:var(--pm-primary)"></i> 1.17.6 — Infrastructure & Uptime</h3>
+        <p class="ss">Server health, database performance, queue depths, auto-scaling events and capacity planning.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('infraScalingModal')">Scaling</button>
+        <button class="btn-pm btn-sm" (click)="openModal('capacityPlanningModal')">Capacity</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Infrastructure Metrics</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Component</th><th>CPU</th><th>Memory</th><th>Disk</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let comp of infraComponents">
+                  <td>{{comp.name}}</td>
+                  <td>{{comp.cpu}}</td>
+                  <td>{{comp.memory}}</td>
+                  <td>{{comp.disk}}</td>
+                  <td><span class="B {{comp.statusClass}}">{{comp.status}}</span></td>
+                  <td><button class="btn-pm btn-sm" [class.btn-pm-w]="comp.statusClass === 'B-w'" (click)="comp.statusClass === 'B-w' ? openModal('infraScalingModal') : openModal('infraDetailModal')">{{comp.statusClass === 'B-w' ? 'Scale' : 'Metrics'}}</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Auto-Scaling Events (24h)</h4>
+          <div class="sr" *ngFor="let event of scalingEvents">
+            <div><strong>{{event.component}}</strong></div>
+            <div><span class="B {{event.changeClass}}">{{event.change}}</span></div>
+          </div>
+          <button class="btn-pm btn-sm w-100 mt-3" (click)="openModal('infraScalingModal')">Manage Scaling Policies</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: Operations Queue & Support Tickets -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-headset" style="color:var(--pm-purple)"></i> 1.17.7 — Operations Queue & Support Tickets</h3>
+        <p class="ss">Internal operations tickets, partner support requests, SLA tracking and escalation management.</p>
+      </div>
+      <div class="d-flex" style="gap:8px">
+        <button class="btn-pm btn-sm" (click)="openModal('supportTicketModal')">Support Queue</button>
+        <button class="btn-pm btn-sm" (click)="openModal('escalationModal')">Escalations</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-12">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Operations Ticket Queue</h4>
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr><th>Ticket</th><th>Type</th><th>Priority</th><th>Assignee</th><th>SLA</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ticket of tickets">
+                  <td>{{ticket.id}}</td>
+                  <td>{{ticket.type}}</td>
+                  <td><span class="B {{ticket.priorityClass}}">{{ticket.priority}}</span></td>
+                  <td>{{ticket.assignee}}</td>
+                  <td>{{ticket.sla}}</td>
+                  <td><span class="B {{ticket.statusClass}}">{{ticket.status}}</span></td>
+                  <td><button class="btn-pm btn-sm" (click)="openModal('ticketDetailModal')">{{ticket.status === 'Resolved' ? 'View' : 'Open'}}</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- pm-content -->
+
+<!-- ============================================ -->
+<!-- MODALS (31 total) — Angular-controlled       -->
+<!-- ============================================ -->
+
+<!-- M1: Global Status -->
+<div class="pm-modal-backdrop" *ngIf="modals['globalStatusModal']" (click)="closeModal('globalStatusModal')"></div>
+<div class="pm-modal" *ngIf="modals['globalStatusModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-globe me-2"></i>Global Platform Status</h5>
+        <button class="pm-btn-close" (click)="closeModal('globalStatusModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="isTabActive('gs','all')" (click)="switchTab('gs','all')">All Regions</button>
+          <button class="pill" [class.active]="isTabActive('gs','ke')" (click)="switchTab('gs','ke')">Kenya</button>
+          <button class="pill" [class.active]="isTabActive('gs','ug')" (click)="switchTab('gs','ug')">Uganda</button>
+          <button class="pill" [class.active]="isTabActive('gs','tz')" (click)="switchTab('gs','tz')">Tanzania</button>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('gs','all')">
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>Region</th><th>Status</th><th>Uptime</th><th>Active Incidents</th><th>Last Update</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let region of globalRegions">
+                  <td>{{region.region}}</td>
+                  <td><span class="B {{region.statusClass}}">{{region.status}}</span></td>
+                  <td>{{region.uptime}}</td>
+                  <td>{{region.incidents}}</td>
+                  <td>{{region.lastUpdate}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('gs','ke')">
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Kenya region is fully operational. 2 minor incidents under active monitoring.</p>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('gs','ug')">
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Uganda region operational. 1 settlement delay being investigated.</p>
+        </div>
+        <div class="tpanel" [class.active]="isTabActive('gs','tz')">
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Tanzania experiencing API latency issues. Engineering team engaged.</p>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('globalStatusModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('globalStatusModal','Status page published to status.paymo.co.ke','')">Publish Status Page</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M2: Incident Queue -->
+<div class="pm-modal-backdrop" *ngIf="modals['incidentQueueModal']" (click)="closeModal('incidentQueueModal')"></div>
+<div class="pm-modal" *ngIf="modals['incidentQueueModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Active Incident Queue (7)</h5>
+        <button class="pm-btn-close" (click)="closeModal('incidentQueueModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>ID</th><th>Title</th><th>Severity</th><th>Started</th><th>Owner</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let incident of incidents">
+                <td>{{incident.id}}</td>
+                <td>{{incident.title}}</td>
+                <td><span class="B {{incident.severityClass}}">{{incident.severity}}</span></td>
+                <td>{{incident.started}}</td>
+                <td>{{incident.owner}}</td>
+                <td><span class="B {{incident.statusClass}}">{{incident.status}}</span></td>
+                <td><button class="btn-pm btn-sm" (click)="openModal('incidentDetailModal')">Manage</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('incidentQueueModal')">Close</button>
+        <button class="btn-pm btn-pm-d" (click)="openModal('createIncidentModal')">Create New Incident</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M3: Run Health Check -->
+<div class="pm-modal-backdrop" *ngIf="modals['runHealthCheckModal']" (click)="closeModal('runHealthCheckModal')"></div>
+<div class="pm-modal" *ngIf="modals['runHealthCheckModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-play-circle me-2"></i>Run System Health Check</h5>
+        <button class="pm-btn-close" (click)="closeModal('runHealthCheckModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="mb-3">
+          <label class="FL">Scope</label>
+          <select class="FC" [(ngModel)]="healthCheckScope">
+            <option>Full Platform Check</option>
+            <option>Transaction Engine Only</option>
+            <option>Settlement & Reconciliation</option>
+            <option>API Gateway & Integrations</option>
+            <option>Fraud & Security Systems</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="FL">Include Deep Diagnostics</label>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="healthCheckDiagnostics.dbPerf"><label class="form-check-label">Database query performance</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="healthCheckDiagnostics.queueDepth"><label class="form-check-label">Queue depth analysis</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="healthCheckDiagnostics.reconTest"><label class="form-check-label">Full reconciliation test</label></div>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('runHealthCheckModal')">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('runHealthCheckModal','Health check started. Results will appear in the Operations Log within 3 minutes.','HC-20250627-9914')">Start Health Check</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M4: Settlement Detail (multi-step) -->
+<div class="pm-modal-backdrop" *ngIf="modals['settlementDetailModal']" (click)="closeModal('settlementDetailModal')"></div>
+<div class="pm-modal" *ngIf="modals['settlementDetailModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-bank2 me-2"></i>Settlement Batch Detail — S-88219</h5>
+        <button class="pm-btn-close" (click)="closeModal('settlementDetailModal')">×</button>
+      </div>
+      <div class="pm-modal-body" style="position:relative">
+        <div class="loading-ov" *ngIf="processingModal === 'settlementDetailModal' && isProcessing">
+          <div class="spinner"></div>
+          <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+        </div>
+        <div class="receipt" *ngIf="isActionSuccess('settlementDetailModal')">
+          <div class="ri"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">{{getActionMessage()}}</h5>
+          <p *ngIf="getActionRef()" style="font-size:12px;color:var(--pm-muted)">Reference: {{getActionRef()}}</p>
+          <div class="d-flex justify-content-center mt-3" style="gap:8px">
+            <button class="btn-pm btn-sm" (click)="reloadPage()"><i class="bi bi-download"></i> Save</button>
+            <button class="btn-pm btn-sm" (click)="resetActionSuccess(); closeModal('settlementDetailModal')"><i class="bi bi-share"></i> Continue</button>
+          </div>
+        </div>
+        <ng-container *ngIf="!isActionSuccess('settlementDetailModal') && !(processingModal === 'settlementDetailModal' && isProcessing)">
+          <div class="stepper">
+            <div class="step" *ngFor="let label of flows['settle'].labels; let i = index" [class.active]="getStepClass('settle', i+1) === 'active'" [class.done]="getStepClass('settle', i+1) === 'done'">
+              <div class="step-n">{{getStepNumber('settle', i+1)}}</div>
+              <div class="step-l">{{label}}</div>
+            </div>
+            <div class="step-line" *ngFor="let _ of [].constructor(flows['settle'].labels.length - 1); let i = index"></div>
+          </div>
+          <div class="fstep" [class.active]="isFlowStepActive('settle', 1)">
+            <h6 style="font-weight:700">Batch Overview</h6>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="p-3 rounded" style="background:var(--pm-warning-soft)">
+                  <div style="font-size:11px;font-weight:700;color:#B45309">STATUS</div>
+                  <div style="font-size:20px;font-weight:700;color:var(--pm-warning)">Delayed +2h 14m</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                  <div style="font-size:11px;font-weight:700;color:var(--pm-muted)">AMOUNT</div>
+                  <div style="font-size:20px;font-weight:700">KES 184,200,000</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                  <div style="font-size:11px;font-weight:700;color:var(--pm-muted)">TRANSACTIONS</div>
+                  <div style="font-size:20px;font-weight:700">8,421</div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3">
+              <label class="FL">Delay Reason</label>
+              <div class="p-3 rounded" style="background:var(--pm-danger-soft);font-size:13px">Upstream bank (Stanbic) experiencing connectivity issues. Manual intervention required.</div>
+            </div>
+          </div>
+          <div class="fstep" [class.active]="isFlowStepActive('settle', 2)">
+            <h6 style="font-weight:700">Reconciliation Status</h6>
+            <div class="table-responsive">
+              <table class="T">
+                <thead><tr><th>Bank</th><th>Expected</th><th>Received</th><th>Matched</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let recon of settlementRecons">
+                    <td>{{recon.bank}}</td>
+                    <td>{{recon.expected}}</td>
+                    <td>{{recon.received}}</td>
+                    <td>{{recon.matched}}</td>
+                    <td><span class="B {{recon.statusClass}}">{{recon.status}}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="fstep" [class.active]="isFlowStepActive('settle', 3)">
+            <h6 style="font-weight:700">Resolution Actions</h6>
+            <div class="mb-3">
+              <label class="FL">Action</label>
+              <select class="FC" [(ngModel)]="settlementAction">
+                <option>Request manual push from Stanbic</option>
+                <option>Split batch and settle partial</option>
+                <option>Hold batch until EOD</option>
+                <option>Escalate to partner relationship manager</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="FL">Notes for Partner</label>
+              <textarea class="FC" rows="3" [(ngModel)]="settlementNotes"></textarea>
+            </div>
+          </div>
+          <div class="fstep" [class.active]="isFlowStepActive('settle', 4)">
+            <div class="receipt">
+              <div class="ri"><i class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-accent)">Resolution Logged</h5>
+              <p style="font-size:13px;color:var(--pm-ink-soft)">Manual push request sent to Stanbic. ETA updated to +4h. Ticket INC-88219 updated.</p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="pm-modal-footer" *ngIf="!isActionSuccess('settlementDetailModal') && !(processingModal === 'settlementDetailModal' && isProcessing)">
+        <button class="btn-pm" (click)="closeModal('settlementDetailModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="nextFlow('settle', 4)">
+          {{flows['settle'].current >= 4 ? 'Done' : 'Continue'}} <i class="bi bi-arrow-right" *ngIf="flows['settle'].current < 4"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M5: Create Incident -->
+<div class="pm-modal-backdrop" *ngIf="modals['createIncidentModal']" (click)="closeModal('createIncidentModal')"></div>
+<div class="pm-modal" *ngIf="modals['createIncidentModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-plus-circle me-2"></i>Create New Incident</h5>
+        <button class="pm-btn-close" (click)="closeModal('createIncidentModal')">&times;</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="mb-3">
+          <label class="FL">Title</label>
+          <input class="FC" [(ngModel)]="createIncidentTitle" placeholder="Brief incident title" />
+        </div>
+        <div class="mb-3">
+          <label class="FL">Severity</label>
+          <select class="FC" [(ngModel)]="createIncidentSeverity">
+            <option>Critical</option>
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="FL">Component</label>
+          <select class="FC" [(ngModel)]="createIncidentComponent">
+            <option>Settlement Engine</option>
+            <option>API Gateway</option>
+            <option>Transaction Engine</option>
+            <option>Fraud Detection</option>
+            <option>Reconciliation</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="FL">Description</label>
+          <textarea class="FC" rows="3" [(ngModel)]="createIncidentDesc"></textarea>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('createIncidentModal')">Cancel</button>
+        <button class="btn-pm btn-pm-d" (click)="doAction('createIncidentModal','Incident created successfully. ID: INC-88222.','INC-88222')">Create Incident</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- M12: Partner API Detail -->
+<div class="pm-modal-backdrop" *ngIf="modals['partnerApiDetailModal']" (click)="closeModal('partnerApiDetailModal')"></div>
+<div class="pm-modal" *ngIf="modals['partnerApiDetailModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-plug me-2"></i>Partner API Configuration</h5>
+        <button class="pm-btn-close" (click)="closeModal('partnerApiDetailModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="mb-3"><label class="FL">Base URL</label><input class="FC" [(ngModel)]="partnerApiBaseUrl"></div>
+        <div class="mb-3"><label class="FL">Timeout (ms)</label><input class="FC" [(ngModel)]="partnerApiTimeout"></div>
+        <div class="mb-3"><label class="FL">Max Retries</label><input class="FC" [(ngModel)]="partnerApiRetries"></div>
+        <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:13px">
+          <strong>Current Status:</strong> Degraded — 420ms avg latency. Last error: 14:38 EAT.
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('partnerApiDetailModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('partnerApiDetailModal','API configuration updated. Changes will take effect in 60 seconds.','API-20250627-991')">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M13: Infrastructure Detail -->
+<div class="pm-modal-backdrop" *ngIf="modals['infraDetailModal']" (click)="closeModal('infraDetailModal')"></div>
+<div class="pm-modal" *ngIf="modals['infraDetailModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-server me-2"></i>Infrastructure Metrics Detail</h5>
+        <button class="pm-btn-close" (click)="closeModal('infraDetailModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="row g-3">
+          <div class="col-md-6" *ngFor="let comp of infraComponents">
+            <div class="p-3 rounded" style="border:1px solid var(--pm-border)">
+              <div class="d-flex justify-content-between"><strong>{{comp.name}}</strong><span class="B {{comp.statusClass}}">{{comp.status}}</span></div>
+              <div class="mt-2" style="font-size:13px">
+                <div class="d-flex justify-content-between"><span>CPU</span><strong>{{comp.cpu}}</strong></div>
+                <div class="d-flex justify-content-between"><span>Memory</span><strong>{{comp.memory}}</strong></div>
+                <div class="d-flex justify-content-between"><span>Disk</span><strong>{{comp.disk}}</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('infraDetailModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('infraDetailModal'); openModal('infraScalingModal')">Manage Scaling</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M14: Infrastructure Scaling -->
+<div class="pm-modal-backdrop" *ngIf="modals['infraScalingModal']" (click)="closeModal('infraScalingModal')"></div>
+<div class="pm-modal" *ngIf="modals['infraScalingModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-sliders me-2"></i>Auto-Scaling Configuration</h5>
+        <button class="pm-btn-close" (click)="closeModal('infraScalingModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="mb-3"><label class="FL">Component</label><select class="FC" [(ngModel)]="infraScalingComponent"><option>API Gateway Cluster</option><option>Worker Nodes</option><option>DB Read Replicas</option></select></div>
+        <div class="mb-3"><label class="FL">Min Nodes</label><input class="FC" [(ngModel)]="infraScalingMin"></div>
+        <div class="mb-3"><label class="FL">Max Nodes</label><input class="FC" [(ngModel)]="infraScalingMax"></div>
+        <div class="mb-3"><label class="FL">Scale Up Trigger</label><input class="FC" [(ngModel)]="infraScalingUp"></div>
+        <div class="mb-3"><label class="FL">Scale Down Trigger</label><input class="FC" [(ngModel)]="infraScalingDown"></div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('infraScalingModal')">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('infraScalingModal','Scaling policy updated. Changes applied immediately.','SC-20250627-884')">Save Policy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M15: Capacity Planning -->
+<div class="pm-modal-backdrop" *ngIf="modals['capacityPlanningModal']" (click)="closeModal('capacityPlanningModal')"></div>
+<div class="pm-modal" *ngIf="modals['capacityPlanningModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-graph-up-arrow me-2"></i>Capacity Planning</h5>
+        <button class="pm-btn-close" (click)="closeModal('capacityPlanningModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="mb-3"><label class="FL">Forecast Period</label><select class="FC" [(ngModel)]="capacityForecast"><option>Next 7 days</option><option>Next 30 days</option><option>Next 90 days</option></select></div>
+        <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+          <div style="font-size:13px"><strong>Projected Load:</strong> 68,200 req/min peak</div>
+          <div style="font-size:13px"><strong>Recommended Nodes:</strong> 24 (current: 18)</div>
+          <div style="font-size:13px"><strong>Cost Impact:</strong> +$1,240/month</div>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('capacityPlanningModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('capacityPlanningModal'); openModal('infraScalingModal')">Apply Recommendations</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M16: Ticket Detail -->
+<div class="pm-modal-backdrop" *ngIf="modals['ticketDetailModal']" (click)="closeModal('ticketDetailModal')"></div>
+<div class="pm-modal" *ngIf="modals['ticketDetailModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-ticket-detailed me-2"></i>Ticket Detail — OP-44291</h5>
+        <button class="pm-btn-close" (click)="closeModal('ticketDetailModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="mb-3"><label class="FL">Status</label><select class="FC" [(ngModel)]="ticketStatus"><option>Open</option><option>In Progress</option><option>Waiting Partner</option><option>Resolved</option></select></div>
+        <div class="mb-3"><label class="FL">Assignee</label><input class="FC" [(ngModel)]="ticketAssignee"></div>
+        <div class="mb-3"><label class="FL">Notes</label><textarea class="FC" rows="3" [(ngModel)]="ticketNotes"></textarea></div>
+        <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:13px">
+          <strong>SLA:</strong> 2h remaining. <strong>Type:</strong> Partner Integration. <strong>Priority:</strong> High
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('ticketDetailModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('ticketDetailModal','Ticket OP-44291 updated successfully.','TK-20250627-44291')">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M17: Escalation -->
+<div class="pm-modal-backdrop" *ngIf="modals['escalationModal']" (click)="closeModal('escalationModal')"></div>
+<div class="pm-modal" *ngIf="modals['escalationModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-arrow-up-circle me-2"></i>Escalation Manager</h5>
+        <button class="pm-btn-close" (click)="closeModal('escalationModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="mb-3"><label class="FL">Ticket</label><input class="FC" [(ngModel)]="escalationTicket"></div>
+        <div class="mb-3"><label class="FL">Escalate To</label><select class="FC" [(ngModel)]="escalationTo"><option>Head of Operations</option><option>CTO</option><option>Partner Relations</option><option>Engineering Lead</option></select></div>
+        <div class="mb-3"><label class="FL">Reason</label><textarea class="FC" rows="3" [(ngModel)]="escalationReason"></textarea></div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('escalationModal')">Cancel</button>
+        <button class="btn-pm btn-pm-d" (click)="doAction('escalationModal','Escalation sent. Head of Operations notified.','ESC-20250627-991')">Escalate Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M18: Audit Log -->
+<div class="pm-modal-backdrop" *ngIf="modals['auditLogModal']" (click)="closeModal('auditLogModal')"></div>
+<div class="pm-modal" *ngIf="modals['auditLogModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-file-earmark-text me-2"></i>Audit Log</h5>
+        <button class="pm-btn-close" (click)="closeModal('auditLogModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="d-flex gap-2 mb-3">
+          <input class="FC" placeholder="Search..." [(ngModel)]="auditSearch" style="flex:1">
+          <select class="FC" [(ngModel)]="auditRange"><option>Last 24 hours</option><option>Last 7 days</option><option>Last 30 days</option></select>
+        </div>
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Details</th><th>IP</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let log of auditLogs">
+                <td>{{log.time}}</td>
+                <td>{{log.actor}}</td>
+                <td>{{log.action}}</td>
+                <td>{{log.details}}</td>
+                <td><code style="font-size:11px">{{log.ip}}</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('auditLogModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('auditLogModal'); openModal('caseExportModal')">Export Logs</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M19: Live Transaction Feed -->
+<div class="pm-modal-backdrop" *ngIf="modals['liveTransactionFeedModal']" (click)="closeModal('liveTransactionFeedModal')"></div>
+<div class="pm-modal" *ngIf="modals['liveTransactionFeedModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-broadcast me-2"></i>Live Transaction Feed</h5>
+        <button class="pm-btn-close" (click)="closeModal('liveTransactionFeedModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Time</th><th>ID</th><th>Corridor</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let txn of liveTransactions">
+                <td>{{txn.time}}</td>
+                <td><code style="font-size:11px">{{txn.id}}</code></td>
+                <td>{{txn.corridor}}</td>
+                <td>{{txn.amount}}</td>
+                <td><span class="B {{txn.statusClass}}">{{txn.status}}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-3 p-3 rounded" style="background:var(--pm-accent-soft);font-size:13px">
+          <strong>Live:</strong> 42,811 transactions in last 60 min. Success rate: 99.41%
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('liveTransactionFeedModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('liveTransactionFeedModal'); openModal('failureAnalysisModal')">View Failures</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M20: Failure Analysis -->
+<div class="pm-modal-backdrop" *ngIf="modals['failureAnalysisModal']" (click)="closeModal('failureAnalysisModal')"></div>
+<div class="pm-modal" *ngIf="modals['failureAnalysisModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-x-octagon me-2"></i>Failure Analysis</h5>
+        <button class="pm-btn-close" (click)="closeModal('failureAnalysisModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="mb-3"><label class="FL">Time Range</label><select class="FC" [(ngModel)]="failureTimeRange"><option>Last 15 minutes</option><option>Last 60 minutes</option><option>Last 24 hours</option><option>Last 7 days</option></select></div>
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Reason</th><th>Count</th><th>% of Total</th><th>Trend</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let failure of failures">
+                <td>{{failure.reason}}</td>
+                <td><span class="B {{failure.badgeClass}}">{{failure.count}}</span></td>
+                <td>{{ getFailurePercent(failure.count) }}%</td>
+                <td><i class="bi bi-arrow-up" style="color:var(--pm-danger)"></i> Rising</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('failureAnalysisModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('failureAnalysisModal'); openModal('corridorDetailModal')">Corridor Details</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M21: Corridor Detail -->
+<div class="pm-modal-backdrop" *ngIf="modals['corridorDetailModal']" (click)="closeModal('corridorDetailModal')"></div>
+<div class="pm-modal" *ngIf="modals['corridorDetailModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-arrow-left-right me-2"></i>Corridor Performance Detail</h5>
+        <button class="pm-btn-close" (click)="closeModal('corridorDetailModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Corridor</th><th>Count</th><th>Success</th><th>Avg Time</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let corridor of corridors">
+                <td>{{corridor.corridor}}</td>
+                <td>{{corridor.count}}</td>
+                <td>{{corridor.success}}</td>
+                <td>{{corridor.avgTime}}</td>
+                <td><span class="B {{corridor.actionClass === 'btn-pm-w' ? 'B-w' : 'B-s'}}">{{corridor.actionClass === 'btn-pm-w' ? 'Needs Attention' : 'Healthy'}}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('corridorDetailModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('corridorDetailModal'); openModal('corridorPerformanceModal')">Performance Report</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M22: Reconciliation -->
+<div class="pm-modal-backdrop" *ngIf="modals['reconciliationModal']" (click)="closeModal('reconciliationModal')"></div>
+<div class="pm-modal" *ngIf="modals['reconciliationModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-bank me-2"></i>Run Reconciliation</h5>
+        <button class="pm-btn-close" (click)="closeModal('reconciliationModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="mb-3"><label class="FL">Scope</label><select class="FC" [(ngModel)]="reconScope"><option>Full Platform (All Corridors)</option><option>Kenya Only</option><option>Uganda Only</option><option>Tanzania Only</option></select></div>
+        <div class="mb-3"><label class="FL">Date</label><input class="FC" type="date" [(ngModel)]="reconDate"></div>
+        <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:13px">
+          <strong>Warning:</strong> Full reconciliation may take 5-10 minutes. 4,812 unmatched items pending.
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('reconciliationModal')">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('reconciliationModal','Reconciliation job started. ID: REC-20250627-991.','REC-20250627-991')">Start Reconciliation</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M23: Profile -->
+<div class="pm-modal-backdrop" *ngIf="modals['profileModal']" (click)="closeModal('profileModal')"></div>
+<div class="pm-modal" *ngIf="modals['profileModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-person me-2"></i>Operator Profile</h5>
+        <button class="pm-btn-close" (click)="closeModal('profileModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="text-center mb-3">
+          <div style="width:64px;height:64px;border-radius:50%;background:var(--pm-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto">JK</div>
+          <div style="font-weight:700;margin-top:8px">James K.</div>
+          <div style="font-size:13px;color:var(--pm-muted)">Head of Operations</div>
+        </div>
+        <div class="mb-2" style="font-size:13px"><strong>Role:</strong> Operations Manager</div>
+        <div class="mb-2" style="font-size:13px"><strong>Department:</strong> Platform Operations</div>
+        <div class="mb-2" style="font-size:13px"><strong>Last Login:</strong> 27 Jun 2025 14:38 EAT</div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('profileModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('profileModal'); openModal('notifSettingsModal')">Notification Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M24: SLA Report -->
+<div class="pm-modal-backdrop" *ngIf="modals['slaReportModal']" (click)="closeModal('slaReportModal')"></div>
+<div class="pm-modal" *ngIf="modals['slaReportModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-file-bar-graph me-2"></i>SLA Report</h5>
+        <button class="pm-btn-close" (click)="closeModal('slaReportModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-3"><div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)"><div style="font-size:22px;font-weight:700;color:var(--pm-accent)">99.97%</div><div style="font-size:11px">Uptime SLA</div></div></div>
+          <div class="col-md-3"><div class="p-3 rounded text-center" style="background:var(--pm-info-soft)"><div style="font-size:22px;font-weight:700;color:var(--pm-info)">187ms</div><div style="font-size:11px">API P95 SLA</div></div></div>
+          <div class="col-md-3"><div class="p-3 rounded text-center" style="background:var(--pm-warning-soft)"><div style="font-size:22px;font-weight:700;color:var(--pm-warning)">12m</div><div style="font-size:11px">Avg MTTR</div></div></div>
+          <div class="col-md-3"><div class="p-3 rounded text-center" style="background:var(--pm-purple-soft)"><div style="font-size:22px;font-weight:700;color:var(--pm-purple)">99.4%</div><div style="font-size:11px">Txn Success SLA</div></div></div>
+        </div>
+        <p style="font-size:13px;color:var(--pm-ink-soft)">All SLAs met for current period. 2 minor breaches on API P95 latency (peak: 420ms vs SLA: 300ms).</p>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('slaReportModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('slaReportModal'); openModal('caseExportModal')">Export Report</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M25: Uptime History -->
+<div class="pm-modal-backdrop" *ngIf="modals['uptimeHistoryModal']" (click)="closeModal('uptimeHistoryModal')"></div>
+<div class="pm-modal" *ngIf="modals['uptimeHistoryModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-clock-history me-2"></i>Uptime History</h5>
+        <button class="pm-btn-close" (click)="closeModal('uptimeHistoryModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Date</th><th>Uptime</th><th>Incidents</th><th>MTTR</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let rec of uptimeRecords">
+                <td>{{rec.date}}</td>
+                <td><span class="B B-s">{{rec.uptime}}</span></td>
+                <td>{{rec.incidents}}</td>
+                <td>{{rec.mttr}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('uptimeHistoryModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('uptimeHistoryModal'); openModal('slaReportModal')">View SLA Report</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M26: Ops Notifications -->
+<div class="pm-modal-backdrop" *ngIf="modals['opsNotifModal']" (click)="closeModal('opsNotifModal')"></div>
+<div class="pm-modal" *ngIf="modals['opsNotifModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-bell me-2"></i>Operations Notifications</h5>
+        <button class="pm-btn-close" (click)="closeModal('opsNotifModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="sr"><div><strong>Settlement Delay Alert</strong></div><div style="font-size:11px;color:var(--pm-muted)">2 min ago</div></div>
+        <div class="sr"><div><strong>Fraud FP Rate Threshold</strong></div><div style="font-size:11px;color:var(--pm-muted)">14 min ago</div></div>
+        <div class="sr"><div><strong>API Latency Warning</strong></div><div style="font-size:11px;color:var(--pm-muted)">28 min ago</div></div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('opsNotifModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('opsNotifModal'); openModal('notifSettingsModal')">Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M27: Service Detail -->
+<div class="pm-modal-backdrop" *ngIf="modals['serviceDetailModal']" (click)="closeModal('serviceDetailModal')"></div>
+<div class="pm-modal" *ngIf="modals['serviceDetailModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-heart-pulse me-2"></i>Service Detail</h5>
+        <button class="pm-btn-close" (click)="closeModal('serviceDetailModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div *ngFor="let svc of services" class="mb-3 p-3 rounded" style="border:1px solid var(--pm-border)">
+          <div class="d-flex justify-content-between"><strong>{{svc.name}}</strong><span class="B {{svc.statusClass}}">{{svc.status}}</span></div>
+          <div class="mt-2" style="font-size:13px">
+            <div class="d-flex justify-content-between"><span>Uptime</span><strong>{{svc.uptime}}</strong></div>
+            <div class="d-flex justify-content-between"><span>Latency</span><strong>{{svc.latency}}</strong></div>
+            <div class="d-flex justify-content-between"><span>Error Rate</span><strong>{{svc.errorRate}}</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('serviceDetailModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('serviceDetailModal'); openModal('runHealthCheckModal')">Run Health Check</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M28: Corridor Performance -->
+<div class="pm-modal-backdrop" *ngIf="modals['corridorPerformanceModal']" (click)="closeModal('corridorPerformanceModal')"></div>
+<div class="pm-modal" *ngIf="modals['corridorPerformanceModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-graph-up me-2"></i>Corridor Performance Report</h5>
+        <button class="pm-btn-close" (click)="closeModal('corridorPerformanceModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Corridor</th><th>Volume</th><th>Success</th><th>Avg Time</th><th>Peak Time</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let corridor of corridors">
+                <td>{{corridor.corridor}}</td>
+                <td>{{corridor.count}}</td>
+                <td>{{corridor.success}}</td>
+                <td>{{corridor.avgTime}}</td>
+                <td>14:30 EAT</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('corridorPerformanceModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('corridorPerformanceModal'); openModal('caseExportModal')">Export</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M29: Case Export -->
+<div class="pm-modal-backdrop" *ngIf="modals['caseExportModal']" (click)="closeModal('caseExportModal')"></div>
+<div class="pm-modal" *ngIf="modals['caseExportModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-download me-2"></i>Export Data</h5>
+        <button class="pm-btn-close" (click)="closeModal('caseExportModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="mb-3"><label class="FL">Format</label><select class="FC" [(ngModel)]="exportFormat"><option>CSV</option><option>Excel</option><option>JSON</option><option>PDF</option></select></div>
+        <div class="mb-3"><label class="FL">Date Range</label><input class="FC" type="date" [(ngModel)]="exportDate"></div>
+        <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">
+          <strong>Export will include:</strong> All visible records filtered by current view.
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('caseExportModal')">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('caseExportModal','Export generated. Download link sent to your email.','EXP-20250627-991')">Generate Export</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M30: Notification Settings -->
+<div class="pm-modal-backdrop" *ngIf="modals['notifSettingsModal']" (click)="closeModal('notifSettingsModal')"></div>
+<div class="pm-modal" *ngIf="modals['notifSettingsModal']">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-gear me-2"></i>Notification Settings</h5>
+        <button class="pm-btn-close" (click)="closeModal('notifSettingsModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="notifEmailCritical"><label class="form-check-label">Email for Critical alerts</label></div>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="notifSmsHigh"><label class="form-check-label">SMS for High priority</label></div>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="notifDailySummary"><label class="form-check-label">Daily summary email</label></div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('notifSettingsModal')">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="doAction('notifSettingsModal','Notification preferences saved.','NOTIF-20250627-991')">Save Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M31: Support Ticket -->
+<div class="pm-modal-backdrop" *ngIf="modals['supportTicketModal']" (click)="closeModal('supportTicketModal')"></div>
+<div class="pm-modal" *ngIf="modals['supportTicketModal']">
+  <div class="pm-modal-dialog pm-modal-xl" (click)="$event.stopPropagation()">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header">
+        <h5 class="pm-modal-title"><i class="bi bi-headset me-2"></i>Support Queue</h5>
+        <button class="pm-btn-close" (click)="closeModal('supportTicketModal')">×</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="table-responsive">
+          <table class="T">
+            <thead><tr><th>Ticket</th><th>Type</th><th>Priority</th><th>Assignee</th><th>SLA</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let ticket of tickets">
+                <td>{{ticket.id}}</td>
+                <td>{{ticket.type}}</td>
+                <td><span class="B {{ticket.priorityClass}}">{{ticket.priority}}</span></td>
+                <td>{{ticket.assignee}}</td>
+                <td>{{ticket.sla}}</td>
+                <td><span class="B {{ticket.statusClass}}">{{ticket.status}}</span></td>
+                <td><button class="btn-pm btn-sm" (click)="closeModal('supportTicketModal'); openModal('ticketDetailModal')">{{ticket.status === 'Resolved' ? 'View' : 'Open'}}</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="btn-pm" (click)="closeModal('supportTicketModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('supportTicketModal'); openModal('escalationModal')">Escalate Ticket</button>
+      </div>
+    </div>
+  </div>
+</div>

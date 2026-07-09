@@ -1,0 +1,578 @@
+<!-- sandbox-environment.html -->
+<div class="pm-sandbox" [class.pm-env-prod]="envMode === 'prod'">
+
+  <!-- ========== HEADER ========== -->
+  <header class="pm-header">
+    <div class="pm-header-left">
+      <h1 class="pm-logo">Paymo <span class="pm-badge pm-badge-env">{{ envMode === 'sandbox' ? 'SANDBOX' : 'PRODUCTION' }}</span></h1>
+    </div>
+    <div class="pm-header-right">
+      <div class="pm-env-toggle">
+        <button (click)="switchEnv('sandbox')" [class.active]="envMode==='sandbox'">Sandbox</button>
+        <button (click)="switchEnv('prod')" [class.active]="envMode==='prod'">Production</button>
+      </div>
+      <button class="pm-btn pm-btn-outline" (click)="openModal('curlExportModal')"><i class="bi bi-terminal"></i> cURL</button>
+      <button class="pm-btn pm-btn-outline" (click)="openModal('devProfileModal')"><i class="bi bi-person-circle"></i> {{ devProfile.name }}</button>
+    </div>
+  </header>
+
+  <!-- ========== ENV BANNER ========== -->
+  <div class="pm-env-banner" *ngIf="envMode==='sandbox'">
+    <i class="bi bi-info-circle"></i> You are in the <strong>Sandbox</strong> environment. No real money moves. <a href="#" (click)="$event.preventDefault()">Read the docs</a>
+  </div>
+  <div class="pm-env-banner pm-env-banner-prod" *ngIf="envMode==='prod'">
+    <i class="bi bi-exclamation-triangle"></i> You are in <strong>Production</strong>. All transactions are live.
+  </div>
+
+  <!-- ========== CREDENTIALS CARD ========== -->
+  <div class="pm-card pm-cred-card">
+    <div class="pm-card-header">
+      <h3><i class="bi bi-key"></i> Sandbox Credentials</h3>
+      <div>
+        <button class="pm-btn pm-btn-sm pm-btn-outline" (click)="showSecret=!showSecret">{{ showSecret ? 'Hide' : 'Show' }}</button>
+        <button class="pm-btn pm-btn-sm pm-btn-outline" (click)="copyToClipboard(sandboxCreds.clientId)"><i class="bi bi-clipboard"></i></button>
+        <button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('sandboxCredsModal')"><i class="bi bi-arrows-fullscreen"></i></button>
+      </div>
+    </div>
+    <div class="pm-card-body pm-cred-grid">
+      <div class="pm-cred-item">
+        <label>Client ID</label>
+        <code>{{ showSecret ? sandboxCreds.clientId : '●●●●●●●●●●●●●●●●' }}</code>
+      </div>
+      <div class="pm-cred-item">
+        <label>Client Secret</label>
+        <code>{{ showSecret ? sandboxCreds.clientSecret : '●●●●●●●●●●●●●●●●' }}</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MAIN GRID ========== -->
+  <div class="pm-grid">
+
+    <!-- ROW 1 -->
+    <div class="pm-card">
+      <div class="pm-card-header"><h3><i class="bi bi-lightning-charge"></i> Simulate M-Pesa</h3></div>
+      <div class="pm-card-body">
+        <div class="pm-form-group"><label>Condition</label><select [(ngModel)]="simMpesaForm.condition"><option>0 - Success (Completed)</option><option>1 - Insufficient Funds</option><option>1032 - Cancelled by User</option></select></div>
+        <div class="pm-form-group"><label>Phone</label><input [(ngModel)]="simMpesaForm.phone" placeholder="254712345678"/></div>
+        <div class="pm-form-group"><label>Amount (KES)</label><input [(ngModel)]="simMpesaForm.amount" placeholder="1000"/></div>
+        <div class="pm-form-group pm-check"><label><input type="checkbox" [(ngModel)]="simMpesaForm.fireWebhook"/> Fire webhook</label></div>
+        <button class="pm-btn pm-btn-primary pm-btn-block" (click)="openModal('simMpesaModal')">Simulate STK Push</button>
+      </div>
+    </div>
+
+    <div class="pm-card">
+      <div class="pm-card-header"><h3><i class="bi bi-bank"></i> Simulate Bank Transfer</h3></div>
+      <div class="pm-card-body">
+        <div class="pm-form-group"><label>Type</label><select [(ngModel)]="simBankForm.type"><option>Inbound EFT Collection</option><option>Outbound EFT Disbursement</option><option>RTGS Transfer</option></select></div>
+        <div class="pm-form-group"><label>Bank</label><select [(ngModel)]="simBankForm.bank"><option>068 - Equity Bank</option><option>001 - KCB</option><option>002 - NCBA</option></select></div>
+        <div class="pm-form-group"><label>Account</label><input [(ngModel)]="simBankForm.account" placeholder="0681234567"/></div>
+        <div class="pm-form-group"><label>Amount (KES)</label><input [(ngModel)]="simBankForm.amount" placeholder="50000"/></div>
+        <button class="pm-btn pm-btn-primary pm-btn-block" (click)="openModal('simBankModal')">Simulate Bank Transfer</button>
+      </div>
+    </div>
+
+    <div class="pm-card">
+      <div class="pm-card-header"><h3><i class="bi bi-credit-card"></i> Simulate Card Payment</h3></div>
+      <div class="pm-card-body">
+        <div class="pm-form-group"><label>Card</label><select [(ngModel)]="simCardForm.card"><option>4242 4242 4242 4242 (Success)</option><option>4000 0000 0000 0002 (Decline)</option><option>4000 0000 0000 3220 (3DS Challenge)</option></select></div>
+        <div class="pm-form-group"><label>Currency</label><select [(ngModel)]="simCardForm.currency"><option>KES</option><option>USD</option><option>EUR</option></select></div>
+        <div class="pm-form-group"><label>Amount</label><input [(ngModel)]="simCardForm.amount" placeholder="2500"/></div>
+        <button class="pm-btn pm-btn-primary pm-btn-block" (click)="openModal('simCardModal')">Simulate Card Charge</button>
+      </div>
+    </div>
+
+    <!-- ROW 2 -->
+    <div class="pm-card">
+      <div class="pm-card-header"><h3><i class="bi bi-database-add"></i> Generate Test Data</h3></div>
+      <div class="pm-card-body">
+        <table class="pm-table">
+          <thead><tr><th>Type</th><th>Description</th><th>Last Generated</th><th></th></tr></thead>
+          <tbody>
+            <tr *ngFor="let ds of testDataSets">
+              <td><i [class]="ds.icon"></i> {{ ds.type }}</td>
+              <td>{{ ds.description }}</td>
+              <td>{{ ds.lastGenerated }}</td>
+              <td><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal(ds.modal)">Generate</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pm-card">
+      <div class="pm-card-header"><h3><i class="bi bi-play-circle"></i> Test Scenarios</h3></div>
+      <div class="pm-card-body">
+        <div class="pm-scenario-list">
+          <div class="pm-scenario-item" *ngFor="let s of scenarios" (click)="openModal(s.modal)">
+            <i class="bi bi-play-fill"></i>
+            <div><strong>{{ s.title }}</strong><br/><small>{{ s.desc }}</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pm-card">
+      <div class="pm-card-header"><h3><i class="bi bi-shield-check"></i> Quick Actions</h3></div>
+      <div class="pm-card-body pm-quick-actions">
+        <button class="pm-btn pm-btn-outline pm-btn-block" (click)="openModal('payloadDiffModal')"><i class="bi bi-file-diff"></i> Payload Diff Tool</button>
+        <button class="pm-btn pm-btn-outline pm-btn-block" (click)="openModal('errorCodeModal')"><i class="bi bi-exclamation-diamond"></i> Error Code Reference</button>
+        <button class="pm-btn pm-btn-outline pm-btn-block" (click)="openModal('apiContractModal')"><i class="bi bi-journal-code"></i> API Contract</button>
+        <button class="pm-btn pm-btn-outline pm-btn-block" (click)="openModal('testSuiteModal')"><i class="bi bi-clipboard-check"></i> Test Suite Results</button>
+        <button class="pm-btn pm-btn-outline pm-btn-block" (click)="openModal('owaspReportModal')"><i class="bi bi-shield-shaded"></i> OWASP Report</button>
+        <button class="pm-btn pm-btn-outline pm-btn-block" (click)="openModal('liveLogsModal')"><i class="bi bi-terminal-split"></i> Live Logs</button>
+        <button class="pm-btn pm-btn-outline pm-btn-block" (click)="openModal('certificationModal')"><i class="bi bi-patch-check"></i> Go-Live Certification ({{ certProgress }}%)</button>
+        <button class="pm-btn pm-btn-danger pm-btn-block" (click)="openModal('resetSandboxModal')"><i class="bi bi-arrow-repeat"></i> Reset Sandbox</button>
+      </div>
+    </div>
+
+    <!-- ROW 3 -->
+    <div class="pm-card pm-card-wide">
+      <div class="pm-card-header">
+        <h3><i class="bi bi-chat-dots"></i> Support</h3>
+        <button class="pm-btn pm-btn-primary" (click)="openModal('supportTicketModal')">Open Ticket</button>
+      </div>
+      <div class="pm-card-body">
+        <p>Need help? Open a ticket or call our emergency hotline.</p>
+        <button class="pm-btn pm-btn-outline" (click)="openModal('emergencyHotlineModal')"><i class="bi bi-telephone"></i> Emergency Contacts</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========== TOAST ========== -->
+  <div class="pm-toast" [class.show]="toast.show" (click)="dismissToast()">{{ toast.message }}</div>
+
+  <!-- ========== MODALS ========== -->
+  <!-- Sandbox Credentials Modal -->
+  <div class="pm-modal" [class.show]="modals['sandboxCredsModal']" (click)="onBackdropClick($event, 'sandboxCredsModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3>Sandbox Credentials</h3><button class="pm-btn-close" (click)="closeModal('sandboxCredsModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-cred-detail"><label>Client ID</label><code>{{ sandboxCreds.clientId }}</code><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="copyToClipboard(sandboxCreds.clientId)">Copy</button></div>
+        <div class="pm-cred-detail"><label>Client Secret</label><code>{{ showSecret ? sandboxCreds.clientSecret : '●●●●●●●●●●●●●●●●' }}</code><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="copyToClipboard(sandboxCreds.clientSecret)">Copy</button><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="showSecret=!showSecret">{{ showSecret ? 'Hide' : 'Show' }}</button></div>
+      </div>
+      <div class="pm-modal-footer"><button class="pm-btn pm-btn-outline" (click)="closeModal('sandboxCredsModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Reset Sandbox Modal -->
+  <div class="pm-modal" [class.show]="modals['resetSandboxModal']" (click)="onBackdropClick($event, 'resetSandboxModal')">
+    <div class="pm-modal-content">
+      <div class="pm-modal-header"><h3>Reset Sandbox</h3><button class="pm-btn-close" (click)="closeModal('resetSandboxModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <p>This will delete all test data and reset the sandbox to defaults. This action cannot be undone.</p>
+        <div class="pm-form-group"><label>Type "RESET" to confirm</label><input [(ngModel)]="resetConfirmText" placeholder="RESET"/></div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="pm-btn pm-btn-outline" (click)="closeModal('resetSandboxModal')">Cancel</button>
+        <button class="pm-btn pm-btn-danger" [disabled]="resetConfirmText!=='RESET'" (click)="processAction('resetSandboxModal', 'Sandbox reset successfully.')">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simulate M-Pesa Modal -->
+  <div class="pm-modal" [class.show]="modals['simMpesaModal']" (click)="onBackdropClick($event, 'simMpesaModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3>Simulate M-Pesa STK Push</h3><button class="pm-btn-close" (click)="closeModal('simMpesaModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-form-group"><label>Condition</label><select [(ngModel)]="simMpesaForm.condition"><option>0 - Success (Completed)</option><option>1 - Insufficient Funds</option><option>1032 - Cancelled by User</option></select></div>
+        <div class="pm-form-group"><label>Phone</label><input [(ngModel)]="simMpesaForm.phone" placeholder="254712345678"/></div>
+        <div class="pm-form-group"><label>Amount (KES)</label><input [(ngModel)]="simMpesaForm.amount" placeholder="1000"/></div>
+        <div class="pm-form-group pm-check"><label><input type="checkbox" [(ngModel)]="simMpesaForm.fireWebhook"/> Fire webhook</label></div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="pm-btn pm-btn-outline" (click)="closeModal('simMpesaModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('simMpesaModal', 'M-Pesa simulation triggered.')">Run Simulation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simulate Bank Modal -->
+  <div class="pm-modal" [class.show]="modals['simBankModal']" (click)="onBackdropClick($event, 'simBankModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3>Simulate Bank Transfer</h3><button class="pm-btn-close" (click)="closeModal('simBankModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-form-group"><label>Type</label><select [(ngModel)]="simBankForm.type"><option>Inbound EFT Collection</option><option>Outbound EFT Disbursement</option><option>RTGS Transfer</option></select></div>
+        <div class="pm-form-group"><label>Bank</label><select [(ngModel)]="simBankForm.bank"><option>068 - Equity Bank</option><option>001 - KCB</option><option>002 - NCBA</option></select></div>
+        <div class="pm-form-group"><label>Account</label><input [(ngModel)]="simBankForm.account" placeholder="0681234567"/></div>
+        <div class="pm-form-group"><label>Amount (KES)</label><input [(ngModel)]="simBankForm.amount" placeholder="50000"/></div>
+        <div class="pm-form-group"><label>Result</label><select [(ngModel)]="simBankForm.result"><option>Success - Settled</option><option>Failed - Invalid Account</option><option>Failed - Insufficient Funds</option></select></div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="pm-btn pm-btn-outline" (click)="closeModal('simBankModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('simBankModal', 'Bank transfer simulation triggered.')">Run Simulation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simulate Card Modal -->
+  <div class="pm-modal" [class.show]="modals['simCardModal']" (click)="onBackdropClick($event, 'simCardModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3>Simulate Card Payment</h3><button class="pm-btn-close" (click)="closeModal('simCardModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-form-group"><label>Card</label><select [(ngModel)]="simCardForm.card"><option>4242 4242 4242 4242 (Success)</option><option>4000 0000 0000 0002 (Decline)</option><option>4000 0000 0000 3220 (3DS Challenge)</option></select></div>
+        <div class="pm-form-group"><label>Currency</label><select [(ngModel)]="simCardForm.currency"><option>KES</option><option>USD</option><option>EUR</option></select></div>
+        <div class="pm-form-group"><label>Amount</label><input [(ngModel)]="simCardForm.amount" placeholder="2500"/></div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="pm-btn pm-btn-outline" (click)="closeModal('simCardModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('simCardModal', 'Card payment simulation triggered.')">Run Simulation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simulate FX Modal -->
+  <div class="pm-modal" [class.show]="modals['simFxModal']" (click)="onBackdropClick($event, 'simFxModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3>Simulate FX Rates</h3><button class="pm-btn-close" (click)="closeModal('simFxModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-form-group"><label>Pair</label><select [(ngModel)]="simFxForm.pair"><option>USD/KES</option><option>EUR/KES</option><option>GBP/KES</option></select></div>
+        <div class="pm-form-group"><label>Behavior</label><select [(ngModel)]="simFxForm.behavior"><option>Static (130.50)</option><option>Fluctuating</option><option>Volatile</option></select></div>
+        <div class="pm-form-group"><label>Spread</label><input type="number" [(ngModel)]="simFxForm.spread" step="0.1"/></div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="pm-btn pm-btn-outline" (click)="closeModal('simFxModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('simFxModal', 'FX rate simulation active.')">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generate Customers Modal -->
+  <div class="pm-modal" [class.show]="modals['genCustomersModal']" (click)="onBackdropClick($event, 'genCustomersModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3>Generate Test Customers</h3><button class="pm-btn-close" (click)="closeModal('genCustomersModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-form-group"><label>Count</label><input type="number" [(ngModel)]="genCustomerForm.count"/></div>
+        <div class="pm-form-group"><label>Phone Prefix</label><select [(ngModel)]="genCustomerForm.prefix"><option>Random (Safaricom/Airtel/Telkom)</option><option>Safaricom Only (070X/071X/072X)</option><option>Airtel Only (073X/075X)</option></select></div>
+        <div class="pm-form-group pm-check"><label><input type="checkbox" [(ngModel)]="genCustomerForm.includeKyc"/> Include KYC data</label></div>
+        <div class="pm-form-group pm-check"><label><input type="checkbox" [(ngModel)]="genCustomerForm.includeAddress"/> Include address</label></div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="pm-btn pm-btn-outline" (click)="closeModal('genCustomersModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('genCustomersModal', genCustomerForm.count + ' test customers generated.')">Generate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generate Invoices Modal -->
+  <div class="pm-modal" [class.show]="modals['genInvoicesModal']" (click)="onBackdropClick($event, 'genInvoicesModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3>Generate Test Invoices</h3><button class="pm-btn-close" (click)="closeModal('genInvoicesModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-form-group"><label>Volume</label><input type="number" [(ngModel)]="genInvoiceForm.volume"/></div>
+        <div class="pm-form-group"><label>State</label><select [(ngModel)]="genInvoiceForm.state"><option>Mixed (Paid, Unpaid, Overdue)</option><option>All Paid</option><option>All Unpaid</option><option>All Overdue</option></select></div>
+        <div class="pm-form-group"><label>Min Amount</label><input [(ngModel)]="genInvoiceForm.minAmount"/></div>
+        <div class="pm-form-group"><label>Max Amount</label><input [(ngModel)]="genInvoiceForm.maxAmount"/></div>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="pm-btn pm-btn-outline" (click)="closeModal('genInvoicesModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('genInvoicesModal', genInvoiceForm.volume + ' test invoices generated.')">Generate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generate Test Data Hub Modal -->
+  <div class="pm-modal" [class.show]="modals['generateTestDataModal']" (click)="onBackdropClick($event, 'generateTestDataModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3>Generate Test Data</h3><button class="pm-btn-close" (click)="closeModal('generateTestDataModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-tdhub-grid">
+          <div class="pm-tdhub-card" (click)="openGenCustomersFromHub()"><i class="bi bi-people"></i><h4>Customers</h4><p>100 users with valid KE phone numbers</p></div>
+          <div class="pm-tdhub-card" (click)="openGenInvoicesFromHub()"><i class="bi bi-receipt"></i><h4>Invoices</h4><p>50 active invoices with mixed aging</p></div>
+          <div class="pm-tdhub-card" (click)="processAction('generateTestDataModal', 'Payroll test data generated.')"><i class="bi bi-cash-stack"></i><h4>Payroll</h4><p>200 employees + KRA logic</p></div>
+        </div>
+      </div>
+      <div class="pm-modal-footer"><button class="pm-btn pm-btn-outline" (click)="closeModal('generateTestDataModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Scenario Modals (shared pattern) -->
+  <ng-container *ngFor="let s of scenarios">
+    <div class="pm-modal" [class.show]="modals[s.modal]" (click)="onBackdropClick($event, s.modal)">
+      <div class="pm-modal-content pm-modal-lg">
+        <div class="pm-modal-header"><h3>{{ s.title }}</h3><button class="pm-btn-close" (click)="closeModal(s.modal)">&times;</button></div>
+        <div class="pm-modal-body"><p>{{ s.desc }}</p><p class="pm-muted">Scenario steps and results will display here after execution.</p></div>
+        <div class="pm-modal-footer">
+          <button class="pm-btn pm-btn-outline" (click)="closeModal(s.modal)">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction(s.modal, 'Scenario executed successfully.')">Run Scenario</button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Run Payroll Test Modal -->
+  <div class="pm-modal" [class.show]="modals['runPayrollTestModal']" (click)="onBackdropClick($event, 'runPayrollTestModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3>Run Payroll Test</h3><button class="pm-btn-close" (click)="closeModal('runPayrollTestModal')">&times;</button></div>
+      <div class="pm-modal-body"><p>Dummy payroll run with 200 employees + KRA logic.</p></div>
+      <div class="pm-modal-footer">
+        <button class="pm-btn pm-btn-outline" (click)="closeModal('runPayrollTestModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('runPayrollTestModal', 'Payroll test completed.')">Run</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- API Contract Modal -->
+  <div class="pm-modal" [class.show]="modals['apiContractModal']" (click)="onBackdropClick($event, 'apiContractModal')">
+    <div class="pm-modal-content pm-modal-xl">
+      <div class="pm-modal-header">
+        <h3>API Contract</h3>
+        <div class="pm-tabs">
+          <button [class.active]="contractTab==='endpoints'" (click)="contractTab='endpoints'">Endpoints</button>
+          <button [class.active]="contractTab==='schemas'" (click)="contractTab='schemas'">Schemas</button>
+          <button [class.active]="contractTab==='changelog'" (click)="contractTab='changelog'">Changelog</button>
+        </div>
+        <button class="pm-btn-close" (click)="closeModal('apiContractModal')">&times;</button>
+      </div>
+      <div class="pm-modal-body">
+        <ng-container *ngIf="contractTab==='endpoints'">
+          <table class="pm-table">
+            <thead><tr><th>Endpoint</th><th>Method</th><th>Schema Valid</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let ep of contractEndpoints"><td><code>{{ ep.endpoint }}</code></td><td><span class="pm-badge pm-badge-info">{{ ep.method }}</span></td><td>{{ ep.schemaValid }}</td></tr>
+            </tbody>
+          </table>
+        </ng-container>
+        <ng-container *ngIf="contractTab==='schemas'"><p class="pm-muted">JSON Schema definitions for all endpoints.</p></ng-container>
+        <ng-container *ngIf="contractTab==='changelog'">
+          <div class="pm-changelog-item" *ngFor="let cl of contractChangelog"><strong>{{ cl.date }}</strong> — {{ cl.title }}</div>
+        </ng-container>
+      </div>
+      <div class="pm-modal-footer"><button class="pm-btn pm-btn-outline" (click)="closeModal('apiContractModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Test Suite Modal -->
+  <div class="pm-modal" [class.show]="modals['testSuiteModal']" (click)="onBackdropClick($event, 'testSuiteModal')">
+    <div class="pm-modal-content pm-modal-xl">
+      <div class="pm-modal-header"><h3>Test Suite Results</h3><button class="pm-btn-close" (click)="closeModal('testSuiteModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <table class="pm-table">
+          <thead><tr><th>Test Case</th><th>Category</th><th>Duration</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let tc of testSuiteCases">
+              <td>{{ tc.name }}</td>
+              <td><span [class]="tc.badgeClass + ' pm-badge'">{{ tc.category }}</span></td>
+              <td>{{ tc.duration }}</td>
+              <td><span [class]="tc.badgeClass + ' pm-badge'">Passed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pm-modal-footer"><button class="pm-btn pm-btn-outline" (click)="closeModal('testSuiteModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- OWASP Report Modal -->
+  <div class="pm-modal" [class.show]="modals['owaspReportModal']" (click)="onBackdropClick($event, 'owaspReportModal')">
+    <div class="pm-modal-content pm-modal-xl">
+      <div class="pm-modal-header"><h3>OWASP Security Scan</h3><button class="pm-btn-close" (click)="closeModal('owaspReportModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <table class="pm-table">
+          <thead><tr><th>Check</th><th>Severity</th><th>Details</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let ow of owaspFindings">
+              <td>{{ ow.check }}</td>
+              <td><span [class]="ow.severityClass + ' pm-badge'">{{ ow.severity }}</span></td>
+              <td>{{ ow.details }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pm-modal-footer"><button class="pm-btn pm-btn-outline" (click)="closeModal('owaspReportModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Live Logs Modal -->
+  <div class="pm-modal" [class.show]="modals['liveLogsModal']" (click)="onBackdropClick($event, 'liveLogsModal')">
+    <div class="pm-modal-content pm-modal-xl">
+      <div class="pm-modal-header">
+        <h3>Live Logs ({{ logTotalCount }} entries)</h3>
+        <div class="pm-tabs">
+          <button [class.active]="logsTab==='live'" (click)="logsTab='live'">Live</button>
+          <button [class.active]="logsTab==='filtered'" (click)="logsTab='filtered'">Filtered</button>
+          <button [class.active]="logsTab==='export'" (click)="logsTab='export'">Export</button>
+        </div>
+        <button class="pm-btn-close" (click)="closeModal('liveLogsModal')">&times;</button>
+      </div>
+      <div class="pm-modal-body">
+        <input *ngIf="logsTab==='filtered'" class="pm-input" [(ngModel)]="logFilter" placeholder="Filter logs..."/>
+        <div class="pm-log-entries">
+          <div class="pm-log-entry" *ngFor="let le of liveLogEntries">
+            <span class="pm-badge pm-badge-info">{{ le.method }}</span>
+            <span [class]="le.statusClass">{{ le.statusCode }}</span>
+            <code>{{ le.path }}</code>
+            <span class="pm-muted">{{ le.duration }}</span>
+            <pre>{{ le.payload }}</pre>
+          </div>
+        </div>
+      </div>
+      <div class="pm-modal-footer"><button class="pm-btn pm-btn-outline" (click)="closeModal('liveLogsModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- cURL Export Modal -->
+  <div class="pm-modal" [class.show]="modals['curlExportModal']" (click)="onBackdropClick($event, 'curlExportModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3>cURL Export</h3><button class="pm-btn-close" (click)="closeModal('curlExportModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-form-group"><label>Endpoint</label><input [(ngModel)]="curlEndpoint"/></div>
+        <div class="pm-form-group"><label>Method</label><select [(ngModel)]="curlMethod"><option>POST</option><option>GET</option><option>PUT</option><option>DELETE</option></select></div>
+        <pre class="pm-code-block">{{ curlCommand }}</pre>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="pm-btn pm-btn-outline" (click)="closeModal('curlExportModal')">Close</button>
+        <button class="pm-btn pm-btn-primary" (click)="copyToClipboard(curlCommand)">Copy cURL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payload Diff Modal -->
+  <div class="pm-modal" [class.show]="modals['payloadDiffModal']" (click)="onBackdropClick($event, 'payloadDiffModal')">
+    <div class="pm-modal-content pm-modal-xl">
+      <div class="pm-modal-header"><h3>Payload Diff Tool</h3><button class="pm-btn-close" (click)="closeModal('payloadDiffModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-diff-grid">
+          <div><label>Left Payload</label><textarea [(ngModel)]="payloadDiffForm.leftPayload" rows="8"></textarea></div>
+          <div><label>Right Payload</label><textarea [(ngModel)]="payloadDiffForm.rightPayload" rows="8"></textarea></div>
+        </div>
+      </div>
+      <div class="pm-modal-footer"><button class="pm-btn pm-btn-outline" (click)="closeModal('payloadDiffModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Error Code Reference Modal -->
+  <div class="pm-modal" [class.show]="modals['errorCodeModal']" (click)="onBackdropClick($event, 'errorCodeModal')">
+    <div class="pm-modal-content pm-modal-xl">
+      <div class="pm-modal-header"><h3>Error Code Reference</h3><button class="pm-btn-close" (click)="closeModal('errorCodeModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <input class="pm-input" [(ngModel)]="errorCodeFilter" placeholder="Filter error codes..."/>
+        <table class="pm-table">
+          <thead><tr><th>Code</th><th>HTTP</th><th>Description</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let ec of filteredErrorCodes">
+              <td><code>{{ ec.code }}</code></td>
+              <td><span [class]="ec.httpClass + ' pm-badge'">{{ ec.http }}</span></td>
+              <td>{{ ec.description }}</td>
+              <td>{{ ec.action }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pm-modal-footer"><button class="pm-btn pm-btn-outline" (click)="closeModal('errorCodeModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Support Ticket Modal -->
+  <div class="pm-modal" [class.show]="modals['supportTicketModal']" (click)="onBackdropClick($event, 'supportTicketModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header">
+        <h3>Open Support Ticket</h3>
+        <div class="pm-step-indicator">Step {{ supportStep }} / 2</div>
+        <button class="pm-btn-close" (click)="closeModal('supportTicketModal')">&times;</button>
+      </div>
+      <div class="pm-modal-body">
+        <ng-container *ngIf="supportStep===1">
+          <div class="pm-form-group"><label>Type</label><select [(ngModel)]="supportForm.type"><option *ngFor="let t of supportTicketTypes" [value]="t">{{ t }}</option></select></div>
+          <div class="pm-form-group"><label>Priority</label><select [(ngModel)]="supportForm.priority"><option>High</option><option>Medium</option><option>Low</option></select></div>
+        </ng-container>
+        <ng-container *ngIf="supportStep===2">
+          <div class="pm-form-group"><label>Subject *</label><input [(ngModel)]="supportForm.subject" placeholder="Brief summary of the issue"/></div>
+          <div class="pm-form-group"><label>Description *</label><textarea [(ngModel)]="supportForm.description" rows="5" placeholder="Detailed description..."></textarea></div>
+        </ng-container>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="pm-btn pm-btn-outline" *ngIf="supportStep>1" (click)="prevSupportStep()">Back</button>
+        <button class="pm-btn pm-btn-primary" *ngIf="supportStep===1" (click)="nextSupportStep()">Next</button>
+        <button class="pm-btn pm-btn-primary" *ngIf="supportStep===2" (click)="submitSupportTicket()">Submit Ticket</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Developer Profile Modal -->
+  <div class="pm-modal" [class.show]="modals['devProfileModal']" (click)="onBackdropClick($event, 'devProfileModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3>Developer Profile</h3><button class="pm-btn-close" (click)="closeModal('devProfileModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-profile-grid">
+          <div class="pm-profile-avatar"><i class="bi bi-person-circle" style="font-size:64px"></i></div>
+          <div class="pm-profile-details">
+            <h4>{{ devProfile.name }}</h4>
+            <p>{{ devProfile.email }}</p>
+            <p>{{ devProfile.role }} at {{ devProfile.company }}</p>
+            <p><i class="bi bi-phone"></i> {{ devProfile.phone }}</p>
+            <p><i class="bi bi-people"></i> {{ devProfile.team }}</p>
+            <p><i class="bi bi-clock"></i> {{ devProfile.timezone }}</p>
+            <p><i class="bi bi-calendar"></i> Joined {{ devProfile.joinedDate }} | Last login {{ devProfile.lastLogin }}</p>
+            <p><i class="bi bi-shield-lock"></i> 2FA: {{ devProfile.twoFactorEnabled ? 'Enabled' : 'Disabled' }}</p>
+            <p><i class="bi bi-graph-up"></i> API calls this month: {{ devProfile.apiCallsThisMonth | number }}</p>
+            <p><i class="bi bi-arrow-repeat"></i> Sandbox resets: {{ devProfile.sandboxResetCount }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="pm-modal-footer"><button class="pm-btn pm-btn-outline" (click)="closeModal('devProfileModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Emergency Hotline Modal -->
+  <div class="pm-modal" [class.show]="modals['emergencyHotlineModal']" (click)="onBackdropClick($event, 'emergencyHotlineModal')">
+    <div class="pm-modal-content pm-modal-lg">
+      <div class="pm-modal-header"><h3><i class="bi bi-telephone"></i> Emergency Hotline</h3><button class="pm-btn-close" (click)="closeModal('emergencyHotlineModal')">&times;</button></div>
+      <div class="pm-modal-body">
+        <div class="pm-emergency-grid">
+          <div class="pm-emergency-item"><label>Primary</label><strong>{{ emergencyHotline.primary }}</strong></div>
+          <div class="pm-emergency-item"><label>Secondary</label><strong>{{ emergencyHotline.secondary }}</strong></div>
+          <div class="pm-emergency-item"><label>Email</label><strong>{{ emergencyHotline.email }}</strong></div>
+          <div class="pm-emergency-item"><label>Slack</label><strong>{{ emergencyHotline.slackChannel }}</strong></div>
+          <div class="pm-emergency-item"><label>Response Time</label><strong>{{ emergencyHotline.responseTime }}</strong></div>
+          <div class="pm-emergency-item"><label>Hours</label><strong>{{ emergencyHotline.hours }}</strong></div>
+        </div>
+      </div>
+      <div class="pm-modal-footer"><button class="pm-btn pm-btn-outline" (click)="closeModal('emergencyHotlineModal')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Certification Modal -->
+  <div class="pm-modal" [class.show]="modals['certificationModal']" (click)="onBackdropClick($event, 'certificationModal')">
+    <div class="pm-modal-content pm-modal-xl">
+      <div class="pm-modal-header">
+        <h3>Go-Live Certification</h3>
+        <div class="pm-step-indicator">Step {{ certStep }} / 3</div>
+        <button class="pm-btn-close" (click)="closeModal('certificationModal')">&times;</button>
+      </div>
+      <div class="pm-modal-body">
+        <div class="pm-progress-bar"><div class="pm-progress-fill" [style.width]="certProgress + '%'"></div></div>
+        <p class="pm-muted">Progress: {{ totalCertChecked }} / {{ totalCertItems }} ({{ certProgress }}%)</p>
+
+        <ng-container *ngIf="certStep===1">
+          <h4>Integration</h4>
+          <div class="pm-checklist-item" *ngFor="let item of certIntegration; let i = index" (click)="toggleCertCheck('certIntegration', i)">
+            <input type="checkbox" [checked]="item.checked" (change)="toggleCertCheck('certIntegration', i)"/>
+            <div><strong>{{ item.title }}</strong><br/><small>{{ item.desc }}</small></div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="certStep===2">
+          <h4>Security</h4>
+          <div class="pm-checklist-item" *ngFor="let item of certSecurity; let i = index" (click)="toggleCertCheck('certSecurity', i)">
+            <input type="checkbox" [checked]="item.checked" (change)="toggleCertCheck('certSecurity', i)"/>
+            <div><strong>{{ item.title }}</strong><br/><small>{{ item.desc }}</small></div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="certStep===3">
+          <h4>Operations</h4>
+          <div class="pm-checklist-item" *ngFor="let item of certOps; let i = index" (click)="toggleCertCheck('certOps', i)">
+            <input type="checkbox" [checked]="item.checked" (change)="toggleCertCheck('certOps', i)"/>
+            <div><strong>{{ item.title }}</strong><br/><small>{{ item.desc }}</small></div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="pm-modal-footer">
+        <button class="pm-btn pm-btn-outline" *ngIf="certStep>1" (click)="prevCertStep()">Back</button>
+        <button class="pm-btn pm-btn-primary" *ngIf="certStep<3" (click)="nextCertStep()">Next</button>
+        <button class="pm-btn pm-btn-success" *ngIf="certStep===3" (click)="markCertificationComplete()">Submit Certification</button>
+      </div>
+    </div>
+  </div>
+
+</div>

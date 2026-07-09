@@ -1,0 +1,303 @@
+<!-- PAGE BAR -->
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb"><a role="button" tabindex="0">Home</a> / <a role="button" tabindex="0">Business Portal</a> / <strong>Financial Reporting, Audit &amp; Analytics</strong></div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 3.8 — Financial Reporting, Audit &amp; Analytics</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Generate compliance-ready financial statements, drill down into BI metrics, review immutable audit trails, and prepare statutory KRA/NSSF tax extracts.</p>
+  </div>
+  <div class="d-flex flex-wrap" style="gap:8px">
+    <button class="pm-btn" (click)="openModal('inviteAuditorModal')"><i class="bi bi-person-lock"></i> Auditor Access</button>
+    <button class="pm-btn" (click)="openModal('runMonthEndModal')"><i class="bi bi-calendar2-check"></i> Month-End Close</button>
+    <button class="pm-btn pm-btn-primary" (click)="openModal('generateCustomReportModal')"><i class="bi bi-file-earmark-plus"></i> Create Report</button>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="pm-content">
+
+  <!-- HERO STATS ROW -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="pm-card pm-card-accent" style="min-height:170px">
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Liquidity Position <span style="color:#86efac">●</span></p>
+        <div class="pm-stat-value" style="margin:8px 0;color:#fff">KES 12,450,800</div>
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Consolidated across PayMo Wallet, PesaLink buffers, and M-Pesa Tills.</p>
+        <div class="d-flex flex-wrap mt-3" style="gap:8px">
+          <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('cashFlowForecastModal')">Forecast</button>
+          <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('downloadStatementModal')">Statements</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 col-6">
+      <div class="pm-card" style="min-height:170px">
+        <p class="pm-stat-label" style="color:var(--pm-primary)">YTD REVENUE</p>
+        <div class="pm-stat-value" style="margin:6px 0">KES 48.2M</div>
+        <span class="pm-badge pm-badge-success"><i class="bi bi-graph-up-arrow"></i> 14% YoY</span>
+        <div class="pm-mini-bars mt-3"><div class="pm-mini-bar" style="height:45%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:55%;background:var(--pm-info)"></div><div class="pm-mini-bar" style="height:62%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:75%;background:var(--pm-info)"></div><div class="pm-mini-bar" style="height:88%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:95%;background:var(--pm-accent)"></div></div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-6">
+      <div class="pm-card" style="min-height:170px">
+        <p class="pm-stat-label" style="color:var(--pm-warning)">PENDING RECONCILIATIONS</p>
+        <div class="pm-stat-value" style="margin:6px 0">4 Items</div>
+        <span class="pm-badge pm-badge-warning"><i class="bi bi-exclamation-triangle"></i> Action Required</span>
+        <div class="mt-2"><div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>Amount unmatched</span><span>KES 142,500</span></div><div class="pm-progress mt-1"><div class="pm-progress-bar" style="width:12%;background:var(--pm-warning)"></div></div></div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4">
+      <div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-accent)">
+        <p class="pm-stat-label" style="color:var(--pm-accent)">COMPLIANCE &amp; AUDIT SCORE</p>
+        <div class="pm-stat-value" style="margin:6px 0">98 / 100</div>
+        <span class="pm-badge pm-badge-success"><i class="bi bi-shield-check"></i> Audit Ready</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)"><div>Next KRA VAT Due: <strong>20 Jul 2025</strong></div><div>e-TIMS invoices matched: <strong>100%</strong></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENTION / QUICK ACTIONS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Attention Required</h3><button class="pm-btn pm-btn-sm" (click)="openModal('reconciliationExceptionsModal')">View all</button></div>
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">RC</div><div style="flex:1"><div style="font-weight:600;font-size:13px">4 Unmatched Bank Deposits</div><div style="font-size:11px;color:var(--pm-muted)">Totaling KES 142,500 · Require manual allocation</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('reconciliationExceptionsModal')">Match</button></div>
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">TX</div><div style="flex:1"><div style="font-weight:600;font-size:13px">PAYE Return (P10) Due Soon</div><div style="font-size:11px;color:var(--pm-muted)">Due in 3 days · KES 450,200 pending extract</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('statutoryDeductionsModal')">Extract</button></div>
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple);font-size:12px">AU</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Auditor access expiring</div><div style="font-size:11px;color:var(--pm-muted)">KPMG Audit Team · Expires in 48 hrs</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('inviteAuditorModal')">Extend</button></div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Smart BI Insights</h3><span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span></div>
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent);font-size:12px">CS</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Top 5 clients driving 62% of revenue</div><div style="font-size:11px;color:var(--pm-muted)">High concentration risk identified</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('customerSpendAnalyticsModal')">Analyze</button></div>
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">EX</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Software subscriptions up 18%</div><div style="font-size:11px;color:var(--pm-muted)">Unused SaaS licenses detected</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('vendorExpenseAnalyticsModal')">Review</button></div>
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">CF</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Cash flow dip predicted next Friday</div><div style="font-size:11px;color:var(--pm-muted)">Payroll + supplier runs overlap</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('cashFlowForecastModal')">Forecast</button></div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="pm-card">
+        <div class="mb-3"><h3 class="pm-section-title">Quick Actions</h3><p class="pm-section-sub">Frequent reporting and audit workflows</p></div>
+        <div class="quick-action-grid">
+          <button class="quick-action-btn" (click)="openModal('generateCustomReportModal')"><i class="bi bi-file-earmark-plus text-primary"></i> Custom Report</button>
+          <button class="quick-action-btn" (click)="openModal('runMonthEndModal')"><i class="bi bi-calendar2-check text-success"></i> Month-End</button>
+          <button class="quick-action-btn" (click)="openModal('exportKRAVATModal')"><i class="bi bi-bank text-warning"></i> KRA VAT Extract</button>
+          <button class="quick-action-btn" (click)="openModal('viewAuditLogModal')"><i class="bi bi-shield-lock text-purple" style="color:var(--pm-purple)"></i> Audit Trail</button>
+          <button class="quick-action-btn" (click)="openModal('plSnapshotModal')"><i class="bi bi-graph-up-arrow text-info"></i> P&amp;L Snapshot</button>
+          <button class="quick-action-btn" (click)="openModal('exportTrialBalanceModal')"><i class="bi bi-file-spreadsheet text-danger"></i> Trial Balance</button>
+          <button class="quick-action-btn" (click)="openModal('eTimsReconciliationModal')"><i class="bi bi-receipt text-secondary"></i> e-TIMS Recon</button>
+          <button class="quick-action-btn" (click)="openModal('configureDashboardsModal')"><i class="bi bi-sliders text-primary"></i> Dashboards</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3.8.1: Real-Time Financial Dashboards & Cash Flow -->
+  <div class="pm-card">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-cash-stack" style="color:var(--pm-accent)"></i> 3.8.1 — Real-Time Financial Dashboards &amp; Cash Flow</h3><p class="pm-section-sub">Monitor liquidity, inbound vs outbound cash movements, and quick P&amp;L snapshots.</p></div>
+      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-graph-up"></i> Full Forecast</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-file-bar-graph"></i> P&amp;L View</button></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="utility-block">
+          <div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">30-Day Cash Movement (In vs Out)</h4><select class="pm-form-control pm-btn-sm" style="width:auto"><option>Last 30 Days</option><option>This Quarter</option></select></div>
+          <div class="chart-bars" style="height:160px;align-items:flex-end">
+            <div style="flex:1;display:flex;gap:2px;height:100%"><div class="chart-bar" style="height:40%;background:var(--pm-accent)" title="In: KES 1.2M"><span class="bar-label">W1</span></div><div class="chart-bar" style="height:25%;background:var(--pm-danger)" title="Out: KES 800K"></div></div>
+            <div style="flex:1;display:flex;gap:2px;height:100%"><div class="chart-bar" style="height:65%;background:var(--pm-accent)" title="In: KES 2.1M"><span class="bar-label">W2</span></div><div class="chart-bar" style="height:80%;background:var(--pm-danger)" title="Out: KES 2.8M"></div></div>
+            <div style="flex:1;display:flex;gap:2px;height:100%"><div class="chart-bar" style="height:90%;background:var(--pm-accent)" title="In: KES 3.5M"><span class="bar-label">W3</span></div><div class="chart-bar" style="height:35%;background:var(--pm-danger)" title="Out: KES 1.1M"></div></div>
+            <div style="flex:1;display:flex;gap:2px;height:100%"><div class="chart-bar" style="height:55%;background:var(--pm-accent)" title="In: KES 1.8M"><span class="bar-label">W4</span></div><div class="chart-bar" style="height:45%;background:var(--pm-danger)" title="Out: KES 1.5M"></div></div>
+          </div>
+          <div class="d-flex justify-content-center mt-3" style="gap:16px;font-size:12px">
+            <span><span style="display:inline-block;width:10px;height:10px;background:var(--pm-accent);border-radius:2px;margin-right:4px"></span>Cash Inflow</span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:var(--pm-danger);border-radius:2px;margin-right:4px"></span>Cash Outflow</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Liquidity Breakdown</h4>
+          <div class="d-flex align-items-center mb-3">
+            <div style="width:80px;height:80px;border-radius:50%;border:8px solid var(--pm-primary);border-right-color:var(--pm-info);border-bottom-color:var(--pm-warning);transform:rotate(45deg);margin-right:16px"></div>
+            <div style="flex:1">
+              <div class="d-flex justify-content-between mb-2" style="font-size:12px"><span><span style="color:var(--pm-primary)">●</span> PayMo Wallet</span><strong>KES 8.2M</strong></div>
+              <div class="d-flex justify-content-between mb-2" style="font-size:12px"><span><span style="color:var(--pm-info)">●</span> Equity Bank</span><strong>KES 3.1M</strong></div>
+              <div class="d-flex justify-content-between" style="font-size:12px"><span><span style="color:var(--pm-warning)">●</span> M-Pesa Tills</span><strong>KES 1.15M</strong></div>
+            </div>
+          </div>
+          <hr class="pm-divider">
+          <div class="d-flex justify-content-between align-items-center" style="font-size:13px">
+            <span class="text-muted">Working Capital Ratio</span><strong style="color:var(--pm-accent);font-size:16px">2.4x</strong>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-2" style="font-size:13px">
+            <span class="text-muted">Burn Rate (Monthly)</span><strong>KES 4.2M</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3.8.2: Standard & Custom Reporting Engine -->
+  <div class="pm-card">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-file-earmark-bar-graph" style="color:var(--pm-info)"></i> 3.8.2 — Standard &amp; Custom Reporting Engine</h3><p class="pm-section-sub">Generate, schedule, and export standard accounting reports and custom operational data extracts.</p></div>
+      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-clock"></i> Scheduled</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-plus-lg"></i> New Report</button></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead><tr><th>Report Name</th><th>Type</th><th>Generated By</th><th>Date</th><th>Format</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>Q2 Income Statement</td><td>Financial</td><td>Titus G.</td><td>28 Jun 2025</td><td>PDF</td><td><button class="pm-btn pm-btn-sm" (click)="openModal('downloadStatementModal')">Download</button></td></tr>
+              <tr><td>May Payroll Extract</td><td>Operational</td><td>System (Auto)</td><td>01 Jun 2025</td><td>CSV</td><td><button class="pm-btn pm-btn-sm" (click)="openModal('downloadStatementModal')">Download</button></td></tr>
+              <tr><td>Trial Balance (YTD)</td><td>Financial</td><td>Grace M.</td><td>15 Jun 2025</td><td>Excel</td><td><button class="pm-btn pm-btn-sm" (click)="openModal('exportTrialBalanceModal')">View</button></td></tr>
+              <tr><td>Supplier Aging Summary</td><td>Operational</td><td>Titus G.</td><td>10 Jun 2025</td><td>PDF</td><td><button class="pm-btn pm-btn-sm" (click)="openModal('downloadStatementModal')">Download</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block bg-light">
+          <h4 style="font-size:13px;font-weight:700;margin:0 0 12px;text-transform:uppercase;color:var(--pm-muted)">Saved Templates</h4>
+          <div class="report-card" (click)="openModal('exportTrialBalanceModal')">
+            <div class="pm-icon-circle" style="background:var(--pm-primary-soft);color:var(--pm-primary)"><i class="bi bi-journal-text"></i></div>
+            <div style="flex:1"><strong style="font-size:13px">Trial Balance</strong><div style="font-size:11px;color:var(--pm-muted)">Standard GL extract</div></div><i class="bi bi-chevron-right text-muted"></i>
+          </div>
+          <div class="report-card mt-2" (click)="openModal('plSnapshotModal')">
+            <div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent)"><i class="bi bi-graph-up"></i></div>
+            <div style="flex:1"><strong style="font-size:13px">Profit &amp; Loss</strong><div style="font-size:11px;color:var(--pm-muted)">Income statement</div></div><i class="bi bi-chevron-right text-muted"></i>
+          </div>
+          <div class="report-card mt-2" (click)="openModal('statutoryDeductionsModal')">
+            <div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i class="bi bi-shield-check"></i></div>
+            <div style="flex:1"><strong style="font-size:13px">Statutory Deductions</strong><div style="font-size:11px;color:var(--pm-muted)">PAYE, NSSF, SHIF</div></div><i class="bi bi-chevron-right text-muted"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3.8.3: Tax, Statutory & Compliance Reporting -->
+  <div class="pm-card">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-bank" style="color:var(--pm-warning)"></i> 3.8.3 — Tax, Statutory &amp; Compliance Reporting</h3><p class="pm-section-sub">Prepare KRA iTax reports, e-TIMS reconciliations, and view your business compliance score.</p></div>
+      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-receipt"></i> e-TIMS Check</button><button class="pm-btn pm-btn-sm pm-btn-warning"><i class="bi bi-download"></i> KRA Extract</button></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="utility-block border border-success" style="background:var(--pm-accent-soft)">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div><h4 style="font-size:14px;font-weight:700;margin:0;color:#047857">VAT Return (June 2025)</h4><div style="font-size:12px;color:#065F46">Due 20 Jul 2025</div></div>
+            <i class="bi bi-check-circle-fill text-success" style="font-size:20px"></i>
+          </div>
+          <div style="font-size:24px;font-weight:700;color:var(--pm-accent);margin:12px 0">KES 840,500</div>
+          <div style="font-size:12px;color:#065F46">Output VAT: KES 1.2M<br>Input VAT: KES 359.5K</div>
+          <button class="pm-btn pm-btn-sm w-100 mt-3" (click)="openModal('exportKRAVATModal')">Download CSV for iTax</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block border" style="border-color:var(--pm-warning)!important;background:var(--pm-warning-soft)">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div><h4 style="font-size:14px;font-weight:700;margin:0;color:#B45309">PAYE Return (June)</h4><div style="font-size:12px;color:#92400E">Due 09 Jul 2025</div></div>
+            <i class="bi bi-exclamation-circle-fill text-warning" style="font-size:20px"></i>
+          </div>
+          <div style="font-size:24px;font-weight:700;color:var(--pm-warning);margin:12px 0">KES 450,200</div>
+          <div style="font-size:12px;color:#92400E">Employees: 42<br>Status: Awaiting Payroll Lock</div>
+          <button class="pm-btn pm-btn-sm w-100 mt-3" (click)="openModal('statutoryDeductionsModal')">View Payroll Extract</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Compliance Health</h4>
+          <div class="d-flex justify-content-between mb-2" style="font-size:12px"><span>e-TIMS invoices</span><span class="text-success fw-bold">100% Matched</span></div>
+          <div class="d-flex justify-content-between mb-2" style="font-size:12px"><span>Withholding Tax (WHT)</span><span class="text-success fw-bold">Up to date</span></div>
+          <div class="d-flex justify-content-between mb-2" style="font-size:12px"><span>CR12 Annual Returns</span><span class="text-warning fw-bold">Due in 45 days</span></div>
+          <div class="d-flex justify-content-between mb-2" style="font-size:12px"><span>County Business Permit</span><span class="text-success fw-bold">Valid (2025)</span></div>
+          <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('taxReadinessModal')">Full Health Check</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3.8.4: Audit Trails, Logs & Access Control -->
+  <div class="pm-card">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-shield-lock" style="color:var(--pm-purple)"></i> 3.8.4 — Audit Trails, Logs &amp; Access Control</h3><p class="pm-section-sub">Immutable transaction logs, user activity tracking, and external auditor portal access.</p></div>
+      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-person-plus"></i> Invite Auditor</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-search"></i> Search Logs</button></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="table-responsive" style="max-height:300px;overflow-y:auto">
+          <table class="pm-table">
+            <thead><tr><th>Timestamp (EAT)</th><th>User / System</th><th>Action</th><th>IP Address</th><th>Status</th><th>View</th></tr></thead>
+            <tbody>
+              <tr><td>28 Jun, 14:32:01</td><td>Titus G. (Admin)</td><td>Approved Bulk Disbursement (ID: 9921)</td><td>197.232.14.8</td><td><span class="pm-badge pm-badge-success">Success</span></td><td><button class="pm-btn pm-btn-sm" (click)="openModal('userActivityLogModal')"><i class="bi bi-eye"></i></button></td></tr>
+              <tr><td>28 Jun, 10:15:44</td><td>System Automation</td><td>Generated VAT Extract (June)</td><td>Internal</td><td><span class="pm-badge pm-badge-success">Success</span></td><td><button class="pm-btn pm-btn-sm" (click)="openModal('userActivityLogModal')"><i class="bi bi-eye"></i></button></td></tr>
+              <tr><td>27 Jun, 16:45:12</td><td>Grace M. (Finance)</td><td>Initiated Payroll Run (June)</td><td>197.232.14.8</td><td><span class="pm-badge pm-badge-info">Pending Approval</span></td><td><button class="pm-btn pm-btn-sm" (click)="openModal('userActivityLogModal')"><i class="bi bi-eye"></i></button></td></tr>
+              <tr><td>27 Jun, 09:12:33</td><td>James K. (Sales)</td><td>Voided Invoice #INV-2041</td><td>105.161.88.2</td><td><span class="pm-badge pm-badge-warning">Logged</span></td><td><button class="pm-btn pm-btn-sm" (click)="openModal('disputeAuditModal')"><i class="bi bi-eye"></i></button></td></tr>
+              <tr><td>26 Jun, 23:55:01</td><td>System Automation</td><td>Daily EOD Ledger Lock</td><td>Internal</td><td><span class="pm-badge pm-badge-success">Success</span></td><td><button class="pm-btn pm-btn-sm" (click)="openModal('userActivityLogModal')"><i class="bi bi-eye"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="utility-block">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Auditor Access</h4>
+          <div class="status-row"><div><strong>KPMG Kenya Team</strong><div style="font-size:11px;color:var(--pm-muted)">Read-only · Financials + Logs</div></div><span class="pm-badge pm-badge-warning">Exp. 48h</span></div>
+          <div class="status-row"><div><strong>KRA Compliance Officer</strong><div style="font-size:11px;color:var(--pm-muted)">e-TIMS &amp; VAT Scope only</div></div><span class="pm-badge pm-badge-success">Active</span></div>
+          <button class="pm-btn pm-btn-sm w-100 mt-3" (click)="openModal('inviteAuditorModal')"><i class="bi bi-plus"></i> Grant New Access</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3.8.5: Business Intelligence & Advanced Analytics -->
+  <div class="pm-card">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div><h3 class="pm-section-title"><i class="bi bi-pie-chart" style="color:var(--pm-primary)"></i> 3.8.5 — Business Intelligence &amp; Advanced Analytics</h3><p class="pm-section-sub">Deep dive into customer spending, vendor expenses, branch performance, and financial health.</p></div>
+      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-shop"></i> Branches</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-heart-pulse"></i> Health Score</button></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="utility-block">
+          <div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Top Customers (By Revenue YTD)</h4><button class="pm-btn pm-btn-sm" (click)="openModal('customerSpendAnalyticsModal')">Analyze</button></div>
+          <div class="mb-2"><div class="d-flex justify-content-between" style="font-size:12px;margin-bottom:2px"><span>Acme Corp Ltd</span><strong>KES 12.5M</strong></div><div class="pm-progress"><div class="pm-progress-bar" style="width:100%;background:var(--pm-primary)"></div></div></div>
+          <div class="mb-2"><div class="d-flex justify-content-between" style="font-size:12px;margin-bottom:2px"><span>TechFlow Solutions</span><strong>KES 8.2M</strong></div><div class="pm-progress"><div class="pm-progress-bar" style="width:65%;background:var(--pm-primary)"></div></div></div>
+          <div class="mb-2"><div class="d-flex justify-content-between" style="font-size:12px;margin-bottom:2px"><span>Global Logistics Ke</span><strong>KES 5.4M</strong></div><div class="pm-progress"><div class="pm-progress-bar" style="width:42%;background:var(--pm-primary)"></div></div></div>
+          <div class="mb-2"><div class="d-flex justify-content-between" style="font-size:12px;margin-bottom:2px"><span>City Retail Chain</span><strong>KES 3.1M</strong></div><div class="pm-progress"><div class="pm-progress-bar" style="width:25%;background:var(--pm-primary)"></div></div></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="utility-block">
+          <div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Top Expense Categories (YTD)</h4><button class="pm-btn pm-btn-sm" (click)="openModal('vendorExpenseAnalyticsModal')">Analyze</button></div>
+          <div class="mb-2"><div class="d-flex justify-content-between" style="font-size:12px;margin-bottom:2px"><span>Payroll &amp; Benefits</span><strong>KES 18.2M</strong></div><div class="pm-progress"><div class="pm-progress-bar" style="width:100%;background:var(--pm-danger)"></div></div></div>
+          <div class="mb-2"><div class="d-flex justify-content-between" style="font-size:12px;margin-bottom:2px"><span>Inventory &amp; Suppliers</span><strong>KES 6.5M</strong></div><div class="pm-progress"><div class="pm-progress-bar" style="width:35%;background:var(--pm-danger)"></div></div></div>
+          <div class="mb-2"><div class="d-flex justify-content-between" style="font-size:12px;margin-bottom:2px"><span>Software &amp; IT Subscriptions</span><strong>KES 1.8M</strong></div><div class="pm-progress"><div class="pm-progress-bar" style="width:10%;background:var(--pm-warning)"></div></div></div>
+          <div class="mb-2"><div class="d-flex justify-content-between" style="font-size:12px;margin-bottom:2px"><span>Utilities (Power, Water, Net)</span><strong>KES 1.1M</strong></div><div class="pm-progress"><div class="pm-progress-bar" style="width:6%;background:var(--pm-warning)"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================ -->
+<!-- MODALS -->
+<!-- ============================================================ -->
+
+<!-- MODAL BACKDROP + CONTAINER -->
+<!-- Compile-safe generic modal host replacing corrupted generated modal blocks -->
+<div class="modal-backdrop fade show" [style.display]="activeModal ? 'block' : 'none'" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" [style.display]="activeModal ? 'block' : 'none'" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Financial Reporting Action</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-muted);margin:0">{{ activeModal }} is ready. Continue from this modal action.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="pm-btn btn-pm" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

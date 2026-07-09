@@ -1,0 +1,1326 @@
+<!-- account-settings.component.html -->
+<div class="pm-content">
+
+  <!-- HERO STATS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C C-accent" style="min-height:170px">
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Account health is excellent
+          <span style="color:#86efac">●</span></p>
+        <div class="SV" style="margin:8px 0;color:#fff">92/100</div>
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Profile 98% complete • 2FA
+          enabled • KYC verified • No security incidents in 18 months.</p>
+        <div class="d-flex flex-wrap mt-3" style="gap:8px"><button class="btn-pm btn-sm"
+            style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+            (click)="openModal('securityAuditModal')">Audit</button><button class="btn-pm btn-sm"
+            style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+            (click)="openModal('kycModal')">KYC</button><button class="btn-pm btn-sm"
+            style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+            (click)="openModal('editProfileModal')">Update</button></div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-accent)">PROFILE COMPLETENESS</p>
+        <div class="SV" style="margin:6px 0">98%</div><span class="B B-s"><i
+            class="bi bi-check-circle"></i> Verified</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">Missing: Secondary
+          phone<br>Next review: 12 Sep 2025</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-6">
+      <div class="C" style="min-height:170px">
+        <p class="SL" style="color:var(--pm-info)">ACTIVE SESSIONS</p>
+        <div class="SV" style="margin:6px 0">4</div><span class="B B-w"><i class="bi bi-laptop"></i>
+          1 new device</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">iPhone 15 • MacBook
+          Pro<br>Windows PC • iPad</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4">
+      <div class="C" style="min-height:170px;border-left:3px solid var(--pm-purple)">
+        <p class="SL" style="color:var(--pm-purple)">DOCUMENTS ON FILE</p>
+        <div class="SV" style="margin:6px 0">7</div><span class="B B-p"><i
+            class="bi bi-file-earmark-check"></i> All valid</span>
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">National ID •
+          Passport<br>Proof of Address • Selfie</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Attention Required</h3><button class="btn-pm btn-sm"
+            (click)="openModal('attentionModal')">View all</button>
+        </div>
+        <div class="sr">
+          <div class="d-flex align-items-center gap-3">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi bi-clock"></i></div>
+            <div>
+              <div style="font-weight:600;font-size:13px">Password expires in 12 days</div>
+              <div style="font-size:11px;color:var(--pm-muted)">Last changed 89 days ago</div>
+            </div>
+          </div><button class="btn-pm btn-sm"
+            (click)="openModal('changePasswordModal')">Update</button>
+        </div>
+        <div class="sr">
+          <div class="d-flex align-items-center gap-3">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:var(--pm-danger-soft);color:var(--pm-danger);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi bi-phone"></i></div>
+            <div>
+              <div style="font-weight:600;font-size:13px">Secondary phone not verified</div>
+              <div style="font-size:11px;color:var(--pm-muted)">Profile completeness at 98%
+              </div>
+            </div>
+          </div><button class="btn-pm btn-sm" (click)="openModal('editProfileModal')">Verify</button>
+        </div>
+        <div class="sr">
+          <div class="d-flex align-items-center gap-3">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:var(--pm-info-soft);color:var(--pm-info);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi bi-laptop"></i></div>
+            <div>
+              <div style="font-weight:600;font-size:13px">New login from Windows PC</div>
+              <div style="font-size:11px;color:var(--pm-muted)">Nairobi • 26 Jun 2025</div>
+            </div>
+          </div><button class="btn-pm btn-sm" (click)="openModal('sessionModal')">Review</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="st">Smart Suggestions</h3><span class="B B-p"><i class="bi bi-stars"></i>
+            AI</span>
+        </div>
+        <div class="sr">
+          <div class="d-flex align-items-center gap-3">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:var(--pm-accent-soft);color:var(--pm-accent);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi bi-shield-check"></i></div>
+            <div>
+              <div style="font-weight:600;font-size:13px">Enable biometric login on mobile
+              </div>
+              <div style="font-size:11px;color:var(--pm-muted)">Faster & more secure than PIN
+              </div>
+            </div>
+          </div><button class="btn-pm btn-sm" (click)="openModal('enable2FAModal')">Enable</button>
+        </div>
+        <div class="sr">
+          <div class="d-flex align-items-center gap-3">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:var(--pm-purple-soft);color:var(--pm-purple);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi bi-file-earmark"></i></div>
+            <div>
+              <div style="font-weight:600;font-size:13px">Upload updated proof of address
+              </div>
+              <div style="font-size:11px;color:var(--pm-muted)">Current document expires in 45
+                days</div>
+            </div>
+          </div><button class="btn-pm btn-sm" (click)="openModal('kycModal')">Upload</button>
+        </div>
+        <div class="sr">
+          <div class="d-flex align-items-center gap-3">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi bi-globe"></i></div>
+            <div>
+              <div style="font-weight:600;font-size:13px">Review data sharing preferences
+              </div>
+              <div style="font-size:11px;color:var(--pm-muted)">Last updated 11 months ago
+              </div>
+            </div>
+          </div><button class="btn-pm btn-sm" (click)="openModal('privacyModal')">Review</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="C">
+        <div class="mb-3">
+          <h3 class="st">Quick Actions</h3>
+          <p class="ss">Frequent account management tasks</p>
+        </div>
+        <div class="quick-grid">
+          <button class="quick-btn" (click)="openModal('editProfileModal')"><i class="bi bi-person text-primary me-1"></i> Edit Profile</button>
+          <button class="quick-btn" (click)="openModal('changePasswordModal')"><i class="bi bi-key text-warning me-1"></i> Change Password</button>
+          <button class="quick-btn" (click)="openModal('enable2FAModal')"><i class="bi bi-shield-check text-success me-1"></i> Manage 2FA</button>
+          <button class="quick-btn" (click)="openModal('kycModal')"><i class="bi bi-file-earmark-check text-info me-1"></i> KYC Documents</button>
+          <button class="quick-btn" (click)="openModal('sessionModal')"><i class="bi bi-laptop text-purple me-1"></i> Active Sessions</button>
+          <button class="quick-btn" (click)="openModal('privacyModal')"><i class="bi bi-lock text-danger me-1"></i> Privacy Settings</button>
+          <button class="quick-btn" (click)="openModal('linkedAccountsModal')"><i class="bi bi-link-45deg me-1" style="color:var(--pm-accent)"></i> Linked Accounts</button>
+          <button class="quick-btn" (click)="openModal('downloadDataModal')"><i class="bi bi-download me-1" style="color:var(--pm-primary)"></i> Download Data</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 18.1: Profile Overview -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-person-circle" style="color:var(--pm-primary)"></i> 18.1 —
+          Profile Overview</h3>
+        <p class="ss">Your core identity, verification status, membership tier and quick profile
+          snapshot.</p>
+      </div>
+      <div class="d-flex" style="gap:8px"><button class="btn-pm btn-sm"
+          (click)="openModal('editProfileModal')"><i class="bi bi-pencil"></i> Edit</button><button
+          class="btn-pm btn-sm btn-pm-p" (click)="openModal('profileModal')"><i class="bi bi-eye"></i>
+          Full View</button></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-5">
+        <div class="UB">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="pm-avatar" style="width:72px;height:72px;font-size:28px">{{profile.initials}}</div>
+            <div>
+              <h4 style="font-weight:700;margin:0">{{profile.fullName}}</h4>
+              <div style="color:var(--pm-muted)">{{profile.primaryEmail}}</div>
+              <div class="mt-1"><span class="B B-s">Premium Member</span> <span
+                  class="B B-p">Since {{profile.memberSince}}</span></div>
+            </div>
+          </div>
+          <div class="row g-2 mt-3">
+            <div class="col-6">
+              <div class="p-2 rounded" style="background:var(--pm-surface)">
+                <div style="font-size:11px;color:var(--pm-muted)">Nationality</div>
+                <strong>{{profile.nationality}}</strong>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-2 rounded" style="background:var(--pm-surface)">
+                <div style="font-size:11px;color:var(--pm-muted)">ID Number</div>
+                <strong>{{profile.idNumber}}</strong>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-2 rounded" style="background:var(--pm-surface)">
+                <div style="font-size:11px;color:var(--pm-muted)">Date of Birth</div>
+                <strong>{{profile.displayDob}}</strong>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-2 rounded" style="background:var(--pm-surface)">
+                <div style="font-size:11px;color:var(--pm-muted)">Gender</div>
+                <strong>{{profile.genderDisplay}}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Verification Status</h4>
+          <div class="sr">
+            <div><strong>Email</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{profile.primaryEmail}}
+              </div>
+            </div><span class="B B-s">Verified</span>
+          </div>
+          <div class="sr">
+            <div><strong>Phone</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{profile.primaryPhone}}</div>
+            </div><span class="B B-s">Verified</span>
+          </div>
+          <div class="sr">
+            <div><strong>National ID</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Uploaded & verified</div>
+            </div><span class="B B-s">Verified</span>
+          </div>
+          <div class="sr">
+            <div><strong>Passport</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Valid until 2031</div>
+            </div><span class="B B-s">Verified</span>
+          </div>
+          <div class="sr">
+            <div><strong>Proof of Address</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Expires in 45 days</div>
+            </div><span class="B B-w">Renew</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Membership & Limits</h4>
+          <div class="p-3 rounded mb-2" style="background:var(--pm-accent-soft)">
+            <div style="font-size:11px;color:#047857;font-weight:700">TIER</div>
+            <div style="font-size:20px;font-weight:700;color:var(--pm-accent)">{{profile.tier}}</div>
+            <div style="font-size:12px;color:#065F46">Monthly limit: {{profile.monthlyLimit}}</div>
+          </div>
+          <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+            <div style="font-size:11px;color:var(--pm-muted);font-weight:700">CURRENT USAGE
+            </div>
+            <div style="font-size:18px;font-weight:700">{{profile.currentUsage}} <span
+                style="font-size:12px;color:var(--pm-muted)">/ 2M</span></div>
+            <div class="pm-progress mt-2">
+              <div class="pm-progress-bar" [style.width.%]="profile.usagePercent" style="background:var(--pm-accent)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 18.2: Personal & Contact Details -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-person-lines-fill" style="color:var(--pm-info)"></i> 18.2 —
+          Personal & Contact Details</h3>
+        <p class="ss">Update names, addresses, phone numbers, emails and emergency contacts.</p>
+      </div>
+      <div class="d-flex" style="gap:8px"><button class="btn-pm btn-sm"
+          (click)="openModal('editProfileModal')"><i class="bi bi-pencil"></i> Edit All</button></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Personal Information</h4>
+          <div class="sr">
+            <div><strong>Full Legal Name</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{profile.fullName}}</div>
+            </div><button class="btn-pm btn-sm"
+              (click)="openModal('editProfileModal')">Edit</button>
+          </div>
+          <div class="sr">
+            <div><strong>Preferred Name</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{profile.preferredName}}</div>
+            </div><button class="btn-pm btn-sm"
+              (click)="openModal('editProfileModal')">Edit</button>
+          </div>
+          <div class="sr">
+            <div><strong>National ID</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">32890127</div>
+            </div><button class="btn-pm btn-sm" (click)="openModal('kycModal')">View</button>
+          </div>
+          <div class="sr">
+            <div><strong>Passport Number</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">AK392184</div>
+            </div><button class="btn-pm btn-sm" (click)="openModal('kycModal')">View</button>
+          </div>
+          <div class="sr">
+            <div><strong>Date of Birth</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">14 March 1992</div>
+            </div><button class="btn-pm btn-sm"
+              (click)="openModal('editProfileModal')">Edit</button>
+          </div>
+          <div class="sr">
+            <div><strong>Gender</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Female</div>
+            </div><button class="btn-pm btn-sm"
+              (click)="openModal('editProfileModal')">Edit</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Contact Information</h4>
+          <div class="sr">
+            <div><strong>Primary Phone</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{profile.primaryPhone}}</div>
+            </div><button class="btn-pm btn-sm"
+              (click)="openModal('editProfileModal')">Edit</button>
+          </div>
+          <div class="sr">
+            <div><strong>Secondary Phone</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Not added</div>
+            </div><button class="btn-pm btn-sm" (click)="openModal('editProfileModal')">Add</button>
+          </div>
+          <div class="sr">
+            <div><strong>Primary Email</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{profile.primaryEmail}}
+              </div>
+            </div><button class="btn-pm btn-sm"
+              (click)="openModal('editProfileModal')">Edit</button>
+          </div>
+          <div class="sr">
+            <div><strong>Work Email</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{profile.workEmail}}</div>
+            </div><button class="btn-pm btn-sm"
+              (click)="openModal('editProfileModal')">Edit</button>
+          </div>
+          <div class="sr">
+            <div><strong>Residential Address</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Apt 3A, Lavington Green,
+                Nairobi</div>
+            </div><button class="btn-pm btn-sm"
+              (click)="openModal('editProfileModal')">Edit</button>
+          </div>
+          <div class="sr">
+            <div><strong>Postal Address</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">P.O. Box 4521-00100, Nairobi
+              </div>
+            </div><button class="btn-pm btn-sm"
+              (click)="openModal('editProfileModal')">Edit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 18.3: Security & Authentication -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-shield-lock" style="color:var(--pm-danger)"></i> 18.3 —
+          Security & Authentication</h3>
+        <p class="ss">Password, 2FA, PIN, security questions, login history and trusted devices.</p>
+      </div>
+      <div class="d-flex" style="gap:8px"><button class="btn-pm btn-sm"
+          (click)="openModal('securityAuditModal')"><i class="bi bi-shield-check"></i>
+          Audit</button><button class="btn-pm btn-sm btn-pm-p"
+          (click)="openModal('enable2FAModal')"><i class="bi bi-shield-check"></i> 2FA</button></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Authentication Methods</h4>
+          <div class="sr">
+            <div><strong>Password</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Last changed {{passwordLastChanged}}</div>
+            </div><button class="btn-pm btn-sm"
+              (click)="openModal('changePasswordModal')">Change</button>
+          </div>
+          <div class="sr">
+            <div><strong>2FA (App)</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{twoFAMethod}}</div>
+            </div><span class="B B-s">Enabled</span>
+          </div>
+          <div class="sr">
+            <div><strong>Biometric</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Fingerprint + Face ID</div>
+            </div><span class="B B-s">Enabled</span>
+          </div>
+          <div class="sr">
+            <div><strong>Security Questions</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{securityQuestionsCount}} questions set</div>
+            </div><button class="btn-pm btn-sm"
+              (click)="openModal('securityQuestionsModal')">Edit</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Recent Security Events</h4>
+          <div class="sr" *ngFor="let event of securityEvents">
+            <div><strong>{{event.event}}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{event.detail}}</div>
+            </div>
+            <button class="btn-pm btn-sm" *ngIf="event.action" (click)="openModal(event.modal!)">{{event.action}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Trusted Devices</h4>
+          <div class="sr" *ngFor="let device of trustedDevices">
+            <div><strong>{{device.name}}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Last used: {{device.lastUsed}}</div>
+            </div>
+            <span class="B" [class.B-s]="device.statusClass === 'B-s'" *ngIf="device.statusClass">{{device.status}}</span>
+            <button class="btn-pm btn-sm" *ngIf="!device.statusClass" (click)="openModal('sessionModal')">{{device.status}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 18.4: Notification Preferences -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-bell" style="color:var(--pm-warning)"></i> 18.4 —
+          Notification Preferences</h3>
+        <p class="ss">Control how and when you receive alerts across email, SMS, push and WhatsApp.
+        </p>
+      </div>
+      <div class="d-flex" style="gap:8px"><button class="btn-pm btn-sm"
+          (click)="openModal('notifSettingsModal')"><i class="bi bi-sliders"></i> Advanced</button>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Account & Security</h4>
+          <div class="sr" *ngFor="let notif of accountSecurityNotifs">
+            <div><strong>{{notif.name}}</strong></div>
+            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="notif.enabled"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Financial & Documents</h4>
+          <div class="sr" *ngFor="let notif of financialNotifs">
+            <div><strong>{{notif.name}}</strong></div>
+            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="notif.enabled"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 18.5: Linked Devices & Sessions -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-laptop" style="color:var(--pm-purple)"></i> 18.5 — Linked
+          Devices & Active Sessions</h3>
+        <p class="ss">View and manage all devices currently logged into your account with ability to
+          terminate sessions.</p>
+      </div>
+      <div class="d-flex" style="gap:8px"><button class="btn-pm btn-sm"
+          (click)="openModal('sessionModal')"><i class="bi bi-list-ul"></i> Manage All</button><button
+          class="btn-pm btn-sm btn-pm-d" (click)="terminateAllSessions()">Terminate All</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="T">
+        <thead>
+          <tr>
+            <th>Device</th>
+            <th>Location</th>
+            <th>Last Active</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let session of sessions; let i = index">
+            <td><strong>{{session.device}}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{session.detail}}</div>
+            </td>
+            <td>{{session.location}}</td>
+            <td>{{session.lastActive}}</td>
+            <td><span class="B" [class.B-s]="session.statusClass === 'B-s'" [class.B-w]="session.statusClass === 'B-w'" [class.B-d]="session.statusClass === 'B-d'">{{session.status}}</span></td>
+            <td><button class="btn-pm btn-sm" [disabled]="session.isCurrent" (click)="!session.isCurrent && terminateSession(i)">{{session.isCurrent ? 'This device' : 'Terminate'}}</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 18.6: KYC & Document Vault -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-file-earmark-check" style="color:var(--pm-accent)"></i> 18.6
+          — KYC & Document Vault</h3>
+        <p class="ss">Upload, view and manage all identity and address verification documents.</p>
+      </div>
+      <div class="d-flex" style="gap:8px"><button class="btn-pm btn-sm" (click)="openModal('kycModal')"><i
+            class="bi bi-upload"></i> Upload</button><button class="btn-pm btn-sm"
+          (click)="openModal('kycModal')">Vault</button></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="table-responsive">
+          <table class="T">
+            <thead>
+              <tr>
+                <th>Document</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Uploaded</th>
+                <th>Expiry</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let doc of kycDocuments">
+                <td>{{doc.name}}</td>
+                <td>{{doc.type}}</td>
+                <td><span class="B" [class.B-s]="doc.statusClass === 'B-s'" [class.B-w]="doc.statusClass === 'B-w'">{{doc.status}}</span></td>
+                <td>{{doc.uploaded}}</td>
+                <td>{{doc.expiry}}</td>
+                <td><button class="btn-pm btn-sm" (click)="openModal('viewDocModal')">View</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Verification Progress</h4>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px">
+              <span>Identity</span><span>100%</span></div>
+            <div class="pm-progress">
+              <div class="pm-progress-bar" style="width:100%;background:var(--pm-accent)">
+              </div>
+            </div>
+          </div>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px">
+              <span>Address</span><span>75%</span></div>
+            <div class="pm-progress">
+              <div class="pm-progress-bar" style="width:75%;background:var(--pm-warning)">
+              </div>
+            </div>
+          </div>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px">
+              <span>Financial</span><span>100%</span></div>
+            <div class="pm-progress">
+              <div class="pm-progress-bar" style="width:100%;background:var(--pm-accent)">
+              </div>
+            </div>
+          </div>
+          <div class="p-2 rounded mt-3" style="background:var(--pm-accent-soft);font-size:12px"><i
+              class="bi bi-check-circle me-1"></i> Full KYC verified — all limits unlocked
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 18.7: Privacy & Data Controls -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-lock" style="color:var(--pm-purple)"></i> 18.7 — Privacy &
+          Data Controls</h3>
+        <p class="ss">Manage data sharing, marketing preferences, data export and account deletion
+          requests.</p>
+      </div>
+      <div class="d-flex" style="gap:8px"><button class="btn-pm btn-sm"
+          (click)="openModal('privacyModal')"><i class="bi bi-gear"></i> Manage</button><button
+          class="btn-pm btn-sm" (click)="openModal('downloadDataModal')"><i
+            class="bi bi-download"></i> Export</button></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Data Sharing</h4>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="dataSharing.anonymized"><label class="form-check-label" style="font-size:13px">Share anonymized
+              data for product improvement</label></div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="dataSharing.thirdParty"><label
+              class="form-check-label" style="font-size:13px">Allow third-party partners to
+              contact me</label></div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="dataSharing.personalized"><label class="form-check-label" style="font-size:13px">Enable
+              personalized offers</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="dataSharing.creditBureaus"><label
+              class="form-check-label" style="font-size:13px">Share data with credit
+              bureaus</label></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Marketing Preferences</h4>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="marketing.email"><label class="form-check-label" style="font-size:13px">Email
+              marketing</label></div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="marketing.sms"><label
+              class="form-check-label" style="font-size:13px">SMS marketing</label></div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="marketing.push"><label class="form-check-label" style="font-size:13px">Push
+              notifications</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="marketing.whatsapp"><label
+              class="form-check-label" style="font-size:13px">WhatsApp marketing</label></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Data Rights</h4>
+          <div class="sr">
+            <div><strong>Download my data</strong></div><button class="btn-pm btn-sm"
+              (click)="openModal('downloadDataModal')">Request</button>
+          </div>
+          <div class="sr">
+            <div><strong>Request data deletion</strong></div><button class="btn-pm btn-sm"
+              (click)="openModal('closeAccountModal')">Request</button>
+          </div>
+          <div class="sr">
+            <div><strong>View data processing log</strong></div><button class="btn-pm btn-sm"
+              (click)="openModal('privacyModal')">View</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 18.8: Account Administration -->
+  <div class="C">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+      <div>
+        <h3 class="st"><i class="bi bi-gear-wide-connected" style="color:var(--pm-danger)"></i> 18.8
+          — Account Administration</h3>
+        <p class="ss">Account status, closure requests, reactivation and full account lifecycle
+          management.</p>
+      </div>
+      <div class="d-flex" style="gap:8px"><button class="btn-pm btn-sm btn-pm-d"
+          (click)="openModal('closeAccountModal')">Close Account</button></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Account Status</h4>
+          <div class="sr">
+            <div><strong>Account Status</strong></div><span class="B B-s">Active</span>
+          </div>
+          <div class="sr">
+            <div><strong>Verification Level</strong></div><span class="B B-s">Full KYC</span>
+          </div>
+          <div class="sr">
+            <div><strong>Account Type</strong></div><span>Individual — Premium</span>
+          </div>
+          <div class="sr">
+            <div><strong>Created</strong></div><span>12 January 2023</span>
+          </div>
+          <div class="sr">
+            <div><strong>Last Login</strong></div><span>Today, 14:22 EAT</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="UB">
+          <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Lifecycle Actions</h4>
+          <div class="sr">
+            <div><strong>Download full account data</strong></div><button class="btn-pm btn-sm"
+              (click)="openModal('downloadDataModal')">Export</button>
+          </div>
+          <div class="sr">
+            <div><strong>Request account reactivation</strong></div><button
+              class="btn-pm btn-sm" (click)="openModal('reactivateModal')">Request</button>
+          </div>
+          <div class="sr">
+            <div><strong>Schedule account closure</strong></div><button
+              class="btn-pm btn-sm btn-pm-d"
+              (click)="openModal('closeAccountModal')">Schedule</button>
+          </div>
+          <div class="sr">
+            <div><strong>Download closure certificate</strong></div><button
+              class="btn-pm btn-sm" (click)="openModal('closeAccountModal')">Download</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- pm-content -->
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- M1: Edit Profile -->
+<div class="modal fade R" id="editProfileModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person me-2"></i>Edit Profile</h5><button class="btn-close"
+          data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6"><label class="FL">Full Legal Name</label><input class="FC"
+              [(ngModel)]="editProfileData.fullName"></div>
+          <div class="col-md-6"><label class="FL">Preferred Name</label><input class="FC"
+              [(ngModel)]="editProfileData.preferredName"></div>
+          <div class="col-md-6"><label class="FL">Date of Birth</label><input type="date" class="FC"
+              [(ngModel)]="editProfileData.dob"></div>
+          <div class="col-md-6"><label class="FL">Gender</label><select class="FC" [(ngModel)]="editProfileData.gender">
+              <option>Female</option>
+              <option>Male</option>
+              <option>Prefer not to say</option>
+            </select></div>
+          <div class="col-md-6"><label class="FL">Primary Phone</label><input class="FC"
+              [(ngModel)]="editProfileData.primaryPhone"></div>
+          <div class="col-md-6"><label class="FL">Secondary Phone</label><input class="FC"
+              [(ngModel)]="editProfileData.secondaryPhone" placeholder="Add secondary phone"></div>
+          <div class="col-md-6"><label class="FL">Primary Email</label><input class="FC"
+              [(ngModel)]="editProfileData.primaryEmail"></div>
+          <div class="col-md-6"><label class="FL">Work Email</label><input class="FC"
+              [(ngModel)]="editProfileData.workEmail"></div>
+          <div class="col-12"><label class="FL">Residential Address</label><textarea class="FC"
+              rows="2" [(ngModel)]="editProfileData.residentialAddress"></textarea></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn-pm" data-bs-dismiss="modal">Cancel</button><button
+          class="btn-pm btn-pm-p"
+          (click)="doAction('editProfileModal','Profile updated successfully! Changes will reflect across all services.','')">Save
+          Changes</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- M2: Change Password -->
+<div class="modal fade R" id="changePasswordModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-key me-2"></i>Change Password</h5><button class="btn-close"
+          data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="FL">Current Password</label><input type="password" class="FC" [(ngModel)]="changePassword.current"></div>
+        <div class="mb-3"><label class="FL">New Password</label><input type="password" class="FC" [(ngModel)]="changePassword.new"></div>
+        <div class="mb-3"><label class="FL">Confirm New Password</label><input type="password" class="FC" [(ngModel)]="changePassword.confirm">
+        </div>
+        <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i
+            class="bi bi-info-circle me-1"></i> Password must be at least 12 characters with uppercase,
+          number and symbol.</div>
+      </div>
+      <div class="modal-footer"><button class="btn-pm" data-bs-dismiss="modal">Cancel</button><button
+          class="btn-pm btn-pm-p"
+          (click)="doAction('changePasswordModal','Password changed successfully. All other sessions have been logged out for security.','')">Change
+          Password</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- M3: Enable 2FA -->
+<div class="modal fade R" id="enable2FAModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-check me-2"></i>Two-Factor Authentication</h5><button
+          class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="activeTab['2fa'] === 'app'" (click)="switchTab('2fa', 'app')">Authenticator App</button>
+          <button class="pill" [class.active]="activeTab['2fa'] === 'sms'" (click)="switchTab('2fa', 'sms')">SMS</button>
+          <button class="pill" [class.active]="activeTab['2fa'] === 'biometric'" (click)="switchTab('2fa', 'biometric')">Biometric</button>
+        </div>
+        <div class="tpanel" [class.active]="activeTab['2fa'] === 'app'">
+          <p style="font-size:13px">Scan the QR code with your authenticator app (Google Authenticator,
+            Authy, etc.).</p>
+          <div class="p-4 text-center" style="background:var(--pm-surface-2);border-radius:12px">
+            <div
+              style="width:160px;height:160px;background:#fff;margin:0 auto;border:1px solid var(--pm-border);display:flex;align-items:center;justify-content:center">
+              <i class="bi bi-qr-code" style="font-size:80px;color:var(--pm-primary)"></i></div>
+            <div class="mt-2"><code style="font-size:12px">JBSWY3DPEHPK3PXP</code></div>
+          </div>
+        </div>
+        <div class="tpanel" [class.active]="activeTab['2fa'] === 'sms'">
+          <div class="mb-3"><label class="FL">Phone Number</label><input class="FC"
+              [(ngModel)]="twoFAData.phone"></div>
+          <p style="font-size:12px;color:var(--pm-muted)">You will receive a 6-digit code via SMS each
+            time you log in.</p>
+        </div>
+        <div class="tpanel" [class.active]="activeTab['2fa'] === 'biometric'">
+          <p style="font-size:13px">Enable fingerprint or face ID for quick and secure login on this
+            device.</p>
+          <div class="form-check form-switch mt-3"><input class="form-check-input" type="checkbox"
+              [(ngModel)]="twoFAData.biometric"><label class="form-check-label">Enable biometric login</label></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn-pm" data-bs-dismiss="modal">Cancel</button><button
+          class="btn-pm btn-pm-p"
+          (click)="doAction('enable2FAModal','2FA has been enabled successfully. Backup codes have been generated.','')">Enable
+          2FA</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- M4: KYC Modal -->
+<div class="modal fade R" id="kycModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-earmark-check me-2"></i>KYC Document Vault</h5><button
+          class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="activeTab['kyc'] === 'upload'" (click)="switchTab('kyc', 'upload')">Upload</button>
+          <button class="pill" [class.active]="activeTab['kyc'] === 'view'" (click)="switchTab('kyc', 'view')">View Documents</button>
+          <button class="pill" [class.active]="activeTab['kyc'] === 'status'" (click)="switchTab('kyc', 'status')">Status</button>
+        </div>
+        <div class="tpanel" [class.active]="activeTab['kyc'] === 'upload'">
+          <div class="row g-3">
+            <div class="col-md-6"><label class="FL">Document Type</label><select class="FC" [(ngModel)]="kycUpload.type">
+                <option>National ID</option>
+                <option>Passport</option>
+                <option>Utility Bill</option>
+                <option>Bank Statement</option>
+                <option>Selfie</option>
+              </select></div>
+            <div class="col-md-6"><label class="FL">Expiry Date (if applicable)</label><input
+                type="date" class="FC" [(ngModel)]="kycUpload.expiry"></div>
+            <div class="col-12"><label class="FL">Upload File</label><input type="file" class="FC" (change)="onFileSelected($event)">
+            </div>
+          </div>
+        </div>
+        <div class="tpanel" [class.active]="activeTab['kyc'] === 'view'">
+          <div class="table-responsive">
+            <table class="T">
+              <thead>
+                <tr>
+                  <th>Document</th>
+                  <th>Status</th>
+                  <th>Uploaded</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let doc of kycViewDocs">
+                  <td>{{doc.name}}</td>
+                  <td><span class="B" [class.B-s]="doc.statusClass === 'B-s'" [class.B-w]="doc.statusClass === 'B-w'">{{doc.status}}</span></td>
+                  <td>{{doc.uploaded}}</td>
+                  <td><button class="btn-pm btn-sm">{{doc.action}}</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tpanel" [class.active]="activeTab['kyc'] === 'status'">
+          <div class="p-3 rounded" style="background:var(--pm-accent-soft)">
+            <div style="font-size:13px;font-weight:700;color:#047857">Verification Status: FULLY
+              VERIFIED</div>
+            <div style="font-size:12px;color:#065F46">All required documents have been approved. Account
+              limits are fully unlocked.</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn-pm" data-bs-dismiss="modal">Close</button><button
+          class="btn-pm btn-pm-p"
+          (click)="doAction('kycModal','Document uploaded successfully and sent for verification.','KYC-20250627-8812')">Upload
+          Document</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- M5: Active Sessions -->
+<div class="modal fade R" id="sessionModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-laptop me-2"></i>Active Sessions</h5><button
+          class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="T">
+            <thead>
+              <tr>
+                <th>Device</th>
+                <th>Location</th>
+                <th>Last Active</th>
+                <th>IP</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let session of sessions; let i = index">
+                <td><strong>{{session.device}}</strong></td>
+                <td>{{session.location}}</td>
+                <td>{{session.lastActive}}</td>
+                <td>{{session.ip || '102.68.XX.XX'}}</td>
+                <td><button class="btn-pm btn-sm" [disabled]="session.isCurrent" (click)="!session.isCurrent && terminateSession(i)">{{session.isCurrent ? 'Current' : 'Terminate'}}</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn-pm" data-bs-dismiss="modal">Close</button><button
+          class="btn-pm btn-pm-d" (click)="terminateAllSessions()">Terminate All Other Sessions</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M6: Privacy Settings -->
+<div class="modal fade R" id="privacyModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-lock me-2"></i>Privacy & Data Controls</h5><button
+          class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pills mb-3">
+          <button class="pill" [class.active]="activeTab['priv'] === 'sharing'" (click)="switchTab('priv', 'sharing')">Data Sharing</button>
+          <button class="pill" [class.active]="activeTab['priv'] === 'marketing'" (click)="switchTab('priv', 'marketing')">Marketing</button>
+          <button class="pill" [class.active]="activeTab['priv'] === 'rights'" (click)="switchTab('priv', 'rights')">Your Rights</button>
+        </div>
+        <div class="tpanel" [class.active]="activeTab['priv'] === 'sharing'">
+          <div class="form-check mb-3"><input class="form-check-input" type="checkbox" [(ngModel)]="dataSharing.anonymized"><label
+              class="form-check-label">Share anonymized transaction data for product
+              improvement</label></div>
+          <div class="form-check mb-3"><input class="form-check-input" type="checkbox" [(ngModel)]="dataSharing.thirdParty"><label
+              class="form-check-label">Allow partners to contact me with offers</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="dataSharing.personalized"><label
+              class="form-check-label">Enable personalized recommendations</label></div>
+        </div>
+        <div class="tpanel" [class.active]="activeTab['priv'] === 'marketing'">
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="marketing.email"><label
+              class="form-check-label">Email marketing</label></div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="marketing.sms"><label
+              class="form-check-label">SMS marketing</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="marketing.push"><label
+              class="form-check-label">Push notifications</label></div>
+        </div>
+        <div class="tpanel" [class.active]="activeTab['priv'] === 'rights'">
+          <div class="sr">
+            <div><strong>Download all my data</strong></div><button class="btn-pm btn-sm"
+              (click)="openModal('downloadDataModal')">Request</button>
+          </div>
+          <div class="sr">
+            <div><strong>Request data deletion</strong></div><button class="btn-pm btn-sm"
+              (click)="openModal('closeAccountModal')">Request</button>
+          </div>
+          <div class="sr">
+            <div><strong>View data processing log</strong></div><button class="btn-pm btn-sm"
+              (click)="doAction('privacyModal','Processing log downloaded.','')">Download</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn-pm" data-bs-dismiss="modal">Cancel</button><button
+          class="btn-pm btn-pm-p"
+          (click)="doAction('privacyModal','Privacy preferences saved successfully.','')">Save
+          Preferences</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- M7: Close Account -->
+
+
+<!-- M7: Close Account (Multi-Step) -->
+<div class="modal" [class.show]="modals['closeAccountModal']" tabindex="-1" [style.display]="modals['closeAccountModal'] ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger me-2"></i>Close Account</h5>
+        <button class="btn-close" (click)="closeModal('closeAccountModal')"></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div class="stepper">
+          <div class="step" *ngFor="let label of closeAccountLabels; let i = index" [class.active]="i + 1 === closeAccountStep" [class.done]="i + 1 < closeAccountStep">
+            <div class="step-n">{{getStepNumber(i + 1)}}</div>
+            <div class="step-l">{{label}}</div>
+          </div>
+        </div>
+        <div *ngIf="closeAccountProcessing" class="loading-ov" style="position:relative;min-height:200px">
+          <div class="spinner"></div>
+          <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+        </div>
+        <div *ngIf="!closeAccountProcessing && closeAccountStep === 1" class="fstep active">
+          <h6 style="font-weight:700">Step 1: Reason</h6>
+          <div class="mb-3"><label class="FL">Why are you closing your account?</label><select class="FC" [(ngModel)]="closeAccountForm.reason"><option>Moving to another provider</option><option>No longer need the service</option><option>Privacy concerns</option><option>Service issues</option><option>Other</option></select></div>
+          <div class="mb-3"><label class="FL">Additional comments</label><textarea class="FC" rows="3" [(ngModel)]="closeAccountForm.comments"></textarea></div>
+        </div>
+        <div *ngIf="!closeAccountProcessing && closeAccountStep === 2" class="fstep active">
+          <h6 style="font-weight:700">Step 2: Final Settlement</h6>
+          <div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft)">
+            <div style="font-size:13px;font-weight:700;color:#B45309">Before closing, please note:</div>
+            <ul style="font-size:12px;margin:8px 0 0;padding-left:18px;color:#92400E">
+              <li>All linked cards will be cancelled</li>
+              <li>Any remaining balance will be transferred to your primary bank account</li>
+              <li>You will lose access to all transaction history</li>
+              <li>Account can be reactivated within 30 days</li>
+            </ul>
+          </div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="closeAccountForm.acknowledged"><label class="form-check-label" style="font-size:13px">I understand and wish to proceed with account closure</label></div>
+        </div>
+        <div *ngIf="!closeAccountProcessing && closeAccountStep === 3" class="fstep active">
+          <div class="receipt">
+            <div class="ri"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Account Closure Scheduled</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Your account will be closed on <strong>27 July 2025</strong>. You will receive a confirmation email with your final statement and closure certificate.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="closeModal('closeAccountModal')">Cancel</button>
+        <button class="btn-pm btn-pm-d" (click)="nextCloseAccountStep()">
+          {{closeAccountStep === 3 ? 'Done' : 'Continue'}} <i class="bi bi-arrow-right" *ngIf="closeAccountStep < 3"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M8: Security Audit -->
+<div class="modal" [class.show]="modals['securityAuditModal']" tabindex="-1" [style.display]="modals['securityAuditModal'] ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-check me-2"></i>Security Audit Report</h5>
+        <button class="btn-close" (click)="closeModal('securityAuditModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)">
+              <div style="font-size:28px;font-weight:800;color:var(--pm-accent)">{{securityScore}}</div>
+              <div style="font-size:11px;color:#047857">SECURITY SCORE</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 rounded text-center" style="background:var(--pm-info-soft)">
+              <div style="font-size:24px;font-weight:700;color:var(--pm-info)">{{openIncidents}}</div>
+              <div style="font-size:11px;color:#1D4ED8">OPEN INCIDENTS</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 rounded text-center" style="background:var(--pm-warning-soft)">
+              <div style="font-size:24px;font-weight:700;color:var(--pm-warning)">{{recommendations}}</div>
+              <div style="font-size:11px;color:#B45309">RECOMMENDATIONS</div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive mt-3">
+          <table class="T">
+            <thead><tr><th>Check</th><th>Status</th><th>Recommendation</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let check of auditChecks">
+                <td>{{check.check}}</td>
+                <td><span class="B B-s" *ngIf="check.status === 'Strong' || check.status === 'Enabled'">{{check.status}}</span><span class="B B-w" *ngIf="check.status === 'Review'">{{check.status}}</span></td>
+                <td>{{check.recommendation}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn-pm" (click)="closeModal('securityAuditModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- M9: View Document -->
+<div class="modal" [class.show]="modals['viewDocModal']" tabindex="-1" [style.display]="modals['viewDocModal'] ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-earmark me-2"></i>Document Viewer</h5>
+        <button class="btn-close" (click)="closeModal('viewDocModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="p-4 text-center" style="background:var(--pm-surface-2);border-radius:12px">
+          <i class="bi bi-file-earmark-text" style="font-size:60px;color:var(--pm-primary)"></i>
+          <div class="mt-3"><strong>{{viewingDoc.name}} — {{viewingDoc.number}}</strong></div>
+          <div style="font-size:12px;color:var(--pm-muted)">Verified on {{viewingDoc.verified}}</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="closeModal('viewDocModal')">Close</button>
+        <button class="btn-pm btn-pm-p">Download PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M10: Download Data -->
+<div class="modal" [class.show]="modals['downloadDataModal']" tabindex="-1" [style.display]="modals['downloadDataModal'] ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-download me-2"></i>Download Your Data</h5>
+        <button class="btn-close" (click)="closeModal('downloadDataModal')"></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div *ngIf="processingModal === 'downloadDataModal'" class="loading-ov">
+          <div class="spinner"></div>
+          <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+        </div>
+        <div *ngIf="processingModal !== 'downloadDataModal'">
+          <div class="mb-3"><label class="FL">Data Range</label><select class="FC" [(ngModel)]="downloadDataForm.range"><option>All data (Jan 2023 – Present)</option><option>Last 12 months</option><option>Last 3 months</option></select></div>
+          <div class="mb-3"><label class="FL">Format</label><select class="FC" [(ngModel)]="downloadDataForm.format"><option>JSON (complete)</option><option>CSV (transactions)</option><option>PDF (summary)</option></select></div>
+          <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Your data export will be ready within 24 hours and sent to your primary email.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="closeModal('downloadDataModal')">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="requestDataExport()">Request Export</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M11: Reactivation -->
+<div class="modal" [class.show]="modals['reactivateModal']" tabindex="-1" [style.display]="modals['reactivateModal'] ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-counterclockwise me-2"></i>Request Reactivation</h5>
+        <button class="btn-close" (click)="closeModal('reactivateModal')"></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div *ngIf="processingModal === 'reactivateModal'" class="loading-ov">
+          <div class="spinner"></div>
+          <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+        </div>
+        <div *ngIf="processingModal !== 'reactivateModal'">
+          <p style="font-size:13px">If your account was previously closed, you can request reactivation within 30 days. After this period, a new account will need to be created.</p>
+          <div class="mb-3"><label class="FL">Reason for reactivation</label><textarea class="FC" rows="3" [(ngModel)]="reactivateForm.reason"></textarea></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="closeModal('reactivateModal')">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="submitReactivation()">Submit Request</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M12: Security Questions -->
+<div class="modal" [class.show]="modals['securityQuestionsModal']" tabindex="-1" [style.display]="modals['securityQuestionsModal'] ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-question-circle me-2"></i>Security Questions</h5>
+        <button class="btn-close" (click)="closeModal('securityQuestionsModal')"></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div *ngIf="processingModal === 'securityQuestionsModal'" class="loading-ov">
+          <div class="spinner"></div>
+          <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+        </div>
+        <div *ngIf="processingModal !== 'securityQuestionsModal'">
+          <div class="mb-3"><label class="FL">Question 1</label><select class="FC" [(ngModel)]="securityQuestionsForm.q1"><option>What is your mother's maiden name?</option></select></div>
+          <div class="mb-3"><label class="FL">Answer</label><input class="FC" type="password" [(ngModel)]="securityQuestionsForm.a1" placeholder="••••••••"></div>
+          <div class="mb-3"><label class="FL">Question 2</label><select class="FC" [(ngModel)]="securityQuestionsForm.q2"><option>What was the name of your first pet?</option></select></div>
+          <div class="mb-3"><label class="FL">Answer</label><input class="FC" type="password" [(ngModel)]="securityQuestionsForm.a2" placeholder="••••••••"></div>
+          <div class="mb-3"><label class="FL">Question 3</label><select class="FC" [(ngModel)]="securityQuestionsForm.q3"><option>What city were you born in?</option></select></div>
+          <div class="mb-3"><label class="FL">Answer</label><input class="FC" type="password" [(ngModel)]="securityQuestionsForm.a3" placeholder="••••••••"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="closeModal('securityQuestionsModal')">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="saveSecurityQuestions()">Save Questions</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M13: Notification Settings -->
+<div class="modal" [class.show]="modals['notifSettingsModal']" tabindex="-1" [style.display]="modals['notifSettingsModal'] ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-sliders me-2"></i>Advanced Notification Settings</h5>
+        <button class="btn-close" (click)="closeModal('notifSettingsModal')"></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div *ngIf="processingModal === 'notifSettingsModal'" class="loading-ov">
+          <div class="spinner"></div>
+          <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p>
+        </div>
+        <div *ngIf="processingModal !== 'notifSettingsModal'">
+          <div class="table-responsive">
+            <table class="T">
+              <thead><tr><th>Category</th><th>Push</th><th>SMS</th><th>Email</th><th>WhatsApp</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let n of advancedNotifications">
+                  <td>{{n.category}}</td>
+                  <td><input type="checkbox" [(ngModel)]="n.push"></td>
+                  <td><input type="checkbox" [(ngModel)]="n.sms"></td>
+                  <td><input type="checkbox" [(ngModel)]="n.email"></td>
+                  <td><input type="checkbox" [(ngModel)]="n.whatsapp"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="closeModal('notifSettingsModal')">Cancel</button>
+        <button class="btn-pm btn-pm-p" (click)="saveNotifications()">Save Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M14: Linked Accounts -->
+<div class="modal" [class.show]="modals['linkedAccountsModal']" tabindex="-1" [style.display]="modals['linkedAccountsModal'] ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-link-45deg me-2"></i>Linked Accounts</h5>
+        <button class="btn-close" (click)="closeModal('linkedAccountsModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="sr" *ngFor="let account of linkedAccounts">
+          <div><strong>{{account.name}}</strong><div style="font-size:11px;color:var(--pm-muted)">{{account.detail}}</div></div>
+          <span class="B B-s" *ngIf="account.status === 'linked'">Linked</span>
+          <button class="btn-pm btn-sm" *ngIf="account.status === 'unlinked'">Link</button>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn-pm" (click)="closeModal('linkedAccountsModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- M15: Attention Modal -->
+<div class="modal" [class.show]="modals['attentionModal']" tabindex="-1" [style.display]="modals['attentionModal'] ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>All Attention Items</h5>
+        <button class="btn-close" (click)="closeModal('attentionModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="sr" *ngFor="let item of allAttentionItems">
+          <div><strong>{{item.title}}</strong></div>
+          <button class="btn-pm btn-sm" (click)="closeModal('attentionModal'); openModal(item.modalTarget)">{{item.actionLabel}}</button>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn-pm" (click)="closeModal('attentionModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- M16: Profile Modal -->
+<div class="modal" [class.show]="modals['profileModal']" tabindex="-1" [style.display]="modals['profileModal'] ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Full Profile View</h5>
+        <button class="btn-close" (click)="closeModal('profileModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <div class="pm-avatar mx-auto mb-3" style="width:80px;height:80px;font-size:32px">{{user.avatar}}</div>
+          <h4 style="font-weight:700">{{user.fullLegalName}}</h4>
+          <div style="color:var(--pm-muted)">{{user.membershipTier}} Member since {{user.accountSince}}</div>
+        </div>
+        <div class="row g-2">
+          <div class="col-6">
+            <div class="p-2 rounded" style="background:var(--pm-surface-2)">
+              <div style="font-size:11px;color:var(--pm-muted)">Email</div>
+              <strong>{{user.primaryEmail}}</strong>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-2 rounded" style="background:var(--pm-surface-2)">
+              <div style="font-size:11px;color:var(--pm-muted)">Phone</div>
+              <strong>{{user.primaryPhone}}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="closeModal('profileModal')">Close</button>
+        <button class="btn-pm btn-pm-p" (click)="closeModal('profileModal'); openModal('editProfileModal')">Edit Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- M17: Terminate All Sessions -->
+<div class="modal" [class.show]="modals['terminateAllSessionsModal']" tabindex="-1" [style.display]="modals['terminateAllSessionsModal'] ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger me-2"></i>Terminate All Sessions?</h5>
+        <button class="btn-close" (click)="closeModal('terminateAllSessionsModal')"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px">This will log you out from all other devices. You will need to log in again on those devices.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pm" (click)="closeModal('terminateAllSessionsModal')">Cancel</button>
+        <button class="btn-pm btn-pm-d" (click)="confirmTerminateAll()">Terminate All</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="anyModalOpen()"></div>

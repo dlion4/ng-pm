@@ -1,0 +1,742 @@
+<div class="pm-main">
+  <header class="pm-header">
+    <div class="pm-header-title" style="flex-shrink:0">
+      <div class="d-flex align-items-center gap-2">
+        <div class="pm-avatar" style="width:36px;height:36px;font-size:13px">MN</div>
+        <div>
+          <h1>Electricity Management</h1>
+          <p>Prepaid tokens, postpaid accounts, meter intelligence, outages and automation</p>
+        </div>
+      </div>
+    </div>
+    <div class="pm-header-search">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Search meters, tokens, KPLC accounts, disputes, outages..." [(ngModel)]="searchQuery">
+    </div>
+    <div class="pm-header-actions">
+      <button class="pm-header-btn" (click)="openModal('portfolioHealthModal')"><i class="bi bi-heart-pulse"></i></button>
+      <button class="pm-header-btn" (click)="openModal('tokenHistoryModal')"><i class="bi bi-safe"></i><span class="counter">9</span></button>
+      <button class="pm-header-btn" (click)="openModal('electricityNotifModal')"><i class="bi bi-bell"></i><span class="counter">11</span></button>
+    </div>
+  </header>
+
+  <div class="pm-page-bar">
+    <div>
+      <div class="pm-breadcrumb"><span>Home</span> / <span>Utilities Hub</span> / <span>Electricity</span> / <strong>Deep Dive</strong></div>
+      <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 2.2 — Electricity Management (Deep Dive)</h2>
+      <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Manage prepaid and postpaid electricity accounts, multiple meters, energy spend, bill forecasts, outages, disputes and automation.</p>
+    </div>
+    <div class="d-flex flex-wrap" style="gap:8px">
+      <button class="pm-btn" (click)="openModal('portfolioHealthModal')"><i class="bi bi-heart-pulse"></i> Health Check</button>
+      <button class="pm-btn" (click)="openModal('tokenHistoryModal')"><i class="bi bi-safe"></i> Token Vault</button>
+      <button class="pm-btn" (click)="openModal('payPostpaidModal')"><i class="bi bi-receipt-cutoff"></i> Pay Bill</button>
+      <button class="pm-btn-primary pm-btn" (click)="openModal('addMeterModal')"><i class="bi bi-plus-lg"></i> Add Meter</button>
+    </div>
+  </div>
+
+  <div class="pm-content">
+    <!-- HERO STATS ROW -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card pm-card-accent" style="min-height:170px">
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Electricity command center is live <span style="color:#86efac">●</span></p>
+          <div class="pm-stat-value" style="margin:8px 0;color:#fff">{{meters.length}} electricity meters linked</div>
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Home, office, rental units, parent home and solar PAYGO accounts monitored from one place.</p>
+          <div class="d-flex flex-wrap mt-3" style="gap:8px">
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('buyTokenModal')">Buy token</button>
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('payPostpaidModal')">Pay bill</button>
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('autoTopupModal')">Auto-top-up</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-warning)">DUE IN 7 DAYS</p>
+          <div class="pm-stat-value" style="margin:6px 0">KES 22,450</div>
+          <span class="pm-badge pm-badge-warning"><i class="bi bi-clock"></i> 4 bills due</span>
+          <div class="pm-mini-bars mt-3">
+            <div class="pm-mini-bar" style="height:75%;background:var(--pm-primary)"></div>
+            <div class="pm-mini-bar" style="height:40%;background:var(--pm-info)"></div>
+            <div class="pm-mini-bar" style="height:82%;background:var(--pm-primary)"></div>
+            <div class="pm-mini-bar" style="height:55%;background:var(--pm-info)"></div>
+            <div class="pm-mini-bar" style="height:88%;background:var(--pm-primary)"></div>
+            <div class="pm-mini-bar" style="height:36%;background:var(--pm-info)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-info)">THIS MONTH CONSUMPTION</p>
+          <div class="pm-stat-value" style="margin:6px 0">3,482 kWh</div>
+          <span class="pm-badge pm-badge-success"><i class="bi bi-graph-down-arrow"></i> 6.4% below forecast</span>
+          <div class="mt-2">
+            <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>Peak usage</span><span>7pm–10pm</span></div>
+            <div class="pm-progress mt-1"><div class="pm-progress-bar" style="width:68%;background:var(--pm-info)"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-accent)">
+          <p class="pm-stat-label" style="color:var(--pm-accent)">POWER PORTFOLIO VALUE</p>
+          <div class="pm-stat-value" style="margin:6px 0">KES 91,620</div>
+          <span class="pm-badge pm-badge-success"><i class="bi bi-shield-check"></i> 5 auto-rules active</span>
+          <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+            <div>Projected monthly spend: <strong>KES 78,900</strong></div>
+            <div>Potential savings identified: <strong>KES 8,450</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MIDDLE ROW: ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="pm-section-title">Attention Required</h3>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('attentionModal')">View all</button>
+          </div>
+          <div *ngFor="let item of attentionItems" class="feed-item">
+            <div class="pm-icon-circle" [style.background]="item.bgColor" [style.color]="item.textColor" style="font-size:12px">{{item.icon}}</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">{{item.title}}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{item.subtitle}}</div>
+            </div>
+            <button class="pm-btn pm-btn-sm" [ngClass]="item.isPrimary ? 'pm-btn-primary' : ''" (click)="openModal(item.modal)">{{item.btnText}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="pm-section-title">Smart Suggestions</h3>
+            <span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span>
+          </div>
+          <div *ngFor="let item of suggestions" class="feed-item">
+            <div class="pm-icon-circle" [style.background]="item.bgColor" [style.color]="item.textColor" style="font-size:12px">{{item.icon}}</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">{{item.title}}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{item.subtitle}}</div>
+            </div>
+            <button class="pm-btn pm-btn-sm" (click)="openModal(item.modal)">{{item.btnText}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="mb-3">
+            <h3 class="pm-section-title">Quick Actions</h3>
+            <p class="pm-section-sub">Frequent electricity workflows</p>
+          </div>
+          <div class="quick-action-grid">
+            <button class="quick-action-btn" (click)="openModal('buyTokenModal')"><i class="bi bi-lightning-charge text-warning me-1"></i> Buy Token</button>
+            <button class="quick-action-btn" (click)="openModal('payPostpaidModal')"><i class="bi bi-receipt text-primary me-1"></i> Pay Bill</button>
+            <button class="quick-action-btn" (click)="openModal('addMeterModal')"><i class="bi bi-plus-circle text-success me-1"></i> Add Meter</button>
+            <button class="quick-action-btn" (click)="openModal('bulkElectricityPayModal')"><i class="bi bi-collection me-1" style="color:var(--pm-purple)"></i> Bulk Pay</button>
+            <button class="quick-action-btn" (click)="openModal('uploadReadingModal')"><i class="bi bi-camera text-info me-1"></i> Upload Reading</button>
+            <button class="quick-action-btn" (click)="openModal('reportOutageModal')"><i class="bi bi-cone-striped text-danger me-1"></i> Report Outage</button>
+            <button class="quick-action-btn" (click)="openModal('tariffCalculatorModal')"><i class="bi bi-calculator me-1" style="color:var(--pm-primary)"></i> Tariff Calc</button>
+            <button class="quick-action-btn" (click)="openModal('statementExportModal')"><i class="bi bi-download me-1" style="color:var(--pm-accent)"></i> Statements</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2.2.1: Prepaid Token & Meters -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-lightning-charge-fill" style="color:var(--pm-warning)"></i> 2.2.1 — Prepaid Token Purchase & Meter Wallet</h3>
+          <p class="pm-section-sub">Purchase tokens, manage low-balance alerts, and run automated top-ups.</p>
+        </div>
+        <div class="d-flex" style="gap:8px">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('tokenHistoryModal')"><i class="bi bi-clock-history"></i> History</button>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('buyTokenModal')"><i class="bi bi-plus-lg"></i> Buy Token</button>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-5">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Linked Prepaid Meters</h4>
+            <div class="meter-grid">
+              <div *ngFor="let m of meters | filter:'prepaid'" class="meter-card" (click)="openModal('buyTokenModal')">
+                <div class="status-dot" [style.background]="m.statusColor"></div>
+                <i class="bi bi-lightning-charge text-warning" style="font-size:20px"></i>
+                <div style="font-weight:600;font-size:13px;margin-top:6px">{{m.name}}</div>
+                <div style="font-size:11px;color:var(--pm-muted)">{{m.id}}</div>
+                <div style="font-size:12px;margin-top:4px"><strong>{{m.units}} units</strong> left</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Low Balance & Alert Feed</h4>
+            <div *ngFor="let alert of lowBalanceAlerts" class="status-row">
+              <div>
+                <strong>{{alert.name}}</strong>
+                <div style="font-size:11px;color:var(--pm-muted)">{{alert.id}} · {{alert.units}} left</div>
+              </div>
+              <div class="text-end">
+                <span class="pm-badge" [ngClass]="alert.badgeClass">{{alert.status}}</span>
+                <div><button class="pm-btn pm-btn-sm mt-1" (click)="openModal('buyTokenModal')">Top-up</button></div>
+              </div>
+            </div>
+            <div *ngIf="lowBalanceAlerts.length === 0" style="text-align:center;padding:20px;color:var(--pm-muted)">All meters healthy.</div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">6-Month Token Spend</h4>
+            <div class="chart-bars">
+              <div *ngFor="let bar of tokenSpendChart" class="chart-bar" [style.height]="bar.height" [style.background]="bar.color"><span class="bar-label">{{bar.label}}</span></div>
+            </div>
+            <hr class="pm-divider">
+            <div class="d-flex justify-content-between" style="font-size:12px"><span>Total Tokens Bought</span><strong>142,500 kWh</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2.2.2: Postpaid Accounts -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-receipt-cutoff" style="color:var(--pm-primary)"></i> 2.2.2 — Postpaid Accounts & Bill Management</h3>
+          <p class="pm-section-sub">View bills, upload meter readings, manage disputes, and forecast upcoming charges.</p>
+        </div>
+        <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('payPostpaidModal')"><i class="bi bi-credit-card"></i> Pay Bills</button>
+      </div>
+      <div class="table-responsive">
+        <table class="pm-table">
+          <thead>
+            <tr><th>Account</th><th>Meter</th><th>Status</th><th>Last Bill</th><th>Due Date</th><th>Amount</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let acc of postpaidAccounts">
+              <td><strong>{{acc.name}}</strong><br><span style="font-size:11px;color:var(--pm-muted)">{{acc.id}}</span></td>
+              <td style="font-family:monospace">{{acc.meter}}</td>
+              <td><span class="pm-badge" [ngClass]="acc.statusClass">{{acc.status}}</span></td>
+              <td>{{acc.lastBill}}</td>
+              <td>{{acc.dueDate}}</td>
+              <td><strong>{{acc.amount}}</strong></td>
+              <td>
+                <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('payPostpaidModal')">Pay</button>
+                <button class="pm-btn pm-btn-sm" (click)="openModal('uploadReadingModal')">Read</button>
+              </td>
+            </tr>
+            <tr *ngIf="postpaidAccounts.length === 0">
+              <td colspan="7" style="text-align:center;color:var(--pm-muted);padding:24px">No postpaid accounts linked.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 2.2.3: Analytics -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-bar-chart-line" style="color:var(--pm-info)"></i> 2.2.3 — Energy Consumption & Budget</h3>
+          <p class="pm-section-sub">Track usage trends, set budgets, and identify cost-saving opportunities.</p>
+        </div>
+        <div class="d-flex" style="gap:8px">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('tariffCalculatorModal')"><i class="bi bi-calculator"></i> Tariff Calc</button>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('statementExportModal')"><i class="bi bi-download"></i> Export</button>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Daily Consumption (kWh)</h4>
+            <div class="chart-bars" style="height:120px">
+              <div *ngFor="let bar of dailyConsumption" class="chart-bar" [style.height]="bar.height" [style.background]="bar.color"><span class="bar-label">{{bar.label}}</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Budget vs Actual</h4>
+            <div *ngFor="let bud of budgets" class="mb-3">
+              <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>{{bud.name}}</span><span>{{bud.actual}} / {{bud.limit}}</span></div>
+              <div class="pm-progress"><div class="pm-progress-bar" [style.width]="bud.percentage" [style.background]="bud.color"></div></div>
+            </div>
+            <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('billForecastModal')"><i class="bi bi-graph-up"></i> View Full Forecast</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2.2.4: Outages & Disputes -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-cone-striped" style="color:var(--pm-danger)"></i> 2.2.4 — Outages & Dispute Center</h3>
+          <p class="pm-section-sub">Track live outages, report new ones, and manage billing disputes.</p>
+        </div>
+        <div class="d-flex" style="gap:8px">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('outageTrackerModal')"><i class="bi bi-broadcast"></i> Outage Map</button>
+          <button class="pm-btn pm-btn-sm pm-btn-danger" (click)="openModal('reportOutageModal')"><i class="bi bi-exclamation-triangle"></i> Report</button>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Outages Near You</h4>
+            <div *ngFor="let out of outages" class="status-row">
+              <div>
+                <strong>{{out.location}}</strong>
+                <div style="font-size:11px;color:var(--pm-muted)">{{out.time}} · Cause: {{out.cause}}</div>
+              </div>
+              <span class="pm-badge pm-badge-danger">Active</span>
+            </div>
+            <div *ngIf="outages.length === 0" style="text-align:center;padding:20px;color:var(--pm-muted)">No active outages reported.</div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="utility-block">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 style="font-size:14px;font-weight:700;margin:0">Open Disputes</h4>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('disputeBillModal')"><i class="bi bi-plus"></i> New</button>
+            </div>
+            <div *ngFor="let disp of disputes" class="status-row">
+              <div>
+                <strong>{{disp.ticket}}</strong>
+                <div style="font-size:11px;color:var(--pm-muted)">{{disp.subject}}</div>
+              </div>
+              <div class="text-end">
+                <span class="pm-badge" [ngClass]="disp.statusClass">{{disp.status}}</span>
+                <div><button class="pm-btn pm-btn-sm mt-1" (click)="openModal('disputeBillModal')">View</button></div>
+              </div>
+            </div>
+            <div *ngIf="disputes.length === 0" style="text-align:center;padding:20px;color:var(--pm-muted)">No open disputes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="pm-section-title"><i class="bi bi-clock-history" style="color:var(--pm-muted)"></i> Recent Electricity Transactions</h3>
+        <button class="pm-btn pm-btn-sm" (click)="openModal('tokenHistoryModal')">View All</button>
+      </div>
+      <div class="table-responsive">
+        <table class="pm-table">
+          <thead><tr><th>Date</th><th>Type</th><th>Meter/Acc</th><th>Details</th><th>Amount</th><th>Status</th><th>Receipt</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let tx of transactions">
+              <td>{{tx.date}}</td>
+              <td><span class="pm-badge" [ngClass]="tx.type === 'Prepaid' ? 'pm-badge-warning' : 'pm-badge-info'">{{tx.type}}</span></td>
+              <td style="font-family:monospace">{{tx.account}}</td>
+              <td>{{tx.details}}</td>
+              <td><strong>{{tx.amount}}</strong></td>
+              <td><span class="pm-badge pm-badge-success">{{tx.status}}</span></td>
+              <td><button class="pm-btn pm-btn-sm" (click)="openModal('receiptModal')"><i class="bi bi-receipt"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS BACKDROP -->
+<div *ngIf="activeModal" class="modal-backdrop show" style="position:fixed;inset:0;z-index:1040" (click)="closeModal()"></div>
+
+<!-- MODAL: Buy Token (Multi-step) -->
+<div class="modal" [class.show]="activeModal === 'buyTokenModal'" [style.display]="activeModal === 'buyTokenModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-lightning-charge text-warning me-2"></i>Buy Prepaid Token</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [ngClass]="{'active': tokenStep===1, 'completed': tokenStep>1}"><div class="pm-step-num">1</div><span class="pm-step-label">Meter</span></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [ngClass]="{'active': tokenStep===2, 'completed': tokenStep>2}"><div class="pm-step-num">2</div><span class="pm-step-label">Pay</span></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [ngClass]="{'active': tokenStep===3, 'completed': tokenStep>3}"><div class="pm-step-num">3</div><span class="pm-step-label">Receipt</span></div>
+        </div>
+        <div [ngClass]="{'fade-step': true, 'active': tokenStep === 1}">
+          <div class="mb-3"><label class="pm-form-label">Select Meter</label><select class="pm-form-control" [(ngModel)]="selectedMeterId"><option *ngFor="let m of meters" [value]="m.id">{{m.name}} ({{m.id}})</option></select></div>
+          <div class="mb-3">
+            <label class="pm-form-label">Amount (KES)</label>
+            <div class="pm-amount-chips mb-2"><span *ngFor="let a of [500,1000,2000,5000]" class="pm-amount-chip" [ngClass]="{'active': tokenAmount===a}" (click)="tokenAmount=a">{{a | number}}</span></div>
+            <input type="number" class="pm-form-control" [(ngModel)]="tokenAmount">
+            <div class="mt-2 p-2 rounded" style="background:var(--pm-accent-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Estimated units: <strong>~{{(tokenAmount / 14.1) | number:'1.0-0'}} kWh</strong></div>
+          </div>
+        </div>
+        <div [ngClass]="{'fade-step': true, 'active': tokenStep === 2}">
+          <div *ngFor="let m of payMethods" class="pm-pay-option" [ngClass]="{'selected': selectedPayMethod === m.id}" (click)="selectedPayMethod = m.id">
+            <input type="radio" [checked]="selectedPayMethod === m.id" name="tokPay">
+            <i class="bi" [ngClass]="m.icon" style="font-size:20px" [style.color]="m.color"></i>
+            <div><div style="font-weight:600">{{m.name}}</div><div style="font-size:11px;color:var(--pm-muted)">{{m.details}}</div></div>
+          </div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-surface-2)">
+            <div class="d-flex justify-content-between"><span style="font-weight:700">Total</span><strong style="font-size:18px;color:var(--pm-primary)">KES {{tokenAmount | number}}</strong></div>
+          </div>
+        </div>
+        <div [ngClass]="{'fade-step': true, 'active': tokenStep === 3}">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Token Generated!</h5>
+            <div class="p-3 rounded mt-3" style="background:#fff;text-align:left;font-size:13px">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Token</span><strong style="font-family:monospace;color:var(--pm-primary)">4829-1234-5678-9012</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">Units</span><strong>{{(tokenAmount / 14.1) | number:'1.1-1'}} kWh</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" *ngIf="tokenStep > 1 && tokenStep < 3" (click)="tokenStep = tokenStep - 1"><i class="bi bi-arrow-left"></i> Back</button>
+        <div style="flex:1"></div>
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button class="pm-btn pm-btn-primary" *ngIf="tokenStep === 1" (click)="tokenStep = 2">Continue</button>
+        <button class="pm-btn pm-btn-accent" *ngIf="tokenStep === 2" (click)="tokenStep = 3"><i class="bi bi-lock"></i> Pay KES {{tokenAmount | number}}</button>
+        <button class="pm-btn pm-btn-primary" *ngIf="tokenStep === 3" (click)="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Pay Postpaid (Multi-step) -->
+<div class="modal" [class.show]="activeModal === 'payPostpaidModal'" [style.display]="activeModal === 'payPostpaidModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-receipt-cutoff text-primary me-2"></i>Pay Postpaid Bill</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [ngClass]="{'active': postStep===1, 'completed': postStep>1}"><div class="pm-step-num">1</div><span class="pm-step-label">Account</span></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [ngClass]="{'active': postStep===2, 'completed': postStep>2}"><div class="pm-step-num">2</div><span class="pm-step-label">Pay</span></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [ngClass]="{'active': postStep===3, 'completed': postStep>3}"><div class="pm-step-num">3</div><span class="pm-step-label">Receipt</span></div>
+        </div>
+        <div [ngClass]="{'fade-step': true, 'active': postStep === 1}">
+          <div class="mb-3"><label class="pm-form-label">Select Postpaid Account</label><select class="pm-form-control" [(ngModel)]="selectedPostpaidId"><option *ngFor="let p of postpaidAccounts" [value]="p.id">{{p.name}} - {{p.amount}}</option></select></div>
+          <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px"><i class="bi bi-exclamation-triangle text-warning me-1"></i> Ensure meter reading is submitted before paying to avoid estimated bills.</div>
+        </div>
+        <div [ngClass]="{'fade-step': true, 'active': postStep === 2}">
+          <div *ngFor="let m of payMethods" class="pm-pay-option" [ngClass]="{'selected': selectedPayMethod === m.id}" (click)="selectedPayMethod = m.id">
+            <input type="radio" [checked]="selectedPayMethod === m.id" name="postPay">
+            <i class="bi" [ngClass]="m.icon" style="font-size:20px" [style.color]="m.color"></i>
+            <div><div style="font-weight:600">{{m.name}}</div><div style="font-size:11px;color:var(--pm-muted)">{{m.details}}</div></div>
+          </div>
+        </div>
+        <div [ngClass]="{'fade-step': true, 'active': postStep === 3}">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Payment Successful</h5>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" *ngIf="postStep > 1 && postStep < 3" (click)="postStep = postStep - 1">Back</button>
+        <div style="flex:1"></div>
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button class="pm-btn pm-btn-primary" *ngIf="postStep < 3" (click)="postStep = postStep + 1">Continue</button>
+        <button class="pm-btn pm-btn-primary" *ngIf="postStep === 3" (click)="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Add Meter (Multi-step) -->
+<div class="modal" [class.show]="activeModal === 'addMeterModal'" [style.display]="activeModal === 'addMeterModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-plus-circle text-success me-2"></i>Add Electricity Meter</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [ngClass]="{'active': meterStep===1, 'completed': meterStep>1}"><div class="pm-step-num">1</div><span class="pm-step-label">Type</span></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [ngClass]="{'active': meterStep===2, 'completed': meterStep>2}"><div class="pm-step-num">2</div><span class="pm-step-label">Details</span></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [ngClass]="{'active': meterStep===3, 'completed': meterStep>3}"><div class="pm-step-num">3</div><span class="pm-step-label">Confirm</span></div>
+        </div>
+        <div [ngClass]="{'fade-step': true, 'active': meterStep === 1}">
+          <div class="pm-tab-pills mb-3">
+            <button class="pm-tab-pill" [ngClass]="{'active': newMeterType==='prepaid'}" (click)="newMeterType='prepaid'">Prepaid</button>
+            <button class="pm-tab-pill" [ngClass]="{'active': newMeterType==='postpaid'}" (click)="newMeterType='postpaid'">Postpaid</button>
+          </div>
+        </div>
+        <div [ngClass]="{'fade-step': true, 'active': meterStep === 2}">
+          <div class="mb-3"><label class="pm-form-label">Meter Number</label><input type="text" class="pm-form-control" placeholder="Enter meter number"></div>
+          <div class="mb-3"><label class="pm-form-label">Nickname</label><input type="text" class="pm-form-control" placeholder="e.g. Rental Unit C"></div>
+        </div>
+        <div [ngClass]="{'fade-step': true, 'active': meterStep === 3}">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-link-45deg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-primary)">Verify Details</h5>
+            <div class="p-3 rounded mt-3" style="background:#fff;text-align:left;font-size:13px">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Type</span><strong>{{newMeterType}}</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" *ngIf="meterStep > 1 && meterStep < 3" (click)="meterStep = meterStep - 1">Back</button>
+        <div style="flex:1"></div>
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button class="pm-btn pm-btn-primary" *ngIf="meterStep < 3" (click)="meterStep = meterStep + 1">Next</button>
+        <button class="pm-btn pm-btn-accent" *ngIf="meterStep === 3" (click)="closeModal()">Link Meter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Portfolio Health -->
+<div class="modal" [class.show]="activeModal === 'portfolioHealthModal'" [style.display]="activeModal === 'portfolioHealthModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>Portfolio Health Check</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="status-row"><div><strong>KPLC Prepaid API</strong></div><span class="pm-badge pm-badge-success">Healthy</span></div>
+        <div class="status-row"><div><strong>KPLC Postpaid Portal</strong></div><span class="pm-badge pm-badge-warning">Slow</span></div>
+        <div class="status-row"><div><strong>M-Pesa STK Integration</strong></div><span class="pm-badge pm-badge-success">Healthy</span></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Token Vault -->
+<div class="modal" [class.show]="activeModal === 'tokenHistoryModal'" [style.display]="activeModal === 'tokenHistoryModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-safe text-primary me-2"></i>Token Vault & History</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead><tr><th>Date</th><th>Meter</th><th>Token</th><th>Units</th><th>Amount</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let tx of transactions"><td>{{tx.date}}</td><td>{{tx.account}}</td><td style="font-family:monospace">4829-****-****-****</td><td>{{(tokenAmount / 14.1) | number:'1.0-0'}} kWh</td><td>{{tx.amount}}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Notifications -->
+<div class="modal" [class.show]="activeModal === 'electricityNotifModal'" [style.display]="activeModal === 'electricityNotifModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell text-warning me-2"></i>Notifications</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger)"><i class="bi bi-exclamation-triangle"></i></div><div style="flex:1"><div style="font-weight:600">Office Postpaid Overdue</div><div style="font-size:11px;color:var(--pm-muted)">2 hours ago</div></div></div>
+        <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent)"><i class="bi bi-check-circle"></i></div><div style="flex:1"><div style="font-weight:600">Token Purchased</div><div style="font-size:11px;color:var(--pm-muted)">Yesterday</div></div></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Mark Read & Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Auto Top-up -->
+<div class="modal" [class.show]="activeModal === 'autoTopupModal'" [style.display]="activeModal === 'autoTopupModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-repeat text-primary me-2"></i>Setup Auto Top-Up</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Select Meter</label><select class="pm-form-control"><option *ngFor="let m of meters">{{m.name}} ({{m.id}})</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Trigger When Below</label><input type="number" class="pm-form-control" value="10"></div>
+        <div class="mb-3"><label class="pm-form-label">Top-Up Amount (KES)</label><input type="number" class="pm-form-control" value="1000"></div>
+        <div class="mb-3 form-check"><input type="checkbox" class="form-check-input" checked><label class="form-check-label" style="font-size:13px">Use M-Pesa automatically</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-accent">Save Rule</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Attention Detail -->
+<div class="modal" [class.show]="activeModal === 'attentionModal'" [style.display]="activeModal === 'attentionModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>All Attention Items</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div *ngFor="let item of attentionItems" class="status-row">
+          <div><strong>{{item.title}}</strong><br><span style="font-size:11px;color:var(--pm-muted)">{{item.subtitle}}</span></div>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal(item.modal)">{{item.btnText}}</button>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Suggestions Detail -->
+<div class="modal" [class.show]="activeModal === 'suggestionsModal'" [style.display]="activeModal === 'suggestionsModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-lightbulb text-warning me-2"></i>Savings Plan</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body"><p style="font-size:13px">Shift borehole pumping to off-peak hours (11 PM - 5 AM) to save on demand charges.</p><div class="p-3 rounded" style="background:var(--pm-accent-soft)"><strong>Estimated Savings: KES 2,100/month</strong></div></div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary">Accept Plan</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Bill Forecast -->
+<div class="modal" [class.show]="activeModal === 'billForecastModal'" [style.display]="activeModal === 'billForecastModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-graph-up text-info me-2"></i>Bill Forecast</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between mb-2" style="font-size:13px"><span>Forecasted Bill</span><strong style="color:var(--pm-danger)">KES 11,900</strong></div>
+        <div class="d-flex justify-content-between mb-2" style="font-size:13px"><span>Budget Limit</span><strong>KES 9,500</strong></div>
+        <div class="pm-progress mt-2"><div class="pm-progress-bar" style="width:125%;background:var(--pm-danger)"></div></div>
+        <p class="mt-3" style="font-size:12px;color:var(--pm-ink-soft)">You are projected to exceed your budget by KES 2,400 based on current usage trends.</p>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary">Adjust Budget</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Emergency Credit -->
+<div class="modal" [class.show]="activeModal === 'emergencyCreditModal'" [style.display]="activeModal === 'emergencyCreditModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-life-preserver text-danger me-2"></i>Emergency Credit</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="pm-receipt">
+          <div class="receipt-icon" style="background:var(--pm-danger-soft);color:var(--pm-danger)"><i class="bi bi-exclamation-triangle"></i></div>
+          <h5>Unlock 15 kWh Emergency Credit?</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft)">This will be deducted from your next token purchase.</p>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-danger">Activate Emergency Credit</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Bulk Pay -->
+<div class="modal" [class.show]="activeModal === 'bulkElectricityPayModal'" [style.display]="activeModal === 'bulkElectricityPayModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-collection me-2" style="color:var(--pm-purple)"></i>Bulk Electricity Pay</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="status-row"><div><input type="checkbox" checked> <strong>Home Prepaid</strong> - KES 2,000</div></div>
+        <div class="status-row"><div><input type="checkbox"> <strong>Office Postpaid</strong> - KES 8,400</div></div>
+        <div class="p-3 mt-3 rounded" style="background:var(--pm-surface-2)"><div class="d-flex justify-content-between"><strong>Total</strong><strong style="color:var(--pm-primary);font-size:18px">KES 2,000</strong></div></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="openModal('receiptModal')">Pay Selected</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Upload Reading -->
+<div class="modal" [class.show]="activeModal === 'uploadReadingModal'" [style.display]="activeModal === 'uploadReadingModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-camera text-info me-2"></i>Upload Meter Reading</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Account</label><select class="pm-form-control"><option *ngFor="let p of postpaidAccounts">{{p.name}}</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Reading Value</label><input type="number" class="pm-form-control" placeholder="Enter current meter reading"></div>
+        <div class="mb-3"><label class="pm-form-label">Photo (Optional)</label><input type="file" class="form-control"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Submit Reading</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Report Outage -->
+<div class="modal" [class.show]="activeModal === 'reportOutageModal'" [style.display]="activeModal === 'reportOutageModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-cone-striped text-danger me-2"></i>Report Outage</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Meter / Location</label><select class="pm-form-control"><option *ngFor="let m of meters">{{m.name}} ({{m.id}})</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Outage Type</label><select class="pm-form-control"><option>Complete Power Loss</option><option>Interruption</option><option>Tripping</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Additional Details</label><textarea class="pm-form-control" rows="3"></textarea></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-danger">Submit Report</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Tariff Calculator -->
+<div class="modal" [class.show]="activeModal === 'tariffCalculatorModal'" [style.display]="activeModal === 'tariffCalculatorModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-calculator me-2" style="color:var(--pm-primary)"></i>Tariff Calculator</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Usage (kWh)</label><input type="number" class="pm-form-control" value="100"></div>
+        <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+          <div class="d-flex justify-content-between mb-1" style="font-size:13px"><span>Estimated Cost</span><strong style="color:var(--pm-primary)">KES 1,410.00</strong></div>
+          <div style="font-size:11px;color:var(--pm-muted)">Based on standard domestic tariff KES 14.1/kWh</div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Statement Export -->
+<div class="modal" [class.show]="activeModal === 'statementExportModal'" [style.display]="activeModal === 'statementExportModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-download text-accent me-2" style="color:var(--pm-accent)"></i>Export Statements</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Period</label><select class="pm-form-control"><option>Last Month</option><option>Last 3 Months</option><option>Year to Date</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Format</label><select class="pm-form-control"><option>PDF</option><option>CSV</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Download</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Dispute Bill -->
+<div class="modal" [class.show]="activeModal === 'disputeBillModal'" [style.display]="activeModal === 'disputeBillModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-exclamation me-2" style="color:var(--pm-purple)"></i>Dispute / Ticket Center</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Account</label><select class="pm-form-control"><option *ngFor="let p of postpaidAccounts">{{p.name}}</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Issue Type</label><select class="pm-form-control"><option>Billing Error</option><option>Meter Malfunction</option><option>Estimated Reading Dispute</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Description</label><textarea class="pm-form-control" rows="3"></textarea></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Submit Dispute</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Outage Tracker -->
+<div class="modal" [class.show]="activeModal === 'outageTrackerModal'" [style.display]="activeModal === 'outageTrackerModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-broadcast text-danger me-2"></i>Outage Tracker</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div *ngFor="let out of outages" class="status-row">
+          <div><strong>{{out.location}}</strong><br><span style="font-size:11px;color:var(--pm-muted)">{{out.cause}} · {{out.time}}</span></div>
+          <span class="pm-badge pm-badge-danger">Active</span>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Receipt -->
+<div class="modal" [class.show]="activeModal === 'receiptModal'" [style.display]="activeModal === 'receiptModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Receipt</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="pm-receipt">
+          <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">Successful</h5>
+          <div class="p-3 rounded mt-3" style="background:#fff;text-align:left;font-size:13px">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Ref</span><strong>TXN-EL-29381</strong></div>
+            <div class="d-flex justify-content-between"><span class="text-muted">Date</span><strong>27 Jun 2025</strong></div>
+          </div>
+          <div class="d-flex gap-2 justify-content-center mt-3" style="gap:8px">
+            <button class="pm-btn pm-btn-sm"><i class="bi bi-download"></i> PDF</button>
+            <button class="pm-btn pm-btn-sm"><i class="bi bi-whatsapp"></i> Share</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button></div>
+    </div>
+  </div>
+</div>

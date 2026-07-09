@@ -1,0 +1,1695 @@
+<!-- Page Bar -->
+<div class="pm-page-bar">
+    <div>
+        <div class="pm-breadcrumb">
+            <a href="#">Home</a> / <a href="#">BaaS Transactions</a> / <strong>Transfer Management</strong>
+        </div>
+        <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">
+            Page 1.3 — Transfer Management
+        </h2>
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">
+            Initiate, schedule, approve and reconcile bank-to-bank transfers across Kenya and Africa with full
+            compliance, limits and audit trails.
+        </p>
+    </div>
+    <div class="d-flex flex-wrap" style="gap:8px">
+        <button class="btn-pm" (click)="openModal('transferHealthModal')">
+            <i class="bi bi-heart-pulse"></i> Health Check
+        </button>
+        <button class="btn-pm" (click)="openModal('bulkTransferModal')">
+            <i class="bi bi-collection"></i> Bulk Transfer
+        </button>
+        <button class="btn-pm btn-pm-p" (click)="openModal('initiateTransferModal')">
+            <i class="bi bi-plus-lg"></i> New Transfer
+        </button>
+    </div>
+</div>
+
+<!-- pm-content -->
+<div class="pm-content">
+
+    <!-- HERO STATS -->
+    <div class="row g-3">
+        <div class="col-lg-4">
+            <div class="C C-accent" style="min-height:170px">
+                <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">
+                    Transfer engine is live <span style="color:#86efac">●</span>
+                </p>
+                <div class="SV" style="margin:8px 0;color:#fff">{{ heroStats.transferredToday }}</div>
+                <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">
+                    Domestic (PesaLink/EFT/RTGS) + International (SWIFT/Remit) across 47 banks and 12 African corridors.
+                </p>
+                <div class="d-flex flex-wrap mt-3" style="gap:8px">
+                    <button class="btn-pm btn-sm"
+                        style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+                        (click)="openModal('initiateTransferModal')">New Transfer</button>
+                    <button class="btn-pm btn-sm"
+                        style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+                        (click)="openModal('scheduleTransferModal')">Schedule</button>
+                    <button class="btn-pm btn-sm"
+                        style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+                        (click)="openModal('bulkTransferModal')">Bulk</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6">
+            <div class="C" style="min-height:170px">
+                <p class="SL" style="color:var(--pm-warning)">PENDING APPROVAL</p>
+                <div class="SV" style="margin:6px 0">{{ heroStats.pendingApproval }}</div>
+                <span class="B B-w"><i class="bi bi-clock"></i> {{ heroStats.pendingAmount }}</span>
+                <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">12 high-value transfers awaiting
+                    maker-checker approval</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6">
+            <div class="C" style="min-height:170px">
+                <p class="SL" style="color:var(--pm-info)">SUCCESS RATE (30D)</p>
+                <div class="SV" style="margin:6px 0">{{ heroStats.successRate }}</div>
+                <span class="B B-s"><i class="bi bi-graph-up-arrow"></i> {{ heroStats.successDelta }}</span>
+                <div class="mt-2">
+                    <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)">
+                        <span>Domestic</span><span>{{ heroStats.domesticSuccess }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)">
+                        <span>International</span><span>{{ heroStats.internationalSuccess }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4">
+            <div class="C" style="min-height:170px;border-left:3px solid var(--pm-accent)">
+                <p class="SL" style="color:var(--pm-accent)">AVERAGE SETTLEMENT</p>
+                <div class="SV" style="margin:6px 0">{{ heroStats.avgSettlement }}</div>
+                <span class="B B-s"><i class="bi bi-lightning-charge"></i> {{ heroStats.settlementMethod }}</span>
+                <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+                    RTGS: {{ heroStats.rtgsAvg }}<br>SWIFT: {{ heroStats.swiftAvg }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+    <div class="row g-3">
+        <div class="col-lg-4">
+            <div class="C">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="st">Attention Required</h3>
+                    <button class="btn-pm btn-sm" (click)="openModal('attentionModal')">View all</button>
+                </div>
+                <div class="sr" *ngFor="let item of attentionItems">
+                    <div class="d-flex align-items-center gap-3">
+                        <div [style.background]="item.iconBg" [style.color]="item.iconColor"
+                            style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+                            <i class="bi {{item.icon}}"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+                        </div>
+                    </div>
+                    <button class="btn-pm btn-sm" (click)="openModal(item.actionModal)">{{ item.actionLabel }}</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="C">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="st">Smart Suggestions</h3>
+                    <span class="B B-p"><i class="bi bi-stars"></i> AI</span>
+                </div>
+                <div class="sr" *ngFor="let item of smartSuggestions">
+                    <div class="d-flex align-items-center gap-3">
+                        <div [style.background]="item.iconBg" [style.color]="item.iconColor"
+                            style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+                            <i class="bi {{item.icon}}"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+                            <div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
+                        </div>
+                    </div>
+                    <button class="btn-pm btn-sm" (click)="openModal(item.actionModal)">{{ item.actionLabel }}</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="C">
+                <div class="mb-3">
+                    <h3 class="st">Quick Actions</h3>
+                    <p class="ss">Frequent transfer workflows</p>
+                </div>
+                <div class="quick-grid">
+                    <button class="quick-btn" *ngFor="let action of quickActions" (click)="openModal(action.modal)">
+                        <i class="bi {{action.icon}} {{action.iconColor}} me-1"></i> {{ action.label }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 1.3.1 -->
+    <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+            <div>
+                <h3 class="st"><i class="bi bi-bank2" style="color:var(--pm-primary)"></i> 1.3.1 — Domestic Bank
+                    Transfers (PesaLink, EFT, RTGS)</h3>
+                <p class="ss">Instant PesaLink, same-day EFT and real-time RTGS transfers to 47+ Kenyan banks with live
+                    status and receipt generation.</p>
+            </div>
+            <div class="d-flex" style="gap:8px">
+                <button class="btn-pm btn-sm" (click)="openModal('bankDirectoryModal')"><i class="bi bi-list-ul"></i>
+                    Bank Directory</button>
+                <button class="btn-pm btn-sm btn-pm-p" (click)="openModal('initiateTransferModal')"><i
+                        class="bi bi-plus-lg"></i> New Transfer</button>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-lg-7">
+                <div class="UB">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Recent Domestic Transfers</h4>
+                    <div class="table-responsive">
+                        <table class="T">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Beneficiary</th>
+                                    <th>Bank</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let t of domesticTransfers">
+                                    <td>{{ t.date }}</td>
+                                    <td>{{ t.beneficiary }}</td>
+                                    <td>{{ t.bank }}</td>
+                                    <td><strong>{{ t.amount }}</strong></td>
+                                    <td>{{ t.method }}</td>
+                                    <td><span class="B {{t.statusClass}}">{{ t.status }}</span></td>
+                                    <td><button class="btn-pm btn-sm" (click)="openModal(t.actionModal)">{{ t.action
+                                            }}</button></td>
+                                </tr>
+                                <tr *ngIf="domesticTransfers.length === 0">
+                                    <td colspan="7" style="text-align:center;color:var(--pm-muted);padding:24px">No
+                                        domestic transfers found.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="UB">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Bank Status (Live)</h4>
+                    <div class="sr" *ngFor="let bank of bankStatuses">
+                        <div>
+                            <strong>{{ bank.name }}</strong>
+                            <div style="font-size:11px;color:var(--pm-muted)">{{ bank.methods }}</div>
+                        </div>
+                        <span class="B {{bank.statusClass}}">{{ bank.status }}</span>
+                    </div>
+                    <div *ngIf="bankStatuses.length === 0" style="text-align:center;color:var(--pm-muted);padding:24px">
+                        No bank status data available.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 1.3.2 -->
+    <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+            <div>
+                <h3 class="st"><i class="bi bi-globe" style="color:var(--pm-info)"></i> 1.3.2 — International Transfers
+                    & Remittances</h3>
+                <p class="ss">SWIFT, Wave, Remitly, WorldRemit and regional corridors with real-time FX rates,
+                    compliance screening and beneficiary tracking.</p>
+            </div>
+            <div class="d-flex" style="gap:8px">
+                <button class="btn-pm btn-sm" (click)="openModal('fxRatesModal')"><i
+                        class="bi bi-currency-exchange"></i> FX Rates</button>
+                <button class="btn-pm btn-sm btn-pm-p" (click)="openModal('internationalModal')"><i
+                        class="bi bi-plus-lg"></i> New International</button>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-lg-8">
+                <div class="UB">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Recent International Transfers</h4>
+                    <div class="table-responsive">
+                        <table class="T">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Beneficiary</th>
+                                    <th>Destination</th>
+                                    <th>Amount</th>
+                                    <th>FX Rate</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let t of internationalTransfers">
+                                    <td>{{ t.date }}</td>
+                                    <td>{{ t.beneficiary }}</td>
+                                    <td>{{ t.destination }}</td>
+                                    <td><strong>{{ t.amount }}</strong></td>
+                                    <td>{{ t.fxRate }}</td>
+                                    <td>{{ t.method }}</td>
+                                    <td><span class="B {{t.statusClass}}">{{ t.status }}</span></td>
+                                    <td><button class="btn-pm btn-sm" (click)="openModal(t.actionModal)">{{ t.action
+                                            }}</button></td>
+                                </tr>
+                                <tr *ngIf="internationalTransfers.length === 0">
+                                    <td colspan="8" style="text-align:center;color:var(--pm-muted);padding:24px">No
+                                        international transfers found.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="UB">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Live FX Rates (KES)</h4>
+                    <div class="sr" *ngFor="let rate of fxRates">
+                        <div><strong>{{ rate.currency }}</strong></div>
+                        <div>
+                            <strong>{{ rate.rate }}</strong>
+                            <span style="font-size:11px;" [style.color]="rate.changeClass">{{ rate.change }}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="fxRates.length === 0" style="text-align:center;color:var(--pm-muted);padding:24px">No FX
+                        rates available.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 1.3.3 -->
+    <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+            <div>
+                <h3 class="st"><i class="bi bi-arrow-repeat" style="color:var(--pm-purple)"></i> 1.3.3 — Scheduled &
+                    Recurring Transfers</h3>
+                <p class="ss">Set up one-time future transfers and recurring payments (salary, rent, subscriptions) with
+                    approval workflows and failure handling.</p>
+            </div>
+            <div class="d-flex" style="gap:8px">
+                <button class="btn-pm btn-sm" (click)="openModal('scheduleTransferModal')"><i class="bi bi-plus-lg"></i>
+                    New Schedule</button>
+                <button class="btn-pm btn-sm" (click)="openModal('recurringModal')"><i class="bi bi-arrow-repeat"></i>
+                    Recurring</button>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-12">
+                <div class="UB">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Active Schedules & Recurring Runs</h4>
+                    <div class="table-responsive">
+                        <table class="T">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Beneficiary</th>
+                                    <th>Amount</th>
+                                    <th>Frequency</th>
+                                    <th>Next Run</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let t of recurringTransfers">
+                                    <td>{{ t.name }}</td>
+                                    <td>{{ t.beneficiary }}</td>
+                                    <td>{{ t.amount }}</td>
+                                    <td>{{ t.frequency }}</td>
+                                    <td>{{ t.nextRun }}</td>
+                                    <td><span class="B {{t.statusClass}}">{{ t.status }}</span></td>
+                                    <td><button class="btn-pm btn-sm" (click)="openModal(t.actionModal)">{{ t.action
+                                            }}</button></td>
+                                </tr>
+                                <tr *ngIf="recurringTransfers.length === 0">
+                                    <td colspan="7" style="text-align:center;color:var(--pm-muted);padding:24px">No
+                                        recurring transfers found.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 1.3.4 -->
+    <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+            <div>
+                <h3 class="st"><i class="bi bi-clock-history" style="color:var(--pm-muted)"></i> 1.3.4 — Transfer
+                    History & Reconciliation</h3>
+                <p class="ss">Full audit trail, receipt vault, reconciliation tools and export options for all
+                    transfers.</p>
+            </div>
+            <div class="d-flex" style="gap:8px">
+                <button class="btn-pm btn-sm" (click)="openModal('reconciliationModal')"><i
+                        class="bi bi-check2-square"></i> Reconcile</button>
+                <button class="btn-pm btn-sm" (click)="openModal('transferHistoryModal')"><i class="bi bi-download"></i>
+                    Export</button>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-12">
+                <div class="UB">
+                    <div class="table-responsive">
+                        <table class="T">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Reference</th>
+                                    <th>Beneficiary</th>
+                                    <th>Bank</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                    <th>Receipt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let t of transferHistory">
+                                    <td>{{ t.date }}</td>
+                                    <td>{{ t.reference }}</td>
+                                    <td>{{ t.beneficiary }}</td>
+                                    <td>{{ t.bank }}</td>
+                                    <td>{{ t.amount }}</td>
+                                    <td>{{ t.method }}</td>
+                                    <td><span class="B {{t.statusClass}}">{{ t.status }}</span></td>
+                                    <td><button class="btn-pm btn-sm" (click)="openModal(t.receiptModal)">{{
+                                            t.receiptAction }}</button></td>
+                                </tr>
+                                <tr *ngIf="transferHistory.length === 0">
+                                    <td colspan="8" style="text-align:center;color:var(--pm-muted);padding:24px">No
+                                        transfer history found.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 1.3.5 -->
+    <div class="C">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+            <div>
+                <h3 class="st"><i class="bi bi-shield-check" style="color:var(--pm-danger)"></i> 1.3.5 — Transfer
+                    Limits, Approvals & Compliance</h3>
+                <p class="ss">Daily/weekly/monthly limits, maker-checker approval workflows, AML screening and
+                    regulatory reporting.</p>
+            </div>
+            <div class="d-flex" style="gap:8px">
+                <button class="btn-pm btn-sm" (click)="openModal('limitsModal')"><i class="bi bi-sliders"></i>
+                    Limits</button>
+                <button class="btn-pm btn-sm" (click)="openModal('approvalQueueModal')"><i
+                        class="bi bi-check2-square"></i> Approvals</button>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-lg-4">
+                <div class="UB">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Current Limits</h4>
+                    <div class="sr" *ngFor="let limit of limits">
+                        <div><strong>{{ limit.label }}</strong></div>
+                        <div><strong>{{ limit.value }}</strong></div>
+                    </div>
+                    <div *ngIf="limits.length === 0" style="text-align:center;color:var(--pm-muted);padding:24px">No
+                        limits configured.</div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="UB">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Approval Workflow</h4>
+                    <div class="sr" *ngFor="let flow of approvalWorkflow">
+                        <div><strong>{{ flow.range }}</strong></div>
+                        <div><span class="B {{flow.badgeClass}}">{{ flow.approver }}</span></div>
+                    </div>
+                    <div *ngIf="approvalWorkflow.length === 0"
+                        style="text-align:center;color:var(--pm-muted);padding:24px">No approval workflow configured.
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="UB">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Compliance Status</h4>
+                    <div class="p-3 rounded mb-2" *ngFor="let cs of complianceStatus" [style.background]="cs.colorVar">
+                        <div style="font-size:11px;font-weight:700" [style.color]="cs.textColor">{{ cs.label }}</div>
+                        <div style="font-size:20px;font-weight:700" [style.color]="cs.textColor">{{ cs.value }}</div>
+                    </div>
+                    <div *ngIf="complianceStatus.length === 0"
+                        style="text-align:center;color:var(--pm-muted);padding:24px">No compliance data available.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- pm-content -->
+<!-- Toast Notification -->
+<div *ngIf="toast.visible" class="toast-notification"
+    style="position:fixed;top:20px;right:20px;z-index:9999;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:var(--pm-shadow-xl);animation:fi .3s;"
+    [style.background]="toast.type === 'success' ? 'var(--pm-accent-soft)' : toast.type === 'error' ? 'var(--pm-danger-soft)' : 'var(--pm-info-soft)'"
+    [style.color]="toast.type === 'success' ? '#047857' : toast.type === 'error' ? '#DC2626' : '#1D4ED8'">
+    <i class="bi" [class.bi-check-circle-fill]="toast.type === 'success'"
+        [class.bi-x-circle-fill]="toast.type === 'error'" [class.bi-info-circle-fill]="toast.type === 'info'"></i>
+    {{ toast.message }}
+</div>
+
+<!-- Loading Overlay -->
+<div *ngIf="isLoading" class="loading-ov"
+    style="position:fixed;inset:0;background:rgba(255,255,255,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9998;">
+    <div class="spinner"></div>
+    <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">{{ loadingMessage }}</p>
+</div>
+
+<!-- Modal Backdrop -->
+<div *ngIf="activeModal" class="modal-backdrop" style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1050;"
+    (click)="closeModal()"></div>
+
+<!-- M1: Initiate Transfer (Multi-step) -->
+<div *ngIf="isModalOpen('initiateTransferModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:800px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-arrow-left-right text-primary me-2"></i>Initiate Domestic Transfer</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="stepper">
+                <div class="step" *ngFor="let label of flows['init'].labels; let i = index"
+                    [class.active]="isFlowStep('init', i+1)" [class.done]="isFlowDone('init', i+1)">
+                    <div class="step-n">
+                        <i class="bi bi-check" *ngIf="isFlowDone('init', i+1)"></i>
+                        <span *ngIf="!isFlowDone('init', i+1)">{{ i+1 }}</span>
+                    </div>
+                    <div class="step-l">{{ label }}</div>
+                </div>
+                <div class="step-line" *ngFor="let _ of [].constructor(flows['init'].labels.length - 1)"></div>
+            </div>
+            <!-- Step 1 -->
+            <div *ngIf="isFlowStep('init', 1)" class="fstep active">
+                <h6 style="font-weight:700">Step 1: Beneficiary Details</h6>
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="FL">Beneficiary Name</label><input class="FC"
+                            [(ngModel)]="initForm.beneficiaryName"></div>
+                    <div class="col-md-6"><label class="FL">Account Number</label><input class="FC"
+                            [(ngModel)]="initForm.accountNumber"></div>
+                    <div class="col-md-6"><label class="FL">Bank</label>
+                        <select class="FC" [(ngModel)]="initForm.bank">
+                            <option>Equity Bank</option>
+                            <option>KCB Bank</option>
+                            <option>Co-op Bank</option>
+                            <option>NCBA</option>
+                            <option>Family Bank</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><label class="FL">Branch (optional)</label><input class="FC"
+                            [(ngModel)]="initForm.branch"></div>
+                </div>
+            </div>
+            <!-- Step 2 -->
+            <div *ngIf="isFlowStep('init', 2)" class="fstep active">
+                <h6 style="font-weight:700">Step 2: Transfer Details</h6>
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="FL">Amount (KES)</label><input class="FC"
+                            [(ngModel)]="initForm.amount"></div>
+                    <div class="col-md-6"><label class="FL">Transfer Method</label>
+                        <select class="FC" [(ngModel)]="initForm.method">
+                            <option>PesaLink (Instant)</option>
+                            <option>EFT (Same Day)</option>
+                            <option>RTGS (Real-time Gross)</option>
+                        </select>
+                    </div>
+                    <div class="col-12"><label class="FL">Purpose / Narration</label><input class="FC"
+                            [(ngModel)]="initForm.narration"></div>
+                </div>
+                <div class="p-3 rounded mt-3" style="background:var(--pm-info-soft);font-size:12px"><i
+                        class="bi bi-info-circle me-1"></i> PesaLink fee: KES 25. EFT fee: KES 50. RTGS fee: KES 300.
+                </div>
+            </div>
+            <!-- Step 3 -->
+            <div *ngIf="isFlowStep('init', 3)" class="fstep active">
+                <h6 style="font-weight:700">Step 3: Review & Confirm</h6>
+                <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">
+                    <div class="d-flex justify-content-between mb-2"><span
+                            class="text-muted">Beneficiary</span><strong>{{ initForm.beneficiaryName }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Bank /
+                            Account</span><strong>{{ initForm.bank }} &bull; {{ initForm.accountNumber }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES
+                            {{ initForm.amount }}.00</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Method</span><strong>{{
+                            initForm.method }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Fee</span><strong>KES
+                            25.00</strong></div>
+                    <hr class="divider">
+                    <div class="d-flex justify-content-between"><span style="font-weight:700">Total Debit</span><strong
+                            style="font-size:18px;color:var(--pm-primary)">KES {{ (+initForm.amount || 0) + 25
+                            }}.00</strong></div>
+                </div>
+                <div class="mt-3"><label class="FL">Enter PIN to Authorise</label>
+                    <div class="pin-row">
+                        <input type="password" maxlength="1" [(ngModel)]="initForm.pin[0]"
+                            (input)="onPinInput($event, 0)">
+                        <input type="password" maxlength="1" [(ngModel)]="initForm.pin[1]"
+                            (input)="onPinInput($event, 1)">
+                        <input type="password" maxlength="1" [(ngModel)]="initForm.pin[2]"
+                            (input)="onPinInput($event, 2)">
+                        <input type="password" maxlength="1" [(ngModel)]="initForm.pin[3]"
+                            (input)="onPinInput($event, 3)">
+                    </div>
+                </div>
+            </div>
+            <!-- Step 4 -->
+            <div *ngIf="isFlowStep('init', 4)" class="fstep active">
+                <div class="receipt">
+                    <div class="ri"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">Transfer Initiated Successfully</h5>
+                    <p style="font-size:13px;color:var(--pm-ink-soft)">Your PesaLink transfer has been processed
+                        instantly.</p>
+                    <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+                        <div class="d-flex justify-content-between mb-2"><span
+                                class="text-muted">Reference</span><strong>TRF-20250627-88341</strong></div>
+                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Status</span><span
+                                class="B B-s">Instant Success</span></div>
+                        <div class="d-flex justify-content-between"><span class="text-muted">Completed</span><strong>27
+                                Jun 2025, 14:32 EAT</strong></div>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3" style="gap:8px">
+                        <button class="btn-pm btn-sm" (click)="openModal('transferReceiptModal')">Download
+                            Receipt</button>
+                        <button class="btn-pm btn-sm" (click)="openModal('trackTransferModal')">Track Status</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;"
+            *ngIf="!isFlowStep('init', 4)">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="nextFlow('init')">Continue <i
+                    class="bi bi-arrow-right"></i></button>
+        </div>
+        <div style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;"
+            *ngIf="isFlowStep('init', 4)">
+            <button class="btn-pm btn-pm-p" (click)="closeModal()">Done</button>
+        </div>
+    </div>
+</div>
+
+<!-- M2: International Transfer (Multi-step) -->
+<div *ngIf="isModalOpen('internationalModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:800px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-globe text-info me-2"></i>International Transfer / Remittance</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="stepper">
+                <div class="step" *ngFor="let label of flows['intl'].labels; let i = index"
+                    [class.active]="isFlowStep('intl', i+1)" [class.done]="isFlowDone('intl', i+1)">
+                    <div class="step-n">
+                        <i class="bi bi-check" *ngIf="isFlowDone('intl', i+1)"></i>
+                        <span *ngIf="!isFlowDone('intl', i+1)">{{ i+1 }}</span>
+                    </div>
+                    <div class="step-l">{{ label }}</div>
+                </div>
+                <div class="step-line" *ngFor="let _ of [].constructor(flows['intl'].labels.length - 1)"></div>
+            </div>
+            <!-- Step 1 -->
+            <div *ngIf="isFlowStep('intl', 1)" class="fstep active">
+                <h6 style="font-weight:700">Step 1: Beneficiary & Corridor</h6>
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="FL">Beneficiary Name</label><input class="FC"
+                            [(ngModel)]="intlForm.beneficiaryName"></div>
+                    <div class="col-md-6"><label class="FL">Mobile / Account</label><input class="FC"
+                            [(ngModel)]="intlForm.mobile"></div>
+                    <div class="col-md-6"><label class="FL">Destination Country</label>
+                        <select class="FC" [(ngModel)]="intlForm.country">
+                            <option>Uganda</option>
+                            <option>Tanzania</option>
+                            <option>United Kingdom</option>
+                            <option>United States</option>
+                            <option>Nigeria</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><label class="FL">Currency to Send</label>
+                        <select class="FC" [(ngModel)]="intlForm.currency">
+                            <option>USD</option>
+                            <option>EUR</option>
+                            <option>GBP</option>
+                            <option>KES</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- Step 2 -->
+            <div *ngIf="isFlowStep('intl', 2)" class="fstep active">
+                <h6 style="font-weight:700">Step 2: Amount & FX</h6>
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="FL">Amount to Send (USD)</label><input class="FC"
+                            [(ngModel)]="intlForm.amount"></div>
+                    <div class="col-md-6"><label class="FL">Recipient Gets (UGX)</label><input class="FC"
+                            [(ngModel)]="intlForm.recipientGets" disabled></div>
+                </div>
+                <div class="p-3 rounded mt-3" style="background:var(--pm-accent-soft);font-size:12px"><i
+                        class="bi bi-currency-exchange me-1"></i> Rate: 1 USD = 3,680 UGX &bull; Fee: USD 4.50 &bull;
+                    Total: USD 2,504.50</div>
+                <div class="mt-3"><label class="FL">Delivery Method</label>
+                    <select class="FC" [(ngModel)]="intlForm.deliveryMethod">
+                        <option>Wave (Instant to Mobile Money)</option>
+                        <option>SWIFT (Bank Account)</option>
+                        <option>Remitly (Cash Pickup)</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Step 3 -->
+            <div *ngIf="isFlowStep('intl', 3)" class="fstep active">
+                <h6 style="font-weight:700">Step 3: Compliance & Confirmation</h6>
+                <div class="mb-3"><label class="FL">Purpose of Transfer</label>
+                    <select class="FC" [(ngModel)]="intlForm.purpose">
+                        <option>Family Support</option>
+                        <option>Business Payment</option>
+                        <option>Education</option>
+                        <option>Medical</option>
+                    </select>
+                </div>
+                <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>USD
+                            {{ intlForm.amount }}.00</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Fee</span><strong>USD
+                            4.50</strong></div>
+                    <div class="d-flex justify-content-between"><span style="font-weight:700">Total Debit</span><strong
+                            style="font-size:18px;color:var(--pm-primary)">USD {{ (+intlForm.amount || 0) + 4.50
+                            }}.50</strong></div>
+                </div>
+                <div class="mt-3"><label class="FL">Enter PIN</label>
+                    <div class="pin-row">
+                        <input type="password" maxlength="1"><input type="password" maxlength="1"><input type="password"
+                            maxlength="1"><input type="password" maxlength="1">
+                    </div>
+                </div>
+            </div>
+            <!-- Step 4 -->
+            <div *ngIf="isFlowStep('intl', 4)" class="fstep active">
+                <div class="receipt">
+                    <div class="ri"><i class="bi bi-check-lg"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">International Transfer Sent</h5>
+                    <p style="font-size:13px;color:var(--pm-ink-soft)">Your Wave transfer to Uganda has been initiated.
+                        Recipient will receive funds within 2 minutes.</p>
+                    <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+                        <div class="d-flex justify-content-between mb-2"><span
+                                class="text-muted">Reference</span><strong>INTL-20250626-77219</strong></div>
+                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Status</span><span
+                                class="B B-s">Delivered</span></div>
+                        <div class="d-flex justify-content-between"><span class="text-muted">Completed</span><strong>26
+                                Jun 2025, 11:42 EAT</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;"
+            *ngIf="!isFlowStep('intl', 4)">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="nextFlow('intl')">Continue <i
+                    class="bi bi-arrow-right"></i></button>
+        </div>
+        <div style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;"
+            *ngIf="isFlowStep('intl', 4)">
+            <button class="btn-pm btn-pm-p" (click)="closeModal()">Done</button>
+        </div>
+    </div>
+</div>
+
+<!-- M3: Schedule Transfer -->
+<div *ngIf="isModalOpen('scheduleTransferModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-calendar-event text-success me-2"></i>Schedule One-Time Transfer</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="mb-3"><label class="FL">Beneficiary</label>
+                <select class="FC" [(ngModel)]="scheduleForm.beneficiary">
+                    <option>Grace Wanjiku (Equity)</option>
+                    <option>ABC Suppliers Ltd (KCB)</option>
+                    <option>Peter Ochieng (Uganda - Wave)</option>
+                </select>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6"><label class="FL">Amount</label><input class="FC"
+                        [(ngModel)]="scheduleForm.amount"></div>
+                <div class="col-md-6"><label class="FL">Schedule Date</label><input type="date" class="FC"
+                        [(ngModel)]="scheduleForm.date"></div>
+            </div>
+            <div class="mb-3 mt-3"><label class="FL">Payment Method</label>
+                <select class="FC" [(ngModel)]="scheduleForm.method">
+                    <option>PesaLink</option>
+                    <option>EFT</option>
+                    <option>RTGS</option>
+                    <option>Wave</option>
+                </select>
+            </div>
+            <div class="mb-3"><label class="FL">Reminder</label>
+                <select class="FC" [(ngModel)]="scheduleForm.reminder">
+                    <option>1 day before</option>
+                    <option>3 days before</option>
+                    <option>Same day</option>
+                </select>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="submitSchedule()">Schedule Transfer</button>
+        </div>
+    </div>
+</div>
+
+<!-- M4: Recurring Transfer -->
+<div *ngIf="isModalOpen('recurringModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:800px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i class="bi bi-arrow-repeat me-2"
+                    style="color:var(--pm-purple)"></i>Manage Recurring Transfers</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="pills mb-3">
+                <button class="pill" [class.active]="isTabActive('rec', 'active')"
+                    (click)="switchTab('rec', 'active')">Active</button>
+                <button class="pill" [class.active]="isTabActive('rec', 'new')" (click)="switchTab('rec', 'new')">New
+                    Recurring</button>
+                <button class="pill" [class.active]="isTabActive('rec', 'history')"
+                    (click)="switchTab('rec', 'history')">History</button>
+            </div>
+            <!-- Active Tab -->
+            <div *ngIf="isTabActive('rec', 'active')" class="tpanel active">
+                <div class="table-responsive">
+                    <table class="T">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Beneficiary</th>
+                                <th>Amount</th>
+                                <th>Frequency</th>
+                                <th>Next</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let t of recurringTransfers">
+                                <td>{{ t.name }}</td>
+                                <td>{{ t.beneficiary }}</td>
+                                <td>{{ t.amount }}</td>
+                                <td>{{ t.frequency }}</td>
+                                <td>{{ t.nextRun }}</td>
+                                <td><span class="B {{t.statusClass}}">{{ t.status }}</span></td>
+                                <td><button class="btn-pm btn-sm" (click)="openModal(t.actionModal)">{{ t.action
+                                        }}</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- New Tab -->
+            <div *ngIf="isTabActive('rec', 'new')" class="tpanel active">
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="FL">Beneficiary</label>
+                        <select class="FC" [(ngModel)]="recurringForm.beneficiary">
+                            <option>Property Mgmt Ltd</option>
+                            <option>Staff Payroll</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><label class="FL">Amount</label><input class="FC"
+                            [(ngModel)]="recurringForm.amount"></div>
+                    <div class="col-md-6"><label class="FL">Frequency</label>
+                        <select class="FC" [(ngModel)]="recurringForm.frequency">
+                            <option>Monthly</option>
+                            <option>Weekly</option>
+                            <option>Quarterly</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><label class="FL">Start Date</label><input type="date" class="FC"
+                            [(ngModel)]="recurringForm.startDate"></div>
+                </div>
+            </div>
+            <!-- History Tab -->
+            <div *ngIf="isTabActive('rec', 'history')" class="tpanel active">
+                <div class="table-responsive">
+                    <table class="T">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let h of recurringHistory">
+                                <td>{{ h.date }}</td>
+                                <td>{{ h.name }}</td>
+                                <td>{{ h.amount }}</td>
+                                <td><span class="B {{h.statusClass}}">{{ h.status }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+            <button class="btn-pm btn-pm-p" (click)="submitRecurring()">Save Recurring</button>
+        </div>
+    </div>
+</div>
+
+<!-- M5: Bulk Transfer -->
+<div *ngIf="isModalOpen('bulkTransferModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:800px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-collection me-2"></i>Bulk Transfer</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="stepper">
+                <div class="step" *ngFor="let label of flows['bulk'].labels; let i = index"
+                    [class.active]="isFlowStep('bulk', i+1)" [class.done]="isFlowDone('bulk', i+1)">
+                    <div class="step-n">
+                        <i class="bi bi-check" *ngIf="isFlowDone('bulk', i+1)"></i>
+                        <span *ngIf="!isFlowDone('bulk', i+1)">{{ i+1 }}</span>
+                    </div>
+                    <div class="step-l">{{ label }}</div>
+                </div>
+                <div class="step-line" *ngFor="let _ of [].constructor(flows['bulk'].labels.length - 1)"></div>
+            </div>
+            <!-- Step 1 -->
+            <div *ngIf="isFlowStep('bulk', 1)" class="fstep active">
+                <h6 style="font-weight:700">Step 1: Upload Beneficiaries</h6>
+                <div class="mb-3"><label class="FL">Upload CSV/Excel</label><input type="file" class="FC"
+                        (change)="onFileSelected($event, 'bulk')"></div>
+                <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i
+                        class="bi bi-info-circle me-1"></i> CSV format: Name, Account, Bank, Amount, Narration</div>
+            </div>
+            <!-- Step 2 -->
+            <div *ngIf="isFlowStep('bulk', 2)" class="fstep active">
+                <h6 style="font-weight:700">Step 2: Preview & Validate</h6>
+                <div class="table-responsive">
+                    <table class="T">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Account</th>
+                                <th>Bank</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of bulkPreview">
+                                <td>{{ row.name }}</td>
+                                <td>{{ row.account }}</td>
+                                <td>{{ row.bank }}</td>
+                                <td>{{ row.amount }}</td>
+                                <td><span class="B {{row.statusClass}}">{{ row.status }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-3"><strong>Total: KES 2,450,000 &bull; 42 recipients</strong></div>
+            </div>
+            <!-- Step 3 -->
+            <div *ngIf="isFlowStep('bulk', 3)" class="fstep active">
+                <h6 style="font-weight:700">Step 3: Funding & Approval</h6>
+                <div class="mb-3"><label class="FL">Funding Source</label>
+                    <select class="FC" [(ngModel)]="bulkForm.fundingSource">
+                        <option>PayMo Wallet (KES 24.5M)</option>
+                        <option>Business Account (Equity)</option>
+                    </select>
+                </div>
+                <div class="mb-3"><label class="FL">Approval Required</label>
+                    <select class="FC" [(ngModel)]="bulkForm.approval">
+                        <option>Director + Finance (Maker-Checker)</option>
+                        <option>Auto-approve (under limit)</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Step 4 -->
+            <div *ngIf="isFlowStep('bulk', 4)" class="fstep active">
+                <div class="receipt">
+                    <div class="ri"><i class="bi bi-check-all"></i></div>
+                    <h5 style="font-weight:700;color:var(--pm-accent)">Bulk Transfer Initiated</h5>
+                    <p style="font-size:13px;color:var(--pm-ink-soft)">42 transfers queued. Estimated completion: 14:45
+                        EAT.</p>
+                </div>
+            </div>
+        </div>
+        <div style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;"
+            *ngIf="!isFlowStep('bulk', 4)">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="nextFlow('bulk')">Continue <i
+                    class="bi bi-arrow-right"></i></button>
+        </div>
+        <div style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;"
+            *ngIf="isFlowStep('bulk', 4)">
+            <button class="btn-pm btn-pm-p" (click)="closeModal()">Done</button>
+        </div>
+    </div>
+</div>
+
+<!-- M6: Transfer Receipt -->
+<div *ngIf="isModalOpen('transferReceiptModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-receipt me-2"></i>Transfer Receipt</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="receipt">
+                <div class="ri"><i class="bi bi-check-lg"></i></div>
+                <h5 style="font-weight:700;color:var(--pm-accent)">Transfer Successful</h5>
+                <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Reference</span><strong>{{
+                            receiptData.reference }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span
+                            class="text-muted">Beneficiary</span><strong>{{ receiptData.beneficiary }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Bank</span><strong>{{
+                            receiptData.bank }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>{{
+                            receiptData.amount }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Fee</span><strong>{{
+                            receiptData.fee }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Method</span><strong>{{
+                            receiptData.method }}</strong></div>
+                    <div class="d-flex justify-content-between"><span class="text-muted">Completed</span><strong>{{
+                            receiptData.completed }}</strong></div>
+                </div>
+                <div class="d-flex justify-content-center mt-3" style="gap:8px">
+                    <button class="btn-pm btn-sm"><i class="bi bi-download"></i> PDF</button>
+                    <button class="btn-pm btn-sm"><i class="bi bi-whatsapp"></i> Share</button>
+                    <button class="btn-pm btn-sm"><i class="bi bi-envelope"></i> Email</button>
+                </div>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- M7: Track Transfer -->
+<div *ngIf="isModalOpen('trackTransferModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-truck me-2"></i>Track Transfer Status</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="p-3 rounded mb-3" style="background:var(--pm-info-soft)">
+                <div class="d-flex justify-content-between"><span>Reference</span><strong>{{ trackTransfer.reference
+                        }}</strong></div>
+                <div class="d-flex justify-content-between"><span>Current Status</span><span
+                        class="B {{trackTransfer.statusClass}}">{{ trackTransfer.status }}</span></div>
+            </div>
+            <div class="sr" *ngFor="let step of trackTransfer.steps">
+                <div><strong>{{ step.label }}</strong></div>
+                <div>{{ step.time }}</div>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- M8: International Receipt -->
+<div *ngIf="isModalOpen('intlReceiptModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-receipt me-2"></i>International Transfer Receipt</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="receipt">
+                <div class="ri"><i class="bi bi-check-lg"></i></div>
+                <h5 style="font-weight:700;color:var(--pm-accent)">Transfer Delivered</h5>
+                <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Reference</span><strong>{{
+                            intlReceiptData.reference }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span
+                            class="text-muted">Beneficiary</span><strong>{{ intlReceiptData.beneficiary }}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount
+                            Sent</span><strong>{{ intlReceiptData.amountSent }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Recipient
+                            Received</span><strong>{{ intlReceiptData.received }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Method</span><strong>{{
+                            intlReceiptData.method }}</strong></div>
+                    <div class="d-flex justify-content-between"><span class="text-muted">Delivered</span><strong>{{
+                            intlReceiptData.delivered }}</strong></div>
+                </div>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- M9: Track International -->
+<div *ngIf="isModalOpen('trackIntlModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-globe me-2"></i>Track International Transfer</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="p-3 rounded mb-3" style="background:var(--pm-purple-soft)">
+                <div class="d-flex justify-content-between"><span>Reference</span><strong>{{ trackIntl.reference
+                        }}</strong></div>
+                <div class="d-flex justify-content-between"><span>Status</span><span
+                        class="B {{trackIntl.statusClass}}">{{ trackIntl.status }}</span></div>
+            </div>
+            <div class="sr" *ngFor="let step of trackIntl.steps">
+                <div><strong>{{ step.label }}</strong></div>
+                <div>{{ step.time }}</div>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- M10: Beneficiary Management -->
+<div *ngIf="isModalOpen('beneficiaryModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:800px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-people me-2"></i>Beneficiary Management</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="pills mb-3">
+                <button class="pill" [class.active]="isTabActive('ben', 'list')"
+                    (click)="switchTab('ben', 'list')">Saved Beneficiaries</button>
+                <button class="pill" [class.active]="isTabActive('ben', 'add')" (click)="switchTab('ben', 'add')">Add
+                    New</button>
+            </div>
+            <!-- List Tab -->
+            <div *ngIf="isTabActive('ben', 'list')" class="tpanel active">
+                <div class="table-responsive">
+                    <table class="T">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Bank / Account</th>
+                                <th>Type</th>
+                                <th>Last Transfer</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let b of beneficiaries">
+                                <td>{{ b.name }}</td>
+                                <td>{{ b.bank }} &bull; {{ b.account }}</td>
+                                <td>{{ b.type }}</td>
+                                <td>{{ b.lastTransfer }}</td>
+                                <td><button class="btn-pm btn-sm"
+                                        (click)="openModal(b.type === 'Domestic' ? 'initiateTransferModal' : 'internationalModal')">Transfer</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Add Tab -->
+            <div *ngIf="isTabActive('ben', 'add')" class="tpanel active">
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="FL">Name</label><input class="FC"
+                            [(ngModel)]="newBeneficiary.name" placeholder="Full name"></div>
+                    <div class="col-md-6"><label class="FL">Account / Mobile</label><input class="FC"
+                            [(ngModel)]="newBeneficiary.account" placeholder="Account or phone"></div>
+                    <div class="col-md-6"><label class="FL">Bank / Corridor</label>
+                        <select class="FC" [(ngModel)]="newBeneficiary.bank">
+                            <option>Equity Bank</option>
+                            <option>Wave (Uganda)</option>
+                            <option>SWIFT (UK)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><label class="FL">Nickname</label><input class="FC"
+                            [(ngModel)]="newBeneficiary.nickname" placeholder="e.g. Landlord"></div>
+                </div>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+            <button class="btn-pm btn-pm-p" (click)="submitBeneficiary()">Add Beneficiary</button>
+        </div>
+    </div>
+</div>
+
+<!-- M11: Approval Queue -->
+<div *ngIf="isModalOpen('approvalQueueModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:800px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-check2-square me-2"></i>Approval Queue</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="table-responsive">
+                <table class="T">
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Beneficiary</th>
+                            <th>Amount</th>
+                            <th>Requested By</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let a of approvalQueue">
+                            <td>{{ a.reference }}</td>
+                            <td>{{ a.beneficiary }}</td>
+                            <td>{{ a.amount }}</td>
+                            <td>{{ a.requestedBy }}</td>
+                            <td><span class="B {{a.statusClass}}">{{ a.status }}</span></td>
+                            <td><button class="btn-pm btn-sm" (click)="submitApproval()">Approve</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- M12: Limits Management -->
+<div *ngIf="isModalOpen('limitsModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-sliders me-2"></i>Transfer Limits</h5>
+
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="mb-3"><label class="FL">Daily Transfer Limit</label><input class="FC"
+                    [(ngModel)]="limitsForm.daily"></div>
+            <div class="mb-3"><label class="FL">Single Transfer Limit</label><input class="FC"
+                    [(ngModel)]="limitsForm.single"></div>
+            <div class="mb-3"><label class="FL">Weekly Limit</label><input class="FC" [(ngModel)]="limitsForm.weekly">
+            </div>
+            <div class="mb-3"><label class="FL">International Monthly</label><input class="FC"
+                    [(ngModel)]="limitsForm.international"></div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="submitLimits()">Save Limits</button>
+        </div>
+    </div>
+</div>
+
+<!-- M13: Edit Recurring -->
+<div *ngIf="isModalOpen('editRecurringModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i class="bi bi-pencil-square me-2"
+                    style="color:var(--pm-purple)"></i>Edit Recurring Transfer</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="mb-3"><label class="FL">Amount</label><input class="FC" [(ngModel)]="editRecurringForm.amount">
+            </div>
+            <div class="mb-3"><label class="FL">Frequency</label>
+                <select class="FC" [(ngModel)]="editRecurringForm.frequency">
+                    <option>Monthly</option>
+                    <option>Weekly</option>
+                    <option>Quarterly</option>
+                </select>
+            </div>
+            <div class="mb-3"><label class="FL">Next Run Date</label><input type="date" class="FC"
+                    [(ngModel)]="editRecurringForm.nextRun"></div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="editRecurringForm.paused" id="pauseCheck">
+                <label class="form-check-label" for="pauseCheck" style="font-size:13px">Pause this recurring
+                    transfer</label>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="submitEditRecurring()">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<!-- M14: Compliance Documentation -->
+<div *ngIf="isModalOpen('complianceModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:600px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-shield-check text-danger me-2"></i>Compliance Review</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft)">
+                <div style="font-size:12px;font-weight:700;color:#7F1D1D">AML FLAG: KES 12.5M TRANSFER</div>
+                <div style="font-size:13px;color:var(--pm-ink-soft)">Beneficiary: Grace Wanjiku | Bank: Equity → KCB |
+                    Flagged: Unusual pattern</div>
+            </div>
+            <div class="mb-3"><label class="FL">Source of Funds</label>
+                <select class="FC" [(ngModel)]="complianceForm.sourceOfFunds">
+                    <option>Business Revenue</option>
+                    <option>Investment Income</option>
+                    <option>Loan Proceeds</option>
+                    <option>Personal Savings</option>
+                </select>
+            </div>
+            <div class="mb-3"><label class="FL">Supporting Document</label><input type="file" class="FC"
+                    (change)="onFileSelected($event, 'compliance')"></div>
+            <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i
+                    class="bi bi-info-circle me-1"></i> Upload invoice, contract, or board resolution. Max 10MB PDF.
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="submitCompliance()">Submit & Release</button>
+        </div>
+    </div>
+</div>
+
+<!-- M15: Reconciliation -->
+<div *ngIf="isModalOpen('reconciliationModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:600px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-check2-square text-success me-2"></i>Reconciliation</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="row g-3 mb-3">
+                <div class="col-md-6"><label class="FL">Start Date</label><input type="date" class="FC"
+                        [(ngModel)]="reconciliationForm.startDate"></div>
+                <div class="col-md-6"><label class="FL">End Date</label><input type="date" class="FC"
+                        [(ngModel)]="reconciliationForm.endDate"></div>
+            </div>
+            <div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft)">
+                <div style="font-size:12px;font-weight:700;color:#92400E">2 DISCREPANCIES FOUND</div>
+                <div style="font-size:13px;color:var(--pm-ink-soft)">TRF-20250627-88342: KES 420,000 — bank confirms,
+                    ledger pending<br>TRF-20250626-77220: KES 12,500 — duplicate entry flagged</div>
+            </div>
+            <div class="table-responsive">
+                <table class="T">
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Amount</th>
+                            <th>Bank Status</th>
+                            <th>Ledger Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>TRF-20250627-88341</td>
+                            <td>KES 85,000</td>
+                            <td><span class="B B-s">Cleared</span></td>
+                            <td><span class="B B-s">Matched</span></td>
+                        </tr>
+                        <tr>
+                            <td>TRF-20250627-88342</td>
+                            <td>KES 420,000</td>
+                            <td><span class="B B-s">Cleared</span></td>
+                            <td><span class="B B-w">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>TRF-20250626-77220</td>
+                            <td>KES 12,500</td>
+                            <td><span class="B B-s">Cleared</span></td>
+                            <td><span class="B B-d">Duplicate</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+            <button class="btn-pm btn-pm-p" (click)="submitReconciliation()">Run Reconciliation</button>
+        </div>
+    </div>
+</div>
+
+<!-- M16: Transfer History (Full) -->
+<div *ngIf="isModalOpen('transferHistoryModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:900px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-clock-history me-2"></i>Transfer History</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+                <div class="pills">
+                    <button class="pill active">All</button>
+                    <button class="pill">Domestic</button>
+                    <button class="pill">International</button>
+                    <button class="pill">Bulk</button>
+                </div>
+                <button class="btn-pm btn-sm" (click)="exportHistory()"><i class="bi bi-download"></i> Export
+                    CSV</button>
+            </div>
+            <div class="table-responsive">
+                <table class="T">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Reference</th>
+                            <th>Beneficiary</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th>Receipt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let h of fullHistory">
+                            <td>{{ h.date }}</td>
+                            <td>{{ h.reference }}</td>
+                            <td>{{ h.beneficiary }}</td>
+                            <td><strong>{{ h.amount }}</strong></td>
+                            <td>{{ h.method }}</td>
+                            <td><span class="B {{h.statusClass}}">{{ h.status }}</span></td>
+                            <td><button class="btn-pm btn-sm" (click)="openModal(h.receiptModal)">View</button></td>
+                        </tr>
+                        <tr *ngIf="fullHistory.length === 0">
+                            <td colspan="7" style="text-align:center;color:var(--pm-muted);padding:24px">No history
+                                found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- M17: Bank Directory -->
+<div *ngIf="isModalOpen('bankDirectoryModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:700px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-bank2 text-primary me-2"></i>Bank Directory</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="table-responsive">
+                <table class="T">
+                    <thead>
+                        <tr>
+                            <th>Bank</th>
+                            <th>PesaLink</th>
+                            <th>RTGS</th>
+                            <th>EFT</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let b of bankDirectory">
+                            <td><strong>{{ b.name }}</strong></td>
+                            <td><i class="bi" [class.bi-check-circle-fill]="b.pesalink === 'Yes'"
+                                    [class.bi-x-circle-fill]="b.pesalink !== 'Yes'"
+                                    [style.color]="b.pesalink === 'Yes' ? 'var(--pm-accent)' : 'var(--pm-muted)'"></i>
+                            </td>
+                            <td><i class="bi" [class.bi-check-circle-fill]="b.rtgs === 'Yes'"
+                                    [class.bi-x-circle-fill]="b.rtgs !== 'Yes'"
+                                    [style.color]="b.rtgs === 'Yes' ? 'var(--pm-accent)' : 'var(--pm-muted)'"></i></td>
+                            <td><i class="bi" [class.bi-check-circle-fill]="b.eft === 'Yes'"
+                                    [class.bi-x-circle-fill]="b.eft !== 'Yes'"
+                                    [style.color]="b.eft === 'Yes' ? 'var(--pm-accent)' : 'var(--pm-muted)'"></i></td>
+                            <td><span class="B {{b.statusClass}}">{{ b.status }}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- M18: Bank Status Detail -->
+<div *ngIf="isModalOpen('bankStatusModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-bank text-info me-2"></i>Bank Maintenance</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft)">
+                <div style="font-size:14px;font-weight:700;color:#92400E">Co-op Bank Maintenance</div>
+                <div style="font-size:13px;color:var(--pm-ink-soft)">Tonight 02:00 – 04:00 EAT<br>PesaLink and EFT
+                    services will be unavailable.</div>
+            </div>
+            <div class="sr">
+                <div><strong>Impact</strong></div>
+                <div>Delayed transfers to Co-op Bank</div>
+            </div>
+            <div class="sr">
+                <div><strong>Workaround</strong></div>
+                <div>Use RTGS or schedule after 04:00</div>
+            </div>
+            <div class="sr">
+                <div><strong>Status</strong></div>
+                <div><span class="B B-w">Scheduled</span></div>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- M19: Attention Modal -->
+<div *ngIf="isModalOpen('attentionModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:600px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-exclamation-triangle text-danger me-2"></i>Attention Required</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="sr" *ngFor="let item of attentionModalItems">
+                <div><strong>{{ item.title }}</strong></div>
+                <button class="btn-pm btn-sm" (click)="openModal(item.modal)">Review</button>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- M20: Transfer Health -->
+<div *ngIf="isModalOpen('transferHealthModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:700px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-heart-pulse text-danger me-2"></i>Transfer Health Dashboard</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="row g-3 mb-3">
+                <div class="col-md-3">
+                    <div class="C text-center">
+                        <div class="SV" style="font-size:24px">{{ healthStats.successRate }}%</div>
+                        <div class="SL">Success Rate</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="C text-center">
+                        <div class="SV" style="font-size:24px">{{ healthStats.avgSettlement }}</div>
+                        <div class="SL">Avg Settlement</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="C text-center">
+                        <div class="SV" style="font-size:24px">{{ healthStats.pendingApproval }}</div>
+                        <div class="SL">Pending</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="C text-center">
+                        <div class="SV" style="font-size:24px">{{ healthStats.openIssues }}</div>
+                        <div class="SL">Open Issues</div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="T">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Domestic</th>
+                            <th>International</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let m of healthMetrics">
+                            <td><strong>{{ m.metric }}</strong></td>
+                            <td>{{ m.domestic }}</td>
+                            <td>{{ m.international }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- M21: FX Rates Modal -->
+<div *ngIf="isModalOpen('fxRatesModal')" class="modal-container"
+    style="position:fixed;inset:0;z-index:1060;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div
+        style="background:var(--pm-surface);border-radius:var(--pm-r-lg);box-shadow:var(--pm-shadow-xl);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;pointer-events:auto;">
+        <div
+            style="border-bottom:1px solid var(--pm-border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <h5 style="font-family:var(--pm-font-display);font-weight:700;margin:0;"><i
+                    class="bi bi-currency-exchange text-info me-2"></i>Live FX Rates</h5>
+            <button class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div style="padding:24px;">
+            <div class="table-responsive">
+                <table class="T">
+                    <thead>
+                        <tr>
+                            <th>Currency</th>
+                            <th>Buy</th>
+                            <th>Sell</th>
+                            <th>Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let fx of fxRatesModal">
+                            <td><strong>{{ fx.currency }}</strong></td>
+                            <td>{{ fx.buy }}</td>
+                            <td>{{ fx.sell }}</td>
+                            <td><span [style.color]="fx.changeClass">{{ fx.change }}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-3 rounded mt-3" style="background:var(--pm-info-soft);font-size:12px"><i
+                    class="bi bi-info-circle me-1"></i> Rates updated every 60 seconds. Last update: 14:32 EAT.</div>
+        </div>
+        <div
+            style="border-top:1px solid var(--pm-border);padding:16px 24px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</div>

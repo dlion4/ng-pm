@@ -1,0 +1,105 @@
+<!-- Aside Backdrop -->
+<div class="aside-backdrop" [class.show]="openPanel !== null" aria-hidden="true" (click)="onClose()"></div>
+
+<!-- Right Aside Panel -->
+<aside class="right-aside" [class.open]="openPanel !== null" aria-label="Context panel">
+
+    <!-- Security Panel -->
+    <div class="aside-panel-content" [class.active]="openPanel === 'security'">
+        <div class="aside-header">
+            <span class="aside-title"><i class="bi bi-shield-check text-primary"></i> Security Center</span>
+            <button class="aside-close" aria-label="Close" (click)="onClose()"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="aside-body">
+            <div class="aside-card">
+                <h6>Account protection</h6>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-semibold" style="font-size:0.85rem">Two-factor authentication</span>
+                    <div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox"
+                            id="twoFactor" checked (change)="onToggle2FA($event)"></div>
+                </div>
+                <p class="mb-0 text-muted" style="font-size:0.75rem">TOTP via authenticator app is currently active.</p>
+            </div>
+            <div class="aside-card">
+                <h6>Active sessions</h6>
+                <div class="status-row">
+                    <div>
+                        <div class="fw-semibold" style="font-size:0.82rem">Chrome · Windows</div>
+                        <div class="text-muted" style="font-size:0.72rem">Nairobi, KE</div>
+                    </div>
+                    <span class="d-flex align-items-center" style="font-size:0.75rem"><span
+                            class="status-dot active"></span>Now</span>
+                </div>
+                <div class="status-row">
+                    <div>
+                        <div class="fw-semibold" style="font-size:0.82rem">Safari · iPhone</div>
+                        <div class="text-muted" style="font-size:0.72rem">Mombasa, KE</div>
+                    </div>
+                    <span class="d-flex align-items-center" style="font-size:0.75rem"><span
+                            class="status-dot active"></span>Now</span>
+                </div>
+                <div class="status-row">
+                    <div>
+                        <div class="fw-semibold" style="font-size:0.82rem">Firefox · macOS</div>
+                        <div class="text-muted" style="font-size:0.72rem">New York, US</div>
+                    </div>
+                    <span class="d-flex align-items-center" style="font-size:0.75rem"><span
+                            class="status-dot warning"></span>2h ago</span>
+                </div>
+                <button class="btn btn-outline-danger btn-sm w-100 mt-2">Revoke all other sessions</button>
+            </div>
+            <div class="aside-card">
+                <h6>Quick actions</h6>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-light text-start"><i class="bi bi-lock"></i> Change password</button>
+                    <button class="btn btn-light text-start"><i class="bi bi-key"></i> Manage API keys</button>
+                    <button class="btn btn-light text-start"><i class="bi bi-box-arrow-up-right"></i> View security
+                        logs</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Developers Panel -->
+    <div class="aside-panel-content" [class.active]="openPanel === 'developers'">
+        <div class="aside-header">
+            <span class="aside-title"><i class="bi bi-code-slash text-primary"></i> Developer Tools</span>
+            <button class="aside-close" aria-label="Close" (click)="onClose()"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="aside-body">
+            <div class="aside-card">
+                <h6>Environment</h6>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-semibold" style="font-size:0.85rem">Sandbox mode</span>
+                    <div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox"
+                            id="sandboxMode" (change)="onToggleSandbox($event)"></div>
+                </div>
+                <p class="mb-0 text-muted" style="font-size:0.75rem">Sandbox responses are mocked and do not move real
+                    money.</p>
+            </div>
+            <div class="aside-card">
+                <h6>API health</h6>
+                <div class="status-row"><span class="fw-semibold" style="font-size:0.82rem">Transfers API</span><span
+                        class="d-flex align-items-center" style="font-size:0.75rem"><span
+                            class="status-dot active"></span>Operational</span></div>
+                <div class="status-row"><span class="fw-semibold" style="font-size:0.82rem">Webhooks</span><span
+                        class="d-flex align-items-center" style="font-size:0.75rem"><span
+                            class="status-dot warning"></span>Degraded</span></div>
+                <div class="status-row"><span class="fw-semibold" style="font-size:0.82rem">Payouts API</span><span
+                        class="d-flex align-items-center" style="font-size:0.75rem"><span
+                            class="status-dot active"></span>Operational</span></div>
+            </div>
+            <div class="aside-card">
+                <h6>Resources</h6>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-light text-start"><i class="bi bi-rocket-takeoff"></i> API
+                        documentation</button>
+                    <button class="btn btn-light text-start"><i class="bi bi-broadcast"></i> Webhook settings</button>
+                    <button class="btn btn-light text-start"><i class="bi bi-box-arrow-up-right"></i> Postman
+                        collection</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</aside>

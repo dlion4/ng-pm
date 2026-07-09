@@ -1,0 +1,14 @@
+<div class="app-shell">
+    <app-dashboard-utility-sidebar [expanded]="sidebarExpanded" [mobileOpen]="mobileOpen" [activeSection]="activeSection"
+        (navClick)="activeSection = $event" (mobileClose)="onMobileClose()" (logout)="onLogout()">
+    </app-dashboard-utility-sidebar>
+
+    <app-dashboard-utility-header [sidebarExpanded]="sidebarExpanded" (toggleSidebar)="onToggleSidebar()"
+        (openAside)="onOpenAside($event)" (logout)="onLogout()">
+    </app-dashboard-utility-header>
+
+    <app-dashboard-utility-main [sidebarExpanded]="sidebarExpanded"></app-dashboard-utility-main>
+
+    <app-dashboard-utility-aside [openPanel]="openAsidePanel" (close)="closeAside()" (toast)="onToast($event)">
+    </app-dashboard-utility-aside>
+</div>

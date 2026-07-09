@@ -1,0 +1,1357 @@
+<div class="paymo-angular-page">
+  @if (toastMessage) {
+    <div class="pm-toast" role="status">
+      <i class="bi bi-check-circle-fill"></i>
+      <span>{{ toastMessage }}</span>
+      <button type="button" class="pm-toast-close" (click)="clearToast()">×</button>
+    </div>
+
+<div class="paymo-multiCurrencyTreasury-body"><section class="paymo-page-source" id="multiCurrencyTreasuryPage">
+
+<div class="pm-page-bar">
+<div>
+<div class="pm-breadcrumb"><a (click)="notify('Link action handled')" role="button" tabindex="0">Home</a> / <a (click)="notify('Link action handled')" role="button" tabindex="0">Business Portal</a> /
+                        <strong>Multi-Currency Treasury</strong>
+</div>
+<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE
+                        3.11 — Multi-Currency Treasury &amp; Forex Operations</h2>
+<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Manage multi-currency accounts, execute
+                        live FX trades, set hedging contracts, monitor exposure, ensure regulatory compliance and
+                        reconcile treasury positions.</p>
+</div>
+<div class="d-flex flex-wrap" style="gap:8px"><button (click)="openModal('fxHealthModal')" class="btn-pm" type="button"><i class="bi bi-heart-pulse"></i> Health Check</button><button (click)="openModal('fxNotifModal')" class="btn-pm" type="button"><i class="bi bi-bell"></i> Alerts</button><button (click)="openModal('transferModal')" class="btn-pm" type="button"><i class="bi bi-arrow-left-right"></i> Transfer</button><button (click)="openModal('tradeModal')" class="btn-pm btn-pm-p" type="button"><i class="bi bi-currency-exchange"></i>
+                        Trade FX</button></div>
+</div>
+<div class="pm-content">
+<!-- HERO STATS -->
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="C C-accent" style="min-height:170px">
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Treasury platform live <span style="color:#86efac">●</span></p>
+<div class="SV" style="margin:8px 0;color:#fff">KES 124.8M equivalent</div>
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Across 7 currencies (KES,
+                                USD, EUR, GBP, UGX, TZS, AED). Hedged exposure: 68%. Pending trades: 4.</p>
+<div class="d-flex flex-wrap mt-3" style="gap:8px"><button (click)="openModal('tradeModal')" class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Trade</button><button (click)="openModal('hedgeModal')" class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Hedge</button><button (click)="openModal('transferModal')" class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Transfer</button></div>
+</div>
+</div>
+<div class="col-lg-2 col-md-4 col-6">
+<div class="C" style="min-height:170px">
+<p class="SL" style="color:var(--pm-accent)">NET FX EXPOSURE</p>
+<div class="SV" style="margin:6px 0">USD 318K</div><span class="B B-s"><i class="bi bi-shield-check"></i> 68% hedged</span>
+<div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">Unhedged: USD 102K<br/>Next
+                                hedge expiry: 14 Jul</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4 col-6">
+<div class="C" style="min-height:170px">
+<p class="SL" style="color:var(--pm-info)">TODAY'S FX P&amp;L</p>
+<div class="SV" style="margin:6px 0">+KES 184,200</div><span class="B B-s"><i class="bi bi-graph-up-arrow"></i> +1.8% vs yesterday</span>
+<div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">Spot gain: KES
+                                142K<br/>Forward gain: KES 42K</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4">
+<div class="C" style="min-height:170px;border-left:3px solid var(--pm-warning)">
+<p class="SL" style="color:var(--pm-warning)">COMPLIANCE STATUS</p>
+<div class="SV" style="margin:6px 0">99.4%</div><span class="B B-w"><i class="bi bi-exclamation-triangle"></i> 1 STR pending</span>
+<div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">CBK filing:
+                                Complete<br/>Next report: 30 Jun</div>
+</div>
+</div>
+</div>
+<!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h3 class="st">Attention Required</h3><button (click)="openModal('attentionModal')" class="btn-pm btn-sm" type="button">View all</button>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-danger-soft);color:var(--pm-danger);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-exclamation-triangle"></i>
+</div>
+<div>
+<div style="font-weight:600;font-size:13px">USD 45K forward expires today</div>
+<div style="font-size:11px;color:var(--pm-muted)">Contract FX-8821 · action
+                                            required</div>
+</div>
+</div><button (click)="openModal('fxContractModal')" class="btn-pm btn-sm" type="button">Roll</button>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-file-earmark-text"></i>
+</div>
+<div>
+<div style="font-weight:600;font-size:13px">STR report due for large USD inflow
+                                        </div>
+<div style="font-size:11px;color:var(--pm-muted)">KES 12.4M from US client</div>
+</div>
+</div><button (click)="openModal('complianceModal')" class="btn-pm btn-sm" type="button">File</button>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-info-soft);color:var(--pm-info);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-arrow-left-right"></i>
+</div>
+<div>
+<div style="font-weight:600;font-size:13px">EUR 28K settlement mismatch</div>
+<div style="font-size:11px;color:var(--pm-muted)">Bank vs internal ledger</div>
+</div>
+</div><button (click)="openModal('reconcileModal')" class="btn-pm btn-sm" type="button">Reconcile</button>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h3 class="st">Smart Suggestions</h3><span class="B B-p"><i class="bi bi-stars"></i>
+                                    AI</span>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-accent-soft);color:var(--pm-accent);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-graph-up-arrow"></i>
+</div>
+<div>
+<div style="font-weight:600;font-size:13px">Lock GBP rate now (1.32 vs forecast
+                                            1.29)</div>
+<div style="font-size:11px;color:var(--pm-muted)">Save ~KES 380K on July payroll
+                                        </div>
+</div>
+</div><button (click)="openModal('tradeModal')" class="btn-pm btn-sm" type="button">Trade</button>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-purple-soft);color:var(--pm-purple);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-shield-check"></i>
+</div>
+<div>
+<div style="font-weight:600;font-size:13px">Increase hedge ratio on USD exposure
+                                        </div>
+<div style="font-size:11px;color:var(--pm-muted)">Current 68% → recommended 85%
+                                        </div>
+</div>
+</div><button (click)="openModal('hedgeModal')" class="btn-pm btn-sm" type="button">Hedge</button>
+</div>
+<div class="sr">
+<div class="d-flex align-items-center gap-3">
+<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i class="bi bi-currency-exchange"></i>
+</div>
+<div>
+<div style="font-weight:600;font-size:13px">Convert TZS 18M to USD before 2%
+                                            devaluation</div>
+<div style="font-size:11px;color:var(--pm-muted)">CBK policy meeting scheduled
+                                        </div>
+</div>
+</div><button (click)="openModal('tradeModal')" class="btn-pm btn-sm" type="button">Convert</button>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="C">
+<div class="mb-3">
+<h3 class="st">Quick Actions</h3>
+<p class="ss">Frequent treasury workflows</p>
+</div>
+<div class="quick-grid"><button (click)="openModal('tradeModal')" class="quick-btn" type="button"><i class="bi bi-currency-exchange text-primary me-1"></i> Spot
+                                    Trade</button><button (click)="openModal('hedgeModal')" class="quick-btn" type="button"><i class="bi bi-shield-check text-success me-1"></i> Forward Hedge</button><button (click)="openModal('transferModal')" class="quick-btn" type="button"><i class="bi bi-arrow-left-right text-info me-1"></i>
+                                    Cross-Currency</button><button (click)="openModal('fxContractModal')" class="quick-btn" type="button"><i class="bi bi-file-earmark-text me-1" style="color:var(--pm-purple)"></i> Manage Contracts</button><button (click)="openModal('reconcileModal')" class="quick-btn" type="button"><i class="bi bi-list-check text-warning me-1"></i> Reconcile</button><button (click)="openModal('complianceModal')" class="quick-btn" type="button"><i class="bi bi-file-earmark-check text-danger me-1"></i>
+                                    Compliance</button><button (click)="openModal('rateAlertModal')" class="quick-btn" type="button"><i class="bi bi-bell me-1" style="color:var(--pm-accent)"></i> Rate
+                                    Alerts</button><button (click)="openModal('reportExportModal')" class="quick-btn" type="button"><i class="bi bi-download me-1" style="color:var(--pm-primary)"></i>
+                                    Reports</button></div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.11.1 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-wallet2" style="color:var(--pm-primary)"></i> 3.11.1 —
+                                Multi-Currency Account Overview &amp; Balances</h3>
+<p class="ss">Real-time balances across all currencies, conversion values, account limits,
+                                and pending settlements.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('accountModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-gear"></i> Manage</button><button (click)="openModal('transferModal')" class="btn-pm btn-sm btn-pm-p" type="button"><i class="bi bi-plus-lg"></i> Fund</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-7">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Currency Balances</h4>
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Currency</th>
+<th>Balance</th>
+<th>KES Equivalent</th>
+<th>24h Change</th>
+<th>Limit</th>
+<th>Utilization</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>@for (account of mockData.currencyAccounts; track account.currency) {
+<tr><td><strong>{{ account.currency }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ account.accountName }}</div></td><td>{{ account.balance }}</td><td>{{ account.kesEquivalent }}</td><td><span [ngClass]="badgeClass(account.changeStatus)" class="B">{{ account.change }}</span></td><td>{{ account.limit }}</td><td><div class="progress-mini"><span [style.width.%]="account.utilization"></span></div><div style="font-size:11px;color:var(--pm-muted)">{{ account.utilization }}%</div></td><td><button (click)="openModal('transferModal')" class="btn-pm btn-sm" type="button">Transfer</button></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="7">No currency accounts available.</td></tr> }</tbody>
+</table>
+</div>
+}
+</div>
+</div>
+<div class="col-lg-5">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Pending Settlements</h4>
+<div class="sr">
+<div><strong>USD 85,000 incoming</strong>
+<div style="font-size:11px;color:var(--pm-muted)">From US client • Value date 28
+                                            Jun</div>
+</div><span class="B B-i">T+2</span>
+</div>
+<div class="sr">
+<div><strong>EUR 42,000 outgoing</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Supplier payment • Value date
+                                            27 Jun</div>
+</div><span class="B B-w">Pending</span>
+</div>
+<div class="sr">
+<div><strong>GBP 18,500 incoming</strong>
+<div style="font-size:11px;color:var(--pm-muted)">UK subsidiary • Value date 29
+                                            Jun</div>
+</div><span class="B B-s">Confirmed</span>
+</div>
+<div class="sr">
+<div><strong>UGX 45M outgoing</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Uganda branch payroll • Value
+                                            date 30 Jun</div>
+</div><span class="B B-w">Pending</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.11.2 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-graph-up-arrow" style="color:var(--pm-accent)"></i> 3.11.2 —
+                                Live FX Rates &amp; Market Intelligence</h3>
+<p class="ss">Real-time interbank rates, spreads, historical trends, volatility alerts and
+                                market commentary.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('rateAlertModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-bell"></i> Alerts</button><button (click)="openModal('marketModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-newspaper"></i>
+                                Market</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-8">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Live Interbank Rates
+                                    (Mid-market)</h4>
+<div class="row g-2">
+<div class="col-md-4">
+<div class="fx-rate">
+<div style="flex:1">
+<div style="font-weight:700">USD/KES</div>
+<div style="font-size:11px;color:var(--pm-muted)">129.42 • -0.08</div>
+</div>
+<div style="text-align:right">
+<div style="font-weight:700">129.35 - 129.50</div>
+<div style="font-size:10px;color:var(--pm-muted)">Spread 0.15</div>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="fx-rate">
+<div style="flex:1">
+<div style="font-weight:700">EUR/KES</div>
+<div style="font-size:11px;color:var(--pm-muted)">139.80 • +0.22</div>
+</div>
+<div style="text-align:right">
+<div style="font-weight:700">139.65 - 139.95</div>
+<div style="font-size:10px;color:var(--pm-muted)">Spread 0.30</div>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="fx-rate">
+<div style="flex:1">
+<div style="font-weight:700">GBP/KES</div>
+<div style="font-size:11px;color:var(--pm-muted)">167.90 • -0.45</div>
+</div>
+<div style="text-align:right">
+<div style="font-weight:700">167.70 - 168.10</div>
+<div style="font-size:10px;color:var(--pm-muted)">Spread 0.40</div>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="fx-rate">
+<div style="flex:1">
+<div style="font-weight:700">USD/EUR</div>
+<div style="font-size:11px;color:var(--pm-muted)">0.926 • -0.001</div>
+</div>
+<div style="text-align:right">
+<div style="font-weight:700">0.925 - 0.927</div>
+<div style="font-size:10px;color:var(--pm-muted)">Spread 0.002</div>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="fx-rate">
+<div style="flex:1">
+<div style="font-weight:700">USD/UGX</div>
+<div style="font-size:11px;color:var(--pm-muted)">3,712 • +8</div>
+</div>
+<div style="text-align:right">
+<div style="font-weight:700">3,705 - 3,719</div>
+<div style="font-size:10px;color:var(--pm-muted)">Spread 14</div>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="fx-rate">
+<div style="flex:1">
+<div style="font-weight:700">USD/TZS</div>
+<div style="font-size:11px;color:var(--pm-muted)">2,705 • -3</div>
+</div>
+<div style="text-align:right">
+<div style="font-weight:700">2,698 - 2,712</div>
+<div style="font-size:10px;color:var(--pm-muted)">Spread 14</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Volatility &amp; Alerts</h4>
+<div class="sr">
+<div><strong>GBP/KES</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Volatility 1.8% (high)</div>
+</div><span class="B B-d">Alert</span>
+</div>
+<div class="sr">
+<div><strong>USD/KES</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Volatility 0.4% (normal)</div>
+</div><span class="B B-s">Normal</span>
+</div>
+<div class="sr">
+<div><strong>EUR/KES</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Volatility 0.9% (elevated)
+                                        </div>
+</div><span class="B B-w">Watch</span>
+</div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-lightbulb me-1"></i> CBK policy meeting tomorrow — expect USD/KES
+                                    volatility.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.11.3 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-arrow-left-right" style="color:var(--pm-info)"></i> 3.11.3 —
+                                Cross-Currency Transfers &amp; Settlements</h3>
+<p class="ss">Instant and scheduled transfers between currencies, internal accounts,
+                                external banks and mobile money.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('transferModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-plus-lg"></i> New Transfer</button>
+</div>
+</div>
+<div class="row g-3">
+<div class="col-lg-7">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Recent Transfers</h4>
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Date</th>
+<th>From → To</th>
+<th>Amount</th>
+<th>Rate</th>
+<th>Fee</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>@for (transfer of mockData.fxTransfers; track transfer.ref) {
+<tr><td>{{ transfer.date }}</td><td>{{ transfer.route }}</td><td><strong>{{ transfer.amount }}</strong><br/><span style="font-size:11px;color:var(--pm-muted)">{{ transfer.convertedAmount }}</span></td><td>{{ transfer.rate }}</td><td>{{ transfer.fee }}</td><td><span [ngClass]="badgeClass(transfer.status)" class="B">{{ transfer.statusLabel }}</span></td><td><button (click)="openModal('transferDetailModal')" class="btn-pm btn-sm" type="button">Receipt</button></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="7">No FX transfers available.</td></tr> }</tbody>
+</table>
+</div>
+}
+</div>
+</div>
+<div class="col-lg-5">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Transfer Limits &amp; Fees</h4>
+<div class="sr">
+<div><strong>Instant (same currency)</strong>
+<div style="font-size:11px;color:var(--pm-muted)">KES 0 fee • 24/7</div>
+</div><span class="B B-s">Free</span>
+</div>
+<div class="sr">
+<div><strong>Cross-currency (spot)</strong>
+<div style="font-size:11px;color:var(--pm-muted)">0.2% • min KES 500</div>
+</div><span class="B B-i">0.2%</span>
+</div>
+<div class="sr">
+<div><strong>Forward contract settlement</strong>
+<div style="font-size:11px;color:var(--pm-muted)">0.1% • min KES 1,000</div>
+</div><span class="B B-w">0.1%</span>
+</div>
+<div class="sr">
+<div><strong>SWIFT international</strong>
+<div style="font-size:11px;color:var(--pm-muted)">USD 25 + correspondent fees
+                                        </div>
+</div><span class="B B-p">Flat</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.11.4 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-shield-check" style="color:var(--pm-purple)"></i> 3.11.4 — FX
+                                Contracts, Hedging &amp; Risk Management</h3>
+<p class="ss">Forward contracts, options, exposure monitoring, risk policies and automated
+                                hedging rules.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('hedgeModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-plus-lg"></i> New Hedge</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-7">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Active FX Contracts</h4>
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Contract</th>
+<th>Type</th>
+<th>Pair</th>
+<th>Amount</th>
+<th>Rate</th>
+<th>Expiry</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>@for (contract of mockData.fxContracts; track contract.id) {
+<tr><td><code>{{ contract.id }}</code></td><td>{{ contract.type }}</td><td>{{ contract.pair }}</td><td>{{ contract.amount }}</td><td>{{ contract.rate }}</td><td>{{ contract.expiry }}</td><td><span [ngClass]="badgeClass(contract.status)" class="B">{{ contract.statusLabel }}</span></td><td><button (click)="openModal(contract.actionModal)" class="btn-pm btn-sm" type="button">{{ contract.actionLabel }}</button></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="8">No FX contracts available.</td></tr> }</tbody>
+</table>
+</div>
+}
+</div>
+</div>
+<div class="col-lg-5">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Exposure &amp; Hedging</h4>
+<div class="sr">
+<div><strong>USD Net Exposure</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Receivables: 420K • Payables:
+                                            102K</div>
+</div><strong>USD 318K</strong>
+</div>
+<div class="sr">
+<div><strong>Hedged Amount</strong>
+<div style="font-size:11px;color:var(--pm-muted)">216K (68%)</div>
+</div><strong style="color:var(--pm-accent)">USD 216K</strong>
+</div>
+<div class="sr">
+<div><strong>Unhedged Risk</strong>
+<div style="font-size:11px;color:var(--pm-muted)">102K at current rate</div>
+</div><strong style="color:var(--pm-warning)">USD 102K</strong>
+</div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-accent-soft);font-size:12px"><i class="bi bi-lightbulb me-1"></i> AI recommends additional USD 65K hedge to
+                                    reach 85% coverage.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.11.5 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-file-earmark-check" style="color:var(--pm-warning)"></i>
+                                3.11.5 — Regulatory Compliance &amp; Reporting</h3>
+<p class="ss">CBK forex reporting, KRA requirements, suspicious transaction monitoring,
+                                audit trails and filing calendar.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('complianceModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-file-earmark-text"></i> File
+                                Report</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-6">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Compliance Status</h4>
+<div class="sr">
+<div><strong>CBK Forex Returns</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Monthly Form FX-1</div>
+</div><span class="B B-s">Submitted</span>
+</div>
+<div class="sr">
+<div><strong>CBK Large FX Transactions</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Form FX-2 • 3 reports this
+                                            month</div>
+</div><span class="B B-s">Complete</span>
+</div>
+<div class="sr">
+<div><strong>KRA Withholding Tax</strong>
+<div style="font-size:11px;color:var(--pm-muted)">FX gains • KES 184K</div>
+</div><span class="B B-s">Filed</span>
+</div>
+<div class="sr">
+<div><strong>STR Filing</strong>
+<div style="font-size:11px;color:var(--pm-muted)">1 pending review</div>
+</div><span class="B B-w">Action</span>
+</div>
+</div>
+</div>
+<div class="col-lg-6">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Upcoming Deadlines</h4>
+<div class="sr">
+<div><strong>CBK Monthly Return</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Due 30 Jun 2025</div>
+</div><span class="B B-i">3 days</span>
+</div>
+<div class="sr">
+<div><strong>KRA Quarterly FX Gains</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Due 15 Jul 2025</div>
+</div><span class="B B-w">18 days</span>
+</div>
+<div class="sr">
+<div><strong>Internal Audit</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Q2 Treasury audit</div>
+</div><span class="B B-p">45 days</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.11.6 -->
+<div class="C">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="st"><i class="bi bi-clipboard-data" style="color:var(--pm-danger)"></i> 3.11.6 —
+                                Treasury Analytics, Reconciliation &amp; Reporting</h3>
+<p class="ss">P&amp;L by currency, exposure reports, reconciliation status, audit logs and
+                                scheduled exports.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('reconcileModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-list-check"></i>
+                                Reconcile</button><button (click)="openModal('reportExportModal')" class="btn-pm btn-sm" type="button"><i class="bi bi-download"></i> Export</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-5">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">P&amp;L by Currency (MTD)</h4>
+<div class="sr">
+<div><strong>USD</strong></div><strong style="color:var(--pm-accent)">+KES
+                                        142,800</strong>
+</div>
+<div class="sr">
+<div><strong>EUR</strong></div><strong style="color:var(--pm-accent)">+KES
+                                        38,400</strong>
+</div>
+<div class="sr">
+<div><strong>GBP</strong></div><strong style="color:var(--pm-danger)">-KES
+                                        12,600</strong>
+</div>
+<div class="sr">
+<div><strong>UGX/TZS</strong></div><strong style="color:var(--pm-accent)">+KES
+                                        15,600</strong>
+</div>
+<div class="sr">
+<div><strong>Overall</strong></div><strong style="color:var(--pm-accent);font-size:16px">+KES 184,200</strong>
+</div>
+</div>
+</div>
+<div class="col-lg-7">
+<div class="UB">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Reconciliation Status</h4>
+<div class="sr">
+<div><strong>USD Nostro Account</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Bank vs Internal</div>
+</div><span class="B B-s">Matched</span>
+</div>
+<div class="sr">
+<div><strong>EUR Nostro Account</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Bank vs Internal</div>
+</div><span class="B B-s">Matched</span>
+</div>
+<div class="sr">
+<div><strong>GBP Nostro Account</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Bank vs Internal</div>
+</div><span class="B B-w">1 exception</span>
+</div>
+<div class="sr">
+<div><strong>Forward Contracts</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Mark-to-market vs ledger</div>
+</div><span class="B B-s">Matched</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><!-- pm-content -->
+</section><section class="paymo-page-modals" id="multiCurrencyTreasuryModals"><div (click)="closeModal('tradeModal')" [attr.aria-hidden]="isModalOpen('tradeModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('tradeModal') ? 'true' : null" [class.show]="isModalOpen('tradeModal')" [style.display]="isModalOpen('tradeModal') ? 'block' : 'none'" class="modal fade R" id="tradeModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-currency-exchange text-primary me-2"></i>Execute FX Trade
+                    </h5><button (click)="closeModal('tradeModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="stepper" id="tradeStepper">
+@for (step of stepperItems('trade'); track step.index) {
+  <div [class.active]="step.index === currentStep('trade')" [class.done]="step.index < currentStep('trade')" class="step">
+<div class="step-n">@if (step.index < currentStep('trade')) { <i class="bi bi-check"></i> } @else { {{ step.index }} }</div>
+<div class="step-l">{{ step.label }}</div>
+</div>
+}
+  @if (!step.last) { <div class="step-line"></div> } {
+}
+</div>
+<div [class.active]="isStep('trade', 1)" [style.display]="isStep('trade', 1) ? 'block' : 'none'" class="fstep active" id="tradeS1">
+<h6 style="font-weight:700">Step 1: Select Pair &amp; Direction</h6>
+<div class="row g-3">
+<div class="col-md-6"><label class="FL">Base Currency</label><select class="FC" id="baseCur">
+<option>USD</option>
+<option>EUR</option>
+<option>GBP</option>
+<option>KES</option>
+</select></div>
+<div class="col-md-6"><label class="FL">Quote Currency</label><select class="FC" id="quoteCur">
+<option>KES</option>
+<option>USD</option>
+<option>EUR</option>
+<option>GBP</option>
+</select></div>
+<div class="col-12"><label class="FL">Action</label>
+<div class="pills"><button (click)="activatePill($event); notify('Action handled: this.classList.add(\'active\')')" class="pill active" type="button">Buy</button><button (click)="activatePill($event); notify('Action handled: this.classList.add(\'active\')')" class="pill" type="button">Sell</button>
+</div>
+</div>
+</div>
+</div>
+<div [class.active]="isStep('trade', 2)" [style.display]="isStep('trade', 2) ? 'block' : 'none'" class="fstep" id="tradeS2">
+<h6 style="font-weight:700">Step 2: Amount &amp; Rate</h6>
+<div class="row g-3">
+<div class="col-md-6"><label class="FL">Amount (Base)</label><input class="FC" id="tradeAmt" value="50000"/></div>
+<div class="col-md-6"><label class="FL">Rate</label><input class="FC" disabled="" id="tradeRate" value="129.42"/></div>
+</div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-surface-2);font-size:13px">
+<div class="d-flex justify-content-between mb-1"><span>Estimated Quote Amount</span><strong id="quoteEst">KES 6,471,000</strong></div>
+<div class="d-flex justify-content-between"><span>Spread</span><strong>KES 7,500</strong>
+</div>
+</div>
+</div>
+<div [class.active]="isStep('trade', 3)" [style.display]="isStep('trade', 3) ? 'block' : 'none'" class="fstep" id="tradeS3">
+<h6 style="font-weight:700">Step 3: Settlement &amp; Confirmation</h6>
+<div class="mb-3"><label class="FL">Settlement Date</label><select class="FC">
+<option>Spot (T+2) — 29 Jun 2025</option>
+<option>Forward — 14 Jul 2025</option>
+<option>Forward — 31 Jul 2025</option>
+</select></div>
+<div class="mb-3"><label class="FL">Debit Account</label><select class="FC">
+<option>USD Account • 318,450</option>
+<option>KES Account • 48,240,000</option>
+</select></div>
+<div class="mb-3"><label class="FL">Credit Account</label><select class="FC">
+<option>KES Account • 48,240,000</option>
+<option>USD Account • 318,450</option>
+</select></div>
+<div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Trade will be executed at live rate. Funds will be
+                            available after settlement.</div>
+</div>
+<div [class.active]="isStep('trade', 4)" [style.display]="isStep('trade', 4) ? 'block' : 'none'" class="fstep" id="tradeS4">
+<div class="receipt">
+<div class="ri"><i class="bi bi-check-lg"></i></div>
+<h5 style="font-weight:700;color:var(--pm-accent)">Trade Executed</h5>
+<p style="font-size:13px;color:var(--pm-ink-soft)">Your FX trade has been completed.
+                                Settlement instructions issued.</p>
+<div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Trade
+                                        ID</span><strong>FXT-20250627-9918</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Pair</span><strong>USD/KES</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Rate</span><strong>129.42</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">Settlement</span><strong>29 Jun 2025</strong></div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-footer" id="tradeFoot"><button (click)="closeModal('tradeModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="nextFlow('trade', 4)" class="btn-pm btn-pm-p" id="tradeNext" type="button">Continue <i class="bi bi-arrow-right"></i></button></div>
+</div>
+</div>
+</div><div (click)="closeModal('hedgeModal')" [attr.aria-hidden]="isModalOpen('hedgeModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('hedgeModal') ? 'true' : null" [class.show]="isModalOpen('hedgeModal')" [style.display]="isModalOpen('hedgeModal') ? 'block' : 'none'" class="modal fade R" id="hedgeModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-shield-check text-success me-2"></i>Create Forward Hedge
+                    </h5><button (click)="closeModal('hedgeModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="row g-3">
+<div class="col-md-6"><label class="FL">Currency Pair</label><select class="FC">
+<option>USD/KES</option>
+<option>EUR/KES</option>
+<option>GBP/KES</option>
+</select></div>
+<div class="col-md-6"><label class="FL">Direction</label><select class="FC">
+<option>Buy Forward (protect payable)</option>
+<option>Sell Forward (protect receivable)</option>
+</select></div>
+<div class="col-md-6"><label class="FL">Amount</label><input class="FC" value="100000"/></div>
+<div class="col-md-6"><label class="FL">Tenor</label><select class="FC">
+<option>30 days</option>
+<option>60 days</option>
+<option>90 days</option>
+<option>180 days</option>
+</select></div>
+<div class="col-12"><label class="FL">Forward Rate (indicative)</label>
+<div class="fx-rate">
+<div style="flex:1"><strong>130.85</strong>
+<div style="font-size:11px;color:var(--pm-muted)">+1.43 vs spot</div>
+</div>
+<div style="text-align:right">
+<div style="font-size:12px;color:var(--pm-muted)">Premium: KES 143,000</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-accent-soft);font-size:12px"><i class="bi bi-lightbulb me-1"></i> Hedge locks your rate for 90 days. No margin call. Full
+                        amount settled on maturity.</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('hedgeModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('hedgeModal', 'Forward hedge contract created. Contract ID: FXH-20250627-4421', 'FXH-20250627-4421')" class="btn-pm btn-pm-p" type="button">Create
+                        Hedge</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('transferModal')" [attr.aria-hidden]="isModalOpen('transferModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('transferModal') ? 'true' : null" [class.show]="isModalOpen('transferModal')" [style.display]="isModalOpen('transferModal') ? 'block' : 'none'" class="modal fade R" id="transferModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-arrow-left-right text-info me-2"></i>Cross-Currency Transfer
+                    </h5><button (click)="closeModal('transferModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="stepper" id="xferStepper">
+@for (step of stepperItems('xfer'); track step.index) {
+  <div [class.active]="step.index === currentStep('xfer')" [class.done]="step.index < currentStep('xfer')" class="step">
+<div class="step-n">@if (step.index < currentStep('xfer')) { <i class="bi bi-check"></i> } @else { {{ step.index }} }</div>
+<div class="step-l">{{ step.label }}</div>
+</div>
+}
+  @if (!step.last) { <div class="step-line"></div> } {
+}
+</div>
+<div [class.active]="isStep('xfer', 1)" [style.display]="isStep('xfer', 1) ? 'block' : 'none'" class="fstep active" id="xferS1">
+<h6 style="font-weight:700">Step 1: From / To</h6>
+<div class="row g-3">
+<div class="col-md-6"><label class="FL">Debit Account</label><select class="FC">
+<option>USD Account • 318,450</option>
+<option>KES Account • 48,240,000</option>
+<option>EUR Account • 142,800</option>
+</select></div>
+<div class="col-md-6"><label class="FL">Credit Account</label><select class="FC">
+<option>KES Account • 48,240,000</option>
+<option>USD Account • 318,450</option>
+<option>GBP Account • 67,200</option>
+</select></div>
+</div>
+</div>
+<div [class.active]="isStep('xfer', 2)" [style.display]="isStep('xfer', 2) ? 'block' : 'none'" class="fstep" id="xferS2">
+<h6 style="font-weight:700">Step 2: Amount &amp; Rate</h6>
+<div class="row g-3">
+<div class="col-md-6"><label class="FL">Amount</label><input class="FC" value="25000"/></div>
+<div class="col-md-6"><label class="FL">Rate (live)</label><input class="FC" disabled="" value="129.42"/></div>
+</div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-surface-2);font-size:13px">
+<div class="d-flex justify-content-between"><span>Estimated Credit</span><strong>KES
+                                    3,235,500</strong></div>
+</div>
+</div>
+<div [class.active]="isStep('xfer', 3)" [style.display]="isStep('xfer', 3) ? 'block' : 'none'" class="fstep" id="xferS3">
+<h6 style="font-weight:700">Step 3: Purpose &amp; Compliance</h6>
+<div class="mb-3"><label class="FL">Purpose</label><select class="FC">
+<option>Operating expenses</option>
+<option>Payroll funding</option>
+<option>Supplier payment</option>
+<option>Investment / Treasury</option>
+<option>Loan repayment</option>
+</select></div>
+<div class="mb-3"><label class="FL">Reference / Invoice</label><input class="FC" value="INV-2025-88421"/></div>
+<div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Transfers above USD 10,000 require CBK Form FX-2
+                            filing.</div>
+</div>
+<div [class.active]="isStep('xfer', 4)" [style.display]="isStep('xfer', 4) ? 'block' : 'none'" class="fstep" id="xferS4">
+<div class="receipt">
+<div class="ri"><i class="bi bi-check-lg"></i></div>
+<h5 style="font-weight:700;color:var(--pm-accent)">Transfer Initiated</h5>
+<p style="font-size:13px;color:var(--pm-ink-soft)">Your cross-currency transfer has been
+                                submitted for processing.</p>
+<div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Transfer
+                                        ID</span><strong>XFR-20250627-7712</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Value
+                                        Date</span><strong>29 Jun 2025</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">Fee</span><strong>KES 7,500</strong></div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-footer" id="xferFoot"><button (click)="closeModal('transferModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="nextFlow('xfer', 4)" class="btn-pm btn-pm-p" id="xferNext" type="button">Continue <i class="bi bi-arrow-right"></i></button></div>
+</div>
+</div>
+</div><div (click)="closeModal('fxContractModal')" [attr.aria-hidden]="isModalOpen('fxContractModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('fxContractModal') ? 'true' : null" [class.show]="isModalOpen('fxContractModal')" [style.display]="isModalOpen('fxContractModal') ? 'block' : 'none'" class="modal fade R" id="fxContractModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-file-earmark-text me-2" style="color:var(--pm-purple)"></i>Manage FX Contracts</h5><button (click)="closeModal('fxContractModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="pills mb-3"><button (click)="switchTab('fxc', 'active', $event)" class="pill active" type="button">Active</button><button (click)="switchTab('fxc', 'expired', $event)" class="pill" type="button">Expired</button><button (click)="switchTab('fxc', 'roll', $event)" class="pill" type="button">Roll / Close</button></div>
+<div [class.active]="activeTab('fxc') === 'active'" class="tpanel active" id="fxc-active">
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Contract</th>
+<th>Pair</th>
+<th>Amount</th>
+<th>Rate</th>
+<th>Expiry</th>
+<th>MTM</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>@for (contract of mockData.activeContracts; track contract.id) {
+<tr><td><code>{{ contract.id }}</code></td><td>{{ contract.pair }}</td><td>{{ contract.amount }}</td><td>{{ contract.rate }}</td><td>{{ contract.expiry }}</td><td><span [ngClass]="badgeClass(contract.mtmStatus)" class="B">{{ contract.mtm }}</span></td><td><button (click)="openModal('rollContractModal')" class="btn-pm btn-sm" type="button">Roll</button></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="7">No active contracts available.</td></tr> }</tbody>
+</table>
+</div>
+}
+</div>
+<div [class.active]="activeTab('fxc') === 'expired'" class="tpanel" id="fxc-expired">
+<div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">No expired
+                            contracts in last 90 days.</div>
+</div>
+<div [class.active]="activeTab('fxc') === 'roll'" class="tpanel" id="fxc-roll">
+<div class="mb-3"><label class="FL">Select Contract</label><select class="FC">
+<option>FX-8821 • USD 120K • 27 Jun</option>
+<option>FX-8794 • EUR 85K • 14 Jul</option>
+</select></div>
+<div class="mb-3"><label class="FL">Action</label><select class="FC">
+<option>Roll forward 30 days</option>
+<option>Roll forward 90 days</option>
+<option>Close and settle</option>
+<option>Close and convert to spot</option>
+</select></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('fxContractModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('reconcileModal')" [attr.aria-hidden]="isModalOpen('reconcileModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('reconcileModal') ? 'true' : null" [class.show]="isModalOpen('reconcileModal')" [style.display]="isModalOpen('reconcileModal') ? 'block' : 'none'" class="modal fade R" id="reconcileModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-list-check me-2"></i>Reconciliation Center</h5><button (click)="closeModal('reconcileModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="pills mb-3"><button (click)="switchTab('rec', 'nostro', $event)" class="pill active" type="button">Nostro</button><button (click)="switchTab('rec', 'forward', $event)" class="pill" type="button">Forward</button><button (click)="switchTab('rec', 'exception', $event)" class="pill" type="button">Exceptions</button></div>
+<div [class.active]="activeTab('rec') === 'nostro'" class="tpanel active" id="rec-nostro">
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Account</th>
+<th>Bank Balance</th>
+<th>Internal Ledger</th>
+<th>Difference</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>@for (row of mockData.nostroReconciliation; track row.account) {
+<tr><td>{{ row.account }}</td><td>{{ row.bankBalance }}</td><td>{{ row.ledgerBalance }}</td><td>{{ row.difference }}</td><td><span [ngClass]="badgeClass(row.status)" class="B">{{ row.statusLabel }}</span></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="5">No Nostro reconciliation rows available.</td></tr> }</tbody>
+</table>
+</div>
+}
+</div>
+<div [class.active]="activeTab('rec') === 'forward'" class="tpanel" id="rec-forward">
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Contract</th>
+<th>MTM (Bank)</th>
+<th>MTM (Ledger)</th>
+<th>Difference</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>@for (row of mockData.forwardReconciliation; track row.contract) {
+<tr><td>{{ row.contract }}</td><td>{{ row.bankMtm }}</td><td>{{ row.ledgerMtm }}</td><td>{{ row.difference }}</td><td><span [ngClass]="badgeClass(row.status)" class="B">{{ row.statusLabel }}</span></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="5">No forward reconciliation rows available.</td></tr> }</tbody>
+</table>
+</div>
+}
+</div>
+<div [class.active]="activeTab('rec') === 'exception'" class="tpanel" id="rec-exception">
+<div class="p-3 rounded mb-2" style="background:var(--pm-warning-soft)">
+<div class="d-flex justify-content-between">
+<div><strong>GBP Nostro mismatch</strong>
+<div style="font-size:11px;color:#92400E">KES 350 difference — SWIFT fee not booked
+                                    </div>
+</div><button (click)="processAction('reconcileModal', 'Exception resolved. Journal entry created.', 'REC-20250627-1128')" class="btn-pm btn-sm" type="button">Resolve</button>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('reconcileModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('complianceModal')" [attr.aria-hidden]="isModalOpen('complianceModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('complianceModal') ? 'true' : null" [class.show]="isModalOpen('complianceModal')" [style.display]="isModalOpen('complianceModal') ? 'block' : 'none'" class="modal fade R" id="complianceModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-file-earmark-check me-2"></i>Regulatory Compliance Filing
+                    </h5><button (click)="closeModal('complianceModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="pills mb-3"><button (click)="switchTab('cmp', 'cbk', $event)" class="pill active" type="button">CBK</button><button (click)="switchTab('cmp', 'kra', $event)" class="pill" type="button">KRA</button><button (click)="switchTab('cmp', 'str', $event)" class="pill" type="button">STR</button></div>
+<div [class.active]="activeTab('cmp') === 'cbk'" class="tpanel active" id="cmp-cbk">
+<div class="mb-3"><label class="FL">Report Type</label><select class="FC">
+<option>Monthly Forex Return (FX-1)</option>
+<option>Large FX Transaction (FX-2)</option>
+<option>Quarterly FX Position</option>
+</select></div>
+<div class="mb-3"><label class="FL">Period</label><input class="FC" type="month" value="2025-05"/></div>
+<div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Report will be auto-generated from treasury system
+                            and submitted via CBK portal.</div>
+</div>
+<div [class.active]="activeTab('cmp') === 'kra'" class="tpanel" id="cmp-kra">
+<div class="mb-3"><label class="FL">Tax Type</label><select class="FC">
+<option>Withholding Tax on FX Gains</option>
+<option>VAT on FX Fees</option>
+<option>Digital Services Tax</option>
+</select></div>
+<div class="mb-3"><label class="FL">Amount</label><input class="FC" value="184200"/></div>
+</div>
+<div [class.active]="activeTab('cmp') === 'str'" class="tpanel" id="cmp-str">
+<div class="mb-3"><label class="FL">Transaction Reference</label><input class="FC" value="XFR-20250620-4492"/></div>
+<div class="mb-3"><label class="FL">Reason for Suspicion</label><textarea class="FC" rows="3">Large inbound USD 85K from new US client with no prior trading history. Amount significantly exceeds typical transaction size.</textarea>
+</div>
+<div class="form-check"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Flag for manual review by compliance
+                                officer</label></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('complianceModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('complianceModal', 'Compliance report filed successfully. Reference: CBK-FX1-202506-9914', 'CBK-FX1-202506-9914')" class="btn-pm btn-pm-p" type="button">Submit
+                        Filing</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('rateAlertModal')" [attr.aria-hidden]="isModalOpen('rateAlertModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('rateAlertModal') ? 'true' : null" [class.show]="isModalOpen('rateAlertModal')" [style.display]="isModalOpen('rateAlertModal') ? 'block' : 'none'" class="modal fade R" id="rateAlertModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-bell text-warning me-2"></i>FX Rate Alert Setup</h5><button (click)="closeModal('rateAlertModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="FL">Currency Pair</label><select class="FC">
+<option>USD/KES</option>
+<option>EUR/KES</option>
+<option>GBP/KES</option>
+</select></div>
+<div class="row g-3">
+<div class="col-6"><label class="FL">Alert Type</label><select class="FC">
+<option>Rate above</option>
+<option>Rate below</option>
+<option>Volatility above</option>
+</select></div>
+<div class="col-6"><label class="FL">Threshold</label><input class="FC" value="130.00"/></div>
+</div>
+<div class="mb-3 mt-3"><label class="FL">Delivery</label>
+<div class="form-check form-check-inline"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Push</label></div>
+<div class="form-check form-check-inline"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Email</label></div>
+<div class="form-check form-check-inline"><input class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">SMS</label></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('rateAlertModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('rateAlertModal', 'Rate alert created. You will be notified when USD/KES crosses 130.00.', '')" class="btn-pm btn-pm-p" type="button">Create
+                        Alert</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('transferDetailModal')" [attr.aria-hidden]="isModalOpen('transferDetailModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('transferDetailModal') ? 'true' : null" [class.show]="isModalOpen('transferDetailModal')" [style.display]="isModalOpen('transferDetailModal') ? 'block' : 'none'" class="modal fade R" id="transferDetailModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-file-earmark-text me-2"></i>Transfer Details</h5><button (click)="closeModal('transferDetailModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:13px">
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Transfer
+                                ID</span><strong>XFR-20250627-7712</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Status</span><span class="B B-s">Completed</span></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">From</span><strong>USD
+                                Account</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">To</span><strong>KES
+                                Account</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>USD 50,000 → KES 6,471,000</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Rate</span><strong>129.42</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Fee</span><strong>KES
+                                12,942</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">Value Date</span><strong>27
+                                Jun 2025, 14:32 EAT</strong></div>
+</div>
+<div class="d-flex gap-2"><button (click)="notify('Receipt
+                            PDF handled')" class="btn-pm btn-sm" type="button"><i class="bi bi-download"></i> Receipt
+                            PDF</button><button (click)="notify('Share handled')" class="btn-pm btn-sm" type="button"><i class="bi bi-share"></i> Share</button></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('transferDetailModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('fxHealthModal')" [attr.aria-hidden]="isModalOpen('fxHealthModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('fxHealthModal') ? 'true' : null" [class.show]="isModalOpen('fxHealthModal')" [style.display]="isModalOpen('fxHealthModal') ? 'block' : 'none'" class="modal fade R" id="fxHealthModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>Treasury Health Check</h5>
+<button (click)="closeModal('fxHealthModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="row g-3 mb-3">
+<div class="col-md-3 col-6">
+<div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)">
+<div style="font-size:28px;font-weight:800;color:var(--pm-accent);font-family:var(--pm-font-display)">
+                                    87</div>
+<div style="font-size:10px;font-weight:700;color:#047857">TREASURY SCORE</div>
+</div>
+</div>
+<div class="col-md-3 col-6">
+<div class="p-3 rounded text-center" style="background:var(--pm-info-soft)">
+<div style="font-size:24px;font-weight:700;color:var(--pm-info)">68%</div>
+<div style="font-size:10px;font-weight:700;color:#1D4ED8">HEDGED</div>
+</div>
+</div>
+<div class="col-md-3 col-6">
+<div class="p-3 rounded text-center" style="background:var(--pm-warning-soft)">
+<div style="font-size:24px;font-weight:700;color:var(--pm-warning)">4</div>
+<div style="font-size:10px;font-weight:700;color:#B45309">OPEN TRADES</div>
+</div>
+</div>
+<div class="col-md-3 col-6">
+<div class="p-3 rounded text-center" style="background:var(--pm-purple-soft)">
+<div style="font-size:24px;font-weight:700;color:var(--pm-purple)">1</div>
+<div style="font-size:10px;font-weight:700;color:#6D28D9">STR PENDING</div>
+</div>
+</div>
+</div>
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Area</th>
+<th>Status</th>
+<th>Issue</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>@for (row of mockData.fxHealthRows; track row.area) {
+<tr><td>{{ row.area }}</td><td><span [ngClass]="badgeClass(row.status)" class="B">{{ row.statusLabel }}</span></td><td>{{ row.issue }}</td><td>@if (row.actionModal) { <button (click)="openModal(row.actionModal)" class="btn-pm btn-sm" type="button">{{ row.actionLabel }}</button>
+
+  
+  
+  
+  
+  @else { — }
+</td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="4">No FX health records available.</td></tr> }</tbody>
+</table>
+</div>
+}
+</div>
+<div class="modal-footer"><button (click)="closeModal('fxHealthModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button><button (click)="openModal('complianceModal')" class="btn-pm btn-pm-p" type="button">File Pending STR</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('marketModal')" [attr.aria-hidden]="isModalOpen('marketModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('marketModal') ? 'true' : null" [class.show]="isModalOpen('marketModal')" [style.display]="isModalOpen('marketModal') ? 'block' : 'none'" class="modal fade R" id="marketModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-newspaper me-2"></i>FX Market Intelligence</h5><button (click)="closeModal('marketModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="p-3 rounded mb-3" style="background:var(--pm-info-soft)">
+<h6 style="font-weight:700;color:#1D4ED8">CBK Policy Meeting — Tomorrow</h6>
+<p style="font-size:13px;color:#1E40AF;margin:4px 0 0">Consensus: 25bps rate cut expected.
+                            USD/KES likely to weaken to 130.50–131.00 range.</p>
+</div>
+<div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft)">
+<h6 style="font-weight:700;color:#B45309">GBP Alert</h6>
+<p style="font-size:13px;color:#92400E;margin:4px 0 0">UK inflation data tomorrow — potential
+                            1.5% volatility. Consider hedging before event.</p>
+</div>
+<div class="p-3 rounded" style="background:var(--pm-accent-soft)">
+<h6 style="font-weight:700;color:#047857">TZS Devaluation Risk</h6>
+<p style="font-size:13px;color:#065F46;margin:4px 0 0">Tanzania central bank under pressure.
+                            2–3% devaluation possible in next 30 days.</p>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('marketModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('fxNotifModal')" [attr.aria-hidden]="isModalOpen('fxNotifModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('fxNotifModal') ? 'true' : null" [class.show]="isModalOpen('fxNotifModal')" [style.display]="isModalOpen('fxNotifModal') ? 'block' : 'none'" class="modal fade R" id="fxNotifModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-bell me-2"></i>FX Notifications (7)</h5><button (click)="closeModal('fxNotifModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body" style="max-height:500px;overflow-y:auto">
+<div class="p-3 rounded mb-2" style="background:var(--pm-danger-soft);font-size:13px">
+<strong>Forward FX-8821 expires today</strong>
+<div style="font-size:11px;color:#7F1D1D">USD 120K • Action required before 5 PM</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-warning-soft);font-size:13px"><strong>GBP
+                            volatility alert triggered</strong>
+<div style="font-size:11px;color:#92400E">1.8% move in last 4 hours</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-info-soft);font-size:13px"><strong>USD 85K
+                            settlement confirmed</strong>
+<div style="font-size:11px;color:#1E40AF">Value date 28 Jun</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-accent-soft);font-size:13px"><strong>STR
+                            filed successfully</strong>
+<div style="font-size:11px;color:#065F46">Reference CBK-STR-20250627-9914</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:#fff;border:1px solid var(--pm-border);font-size:13px"><strong>Rate alert:
+                            USD/KES crossed 129.50</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Current: 129.42</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="openModal('rateAlertModal')" class="btn-pm" type="button">Manage
+                        Alerts</button><button (click)="closeModal('fxNotifModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('profileModal')" [attr.aria-hidden]="isModalOpen('profileModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('profileModal') ? 'true' : null" [class.show]="isModalOpen('profileModal')" [style.display]="isModalOpen('profileModal') ? 'block' : 'none'" class="modal fade R" id="profileModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile</h5><button (click)="closeModal('profileModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body text-center">
+<div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">JK</div>
+<h5 style="font-weight:700;margin-bottom:2px">James Kamau</h5>
+<p style="font-size:13px;color:var(--pm-muted)">james.kamau&#64;company.co.ke · +254 712 345 890</p>
+<div class="row g-2 text-start mt-3" style="font-size:13px">
+<div class="col-6">
+<div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Treasury Score</span><br/><strong style="color:var(--pm-accent)">87/100</strong></div>
+</div>
+<div class="col-6">
+<div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Open Contracts</span><br/><strong>4</strong></div>
+</div>
+<div class="col-6">
+<div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Member Since</span><br/><strong>Mar 2022</strong></div>
+</div>
+<div class="col-6">
+<div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">STRs Filed</span><br/><strong>12 YTD</strong></div>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('profileModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('attentionModal')" [attr.aria-hidden]="isModalOpen('attentionModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('attentionModal') ? 'true' : null" [class.show]="isModalOpen('attentionModal')" [style.display]="isModalOpen('attentionModal') ? 'block' : 'none'" class="modal fade R" id="attentionModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>All Treasury Items
+                    </h5><button (click)="closeModal('attentionModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="sr">
+<div><strong>USD 45K forward expires today</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Contract FX-8821</div>
+</div><button (click)="openModal('fxContractModal')" class="btn-pm btn-sm" type="button">Roll</button>
+</div>
+<div class="sr">
+<div><strong>STR pending for large USD inflow</strong>
+<div style="font-size:11px;color:var(--pm-muted)">KES 12.4M from US client</div>
+</div><button (click)="openModal('complianceModal')" class="btn-pm btn-sm" type="button">File</button>
+</div>
+<div class="sr">
+<div><strong>EUR 28K settlement mismatch</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Bank vs internal ledger</div>
+</div><button (click)="openModal('reconcileModal')" class="btn-pm btn-sm" type="button">Reconcile</button>
+</div>
+<div class="sr">
+<div><strong>GBP volatility alert</strong>
+<div style="font-size:11px;color:var(--pm-muted)">1.8% move in 4 hours</div>
+</div><button (click)="openModal('rateAlertModal')" class="btn-pm btn-sm" type="button">Adjust</button>
+</div>
+<div class="sr">
+<div><strong>Forward FX-8794 MTM positive</strong>
+<div style="font-size:11px;color:var(--pm-muted)">+KES 42K unrealized gain</div>
+</div><span class="B B-s">Monitor</span>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('attentionModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('reportExportModal')" [attr.aria-hidden]="isModalOpen('reportExportModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('reportExportModal') ? 'true' : null" [class.show]="isModalOpen('reportExportModal')" [style.display]="isModalOpen('reportExportModal') ? 'block' : 'none'" class="modal fade R" id="reportExportModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-download me-2"></i>Export Treasury Report</h5><button (click)="closeModal('reportExportModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="FL">Report Type</label><select class="FC">
+<option>Daily Treasury Position</option>
+<option>FX P&amp;L Statement</option>
+<option>Exposure &amp; Hedging Report</option>
+<option>Compliance Filing Summary</option>
+<option>Full Audit Trail</option>
+</select></div>
+<div class="row g-3 mb-3">
+<div class="col-6"><label class="FL">From</label><input class="FC" type="date" value="2025-06-01"/></div>
+<div class="col-6"><label class="FL">To</label><input class="FC" type="date" value="2025-06-27"/>
+</div>
+</div>
+<div class="mb-3"><label class="FL">Format</label><select class="FC">
+<option>PDF</option>
+<option>Excel</option>
+<option>CSV</option>
+</select></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('reportExportModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('reportExportModal', 'Report generated and downloading...', '')" class="btn-pm btn-pm-p" type="button">Export</button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('rollContractModal')" [attr.aria-hidden]="isModalOpen('rollContractModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('rollContractModal') ? 'true' : null" [class.show]="isModalOpen('rollContractModal')" [style.display]="isModalOpen('rollContractModal') ? 'block' : 'none'" class="modal fade R" id="rollContractModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-arrow-repeat me-2"></i>Roll / Close Contract</h5><button (click)="closeModal('rollContractModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="FL">Contract</label><select class="FC">
+<option>FX-8821 • USD 120K • 27 Jun</option>
+<option>FX-8794 • EUR 85K • 14 Jul</option>
+</select></div>
+<div class="mb-3"><label class="FL">Action</label><select class="FC">
+<option>Roll forward 30 days at market</option>
+<option>Roll forward 90 days at market</option>
+<option>Close and settle P&amp;L</option>
+<option>Close and convert to spot</option>
+</select></div>
+<div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Rolling will create a new forward contract. P&amp;L will be
+                        realized on the original contract.</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('rollContractModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('rollContractModal', 'Contract rolled successfully. New contract FX-8922 created.', 'FX-8922')" class="btn-pm btn-pm-p" type="button">Execute</button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('accountModal')" [attr.aria-hidden]="isModalOpen('accountModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('accountModal') ? 'true' : null" [class.show]="isModalOpen('accountModal')" [style.display]="isModalOpen('accountModal') ? 'block' : 'none'" class="modal fade R" id="accountModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-gear me-2"></i>Manage Multi-Currency Accounts</h5><button (click)="closeModal('accountModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="table-responsive">
+<table class="T">
+<thead>
+<tr>
+<th>Currency</th>
+<th>Account Number</th>
+<th>Bank</th>
+<th>Balance</th>
+<th>Limit</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>@for (account of mockData.currencyAccountSettings; track account.currency) {
+<tr><td>{{ account.currency }}</td><td>{{ account.accountNumber }}</td><td>{{ account.bank }}</td><td>{{ account.balance }}</td><td>{{ account.limit }}</td><td><button (click)="processAction('accountModal','Account settings updated.','')" class="btn-pm btn-sm" type="button">Edit</button></td></tr>
+} @empty { <tr><td class="text-center py-4" colspan="6">No currency settings available.</td></tr> }</tbody>
+</table>
+</div>
+}
+</div>
+<div class="modal-footer"><button (click)="closeModal('accountModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('marketCommentModal')" [attr.aria-hidden]="isModalOpen('marketCommentModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('marketCommentModal') ? 'true' : null" [class.show]="isModalOpen('marketCommentModal')" [style.display]="isModalOpen('marketCommentModal') ? 'block' : 'none'" class="modal fade R" id="marketCommentModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-chat-text me-2"></i>Market Commentary</h5><button (click)="closeModal('marketCommentModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+<h6 style="font-weight:700">USD/KES Outlook — Next 7 Days</h6>
+<p style="font-size:13px;color:var(--pm-ink-soft);margin-top:8px">CBK expected to cut policy
+                            rate by 25bps tomorrow. This should put downward pressure on KES, pushing USD/KES toward
+                            130.00–130.80 range. Recommend locking in any USD receivables above 130.00.</p>
+</div>
+<div class="p-3 rounded" style="background:var(--pm-surface-2)">
+<h6 style="font-weight:700">GBP Risk Event</h6>
+<p style="font-size:13px;color:var(--pm-ink-soft);margin-top:8px">UK CPI data tomorrow could
+                            trigger 1.5% volatility. Consider hedging 50% of July GBP exposure before the event.</p>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('marketCommentModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('securityModal')" [attr.aria-hidden]="isModalOpen('securityModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('securityModal') ? 'true' : null" [class.show]="isModalOpen('securityModal')" [style.display]="isModalOpen('securityModal') ? 'block' : 'none'" class="modal fade R" id="securityModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-shield-lock me-2"></i>Treasury Security</h5><button (click)="closeModal('securityModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="FL">Action</label><select class="FC">
+<option>Change Treasury PIN</option>
+<option>Enable 2FA for FX trades</option>
+<option>Review authorized signatories</option>
+<option>Download audit log</option>
+</select></div>
+<div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> All FX trades above USD 50K require dual authorization.
+                    </div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('securityModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('securityModal', 'Security settings updated.', '')" class="btn-pm btn-pm-p" type="button">Apply</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('faqModal')" [attr.aria-hidden]="isModalOpen('faqModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('faqModal') ? 'true' : null" [class.show]="isModalOpen('faqModal')" [style.display]="isModalOpen('faqModal') ? 'block' : 'none'" class="modal fade R" id="faqModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-question-circle me-2"></i>FX FAQ</h5><button (click)="closeModal('faqModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="sr">
+<div><strong>How do I roll a forward contract?</strong>
+<div style="font-size:12px;color:var(--pm-ink-soft)">Go to FX Contracts → select contract →
+                                Roll. New rate based on current forward points.</div>
+</div>
+</div>
+<div class="sr">
+<div><strong>What is the cut-off time for same-day FX?</strong>
+<div style="font-size:12px;color:var(--pm-ink-soft)">Spot trades before 2 PM EAT settle T+2.
+                                After 2 PM → T+3.</div>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('faqModal')" class="btn-pm" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div></section></div>
+
+  @if (hasOpenModal()) {
+    <div class="modal-backdrop fade show" (click)="closeAllModals()"></div>
+  }
+</div>
+}

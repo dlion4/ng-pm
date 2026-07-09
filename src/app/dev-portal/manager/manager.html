@@ -1,0 +1,577 @@
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb"><a (click)="navigateTo('portal')">Developer Portal</a> / <a (click)="navigateTo('ops')">Technical Operations</a> / <strong>Monitoring & Alerting</strong></div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 4.8 — Monitoring, Alerting & Incident Management</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Real-time API health, distributed tracing, developer alerts, ELK log aggregation, and PagerDuty integration.</p>
+  </div>
+  <div class="d-flex flex-wrap" style="gap:8px">
+    <button class="pm-btn" (click)="openModal('systemStatusModal')"><i class="bi bi-check-circle text-success"></i> Status Page</button>
+    <button class="pm-btn" (click)="openModal('centralizedLogModal')"><i class="bi bi-journal-code"></i> Live Logs</button>
+    <button class="pm-btn" (click)="openModal('traceVisualizationModal')"><i class="bi bi-diagram-3" style="color:var(--pm-purple)"></i> Tracing</button>
+    <button class="pm-btn pm-btn-primary" (click)="openModal('addAlertRuleModal')"><i class="bi bi-plus-lg"></i> New Alert Rule</button>
+  </div>
+</div>
+
+<div class="pm-content">
+
+<!-- HERO KPIs -->
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="pm-card pm-card-accent" style="min-height:170px">
+      <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Global API Status <span style="color:#86efac">● Operational</span></p>
+      <div class="pm-stat-value" style="margin:8px 0;color:#fff">{{stats.uptime}}</div>
+      <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">{{stats.uptimeDesc}}</p>
+      <div class="d-flex flex-wrap mt-3" style="gap:8px">
+        <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('systemStatusModal')">View Status</button>
+        <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('incidentPostmortemModal')">Post-mortems</button>
+        <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('dependencyHealthModal')">Dependencies</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 col-6">
+    <div class="pm-card" style="min-height:170px">
+      <p class="pm-stat-label" style="color:var(--pm-info)">API LATENCY (p95)</p>
+      <div class="pm-stat-value" style="margin:6px 0">{{stats.latency}}</div>
+      <span class="pm-badge pm-badge-success"><i class="bi bi-graph-down-arrow"></i> {{stats.latencyDelta}}</span>
+      <div class="pm-mini-bars mt-3"><div class="pm-mini-bar" style="height:60%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:65%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:85%;background:var(--pm-warning)"></div><div class="pm-mini-bar" style="height:62%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:58%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:55%;background:var(--pm-primary)"></div></div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-4 col-6">
+    <div class="pm-card" style="min-height:170px">
+      <p class="pm-stat-label" style="color:var(--pm-danger)">ERROR RATE (5xx)</p>
+      <div class="pm-stat-value" style="margin:6px 0">{{stats.errorRate}}</div>
+      <span class="pm-badge pm-badge-warning"><i class="bi bi-exclamation-triangle"></i> {{stats.errorNote}}</span>
+      <div class="mt-2"><div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>SLA Budget</span><span>{{stats.slaBudget}}</span></div><div class="pm-progress mt-1"><div class="pm-progress-bar" [style.width.%]="stats.slaPercent" style="background:var(--pm-accent)"></div></div></div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-4">
+    <div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-purple)">
+      <p class="pm-stat-label" style="color:var(--pm-purple)">THROUGHPUT</p>
+      <div class="pm-stat-value" style="margin:6px 0">{{stats.throughput}} <span style="font-size:14px;color:var(--pm-muted)">req/s</span></div>
+      <span class="pm-badge pm-badge-success"><i class="bi bi-activity"></i> {{stats.trafficStatus}}</span>
+      <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)"><div>Peak today: <strong>{{stats.peakThroughput}} req/s</strong></div><div>Active Webhooks: <strong>{{stats.activeWebhooks}}</strong></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOP ACTION ROW -->
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Active Alerts</h3><button class="pm-btn pm-btn-sm" (click)="openModal('developerAlertsModal')">View all</button></div>
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">WH</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Webhook delivery failing</div><div style="font-size:11px;color:var(--pm-muted)">Endpoint /callbacks/payment > 5% fail rate</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('webhookRetryModal')">Inspect</button></div>
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">DB</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Database query latency high</div><div style="font-size:11px;color:var(--pm-muted)">p99 latency crossed 500ms on Read Replica</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('bottleneckDetailsModal')">Trace</button></div>
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">MP</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Dependency: M-Pesa STK Timeouts</div><div style="font-size:11px;color:var(--pm-muted)">Safaricom Daraja API responding slowly</div></div><button class="pm-btn pm-btn-sm pm-btn-danger" (click)="openModal('incidentWarRoomModal')">War Room</button></div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Recent Incidents</h3><button class="pm-btn pm-btn-sm" (click)="openModal('incidentPostmortemModal')">History</button></div>
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-surface-2);color:var(--pm-muted);font-size:12px"><i class="bi bi-check2-all"></i></div><div style="flex:1"><div style="font-weight:600;font-size:13px">PesaLink Settlement Delay</div><div style="font-size:11px;color:var(--pm-muted)">Resolved · 22 Jun 2025 · SEV-3</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('incidentPostmortemModal')">Report</button></div>
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-surface-2);color:var(--pm-muted);font-size:12px"><i class="bi bi-check2-all"></i></div><div style="flex:1"><div style="font-weight:600;font-size:13px">Auth API Certificate Expiry</div><div style="font-size:11px;color:var(--pm-muted)">Resolved · 15 Jun 2025 · SEV-2</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('incidentPostmortemModal')">Report</button></div>
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-surface-2);color:var(--pm-muted);font-size:12px"><i class="bi bi-check2-all"></i></div><div style="flex:1"><div style="font-weight:600;font-size:13px">Webhook Queue Backlog</div><div style="font-size:11px;color:var(--pm-muted)">Resolved · 05 Jun 2025 · SEV-3</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('incidentPostmortemModal')">Report</button></div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="mb-3"><h3 class="pm-section-title">Quick Actions</h3><p class="pm-section-sub">Observability & Incident commands</p></div>
+      <div class="quick-action-grid">
+        <button class="quick-action-btn" (click)="openModal('centralizedLogModal')"><i class="bi bi-journal-text text-primary me-1"></i> Search Logs</button>
+        <button class="quick-action-btn" (click)="openModal('traceVisualizationModal')"><i class="bi bi-diagram-3 me-1" style="color:var(--pm-purple)"></i> Traces</button>
+        <button class="quick-action-btn" (click)="openModal('grafanaDashboardModal')"><i class="bi bi-bar-chart text-warning me-1"></i> Grafana</button>
+        <button class="quick-action-btn" (click)="openModal('pagerDutySetupModal')"><i class="bi bi-telephone-outbound text-danger me-1"></i> On-Call (PD)</button>
+        <button class="quick-action-btn" (click)="openModal('addAlertRuleModal')"><i class="bi bi-bell-plus text-info me-1"></i> New Alert</button>
+        <button class="quick-action-btn" (click)="openModal('escalationPolicyModal')"><i class="bi bi-arrow-up-right-square text-success me-1"></i> Escalation</button>
+        <button class="quick-action-btn" (click)="openModal('scheduleMaintenanceModal')"><i class="bi bi-calendar-event me-1" style="color:var(--pm-muted)"></i> Maintenance</button>
+        <button class="quick-action-btn" (click)="openModal('businessMetricModal')"><i class="bi bi-graph-up me-1" style="color:var(--pm-primary)"></i> Biz Metrics</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4.8.1 -->
+<div class="pm-card">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+    <div><h3 class="pm-section-title"><i class="bi bi-heart-pulse-fill" style="color:var(--pm-accent)"></i> 4.8.1 — System Health & Status</h3><p class="pm-section-sub">Real-time status of APIs, uptime SLAs, external dependencies, and maintenance windows.</p></div>
+    <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('apiHealthMetricsModal')"><i class="bi bi-speedometer2"></i> Advanced Metrics</button><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('systemStatusModal')"><i class="bi bi-globe"></i> Public Status Page</button></div>
+  </div>
+  <div class="row g-3">
+    <div class="col-lg-7">
+      <div class="utility-block">
+        <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Core API Subsystems</h4>
+        <div class="table-responsive"><table class="pm-table"><thead><tr><th>Service</th><th>Status</th><th>Uptime (30d)</th><th>Avg Latency</th><th>Trend</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let s of subsystems"><td><strong>{{s.name}}</strong></td><td><span [class]="'pm-badge pm-badge-'+s.statusClass">{{s.status}}</span></td><td>{{s.uptime}}</td><td>{{s.latency}}</td><td><i [class]="'bi '+s.trendIcon+' '+s.trendColor"></i></td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="utility-block">
+        <div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">External Dependencies</h4><button class="pm-btn pm-btn-sm" (click)="openModal('dependencyHealthModal')">Details</button></div>
+        <div class="status-row" *ngFor="let d of dependencies"><div><strong>{{d.name}}</strong><div style="font-size:11px;color:var(--pm-muted)">{{d.desc}}</div></div><span [class]="'pm-badge pm-badge-'+d.badgeClass">{{d.status}}</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4.8.2 -->
+<div class="pm-card">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+    <div><h3 class="pm-section-title"><i class="bi bi-bell-fill" style="color:var(--pm-warning)"></i> 4.8.2 — Developer Alerting & On-Call</h3><p class="pm-section-sub">Manage custom alert rules, escalation policies, PagerDuty/Slack routing, and incident war rooms.</p></div>
+    <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('notificationChannelsModal')"><i class="bi bi-plug"></i> Channels</button><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('addAlertRuleModal')"><i class="bi bi-plus-lg"></i> Add Rule</button></div>
+  </div>
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <div class="utility-block">
+        <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Configured Alert Rules</h4>
+        <div class="table-responsive"><table class="pm-table"><thead><tr><th>Rule Name</th><th>Condition</th><th>Severity</th><th>Channels</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let r of alertRules"><td>{{r.name}}</td><td>{{r.condition}}</td><td><span [class]="'pm-badge pm-badge-'+r.sevClass">{{r.severity}}</span></td><td><span [innerHTML]="r.channels"></span></td><td><span [class]="'pm-badge pm-badge-'+r.statusClass">{{r.status}}</span></td><td><button class="pm-btn pm-btn-sm" (click)="openModal('addAlertRuleModal')">Edit</button></td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="utility-block">
+        <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">On-Call & Escalation</h4>
+        <div class="p-3 rounded mb-3" style="background:var(--pm-surface)"><div class="d-flex justify-content-between mb-2"><span class="text-muted">Current On-Call (L1)</span><strong>{{onCall.l1}}</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Secondary (L2)</span><strong>{{onCall.l2}}</strong></div><div class="d-flex justify-content-between"><span class="text-muted">PagerDuty Sync</span><span class="pm-badge pm-badge-success">{{onCall.pdStatus}}</span></div></div>
+        <div class="d-flex flex-column gap-2">
+          <button class="pm-btn pm-btn-sm justify-content-center" (click)="openModal('pagerDutySetupModal')"><i class="bi bi-telephone-outbound text-danger"></i> Manage PagerDuty Sync</button>
+          <button class="pm-btn pm-btn-sm justify-content-center" (click)="openModal('escalationPolicyModal')"><i class="bi bi-arrow-up-right-square text-success"></i> Edit Escalation Policy</button>
+          <button class="pm-btn pm-btn-sm pm-btn-danger justify-content-center" (click)="openModal('incidentWarRoomModal')"><i class="bi bi-exclamation-triangle"></i> Activate War Room</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4.8.3 -->
+<div class="pm-card">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+    <div><h3 class="pm-section-title"><i class="bi bi-diagram-3-fill" style="color:var(--pm-primary)"></i> 4.8.3 — Log Management & Observability</h3><p class="pm-section-sub">Centralized logging (ELK), OpenTelemetry distributed tracing, and Prometheus/Grafana metric exports.</p></div>
+    <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('prometheusExportModal')"><i class="bi bi-box-arrow-up"></i> Export Metrics</button><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('grafanaDashboardModal')"><i class="bi bi-bar-chart"></i> Dashboards</button></div>
+  </div>
+  <div class="row g-3">
+    <div class="col-lg-6">
+      <div class="utility-block" style="background:var(--pm-ink);color:#fff;font-family:monospace;overflow:hidden">
+        <div class="d-flex justify-content-between align-items-center mb-2"><h4 style="font-size:12px;font-weight:700;margin:0;color:var(--pm-muted);font-family:var(--pm-font-sans)">Live Request Logs (Tail)</h4><button class="pm-btn pm-btn-sm" style="color:#fff;border-color:var(--pm-ink-soft)" (click)="openModal('centralizedLogModal')"><i class="bi bi-search"></i> Search Logs</button></div>
+        <div style="font-size:11px;color:var(--pm-accent-soft)">
+          <div class="log-line" *ngFor="let log of liveLogs" [class.log-error]="log.level==='ERROR'" [class.log-warn]="log.level==='WARN'">{{log.text}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="utility-block">
+        <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Observability Tools</h4>
+        <div class="row g-2">
+          <div class="col-sm-6"><div class="p-3 border rounded text-center" style="cursor:pointer;transition:all 0.2s" (mouseenter)="$any($event.currentTarget).style.borderColor = 'var(--pm-purple)'" (mouseleave)="$any($event.currentTarget).style.borderColor = ''" (click)="openModal('traceVisualizationModal')"><i class="bi bi-diagram-3 d-block mb-2" style="font-size:24px;color:var(--pm-purple)"></i><strong style="font-size:13px">Distributed Tracing</strong><div style="font-size:11px;color:var(--pm-muted)">OpenTelemetry</div></div></div>
+          <div class="col-sm-6"><div class="p-3 border rounded text-center" style="cursor:pointer;transition:all 0.2s" (mouseenter)="$any($event.currentTarget).style.borderColor = 'var(--pm-warning)'" (mouseleave)="$any($event.currentTarget).style.borderColor = ''" (click)="openModal('grafanaDashboardModal')"><i class="bi bi-bar-chart-steps d-block mb-2" style="font-size:24px;color:var(--pm-warning)"></i><strong style="font-size:13px">Custom Dashboards</strong><div style="font-size:11px;color:var(--pm-muted)">Grafana / PromQL</div></div></div>
+          <div class="col-sm-6"><div class="p-3 border rounded text-center" style="cursor:pointer;transition:all 0.2s" (mouseenter)="$any($event.currentTarget).style.borderColor = 'var(--pm-info)'" (mouseleave)="$any($event.currentTarget).style.borderColor = ''" (click)="openModal('logRetentionModal')"><i class="bi bi-archive d-block mb-2" style="font-size:24px;color:var(--pm-info)"></i><strong style="font-size:13px">Log Retention</strong><div style="font-size:11px;color:var(--pm-muted)">30d hot, 7yr archive</div></div></div>
+          <div class="col-sm-6"><div class="p-3 border rounded text-center" style="cursor:pointer;transition:all 0.2s" (mouseenter)="$any($event.currentTarget).style.borderColor = 'var(--pm-primary)'" (mouseleave)="$any($event.currentTarget).style.borderColor = ''" (click)="openModal('businessMetricModal')"><i class="bi bi-funnel d-block mb-2" style="font-size:24px;color:var(--pm-primary)"></i><strong style="font-size:13px">Business Metrics</strong><div style="font-size:11px;color:var(--pm-muted)">Conversion & success</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- 1. System Status -->
+<div class="modal fade" id="systemStatusModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-globe me-2 text-success"></i>Public System Status</h5><button class="btn-close" (click)="closeModal('systemStatusModal')"></button></div>
+    <div class="modal-body">
+      <div class="p-3 rounded mb-3 text-center" style="background:var(--pm-accent-soft);color:#047857"><h4 style="font-family:var(--pm-font-display);font-weight:700;margin:0">All Systems Operational</h4><p style="margin:0;font-size:12px">Last updated: Just now</p></div>
+      <h6 style="font-weight:700">API Endpoints (90 Days)</h6>
+      <div class="table-responsive"><table class="pm-table"><thead><tr><th>Service</th><th>Current Status</th><th>Uptime</th></tr></thead><tbody>
+        <tr *ngFor="let s of statusEndpoints"><td>{{s.service}}</td><td><span [class]="'text-'+s.colorClass"><i [class]="'bi '+s.icon"></i> {{s.status}}</span></td><td>{{s.uptime}}</td></tr>
+      </tbody></table></div>
+      <div class="mt-3 p-3 rounded" style="background:var(--pm-surface-2);font-size:12px"><strong>Current Incident: Webhook Delays</strong><br>We are observing delays of up to 5 minutes in outbound webhook delivery. Payment processing is unaffected. Our engineers are investigating.</div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('systemStatusModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="openStatusSubscription()">Subscribe to Updates</button></div>
+  </div></div>
+</div>
+
+<!-- 2. Post-Mortem -->
+<div class="modal fade" id="incidentPostmortemModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-file-earmark-text me-2"></i>Incident Post-Mortems</h5><button class="btn-close" (click)="closeModal('incidentPostmortemModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><select class="pm-form-control" [(ngModel)]="postmortemForm.selected"><option *ngFor="let p of postmortems" [value]="p.id">{{p.id}}: {{p.title}}</option></select></div>
+      <div class="p-3 rounded border">
+        <h4 style="font-weight:700;font-size:16px;margin-bottom:16px">Incident: {{selectedPostmortem.title}} ({{selectedPostmortem.sev}})</h4>
+        <div class="row g-2 mb-3" style="font-size:12px"><div class="col-sm-4"><span class="text-muted">Date:</span> {{selectedPostmortem.date}}</div><div class="col-sm-4"><span class="text-muted">Duration:</span> {{selectedPostmortem.duration}}</div><div class="col-sm-4"><span class="text-muted">Impact:</span> {{selectedPostmortem.impact}}</div></div>
+        <h6 style="font-weight:700;font-size:13px">Root Cause Analysis</h6>
+        <p style="font-size:13px;color:var(--pm-ink-soft)">{{selectedPostmortem.rootCause}}</p>
+        <h6 style="font-weight:700;font-size:13px">Action Items</h6>
+        <ul style="font-size:13px;color:var(--pm-ink-soft)"><li *ngFor="let a of selectedPostmortem.actions">{{a}}</li></ul>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('incidentPostmortemModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('incidentPostmortemModal','Post-mortem exported as PDF.')">Export PDF</button></div>
+  </div></div>
+</div>
+
+<!-- 3. Schedule Maintenance -->
+<div class="modal fade" id="scheduleMaintenanceModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-calendar-event me-2"></i>Schedule Maintenance Notice</h5><button class="btn-close" (click)="closeModal('scheduleMaintenanceModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Title</label><input class="pm-form-control" [(ngModel)]="maintenanceForm.title"></div>
+      <div class="row g-3 mb-3"><div class="col-6"><label class="pm-form-label">Start Time</label><input type="datetime-local" class="pm-form-control" [(ngModel)]="maintenanceForm.start"></div><div class="col-6"><label class="pm-form-label">End Time</label><input type="datetime-local" class="pm-form-control" [(ngModel)]="maintenanceForm.end"></div></div>
+      <div class="mb-3"><label class="pm-form-label">Impact Level</label><select class="pm-form-control" [(ngModel)]="maintenanceForm.impact"><option>No downtime expected</option><option>Brief intermittent timeouts</option><option>Partial service unavailability</option><option>Full service downtime</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Description for Status Page</label><textarea class="pm-form-control" rows="3" [(ngModel)]="maintenanceForm.description"></textarea></div>
+      <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="maintenanceForm.notifyNow" checked><label class="form-check-label" style="font-size:13px">Send email notification to subscribed developers now (72h notice)</label></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('scheduleMaintenanceModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('scheduleMaintenanceModal','Maintenance scheduled and notifications queued.')">Publish Notice</button></div>
+  </div></div>
+</div>
+
+<!-- 4. API Health Metrics (Tabbed) -->
+<div class="modal fade" id="apiHealthMetricsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-speedometer2 me-2"></i>API Health Metrics Deep-Dive</h5><button class="btn-close" (click)="closeModal('apiHealthMetricsModal')"></button></div>
+    <div class="modal-body">
+      <div class="pm-tab-pills mb-3">
+        <button class="pm-tab-pill" [class.active]="healthTab==='latency'" (click)="healthTab='latency'">Latency</button>
+        <button class="pm-tab-pill" [class.active]="healthTab==='errors'" (click)="healthTab='errors'">Errors</button>
+        <button class="pm-tab-pill" [class.active]="healthTab==='throughput'" (click)="healthTab='throughput'">Throughput</button>
+      </div>
+      <div [class.active]="healthTab==='latency'" class="tab-panel">
+        <div class="row g-3"><div class="col-md-4"><div class="p-3 border rounded text-center"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">p50 (Median)</div><div style="font-size:24px;font-weight:700">45 ms</div></div></div><div class="col-md-4"><div class="p-3 border rounded text-center"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">p95</div><div style="font-size:24px;font-weight:700;color:var(--pm-warning)">184 ms</div></div></div><div class="col-md-4"><div class="p-3 border rounded text-center"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">p99</div><div style="font-size:24px;font-weight:700;color:var(--pm-danger)">410 ms</div></div></div></div>
+        <div class="mt-4"><h6 style="font-weight:700;font-size:13px">Slowest Endpoints (p95)</h6><div class="table-responsive"><table class="pm-table"><thead><tr><th>Endpoint</th><th>Method</th><th>p95 Latency</th></tr></thead><tbody><tr *ngFor="let e of slowEndpoints"><td>{{e.endpoint}}</td><td>{{e.method}}</td><td>{{e.latency}}</td></tr></tbody></table></div></div>
+      </div>
+      <div [class.active]="healthTab==='errors'" class="tab-panel">
+        <div class="table-responsive"><table class="pm-table"><thead><tr><th>HTTP Status</th><th>Count (24h)</th><th>% of Traffic</th><th>Primary Endpoint</th></tr></thead><tbody><tr *ngFor="let e of errorBreakdown"><td><span [class]="'pm-badge'" [style.background]="e.bg" [style.color]="e.color">{{e.status}}</span></td><td>{{e.count}}</td><td>{{e.pct}}</td><td>{{e.endpoint}}</td></tr></tbody></table></div>
+      </div>
+      <div [class.active]="healthTab==='throughput'" class="tab-panel">
+        <div class="p-3 rounded text-center mb-3" style="background:var(--pm-surface-2)"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">TOTAL REQUESTS (24H)</div><div style="font-size:32px;font-weight:700;color:var(--pm-primary)">107.4M</div></div>
+        <div class="chart-bars"><div class="chart-bar" style="height:30%;background:var(--pm-primary-light)"></div><div class="chart-bar" style="height:45%;background:var(--pm-primary-light)"></div><div class="chart-bar" style="height:80%;background:var(--pm-primary)"></div><div class="chart-bar" style="height:95%;background:var(--pm-primary-dark)"></div><div class="chart-bar" style="height:60%;background:var(--pm-primary)"></div><div class="chart-bar" style="height:40%;background:var(--pm-primary-light)"></div></div>
+        <div class="text-center mt-2" style="font-size:11px;color:var(--pm-muted)">Traffic volume over last 6 hours</div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('apiHealthMetricsModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="openPrometheusExport()">Export to Prometheus</button></div>
+  </div></div>
+</div>
+
+<!-- 5. Dependency Health -->
+<div class="modal fade" id="dependencyHealthModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-link-45deg me-2 text-primary"></i>Dependency Health Check</h5><button class="btn-close" (click)="closeModal('dependencyHealthModal')"></button></div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--pm-ink-soft)">Real-time latency and error rates for external API partners.</p>
+      <div class="status-row" *ngFor="let d of depHealthDetails"><div><strong>{{d.name}}</strong><div style="font-size:11px;color:var(--pm-muted)">{{d.detail}}</div></div><span [class]="'pm-badge pm-badge-'+d.badgeClass">{{d.status}}</span></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('dependencyHealthModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="declareIncidentFromDep()">Declare Incident</button></div>
+  </div></div>
+</div>
+
+<!-- 6. Add/Edit Alert Rule (Multi-step 3) -->
+<div class="modal fade" id="addAlertRuleModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell-plus me-2 text-primary"></i>Add Alert Rule</h5><button class="btn-close" (click)="closeModal('addAlertRuleModal')"></button></div>
+    <div class="modal-body">
+      <div class="pm-stepper">
+        <div class="pm-step" [class.active]="alertStep===1" [class.completed]="alertStep>1"><div class="pm-step-num">{{alertStep>1?'✓':1}}</div><span class="pm-step-label">Condition</span></div>
+        <div class="pm-step-line" [style.background]="alertStep>1?'var(--pm-accent)':'var(--pm-border)'"></div>
+        <div class="pm-step" [class.active]="alertStep===2" [class.completed]="alertStep>2"><div class="pm-step-num">{{alertStep>2?'✓':2}}</div><span class="pm-step-label">Channels</span></div>
+        <div class="pm-step-line" [style.background]="alertStep>2?'var(--pm-accent)':'var(--pm-border)'"></div>
+        <div class="pm-step" [class.active]="alertStep===3"><div class="pm-step-num">3</div><span class="pm-step-label">Review</span></div>
+      </div>
+      <div [class.active]="alertStep===1" class="fade-step">
+        <div class="mb-3"><label class="pm-form-label">Rule Name</label><input class="pm-form-control" placeholder="e.g. High Error Rate" [(ngModel)]="alertRuleForm.name"></div>
+        <div class="row g-3 mb-3"><div class="col-6"><label class="pm-form-label">Metric</label><select class="pm-form-control" [(ngModel)]="alertRuleForm.metric"><option>HTTP 5xx Error Rate</option><option>Response Latency (p95)</option><option>Webhook Failure Rate</option><option>Throughput Drop</option><option>Custom PromQL</option></select></div><div class="col-6"><label class="pm-form-label">Severity</label><select class="pm-form-control" [(ngModel)]="alertRuleForm.severity"><option>Critical</option><option>Warning</option><option>Info</option></select></div></div>
+        <div class="row g-3"><div class="col-6"><label class="pm-form-label">Threshold</label><input type="number" class="pm-form-control" placeholder="e.g. 1" [(ngModel)]="alertRuleForm.threshold"></div><div class="col-6"><label class="pm-form-label">Evaluation Window</label><select class="pm-form-control" [(ngModel)]="alertRuleForm.window"><option>1 minute</option><option>5 minutes</option><option>15 minutes</option><option>1 hour</option></select></div></div>
+      </div>
+      <div [class.active]="alertStep===2" class="fade-step">
+        <div class="mb-3"><label class="pm-form-label">Notification Channels</label>
+          <div class="form-check mb-2"><input type="checkbox" class="form-check-input" [(ngModel)]="alertRuleForm.chPagerDuty"><label class="form-check-label"><i class="bi bi-telephone-outbound text-danger me-1"></i> PagerDuty</label></div>
+          <div class="form-check mb-2"><input type="checkbox" class="form-check-input" [(ngModel)]="alertRuleForm.chSlack" checked><label class="form-check-label"><i class="bi bi-slack me-1" style="color:var(--pm-purple)"></i> Slack (#incidents)</label></div>
+          <div class="form-check mb-2"><input type="checkbox" class="form-check-input" [(ngModel)]="alertRuleForm.chEmail"><label class="form-check-label"><i class="bi bi-envelope text-info me-1"></i> Email</label></div>
+          <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="alertRuleForm.chWebhook"><label class="form-check-label"><i class="bi bi-link-45deg me-1"></i> Custom Webhook</label></div>
+        </div>
+        <div class="mb-3" *ngIf="alertRuleForm.chWebhook"><label class="pm-form-label">Webhook URL</label><input type="url" class="pm-form-control" placeholder="https://hooks.example.com/alert" [(ngModel)]="alertRuleForm.webhookUrl"></div>
+        <div class="mb-3"><label class="pm-form-label">Cooldown Period</label><select class="pm-form-control" [(ngModel)]="alertRuleForm.cooldown"><option>5 minutes</option><option>15 minutes</option><option>30 minutes</option><option>1 hour</option></select></div>
+      </div>
+      <div [class.active]="alertStep===3" class="fade-step">
+        <div class="p-3 border rounded"><h6 style="font-weight:700">Rule Summary</h6><div class="row g-2" style="font-size:13px"><div class="col-6"><span class="text-muted">Name:</span> <strong>{{alertRuleForm.name || '—'}}</strong></div><div class="col-6"><span class="text-muted">Metric:</span> <strong>{{alertRuleForm.metric}}</strong></div><div class="col-6"><span class="text-muted">Severity:</span> <strong>{{alertRuleForm.severity}}</strong></div><div class="col-6"><span class="text-muted">Threshold:</span> <strong>> {{alertRuleForm.threshold}} over {{alertRuleForm.window}}</strong></div><div class="col-12"><span class="text-muted">Channels:</span> <strong>{{alertRuleForm.channelSummary}}</strong></div></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="pm-btn" (click)="closeModal('addAlertRuleModal')">Cancel</button>
+      <button class="pm-btn" *ngIf="alertStep>1" (click)="prevAlertStep()"><i class="bi bi-arrow-left"></i> Back</button>
+<button class="pm-btn pm-btn-primary" *ngIf="alertStep<3" (click)="nextAlertStep()">Next Step <i class="bi bi-arrow-right"></i></button>
+      <button class="pm-btn pm-btn-accent" *ngIf="alertStep===3" (click)="processAction('addAlertRuleModal','Alert rule created successfully.')"><i class="bi bi-check-lg"></i> Create Rule</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- 7. Developer Alerts List -->
+<div class="modal fade" id="developerAlertsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell me-2 text-warning"></i>All Developer Alerts</h5><button class="btn-close" (click)="closeModal('developerAlertsModal')"></button></div>
+    <div class="modal-body">
+      <div class="pm-tab-pills mb-3"><button class="pm-tab-pill" [class.active]="alertListTab==='active'" (click)="alertListTab='active'">Active (3)</button><button class="pm-tab-pill" [class.active]="alertListTab==='acked'" (click)="alertListTab='acked'">Acknowledged (2)</button><button class="pm-tab-pill" [class.active]="alertListTab==='resolved'" (click)="alertListTab='resolved'">Resolved (18)</button></div>
+      <div class="feed-item" *ngFor="let a of filteredAlerts"><div class="pm-icon-circle" [style.background]="a.iconBg" [style.color]="a.iconColor" style="font-size:11px">{{a.icon}}</div><div style="flex:1"><div style="font-weight:600;font-size:13px">{{a.title}}</div><div style="font-size:11px;color:var(--pm-muted)">{{a.time}}</div></div><span [class]="'pm-badge pm-badge-'+a.badgeClass">{{a.severity}}</span></div>
+      <div *ngIf="filteredAlerts.length===0" class="text-center py-4 text-muted">No alerts in this category.</div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('developerAlertsModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="openNewAlertRule()"><i class="bi bi-plus-lg"></i> New Rule</button></div>
+  </div></div>
+</div>
+
+<!-- 8. Centralized Log Search -->
+<div class="modal fade" id="centralizedLogModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-journal-code me-2"></i>Centralized Log Search (ELK)</h5><button class="btn-close" (click)="closeModal('centralizedLogModal')"></button></div>
+    <div class="modal-body">
+      <div class="row g-2 mb-3"><div class="col-md-5"><input class="pm-form-control" placeholder='Search: "ERROR" OR "timeout"' [(ngModel)]="logSearchForm.query"></div><div class="col-md-2"><select class="pm-form-control" [(ngModel)]="logSearchForm.service"><option>All Services</option><option>api-gateway</option><option>auth-svc</option><option>webhook-worker</option><option>mpesa-bridge</option></select></div><div class="col-md-2"><select class="pm-form-control" [(ngModel)]="logSearchForm.level"><option>All Levels</option><option>ERROR</option><option>WARN</option><option>INFO</option></select></div><div class="col-md-2"><input type="text" class="pm-form-control" placeholder="Trace ID" [(ngModel)]="logSearchForm.traceId"></div><div class="col-md-1"><button class="pm-btn pm-btn-primary w-100" (click)="processAction('centralizedLogModal','Log search executed. 47 results found.')"><i class="bi bi-search"></i></button></div></div>
+      <div style="background:var(--pm-ink);color:#fff;font-family:monospace;border-radius:var(--pm-r-sm);overflow:hidden;max-height:300px;overflow-y:auto">
+        <div class="log-line" *ngFor="let log of liveLogs" [class.log-error]="log.level==='ERROR'" [class.log-warn]="log.level==='WARN'">{{log.text}}</div>
+      </div>
+      <div class="mt-2 d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>Showing 5 of 47 results</span><span class="pm-btn pm-btn-sm" (click)="openLogRetention()">Retention Settings</span></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('centralizedLogModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('centralizedLogModal','Logs exported to CSV.')">Export CSV</button></div>
+  </div></div>
+</div>
+
+<!-- 9. Trace Visualization -->
+<div class="modal fade" id="traceVisualizationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-diagram-3 me-2" style="color:var(--pm-purple)"></i>Distributed Trace Viewer</h5><button class="btn-close" (click)="closeModal('traceVisualizationModal')"></button></div>
+    <div class="modal-body">
+      <div class="row g-2 mb-3"><div class="col-md-6"><input class="pm-form-control" placeholder="Enter Trace ID (e.g. tx-99128a)" [(ngModel)]="traceForm.traceId"></div><div class="col-md-3"><select class="pm-form-control" [(ngModel)]="traceForm.duration"><option>Last 15 minutes</option><option>Last 1 hour</option><option>Last 6 hours</option></select></div><div class="col-md-3"><button class="pm-btn pm-btn-primary w-100" (click)="processAction('traceVisualizationModal','Trace loaded: tx-99128a')"><i class="bi bi-search"></i> Find Trace</button></div></div>
+      <div class="p-3 border rounded mb-3" style="font-size:13px"><strong>Trace: tx-99128a</strong> · Total: <strong>184ms</strong> · Spans: <strong>4</strong> · Status: <span class="text-success">OK</span></div>
+      <div style="font-family:monospace;font-size:12px">
+        <div class="d-flex align-items-center gap-2 mb-2 p-2 rounded" style="background:var(--pm-surface-2)"><span class="pm-badge pm-badge-success" style="min-width:60px">184ms</span><span style="color:var(--pm-muted)">└─</span> <strong>api-gateway</strong> POST /v2/collections/stk</div>
+        <div class="d-flex align-items-center gap-2 mb-2 p-2 rounded ms-4" style="background:var(--pm-surface-2)"><span class="pm-badge pm-badge-success" style="min-width:60px">12ms</span><span style="color:var(--pm-muted)">└─</span> <strong>auth-svc</strong> Token validation</div>
+        <div class="d-flex align-items-center gap-2 mb-2 p-2 rounded ms-4" style="background:var(--pm-warning-soft)"><span class="pm-badge pm-badge-warning" style="min-width:60px">142ms</span><span style="color:var(--pm-muted)">└─</span> <strong>mpesa-bridge</strong> STK Push (slow)</div>
+        <div class="d-flex align-items-center gap-2 p-2 rounded ms-4" style="background:var(--pm-surface-2)"><span class="pm-badge pm-badge-success" style="min-width:60px">8ms</span><span style="color:var(--pm-muted)">└─</span> <strong>db-writer</strong> Insert transaction record</div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('traceVisualizationModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('traceVisualizationModal','Trace shared to Slack.')">Share Trace</button></div>
+  </div></div>
+</div>
+
+<!-- 10. Webhook Retry -->
+<div class="modal fade" id="webhookRetryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-repeat me-2 text-warning"></i>Webhook Retry Inspector</h5><button class="btn-close" (click)="closeModal('webhookRetryModal')"></button></div>
+    <div class="modal-body">
+      <div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft);font-size:13px"><strong>Endpoint:</strong> https://api.merchant.com/hook<br><strong>Fail Rate:</strong> 5.2% (26 of 500 deliveries)<br><strong>Avg Retry Latency:</strong> 1,205ms</div>
+      <div class="mb-3"><label class="pm-form-label">Action</label><select class="pm-form-control" [(ngModel)]="webhookRetryForm.action"><option>Retry all failed deliveries now</option><option>Disable endpoint temporarily</option><option>Increase timeout to 10s</option><option>Remove endpoint</option></select></div>
+      <div class="form-check mb-3"><input type="checkbox" class="form-check-input" [(ngModel)]="webhookRetryForm.preserveOrder" checked><label class="form-check-label" style="font-size:13px">Preserve event delivery order during retry</label></div>
+      <div class="table-responsive"><table class="pm-table"><thead><tr><th>Event ID</th><th>Status</th><th>Attempts</th></tr></thead><tbody><tr><td><code>evt_8821a</code></td><td><span class="pm-badge pm-badge-danger">Failed</span></td><td>3/5</td></tr><tr><td><code>evt_8821b</code></td><td><span class="pm-badge pm-badge-danger">Failed</span></td><td>5/5</td></tr><tr><td><code>evt_8821c</code></td><td><span class="pm-badge pm-badge-warning">Retrying</span></td><td>2/5</td></tr></tbody></table></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('webhookRetryModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('webhookRetryModal','Retry action executed successfully.')">Execute Action</button></div>
+  </div></div>
+</div>
+
+<!-- 11. Bottleneck Details -->
+<div class="modal fade" id="bottleneckDetailsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-speedometer me-2 text-info"></i>Database Bottleneck Trace</h5><button class="btn-close" (click)="closeModal('bottleneckDetailsModal')"></button></div>
+    <div class="modal-body">
+      <div class="p-3 rounded mb-3" style="background:var(--pm-info-soft);font-size:13px"><strong>Read Replica:</strong> db-replica-02<br><strong>p99 Latency:</strong> 512ms (threshold: 500ms)<br><strong>Active Connections:</strong> 187/200</div>
+      <h6 style="font-weight:700;font-size:13px">Top Slow Queries</h6>
+      <div class="table-responsive"><table class="pm-table"><thead><tr><th>Query</th><th>Avg Time</th><th>Calls/min</th></tr></thead><tbody><tr><td><code>SELECT * FROM transactions WHERE...</code></td><td>340ms</td><td>42</td></tr><tr><td><code>SELECT COUNT(*) FROM settlements...</code></td><td>280ms</td><td>8</td></tr></tbody></table></div>
+      <div class="mt-3 d-flex gap-2"><button class="pm-btn pm-btn-sm" (click)="processAction('bottleneckDetailsModal','EXPLAIN ANALYZE triggered.')"><i class="bi bi-code-slash"></i> Run EXPLAIN</button><button class="pm-btn pm-btn-sm" (click)="openGrafanaFromBottleneck()"><i class="bi bi-bar-chart"></i> View in Grafana</button></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('bottleneckDetailsModal')">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 12. Incident War Room (Multi-step 3) -->
+<div class="modal fade" id="incidentWarRoomModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2 text-danger"></i>Incident War Room</h5><button class="btn-close" (click)="closeModal('incidentWarRoomModal')"></button></div>
+    <div class="modal-body">
+      <div class="pm-stepper">
+        <div class="pm-step" [class.active]="warStep===1" [class.completed]="warStep>1"><div class="pm-step-num">{{warStep>1?'✓':1}}</div><span class="pm-step-label">Declare</span></div>
+        <div class="pm-step-line" [style.background]="warStep>1?'var(--pm-accent)':'var(--pm-border)'"></div>
+        <div class="pm-step" [class.active]="warStep===2" [class.completed]="warStep>2"><div class="pm-step-num">{{warStep>2?'✓':2}}</div><span class="pm-step-label">Assign</span></div>
+        <div class="pm-step-line" [style.background]="warStep>2?'var(--pm-accent)':'var(--pm-border)'"></div>
+        <div class="pm-step" [class.active]="warStep===3"><div class="pm-step-num">3</div><span class="pm-step-label">Resolve</span></div>
+      </div>
+      <div [class.active]="warStep===1" class="fade-step">
+        <div class="mb-3"><label class="pm-form-label">Incident Title</label><input class="pm-form-control" placeholder="Brief description" [(ngModel)]="warForm.title"></div>
+        <div class="row g-3 mb-3"><div class="col-6"><label class="pm-form-label">Severity</label><select class="pm-form-control" [(ngModel)]="warForm.severity"><option>SEV-1 (Critical)</option><option>SEV-2 (Major)</option><option selected>SEV-3 (Minor)</option><option>SEV-4 (Low)</option></select></div><div class="col-6"><label class="pm-form-label">Affected Service</label><select class="pm-form-control" [(ngModel)]="warForm.service"><option>Collections API</option><option>Disbursements API</option><option>Webhook Delivery</option><option>Auth API</option><option>Card Gateway</option></select></div></div>
+        <div class="mb-3"><label class="pm-form-label">Initial Summary</label><textarea class="pm-form-control" rows="3" placeholder="What is happening?" [(ngModel)]="warForm.summary"></textarea></div>
+      </div>
+      <div [class.active]="warStep===2" class="fade-step">
+        <div class="mb-3"><label class="pm-form-label">Incident Commander</label><select class="pm-form-control" [(ngModel)]="warForm.commander"><option>John D. (Lead Engineer)</option><option>Sarah W. (Senior SRE)</option><option>Mike K. (Platform Lead)</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Assign to Slack Channel</label><select class="pm-form-control" [(ngModel)]="warForm.slackChannel"><option>#incidents-active</option><option>#incidents-payments</option><option>#incidents-infra</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Page PagerDuty</label><div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="warForm.pagePD" checked><label class="form-check-label" style="font-size:13px">Trigger PagerDuty escalation for this incident</label></div></div>
+        <div class="mb-3"><label class="pm-form-label">Status Page Update</label><select class="pm-form-control" [(ngModel)]="warForm.statusUpdate"><option>Auto-post "Investigating"</option><option>Auto-post "Degraded Performance"</option><option>Do not update status page yet</option></select></div>
+      </div>
+      <div [class.active]="warStep===3" class="fade-step">
+        <div class="p-3 rounded border mb-3" style="background:var(--pm-accent-soft)"><strong>Resolution</strong></div>
+        <div class="mb-3"><label class="pm-form-label">Root Cause</label><textarea class="pm-form-control" rows="2" placeholder="What caused this?" [(ngModel)]="warForm.rootCause"></textarea></div>
+        <div class="mb-3"><label class="pm-form-label">Resolution Summary</label><textarea class="pm-form-control" rows="2" placeholder="How was it fixed?" [(ngModel)]="warForm.resolution"></textarea></div>
+        <div class="form-check mb-3"><input type="checkbox" class="form-check-input" [(ngModel)]="warForm.createPostmortem" checked><label class="form-check-label" style="font-size:13px">Create post-mortem draft automatically</label></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="pm-btn" (click)="closeModal('incidentWarRoomModal')">Cancel</button>
+      <button class="pm-btn" *ngIf="warStep>1" (click)="prevWarStep()"><i class="bi bi-arrow-left"></i> Back</button>
+      <button class="pm-btn pm-btn-danger" *ngIf="warStep===1" (click)="warStep = warStep + 1"><i class="bi bi-exclamation-triangle"></i> Declare Incident</button>
+      <button class="pm-btn pm-btn-primary" *ngIf="warStep===2" (click)="warStep = warStep + 1"><i class="bi bi-people"></i> Assign & Notify</button>
+      <button class="pm-btn pm-btn-accent" *ngIf="warStep===3" (click)="processAction('incidentWarRoomModal','Incident resolved and post-mortem draft created.')"><i class="bi bi-check-lg"></i> Resolve & Close</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- 13. Grafana Dashboard -->
+<div class="modal fade" id="grafanaDashboardModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bar-chart me-2 text-warning"></i>Grafana Dashboards</h5><button class="btn-close" (click)="closeModal('grafanaDashboardModal')"></button></div>
+    <div class="modal-body">
+      <div class="row g-3">
+        <div class="col-md-6"><div class="p-3 border rounded" style="cursor:pointer" (click)="processAction('grafanaDashboardModal','Opening API Overview dashboard...')"><h6 style="font-weight:700"><i class="bi bi-speedometer2 me-1 text-primary"></i> API Overview</h6><p class="mb-0" style="font-size:12px;color:var(--pm-muted)">Latency, throughput, error rates across all endpoints</p></div></div>
+        <div class="col-md-6"><div class="p-3 border rounded" style="cursor:pointer" (click)="processAction('grafanaDashboardModal','Opening Infrastructure dashboard...')"><h6 style="font-weight:700"><i class="bi bi-hdd-rack me-1 text-info"></i> Infrastructure</h6><p class="mb-0" style="font-size:12px;color:var(--pm-muted)">CPU, memory, disk, network per service/pod</p></div></div>
+        <div class="col-md-6"><div class="p-3 border rounded" style="cursor:pointer" (click)="processAction('grafanaDashboardModal','Opening Webhook Analytics dashboard...')"><h6 style="font-weight:700"><i class="bi bi-broadcast me-1 text-warning"></i> Webhook Analytics</h6><p class="mb-0" style="font-size:12px;color:var(--pm-muted)">Delivery rates, retry queues, latency per endpoint</p></div></div>
+        <div class="col-md-6"><div class="p-3 border rounded" style="cursor:pointer" (click)="processAction('grafanaDashboardModal','Opening Business Metrics dashboard...')"><h6 style="font-weight:700"><i class="bi bi-graph-up me-1 text-success"></i> Business Metrics</h6><p class="mb-0" style="font-size:12px;color:var(--pm-muted)">Transaction volume, success rates, revenue</p></div></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('grafanaDashboardModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('grafanaDashboardModal','Grafana link copied to clipboard.')"><i class="bi bi-box-arrow-up-right"></i> Open in New Tab</button></div>
+  </div></div>
+</div>
+
+<!-- 14. PagerDuty Setup -->
+<div class="modal fade" id="pagerDutySetupModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-telephone-outbound me-2 text-danger"></i>PagerDuty Integration</h5><button class="btn-close" (click)="closeModal('pagerDutySetupModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Connection Status</label><div class="p-3 rounded" style="background:var(--pm-accent-soft)"><i class="bi bi-check-circle text-success me-1"></i> <strong>Connected</strong> — Last sync: 2 minutes ago</div></div>
+      <div class="mb-3"><label class="pm-form-label">PagerDuty API Key</label><input type="password" class="pm-form-control" value="pd_live_xxxxxxxx" readonly></div>
+      <div class="mb-3"><label class="pm-form-label">Service Mapping</label><select class="pm-form-control" [(ngModel)]="pdForm.serviceMap"><option>Map all SEV-1/2 alerts to PD Service</option><option>Map by alert rule (custom)</option><option>Disable PagerDuty routing</option></select></div>
+      <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="pdForm.autoResolve" checked><label class="form-check-label" style="font-size:13px">Auto-resolve PD incidents when alert clears</label></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('pagerDutySetupModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('pagerDutySetupModal','PagerDuty settings saved.')">Save Settings</button></div>
+  </div></div>
+</div>
+
+<!-- 15. Escalation Policy -->
+<div class="modal fade" id="escalationPolicyModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-up-right-square me-2 text-success"></i>Escalation Policy</h5><button class="btn-close" (click)="closeModal('escalationPolicyModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Level 1 (0-5 min)</label><input class="pm-form-control" value="John D. — Lead Engineer" [(ngModel)]="escForm.l1"></div>
+      <div class="mb-3"><label class="pm-form-label">Level 2 (5-15 min)</label><input class="pm-form-control" value="Sarah W. — Senior SRE" [(ngModel)]="escForm.l2"></div>
+      <div class="mb-3"><label class="pm-form-label">Level 3 (15-30 min)</label><input class="pm-form-control" value="Mike K. — Platform Lead" [(ngModel)]="escForm.l3"></div>
+      <div class="mb-3"><label class="pm-form-label">Level 4 (30+ min)</label><input class="pm-form-control" value="CTO / VP Engineering" [(ngModel)]="escForm.l4"></div>
+      <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="escForm.loop" checked><label class="form-check-label" style="font-size:13px">Loop back to L1 after L4 if unresolved</label></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('escalationPolicyModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('escalationPolicyModal','Escalation policy updated.')">Save Policy</button></div>
+  </div></div>
+</div>
+
+<!-- 16. Business Metrics -->
+<div class="modal fade" id="businessMetricModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-graph-up me-2 text-primary"></i>Business Metrics</h5><button class="btn-close" (click)="closeModal('businessMetricModal')"></button></div>
+    <div class="modal-body">
+      <div class="row g-3 mb-3"><div class="col-6"><div class="p-3 border rounded text-center"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">Transactions Today</div><div style="font-size:24px;font-weight:700;color:var(--pm-primary)">84,291</div></div></div><div class="col-6"><div class="p-3 border rounded text-center"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">Success Rate</div><div style="font-size:24px;font-weight:700;color:var(--pm-accent)">97.8%</div></div></div><div class="col-6"><div class="p-3 border rounded text-center"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">Volume (KES)</div><div style="font-size:24px;font-weight:700;color:var(--pm-warning)">12.4M</div></div></div><div class="col-6"><div class="p-3 border rounded text-center"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">Avg Ticket Size</div><div style="font-size:24px;font-weight:700">KES 1,472</div></div></div></div>
+      <div class="mb-3"><label class="pm-form-label">Custom Metric Query (PromQL)</label><textarea class="pm-form-control font-monospace" rows="2" [(ngModel)]="bizMetricForm.query">sum(rate(paymo_transactions_total{status="success"}[1h]))</textarea></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('businessMetricModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="openModal('grafanaDashboardModal');closeModal('businessMetricModal')">View in Grafana</button></div>
+  </div></div>
+</div>
+
+<!-- 17. Status Subscription -->
+<div class="modal fade" id="statusSubscriptionModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-envelope-paper me-2 text-success"></i>Subscribe to Status Updates</h5><button class="btn-close" (click)="closeModal('statusSubscriptionModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Email Address</label><input type="email" class="pm-form-control" placeholder="dev@company.com" [(ngModel)]="statusSubForm.email"></div>
+      <div class="mb-3"><label class="pm-form-label">Notification Types</label>
+        <div class="form-check mb-2"><input type="checkbox" class="form-check-input" [(ngModel)]="statusSubForm.incidents" checked><label class="form-check-label">Incident updates (SEV-1/2)</label></div>
+        <div class="form-check mb-2"><input type="checkbox" class="form-check-input" [(ngModel)]="statusSubForm.maintenance" checked><label class="form-check-label">Scheduled maintenance</label></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="statusSubForm.recovery"><label class="form-check-label">Recovery confirmations only</label></div>
+      </div>
+      <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="statusSubForm.slack" checked><label class="form-check-label" style="font-size:13px">Also receive via Slack webhook</label></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('statusSubscriptionModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('statusSubscriptionModal','Subscribed to status updates successfully.')">Subscribe</button></div>
+  </div></div>
+</div>
+
+<!-- 18. Notification Channels -->
+<div class="modal fade" id="notificationChannelsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-plug me-2 text-info"></i>Notification Channels</h5><button class="btn-close" (click)="closeModal('notificationChannelsModal')"></button></div>
+    <div class="modal-body">
+      <div class="status-row"><div><strong><i class="bi bi-telephone-outbound text-danger me-1"></i> PagerDuty</strong><div style="font-size:11px;color:var(--pm-muted)">Incident paging</div></div><span class="pm-badge pm-badge-success">Connected</span></div>
+      <div class="status-row"><div><strong><i class="bi bi-slack me-1" style="color:var(--pm-purple)"></i> Slack</strong><div style="font-size:11px;color:var(--pm-muted)">#incidents, #alerts</div></div><span class="pm-badge pm-badge-success">Connected</span></div>
+      <div class="status-row"><div><strong><i class="bi bi-envelope text-info me-1"></i> Email (SMTP)</strong><div style="font-size:11px;color:var(--pm-muted)">dev-ops@company.com</div></div><span class="pm-badge pm-badge-success">Connected</span></div>
+      <div class="status-row"><div><strong><i class="bi bi-link-45deg me-1"></i> Custom Webhook</strong><div style="font-size:11px;color:var(--pm-muted)">https://hooks.example.com/pm</div></div><span class="pm-badge pm-badge-warning">Unverified</span></div>
+      <div class="mt-3"><button class="pm-btn pm-btn-sm" (click)="processAction('notificationChannelsModal','Webhook verification sent.')"><i class="bi bi-plus-lg"></i> Add Channel</button></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('notificationChannelsModal')">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 19. Prometheus Export -->
+<div class="modal fade" id="prometheusExportModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-box-arrow-up me-2 text-primary"></i>Prometheus Metrics Export</h5><button class="btn-close" (click)="closeModal('prometheusExportModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Scrape Endpoint</label><input class="pm-form-control" value="https://api.paymo.com/metrics" readonly></div>
+      <div class="mb-3"><label class="pm-form-label">Available Metric Prefixes</label>
+        <div class="d-flex flex-wrap gap-2"><span class="pm-badge pm-badge-info">paymo_http_*</span><span class="pm-badge pm-badge-success">paymo_transactions_*</span><span class="pm-badge pm-badge-warning">paymo_webhooks_*</span><span class="pm-badge pm-badge-purple">paymo_db_*</span></div>
+      </div>
+      <div class="mb-3"><label class="pm-form-label">Auth Method</label><select class="pm-form-control" [(ngModel)]="promForm.auth"><option>Bearer Token (Service Account)</option><option>MTLS Client Certificate</option><option>Network allowlist only</option></select></div>
+      <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="promForm.histograms" checked><label class="form-check-label" style="font-size:13px">Include histogram buckets for latency</label></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('prometheusExportModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('prometheusExportModal','Prometheus scrape config copied.')"><i class="bi bi-clipboard"></i> Copy Scrape Config</button></div>
+  </div></div>
+</div>
+
+<!-- 20. Log Retention -->
+<div class="modal fade" id="logRetentionModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-archive me-2 text-info"></i>Log Retention Settings</h5><button class="btn-close" (click)="closeModal('logRetentionModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Hot Storage (Elasticsearch)</label><select class="pm-form-control" [(ngModel)]="logRetentionForm.hot"><option>7 days</option><option selected>30 days</option><option>90 days</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Warm Storage (S3 / MinIO)</label><select class="pm-form-control" [(ngModel)]="logRetentionForm.warm"><option>6 months</option><option selected>1 year</option><option>2 years</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Cold Archive (Glacier)</label><select class="pm-form-control" [(ngModel)]="logRetentionForm.cold"><option>3 years</option><option selected>7 years</option><option>Indefinite</option></select></div>
+      <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:12px"><i class="bi bi-info-circle text-info me-1"></i> Estimated storage cost at current volume (2.1TB/mo): <strong>$420/month</strong></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('logRetentionModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('logRetentionModal','Log retention policy updated.')">Save Policy</button></div>
+  </div></div>
+</div>
+
+<!-- 21. Project Selector -->
+<div class="modal fade" id="projectSelectorModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-layers me-2 text-primary"></i>Select Project / Environment</h5><button class="btn-close" (click)="closeModal('projectSelectorModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3" *ngFor="let p of projects">
+        <div class="p-3 border rounded d-flex justify-content-between align-items-center" style="cursor:pointer" [style.borderColor]="projectForm.selected===p.id?'var(--pm-primary)':''" (click)="projectForm.selected=p.id">
+          <div><strong>{{p.name}}</strong><div style="font-size:11px;color:var(--pm-muted)">{{p.env}}</div></div>
+          <span [class]="'pm-badge pm-badge-'+p.badgeClass">{{p.status}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('projectSelectorModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('projectSelectorModal','Switched to '+selectedProjectName)">Switch Project</button></div>
+  </div></div>
+</div>
+
+<!-- 22. Global Profile -->
+<div class="modal fade" id="globalProfileModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-circle me-2 text-primary"></i>Developer Profile</h5><button class="btn-close" (click)="closeModal('globalProfileModal')"></button></div>
+    <div class="modal-body">
+      <div class="text-center mb-4"><div class="pm-avatar mx-auto mb-2" style="width:64px;height:64px;font-size:24px">JD</div><h5 style="margin:0">John D.</h5><span class="pm-badge pm-badge-info mt-1">Lead Engineer</span></div>
+      <div class="mb-3"><label class="pm-form-label">Email</label><input type="email" class="pm-form-control" [(ngModel)]="profileForm.email"></div>
+      <div class="mb-3"><label class="pm-form-label">Timezone</label><select class="pm-form-control" [(ngModel)]="profileForm.timezone"><option>Africa/Nairobi (EAT)</option><option>Europe/London (GMT)</option><option>US/Eastern (EST)</option></select></div>
+      <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="profileForm.onCall" checked><label class="form-check-label" style="font-size:13px">Available for on-call rotations</label></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('globalProfileModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('globalProfileModal','Profile updated successfully.')">Save Profile</button></div>
+  </div></div>
+</div>
+
+<!-- Toast -->
+<div class="pm-toast" *ngIf="toast.show">
+  <i class="bi bi-check-circle-fill" style="color:var(--pm-accent);font-size:18px"></i>
+  <span>{{toast.message}}</span>
+  <button style="margin-left:auto;background:none;border:none;color:var(--pm-muted);cursor:pointer;font-size:16px" (click)="dismissToast()"><i class="bi bi-x-lg"></i></button>
+</div>

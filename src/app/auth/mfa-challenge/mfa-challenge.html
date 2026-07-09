@@ -1,0 +1,385 @@
+<div class="grid-overlay" style="position:fixed;inset:0;opacity:.45;pointer-events:none"></div>
+<div class="blob" style="width:520px;height:520px;background:#22d3ee;top:-160px;right:-120px"></div>
+<div class="blob" style="width:430px;height:430px;background:#a78bfa;bottom:-130px;left:-80px;animation-delay:-6s">
+</div>
+
+<main class="auth-wrap">
+    <div class="container">
+        <div class="row g-4 align-items-stretch">
+
+            <!-- Left Panel -->
+            <div class="col-lg-5 d-none d-lg-block">
+                <aside class="brand-panel glass">
+                    <div class="brand-content">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-4">
+                                <span class="logo-mark">P</span>
+                                <div>
+                                    <div class="fw-bold text-white">Paymo <span class="text-gradient">BAAS</span></div>
+                                    <div style="font-size:.76rem;color:var(--ink-3)">Borderless African finance
+                                        infrastructure</div>
+                                </div>
+                            </div>
+                            <span class="pill mb-3"><span class="pill-dot"></span> Risk-based step-up required</span>
+                            <h1 style="font-size:clamp(2.3rem,4vw,3.8rem);line-height:1.03;font-weight:900">Verify
+                                before entering your financial control plane.</h1>
+                            <p class="mt-3" style="color:var(--ink-2);max-width:390px">Paymo Shield checks device,
+                                location, network, and session risk before allowing dashboard access.</p>
+                        </div>
+
+                        <div>
+                            <div class="flow-frame mb-3"
+                                style="border-radius:18px;overflow:hidden;border:1px solid var(--glass-border-strong);background:#020514">
+                                <img src="https://i.pinimg.com/originals/82/de/83/82de83fb86c54aa5783bbb6ca3b26938.gif"
+                                    alt="MFA security flow"
+                                    style="width:100%;height:170px;object-fit:cover;opacity:.8;mix-blend-mode:screen;filter:hue-rotate(-15deg) saturate(120%)">
+                            </div>
+                            <div class="security-strip">
+                                <div class="security-item" *ngFor="let item of securityItems">
+                                    <i class="bi {{ item.icon }} me-1" [style.color]="item.iconColor"></i> {{ item.label
+                                    }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="col-lg-7">
+                <section class="glass-strong p-4 p-md-5 h-100" style="max-width:760px;margin:0 auto">
+
+                    <!-- Challenge State -->
+                    <div id="challengeState" *ngIf="!showSuccess">
+                        <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-4">
+                            <div>
+                                <div class="d-flex align-items-center gap-2 mb-3 d-lg-none">
+                                    <span class="logo-mark">P</span>
+                                    <div>
+                                        <div class="fw-bold text-white">Paymo <span class="text-gradient">BAAS</span>
+                                        </div>
+                                        <div style="font-size:.75rem;color:var(--ink-3)">MFA Challenge</div>
+                                    </div>
+                                </div>
+                                <span class="pill"><span class="pill-dot"></span> Paymo Shield MFA</span>
+                                <h2 class="mt-3 mb-2" style="font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.05">Verify
+                                    your identity.</h2>
+                                <p style="color:var(--ink-2);margin-bottom:0">We need to confirm it is really you.
+                                    Choose one approved factor to continue.</p>
+                            </div>
+                            <div class="text-lg-end">
+                                <span class="badge-mini badge-soon">Step-up auth</span>
+                                <div style="font-size:.76rem;color:var(--ink-3);margin-top:.45rem">Session expires in
+                                    <span class="mono" style="color:#fcd34d">{{ sessionTimerDisplay }}</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Risk Info -->
+                        <div class="glass p-3 mb-4" style="border-radius:16px">
+                            <div class="row g-2">
+                                <div class="col-md-6" *ngFor="let risk of riskInfo">
+                                    <div class="risk-row">
+                                        <i class="bi {{ risk.icon }}" [style.color]="risk.iconColor"></i>
+                                        <span>{{ risk.text }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Method Grid -->
+                        <div class="row g-3 tab-grid"
+                            style="display:grid;grid-template-columns:repeat(3,1fr);margin-left:0;margin-right:0">
+                            <div class="method-card" *ngFor="let method of mfaMethods"
+                                [class.active]="isMethodActive(method.key)" [class.last]="method.lastUsed"
+                                (click)="selectMethod(method.key)">
+                                <div class="method-icon"><i class="bi {{ method.icon }}"></i></div>
+                                <div class="fw-bold text-white" style="font-size:.95rem">{{ method.label }}</div>
+                                <div style="font-size:.75rem;color:var(--ink-3)">{{ method.description }}</div>
+                            </div>
+                        </div>
+
+                        <hr style="border-color:var(--glass-border);margin:1.5rem 0">
+
+                        <!-- Challenge Panel -->
+                        <div id="challengePanel" class="challenge-panel" [class.shake]="shakePanel">
+
+                            <!-- TOTP -->
+                            <div class="row g-4 align-items-center" *ngIf="selectedMethod === 'totp'">
+                                <div class="col-md-5 text-center">
+                                    <div class="totp-ring" [style.--progress.%]="totpProgress">
+                                        <span class="time">{{ totpTimeDisplay }}</span>
+                                    </div>
+                                    <div class="badge-mini badge-native">Code refreshes every 30 seconds</div>
+                                </div>
+                                <div class="col-md-7">
+                                    <h4 class="mb-2">Enter authenticator code</h4>
+                                    <p style="color:var(--ink-2);font-size:.92rem">Open Google Authenticator, Authy,
+                                        Microsoft Authenticator, or your configured TOTP app.</p>
+                                    <div class="otp-container">
+                                        <input type="text" class="otp-input" inputmode="numeric" maxlength="1"
+                                            *ngFor="let val of otpValues; let i = index" [(ngModel)]="otpValues[i]"
+                                            #otpInput (input)="onOtpInput(i, $event)"
+                                            (keydown)="onOtpKeydown(i, $event)" (paste)="onOtpPaste($event)">
+                                    </div>
+                                    <button class="btn btn-primary-paymo w-100" [disabled]="!isOtpComplete"
+                                        (click)="verifyCurrent()">Verify code <i
+                                            class="bi bi-check-circle ms-1"></i></button>
+                                    <button class="btn btn-outline-paymo w-100 mt-2"
+                                        (click)="selectMethod('recovery')"><i class="bi bi-key me-1"></i> Cannot access
+                                        authenticator?</button>
+                                </div>
+                            </div>
+
+                            <!-- SMS -->
+                            <div class="challenge-panel" *ngIf="selectedMethod === 'sms'">
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <div class="method-icon mb-0"><i class="bi bi-phone"></i></div>
+                                    <div>
+                                        <h4 class="mb-0">SMS / WhatsApp code</h4>
+                                        <div style="color:var(--ink-3);font-size:.84rem">Destination: +234 •••••1234
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="glass p-3 mb-3" style="border-radius:14px">
+                                    <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                                        <span style="font-size:.86rem;color:var(--ink-2)">Choose delivery channel</span>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-outline-paymo btn-sm channel-btn"
+                                                [class.active]="smsChannel === 'SMS'"
+                                                (click)="selectSmsChannel('SMS')">SMS</button>
+                                            <button class="btn btn-outline-paymo btn-sm channel-btn"
+                                                [class.active]="smsChannel === 'WhatsApp'"
+                                                (click)="selectSmsChannel('WhatsApp')">WhatsApp</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary-paymo w-100 mb-3" (click)="sendSmsCode()"
+                                    [disabled]="!canSendSms">
+                                    <i class="bi {{ smsSendBtnIcon }} me-1"></i> {{ smsSendBtnText }}
+                                </button>
+                                <div id="smsCodeWrap" *ngIf="smsSent">
+                                    <div class="otp-container">
+                                        <input type="text" class="otp-input" inputmode="numeric" maxlength="1"
+                                            *ngFor="let val of otpValues; let i = index" [(ngModel)]="otpValues[i]"
+                                            #otpInput (input)="onOtpInput(i, $event)"
+                                            (keydown)="onOtpKeydown(i, $event)" (paste)="onOtpPaste($event)">
+                                    </div>
+                                    <button class="btn btn-primary-paymo w-100" [disabled]="!isOtpComplete"
+                                        (click)="verifyCurrent()">Verify OTP <i
+                                            class="bi bi-check-circle ms-1"></i></button>
+                                    <div class="text-center mt-2" style="font-size:.82rem;color:var(--ink-3)"
+                                        *ngIf="smsSeconds > 0">
+                                        Resend available in <span class="mono" style="color:var(--accent)">{{ smsSeconds
+                                            }}</span>s
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Push -->
+                            <div class="row g-4 align-items-center" *ngIf="selectedMethod === 'push'">
+                                <div class="col-md-5">
+                                    <div class="push-device">
+                                        <div class="d-flex justify-content-between align-items-center mb-2"
+                                            style="font-size:.72rem;color:var(--ink-3)">
+                                            <span>Paymo</span><span>now</span>
+                                        </div>
+                                        <div class="push-screen">
+                                            <div style="position:relative;z-index:2">
+                                                <div class="d-flex align-items-center gap-2 mb-3">
+                                                    <span class="logo-mark"
+                                                        style="width:30px;height:30px;border-radius:8px;font-size:.8rem">P</span>
+                                                    <strong>Verify login</strong>
+                                                </div>
+                                                <p style="color:var(--ink-2);font-size:.82rem">Chrome on Windows is
+                                                    requesting access from Lagos.</p>
+                                                <div class="d-grid gap-2 mt-3">
+                                                    <button class="btn btn-primary-paymo btn-sm"
+                                                        (click)="approvePush()">Approve</button>
+                                                    <button class="btn btn-outline-paymo btn-sm"
+                                                        (click)="denyPush()">Deny</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <h4 class="mb-2">Approve on trusted device</h4>
+                                    <p style="color:var(--ink-2);font-size:.92rem">We sent a push request to <strong
+                                            class="text-white">iPhone 15 Pro</strong>, last used 2 days ago in Lagos.
+                                    </p>
+                                    <div class="inline-alert mb-3"><i class="bi bi-phone-vibrate me-1"></i> Open your
+                                        Paymo mobile app and tap Approve.</div>
+                                    <button class="btn btn-primary-paymo w-100" (click)="sendPushRequest()"
+                                        [disabled]="pushStatus !== 'idle'">
+                                        <i class="bi bi-bell me-1"></i> Send push request
+                                    </button>
+                                    <div class="text-center mt-3" style="font-size:.85rem;color:var(--ink-3)"
+                                        [style.color]="pushStatusColor">
+                                        {{ pushStatusText }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Passkey -->
+                            <div class="text-center" style="max-width:520px;margin:0 auto"
+                                *ngIf="selectedMethod === 'passkey'">
+                                <div class="method-icon mx-auto"
+                                    style="width:72px;height:72px;border-radius:24px;font-size:2rem"><i
+                                        class="bi bi-fingerprint"></i></div>
+                                <h4>Use passkey or biometric</h4>
+                                <p style="color:var(--ink-2);font-size:.92rem">Authenticate with Face ID, Touch ID,
+                                    Windows Hello, Android biometric, or a synced passkey.</p>
+                                <div class="glass p-3 my-3" style="border-radius:16px;text-align:left">
+                                    <div class="d-flex justify-content-between" style="font-size:.85rem">
+                                        <span style="color:var(--ink-3)">WebAuthn support</span>
+                                        <span class="badge-mini" [class.badge-ok]="passkeySupported"
+                                            [class.badge-warn]="!passkeySupported">{{ passkeySupported ? 'Detected' :
+                                            'Not detected' }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2" style="font-size:.85rem">
+                                        <span style="color:var(--ink-3)">Registered passkeys</span>
+                                        <span class="text-gradient fw-bold">2</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary-paymo w-100" (click)="verifyPasskey()"
+                                    [disabled]="passkeyLoading">
+                                    <span *ngIf="passkeyLoading" class="spinner-border spinner-border-sm me-2"></span>
+                                    <i class="bi bi-fingerprint me-1" *ngIf="!passkeyLoading"></i>
+                                    {{ passkeyLoading ? 'Waiting for platform prompt...' : 'Verify with passkey' }}
+                                </button>
+                                <button class="btn btn-outline-paymo w-100 mt-2" (click)="selectMethod('totp')">Use
+                                    another factor</button>
+                            </div>
+
+                            <!-- Hardware Key -->
+                            <div class="row g-4 align-items-center" *ngIf="selectedMethod === 'hardware'">
+                                <div class="col-md-5">
+                                    <div class="hardware-slot text-center">
+                                        <svg viewBox="0 0 260 130" width="100%" height="130" aria-hidden="true">
+                                            <defs>
+                                                <linearGradient id="keyGrad" x1="0" x2="1">
+                                                    <stop offset="0" stop-color="#22d3ee" />
+                                                    <stop offset="1" stop-color="#a78bfa" />
+                                                </linearGradient>
+                                            </defs>
+                                            <rect x="44" y="42" width="170" height="45" rx="18"
+                                                fill="rgba(255,255,255,.05)" stroke="url(#keyGrad)" stroke-width="2" />
+                                            <circle cx="78" cy="64" r="14" fill="none" stroke="#22d3ee"
+                                                stroke-width="3" />
+                                            <path class="dash" d="M120 64 L200 64" stroke="#a5f3fc" stroke-width="2" />
+                                        </svg>
+                                        <span class="badge-mini badge-native">FIDO2 / U2F compatible</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <h4>Use hardware security key</h4>
+                                    <p style="color:var(--ink-2);font-size:.92rem">Insert your YubiKey, Titan key, or
+                                        compatible FIDO2 device. Touch it when it blinks.</p>
+                                    <button class="btn btn-primary-paymo w-100" (click)="verifyHardwareKey()"
+                                        [disabled]="hardwareLoading">
+                                        <span *ngIf="hardwareLoading"
+                                            class="spinner-border spinner-border-sm me-2"></span>
+                                        <i class="bi bi-usb-drive me-1" *ngIf="!hardwareLoading"></i>
+                                        {{ hardwareLoading ? 'Waiting for touch...' : 'Start security key check' }}
+                                    </button>
+                                    <div class="text-center mt-3" style="font-size:.85rem;color:var(--ink-3)"
+                                        [style.color]="hardwareLoading ? 'var(--accent)' : ''">
+                                        {{ hardwareLoading ? 'Touch your security key now.' : 'Waiting to start.' }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recovery Code -->
+                            <div style="max-width:540px;margin:0 auto" *ngIf="selectedMethod === 'recovery'">
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <div class="method-icon mb-0"><i class="bi bi-key"></i></div>
+                                    <div>
+                                        <h4 class="mb-0">Use recovery code</h4>
+                                        <div style="color:var(--ink-3);font-size:.84rem">Enter one of your saved
+                                            10-character backup codes.</div>
+                                    </div>
+                                </div>
+                                <label class="label-paymo">Recovery code</label>
+                                <input class="input-paymo recovery-code-input" [(ngModel)]="recoveryCode" maxlength="11"
+                                    placeholder="PAYMO-1A2B3C" (input)="onRecoveryInput()"
+                                    (keydown.enter)="isRecoveryValid && verifyCurrent()">
+                                <div class="inline-alert my-3"><i class="bi bi-exclamation-triangle me-1"></i> Recovery
+                                    codes are single-use. We will ask you to generate new codes after login.</div>
+                                <button class="btn btn-primary-paymo w-100" [disabled]="!isRecoveryValid"
+                                    (click)="verifyCurrent()">Verify recovery code <i
+                                        class="bi bi-check-circle ms-1"></i></button>
+                                <button class="btn btn-outline-paymo w-100 mt-2" (click)="downloadTemplate()"><i
+                                        class="bi bi-download me-1"></i> Download new code template</button>
+                            </div>
+
+                            <!-- Error -->
+                            <div id="inlineError" class="mt-3" *ngIf="errorMessage"
+                                style="padding:.85rem 1rem;border-radius:14px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#fca5a5;font-size:.86rem">
+                                <i class="bi bi-exclamation-triangle me-1"></i>{{ errorMessage }}
+                            </div>
+
+                        </div>
+
+                        <div class="mt-4 d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                            <button class="btn btn-outline-paymo btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#helpModal"><i class="bi bi-question-circle me-1"></i> Need
+                                help?</button>
+                            <button class="btn btn-outline-paymo btn-sm" (click)="clearRememberedAccount()"><i
+                                    class="bi bi-arrow-left me-1"></i> Use different account</button>
+                        </div>
+                    </div>
+
+                    <!-- Success State -->
+                    <div id="successState" class="success-state" *ngIf="showSuccess" style="display:block">
+                        <div class="success-icon"><i class="bi bi-check-lg"></i></div>
+                        <h3 style="font-size:1.7rem;font-weight:900">Identity verified.</h3>
+                        <p style="color:var(--ink-2);max-width:420px;margin:0 auto 1.4rem">Your MFA challenge was
+                            completed successfully. Paymo Shield is redirecting you to account selection.</p>
+                        <div class="glass p-3 mb-3" style="border-radius:16px;max-width:420px;margin:0 auto">
+                            <div class="d-flex justify-content-between" style="font-size:.85rem">
+                                <span style="color:var(--ink-3)">Factor used</span>
+                                <span class="text-gradient fw-bold">{{ successFactor }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2" style="font-size:.85rem">
+                                <span style="color:var(--ink-3)">Risk decision</span>
+                                <span style="color:#86efac;font-weight:700">Approved</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary-paymo" (click)="continueToDashboard()">Continue to account type
+                            <i class="bi bi-arrow-right ms-1"></i></button>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Help Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"
+            style="background:var(--bg-1);border:1px solid var(--glass-border-strong);border-radius:22px;color:var(--ink-1)">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">MFA help</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-column gap-3">
+                    <div class="risk-row"><i class="bi bi-shield-check" style="color:var(--accent)"></i><span>Use
+                            recovery codes if you lost your phone or authenticator app.</span></div>
+                    <div class="risk-row"><i class="bi bi-phone" style="color:var(--accent-2)"></i><span>SMS and
+                            WhatsApp codes expire after 5 minutes.</span></div>
+                    <div class="risk-row"><i class="bi bi-headset"
+                            style="color:var(--accent-4)"></i><span>Support-assisted recovery requires identity
+                            verification and may take 24-48 hours.</span></div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-outline-paymo btn-sm" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary-paymo btn-sm" (click)="openSupportRecovery()"
+                    data-bs-dismiss="modal">Start support recovery</button>
+            </div>
+        </div>
+    </div>
+</div>

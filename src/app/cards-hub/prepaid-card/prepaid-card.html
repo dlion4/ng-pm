@@ -1,0 +1,1446 @@
+<!-- ============================================================
+     PayMo — Prepaid Card Management
+     Angular 17+ template. Uses @if / @for control flow (no *ngIf).
+     Sidebar + top nav header removed per spec. All 25 modals intact.
+     All lists / stats / options / amounts are bound to TS signals —
+     the template is fully declarative.
+     ============================================================ -->
+
+<div class="pm-app">
+  <div class="pm-main">
+
+    <!-- ============ PAGE BAR (header removed; quick icons kept accessible) ============ -->
+    <div class="pm-page-bar">
+      <div>
+        <div class="pm-breadcrumb"><a href="javascript:void(0)">Home</a> / <a href="javascript:void(0)">Card Center</a> / <strong>Prepaid Management</strong></div>
+        <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 5.5 — Prepaid Card Management</h2>
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Issue physical/virtual prepaid cards for family, staff, or fleet. Manage balances, limits, and restrictions in real-time.</p>
+      </div>
+      <div class="d-flex flex-wrap" style="gap:8px;align-items:center">
+        <button class="pm-header-btn" (click)="openModal('healthCheckModal')" title="Program Health"><i class="bi bi-shield-check"></i></button>
+        <button class="pm-header-btn" (click)="openModal('notificationModal')" title="Notifications"><i class="bi bi-bell"></i><span class="counter">{{ notifications().length }}</span></button>
+        <button class="pm-header-btn" (click)="openModal('profileModal')" title="Profile"><i class="bi bi-person-circle"></i></button>
+        <button class="pm-btn" (click)="openModal('bulkIssueModal')"><i class="bi bi-layers"></i> Bulk Issue</button>
+        <button class="pm-btn" (click)="openModal('bulkTopupModal')"><i class="bi bi-cash-stack"></i> Bulk Top-up</button>
+        <button class="pm-btn-primary pm-btn" (click)="openModal('issueCardModal')"><i class="bi bi-plus-lg"></i> Issue New Card</button>
+      </div>
+    </div>
+
+    <!-- ============ CONTENT ============ -->
+    <div class="pm-content">
+
+      <!-- HERO STATS -->
+      <div class="row g-3">
+        @for (stat of heroStats(); track stat.id) {
+          <div [class]="stat.colClass">
+            <div [class]="stat.cardClass" [style.min-height]="stat.minHeight" [style.border-left]="stat.accentBorder || ''">
+              @if (stat.statusText) {
+                <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">{{ stat.statusText }} <span [style.color]="stat.statusColor">●</span></p>
+              }
+              @if (stat.label) {
+                <p class="pm-stat-label" [style.color]="stat.labelColor">{{ stat.label }}</p>
+              }
+              <div class="pm-stat-value" [style.margin]="stat.statusText ? '8px 0' : '6px 0'" [style.color]="stat.textColor || ''">{{ stat.value }}</div>
+              @if (stat.subtext) {
+                <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">{{ stat.subtext }}</p>
+              }
+              @if (stat.badgeText) {
+                <span [class]="stat.badgeClass"><i class="bi" [class]="stat.badgeIcon"></i> {{ stat.badgeText }}</span>
+              }
+              @if (stat.showBars) {
+                <div class="pm-mini-bars mt-3">
+                  @for (bar of stat.bars; track $index) {
+                    <div class="pm-mini-bar" [style.height.%]="bar.height" [style.background]="bar.color"></div>
+                  }
+                </div>
+              }
+              @if (stat.showProgress) {
+                <div class="mt-2">
+                  <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>{{ stat.progressSectionLabel }}</span><span>{{ stat.progressLabel }}</span></div>
+                  <div class="pm-progress mt-1"><div class="pm-progress-bar" [style.width.%]="stat.progressPercent" [style.background]="stat.labelColor"></div></div>
+                </div>
+              }
+              @if (stat.lowBalanceCards?.length) {
+                <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+                  @for (lb of stat.lowBalanceCards; track $index) {
+                    <div class="d-flex justify-content-between"><span>{{ lb.name }}</span><strong>{{ formatKes(lb.amount) }}</strong></div>
+                  }
+                  @for (action of stat.actions; track action.modal) {
+                    <button class="pm-btn pm-btn-sm mt-1 w-100" (click)="openModal(action.modal)">{{ action.label }}</button>
+                  }
+                </div>
+              }
+              @if (stat.actions?.length && !stat.lowBalanceCards?.length) {
+                <div class="d-flex flex-wrap mt-3" style="gap:8px">
+                  @for (action of stat.actions; track action.modal) {
+                    <button class="pm-btn pm-btn-sm" [attr.style]="action.style || null" (click)="openModal(action.modal)">{{ action.label }}</button>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+      <div class="row g-3">
+        <!-- Attention -->
+        <div class="col-lg-4">
+          <div class="pm-card">
+            <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Attention Required</h3><button class="pm-btn pm-btn-sm" (click)="openModal('attentionModal')">View all</button></div>
+            @for (item of attentionItems(); track item.id) {
+              <div class="feed-item">
+                <div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor" style="font-size:12px"><i class="bi" [class]="item.icon"></i></div>
+                <div style="flex:1"><div style="font-weight:600;font-size:13px">{{ item.title }}</div><div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div></div>
+                <button class="pm-btn pm-btn-sm" [class]="item.actionClass" (click)="openModal(item.actionModal)">{{ item.actionLabel }}</button>
+              </div>
+            }
+          </div>
+        </div>
+        <!-- Suggestions -->
+        <div class="col-lg-4">
+          <div class="pm-card">
+            <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Smart Suggestions</h3><span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span></div>
+            @for (s of suggestions(); track s.id) {
+              <div class="feed-item">
+                <div class="pm-icon-circle" [style.background]="s.iconBg" [style.color]="s.iconColor" style="font-size:12px"><i class="bi" [class]="s.icon"></i></div>
+                <div style="flex:1"><div style="font-weight:600;font-size:13px">{{ s.title }}</div><div style="font-size:11px;color:var(--pm-muted)">{{ s.subtitle }}</div></div>
+                <button class="pm-btn pm-btn-sm" (click)="openModal(s.actionModal)">{{ s.actionLabel }}</button>
+              </div>
+            }
+          </div>
+        </div>
+        <!-- Quick Actions -->
+        <div class="col-lg-4">
+          <div class="pm-card">
+            <div class="mb-3"><h3 class="pm-section-title">Quick Actions</h3><p class="pm-section-sub">Frequent card operations</p></div>
+            <div class="quick-action-grid">
+              @for (qa of quickActions(); track qa.id) {
+                <button class="quick-action-btn" (click)="openModal(qa.modal)"><i [class]="qa.iconClass" [attr.style]="qa.iconStyle || null"></i> {{ qa.label }}</button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5.5.1: Card Portfolio -->
+      <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+          <div><h3 class="pm-section-title"><i class="bi bi-credit-card-2-front-fill" style="color:var(--pm-primary)"></i> 5.5.1 — Prepaid Card Directory &amp; Portfolio</h3><p class="pm-section-sub">View and manage all issued physical and virtual prepaid cards.</p></div>
+          <div class="d-flex" style="gap:8px">
+            <button class="pm-btn pm-btn-sm" (click)="openModal('bulkIssueModal')"><i class="bi bi-layers"></i> Bulk Issue</button>
+            <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('issueCardModal')"><i class="bi bi-plus-lg"></i> Issue Card</button>
+          </div>
+        </div>
+
+        <div class="pm-tab-pills mb-3">
+          @for (pill of cardFilterPills(); track pill.key) {
+            <button class="pm-tab-pill" [class.active]="cardFilter()===pill.key" (click)="filterCards(pill.key)">{{ pill.label }} ({{ pill.count }})</button>
+          }
+        </div>
+
+        <div class="row g-3">
+          @for (card of filteredCards(); track card.id) {
+            <div class="col-lg-3 col-md-4 col-sm-6 card-item" [attr.data-type]="card.type">
+              <div class="credit-card-ui" [class]="gradientClass(card.gradient)" [style.border]="card.lowBalance ? '2px solid var(--pm-danger)' : ''" (click)="openModal('cardDetailModal')">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div class="cc-logo">PAYMO</div>
+                  <div>
+                    @if (card.type === 'virtual') { <i class="bi bi-wifi text-white opacity-75 fs-5"></i> }
+                    @else { <i class="bi bi-contactless text-white opacity-75 fs-5"></i> }
+                  </div>
+                </div>
+                <div>
+                  @if (card.type === 'physical') { <div class="cc-chip mb-2"></div> }
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    @if (card.status === 'low_balance') { <span class="badge bg-danger text-white" style="font-size:10px">LOW BAL</span> }
+                    @else if (card.status === 'frozen') { <span class="badge bg-secondary text-white" style="font-size:10px">FROZEN</span> }
+                    @else if (card.type === 'virtual') { <span class="badge bg-light text-primary" style="font-size:10px">VIRTUAL</span> }
+                    @else { <span class="badge bg-light text-success" style="font-size:10px">PHYSICAL</span> }
+                    <span class="fs-6 fw-bold" [class.text-warning]="card.lowBalance" [class.text-muted]="card.status==='frozen'">{{ formatKes(card.balance) }}</span>
+                  </div>
+                  <div class="cc-number">**** **** **** {{ card.last4 }}</div>
+                </div>
+                <div class="cc-bottom">
+                  <div>
+                    <div class="cc-name">{{ card.name }}</div>
+                    <div class="cc-expiry">{{ card.expiry }}</div>
+                  </div>
+                  <div class="cc-brand" [class.text-muted]="card.status==='frozen'">{{ card.brand }}</div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between mt-2 px-1">
+                @if (card.status === 'low_balance') {
+                  <button class="pm-btn pm-btn-sm pm-btn-danger w-100 me-1" (click)="openModal('topupCardModal')">Fund Now</button>
+                  <button class="pm-btn pm-btn-sm w-100 ms-1" (click)="openModal('autoReloadModal')">Auto-load</button>
+                } @else if (card.status === 'frozen') {
+                  <button class="pm-btn pm-btn-sm w-100 me-1" (click)="openModal('freezeCardModal')">Unfreeze</button>
+                  <button class="pm-btn pm-btn-sm w-100 ms-1" (click)="openModal('unloadCardModal')">Unload</button>
+                } @else {
+                  <button class="pm-btn pm-btn-sm w-100 me-1" (click)="openModal('topupCardModal')">Fund</button>
+                  <button class="pm-btn pm-btn-sm w-100 ms-1" (click)="openModal('cardControlsModal')">Controls</button>
+                }
+              </div>
+            </div>
+          } @empty {
+            <div class="col-12 text-center text-muted py-4">No cards match this filter.</div>
+          }
+        </div>
+        <div class="text-center mt-3"><button class="pm-btn pm-btn-sm" (click)="openModal('cardListModal')">View All Cards</button></div>
+      </div>
+
+      <!-- SECTION 5.5.2 & 5.5.3: Funding & Controls -->
+      <div class="row g-3 mb-4">
+        <!-- Funding -->
+        <div class="col-lg-6">
+          <div class="pm-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="pm-section-title"><i class="bi bi-cash-stack text-success"></i> 5.5.2 — Funding &amp; Top-ups</h3>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('bulkTopupModal')">Bulk Fund</button>
+            </div>
+            <div class="utility-block mb-3">
+              <h4 style="font-size:13px;font-weight:700">Active Auto-Reload Rules</h4>
+              @for (rule of autoReloadRules(); track rule.id) {
+                <div class="status-row"><div><strong>{{ rule.cardName }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ rule.description }}</div></div><span class="pm-badge pm-badge-success">Active</span></div>
+              }
+              <button class="pm-btn pm-btn-sm mt-2 w-100" (click)="openModal('autoReloadModal')"><i class="bi bi-plus"></i> New Rule</button>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="pm-btn flex-fill justify-content-center" (click)="openModal('topupCardModal')">Top-up Card</button>
+              <button class="pm-btn flex-fill justify-content-center" (click)="openModal('transferModal')">Transfer Balance</button>
+              <button class="pm-btn flex-fill justify-content-center" (click)="openModal('unloadCardModal')">Unload to Wallet</button>
+            </div>
+          </div>
+        </div>
+        <!-- Controls -->
+        <div class="col-lg-6">
+          <div class="pm-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="pm-section-title"><i class="bi bi-shield-lock" style="color:var(--pm-purple)"></i> 5.5.3 — Controls &amp; Limits</h3>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('cardLimitsModal')">Edit Limits</button>
+            </div>
+            <div class="utility-block mb-3">
+              <h4 style="font-size:13px;font-weight:700">Global Restrictions Applied</h4>
+              @for (gr of globalRestrictions(); track gr.id) {
+                <div class="status-row"><div><strong>{{ gr.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ gr.description }}</div></div><button class="pm-btn pm-btn-sm" (click)="openModal(gr.editModal)">Edit</button></div>
+              }
+            </div>
+            <div class="d-flex gap-2">
+              <button class="pm-btn flex-fill justify-content-center" (click)="openModal('cardControlsModal')">Per-Card Settings</button>
+              <button class="pm-btn flex-fill justify-content-center" (click)="openModal('viewPinModal')">PIN Mgmt</button>
+              <button class="pm-btn flex-fill justify-content-center" (click)="openModal('freezeCardModal')">Freeze/Block</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5.5.4: Analytics & Ledger -->
+      <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+          <div><h3 class="pm-section-title"><i class="bi bi-bar-chart-line text-info"></i> 5.5.4 — Spending Analytics &amp; Ledger</h3><p class="pm-section-sub">Track real-time spend across your card program, analyze merchants, and export reconciliations.</p></div>
+          <div class="d-flex" style="gap:8px">
+            <button class="pm-btn pm-btn-sm" (click)="openModal('spendAnalyticsModal')"><i class="bi bi-pie-chart"></i> Analytics</button>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('exportReportModal')"><i class="bi bi-download"></i> Export</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead><tr><th>Date</th><th>Card</th><th>Merchant</th><th>Category</th><th>Amount</th><th>Status</th><th>Receipt</th></tr></thead>
+            <tbody>
+              @for (tx of transactions(); track tx.id) {
+                <tr>
+                  <td>{{ tx.date }}</td>
+                  <td>{{ tx.cardName }} (...{{ tx.cardLast4 }})</td>
+                  <td>{{ tx.merchant }}</td>
+                  <td>{{ tx.category }}</td>
+                  <td><strong>{{ formatKes(tx.amount) }}</strong></td>
+                  <td>
+                    @if (tx.status === 'approved') { <span class="pm-badge pm-badge-success">Approved</span> }
+                    @else { <span class="pm-badge pm-badge-danger">Declined (NSF)</span> }
+                  </td>
+                  <td>
+                    @if (tx.status === 'approved') {
+                      <button class="pm-btn pm-btn-sm" (click)="openModal('txReceiptModal')"><i class="bi bi-receipt"></i></button>
+                    } @else {
+                      <button class="pm-btn pm-btn-sm" (click)="openModal('disputeTxModal')"><i class="bi bi-info-circle"></i></button>
+                    }
+                  </td>
+                </tr>
+              } @empty {
+                <tr><td colspan="7" class="text-center text-muted py-3">No transactions yet.</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="text-center mt-3"><button class="pm-btn pm-btn-sm" (click)="openModal('txLedgerModal')">View Full Ledger</button></div>
+      </div>
+
+    </div><!-- end content -->
+  </div><!-- end main -->
+</div><!-- end app -->
+
+
+<!-- ==========================================
+     MODALS — 25 total. Each gated by @if(isModalOpen(id)).
+     Close buttons call closeModal(id). No dead ends.
+     ========================================== -->
+
+<!-- 1. Issue New Card (Multi-step) -->
+@if (isModalOpen('issueCardModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-plus-lg text-primary me-2"></i>Issue New Prepaid Card</h5>
+        <button class="pm-modal-close" (click)="closeModal('issueCardModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div class="pm-stepper">
+          @for (label of issueSteps; track $index) {
+            <div class="pm-step" [class.active]="stepState($index, issueStep())==='active'" [class.completed]="stepState($index, issueStep())==='completed'">
+              <div class="pm-step-num">
+                @if (stepState($index, issueStep()) === 'completed') { <i class="bi bi-check"></i> }
+                @else { {{ $index + 1 }} }
+              </div>
+              <div class="pm-step-label">{{ label }}</div>
+            </div>
+            @if ($index < issueSteps.length - 1) { <div class="pm-step-line"></div> }
+          }
+        </div>
+
+        @if (issueStep() === 1) {
+          <h6 class="fw-bold mb-3">Step 1: Card Type</h6>
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="issueCardType()==='virtual' ? 'var(--pm-primary)' : ''" [style.background]="issueCardType()==='virtual' ? 'rgba(79,70,229,.04)' : ''" (click)="selectIssueType('virtual')">
+                <i class="bi bi-wifi fs-3 text-primary d-block mb-2"></i><strong>Virtual Card</strong><br><small class="text-muted">Instant activation</small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-3 border rounded text-center" style="cursor:pointer" [style.borderColor]="issueCardType()==='physical' ? 'var(--pm-primary)' : ''" [style.background]="issueCardType()==='physical' ? 'rgba(79,70,229,.04)' : ''" (click)="selectIssueType('physical')">
+                <i class="bi bi-credit-card fs-3 text-success d-block mb-2"></i><strong>Physical Card</strong><br><small class="text-muted">Delivery in 3-5 days</small>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3"><label class="pm-form-label">Card Purpose / Nickname</label><input class="pm-form-control" placeholder="e.g. Employee Travel, Facebook Ads"></div>
+          <div class="mt-3"><label class="pm-form-label">Cardholder Name (Appears on card)</label><input class="pm-form-control" placeholder="e.g. John Doe or Marketing Dept"></div>
+        }
+
+        @if (issueStep() === 2) {
+          <h6 class="fw-bold mb-3">Step 2: Initial Funding &amp; Limits</h6>
+          <div class="mb-3"><label class="pm-form-label">Initial Top-up Amount (KES)</label><input type="number" class="pm-form-control" value="5000"></div>
+          <div class="mb-3"><label class="pm-form-label">Funding Source</label><select class="pm-form-control">
+            @for (src of fundingSources(); track src.id) {
+              <option>{{ src.label }}</option>
+            }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Monthly Spending Limit (Optional)</label><input type="number" class="pm-form-control" placeholder="Leave blank for no limit"></div>
+          <div class="p-3 bg-light rounded"><div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label text-sm">Lock card to specific Merchant Category (MCC)</label></div></div>
+        }
+
+        @if (issueStep() === 3) {
+          <h6 class="fw-bold mb-3">Step 3: Review &amp; Confirm</h6>
+          <div class="p-3 bg-light rounded mb-3">
+            @for (row of issueReviewRows(); track row.label) {
+              @if (row.isTotal) {
+                <hr>
+                <div class="d-flex justify-content-between fw-bold text-primary"><span>{{ row.label }}</span><span>{{ row.value }}</span></div>
+              } @else {
+                <div class="d-flex justify-content-between mb-2"><span>{{ row.label }}</span><strong>{{ row.value }}</strong></div>
+              }
+            }
+          </div>
+          <label class="pm-form-label">Enter PIN to authorize issuance</label>
+          <div class="pm-pin-input">
+            @for (i of [0,1,2,3]; track i) {
+              <input type="password" maxlength="1" (input)="moveFocus($event)">
+            }
+          </div>
+          @if (flowLoading()) {
+            <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+          }
+        }
+
+        @if (issueStep() === 4) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 class="fw-bold text-success">Virtual Card Issued!</h5>
+            <p class="text-muted">Card is active and ready for immediate use.</p>
+            <div class="credit-card-ui bg-gradient-blue mx-auto mt-3" style="max-width:320px;text-align:left">
+              <div class="d-flex justify-content-between"><div>PAYMO</div><i class="bi bi-wifi text-white"></i></div>
+              <div class="mt-4">
+                <div class="cc-number mb-2">{{ issuedCardData().pan }}</div>
+                <div class="d-flex justify-content-between"><div class="cc-name">{{ issuedCardData().name }}</div><div class="cc-expiry">{{ issuedCardData().expiry }}</div></div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center gap-2 mt-4"><button class="pm-btn pm-btn-sm"><i class="bi bi-eye"></i> Show CVV</button><button class="pm-btn pm-btn-sm"><i class="bi bi-clipboard"></i> Copy PAN</button></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal('issueCardModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="nextIssueStep()">
+          {{ issueNextLabel() }}
+          @if (issueStep() < 4) { <i class="bi bi-arrow-right ms-1"></i> }
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 2. Top-up Card Modal (Multi-step) -->
+@if (isModalOpen('topupCardModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-cash-stack text-success me-2"></i>Fund Prepaid Card</h5>
+        <button class="pm-modal-close" (click)="closeModal('topupCardModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div class="pm-stepper">
+          @for (label of topupSteps; track $index) {
+            <div class="pm-step" [class.active]="stepState($index, topupStep())==='active'" [class.completed]="stepState($index, topupStep())==='completed'">
+              <div class="pm-step-num">
+                @if (stepState($index, topupStep()) === 'completed') { <i class="bi bi-check"></i> }
+                @else { {{ $index + 1 }} }
+              </div>
+              <div class="pm-step-label">{{ label }}</div>
+            </div>
+            @if ($index < topupSteps.length - 1) { <div class="pm-step-line"></div> }
+          }
+        </div>
+
+        @if (topupStep() === 1) {
+          <h6 class="fw-bold mb-3">Top-up Details</h6>
+          <div class="mb-3"><label class="pm-form-label">Select Card</label><select class="pm-form-control">
+            @for (card of cards(); track card.id) {
+              <option>{{ cardOptionBal(card) }}</option>
+            }
+          </select></div>
+          <div class="mb-3">
+            <label class="pm-form-label">Amount to Load (KES)</label>
+            <div class="pm-amount-chips mb-2">
+              @for (amt of topupAmountChips(); track amt) {
+                <span class="pm-amount-chip" [class.active]="topupAmount()===amt" (click)="pickAmount(amt)">{{ amt.toLocaleString() }}</span>
+              }
+            </div>
+            <input type="number" class="pm-form-control" [value]="topupAmount()" (input)="topupAmount.set(+$any($event.target).value)">
+          </div>
+          <div class="mb-3"><label class="pm-form-label">Source of Funds</label><select class="pm-form-control">
+            @for (src of topupSources(); track src.id) {
+              <option>{{ src.label }}</option>
+            }
+          </select></div>
+        }
+
+        @if (topupStep() === 2) {
+          <h6 class="fw-bold mb-3">Confirm Funding</h6>
+          <div class="p-3 bg-light rounded text-center mb-3">
+            <div class="text-muted small">Loading Card</div>
+            <div class="fw-bold fs-5 text-primary">{{ topupContext().cardName }} (...{{ topupContext().cardLast4 }})</div>
+            <div class="text-muted small mt-2">Amount</div>
+            <div class="fw-bold fs-3 text-success">+ {{ formatKes(topupAmount()) }}</div>
+          </div>
+          <p class="text-center text-muted small">Funds will be instantly available on the card. Zero fee applies from PayMo Wallet.</p>
+          @if (flowLoading()) {
+            <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+          }
+        }
+
+        @if (topupStep() === 3) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 class="fw-bold text-success">Top-up Successful</h5>
+            <p class="text-muted">{{ formatKes(topupAmount()) }} added to {{ topupContext().cardName }}.</p>
+            <div class="p-3 bg-light rounded text-start">
+              <div class="d-flex justify-content-between"><span>New Balance</span><strong>{{ formatKes(topupContext().newBalance) }}</strong></div>
+              <div class="d-flex justify-content-between mt-2"><span>Ref</span><strong>{{ topupContext().ref }}</strong></div>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal('topupCardModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="nextTopupStep()">
+          {{ topupNextLabel() }}
+          @if (topupStep() < 3) { <i class="bi bi-arrow-right ms-1"></i> }
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 3. Unload Card Modal -->
+@if (isModalOpen('unloadCardModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-box-arrow-right text-secondary me-2"></i>Unload Funds from Card</h5>
+        <button class="pm-modal-close" (click)="closeModal('unloadCardModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='unloadCardModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('unloadCardModal')) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 class="fw-bold text-success">{{ processed()!.message }}</h5>
+            @if (processed()!.ref) { <p class="text-muted small">Ref: {{ processed()!.ref }}</p> }
+          </div>
+        } @else {
+          <p class="text-muted small mb-3">Withdraw funds from a prepaid card back to your main PayMo Wallet instantly.</p>
+          <div class="mb-3"><label class="pm-form-label">Select Card to Unload</label><select class="pm-form-control">
+            @for (card of cards(); track card.id) {
+              <option>{{ cardOptionBal(card) }}</option>
+            }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Amount to Unload</label><input type="number" class="pm-form-control" value="14500"><div class="text-end mt-1"><button class="btn btn-link p-0 text-decoration-none" style="font-size:11px">Unload Max (KES 14,500)</button></div></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('unloadCardModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('unloadCardModal')">Close</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('unloadCardModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('unloadCardModal','Funds unloaded to Wallet successfully.','UNL-99211')">Unload Funds</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 4. Transfer Between Cards -->
+@if (isModalOpen('transferModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-left-right text-info me-2"></i>Transfer Card to Card</h5>
+        <button class="pm-modal-close" (click)="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='transferModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('transferModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">{{ processed()!.message }}</h5><p class="text-muted small">Ref: {{ processed()!.ref }}</p></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">From Card</label><select class="pm-form-control">
+            @for (card of cards(); track card.id) {
+              <option>{{ cardOptionBal(card) }}</option>
+            }
+          </select></div>
+          <div class="text-center mb-2"><i class="bi bi-arrow-down fs-4 text-muted"></i></div>
+          <div class="mb-3"><label class="pm-form-label">To Card</label><select class="pm-form-control">
+            @for (card of cards(); track card.id) {
+              <option>{{ cardOptionBal(card) }}</option>
+            }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Amount</label><input type="number" class="pm-form-control" placeholder="Enter amount"></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('transferModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('transferModal')">Close</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('transferModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('transferModal','Transfer completed successfully.','TRF-11029')">Transfer Now</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 5. Card Controls (Per Card) -->
+@if (isModalOpen('cardControlsModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-sliders me-2"></i>Card Controls &amp; Toggles</h5>
+        <button class="pm-modal-close" (click)="closeModal('cardControlsModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='cardControlsModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('cardControlsModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Select Card</label><select class="pm-form-control">
+            @for (card of cards(); track card.id) {
+              <option>{{ cardOptionShort(card) }}</option>
+            }
+          </select></div>
+          <div class="p-3 bg-light rounded">
+            @for (toggle of cardControlToggles(); track toggle.id) {
+              <div [class.mb-3]="!$last" class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" [checked]="toggle.checked">
+                <label class="form-check-label fw-bold">{{ toggle.label }}</label>
+                <div class="text-muted" style="font-size:11px">{{ toggle.description }}</div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('cardControlsModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('cardControlsModal')">Close</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('cardControlsModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('cardControlsModal','Card controls updated successfully.','')">Save Settings</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 6. Card Detail & Reveal -->
+@if (isModalOpen('cardDetailModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-credit-card-front me-2"></i>Card Details</h5>
+        <button class="pm-modal-close" (click)="closeModal('cardDetailModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body text-center" style="position:relative">
+        @if (loadingModalId()==='cardDetailModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        <div class="credit-card-ui bg-gradient-blue mx-auto mb-4" style="max-width:340px;text-align:left">
+          <div class="d-flex justify-content-between align-items-start"><div class="cc-logo">PAYMO</div><i class="bi bi-wifi text-white opacity-75 fs-5"></i></div>
+          <div class="mt-3">
+            <div class="cc-number mb-2">{{ cardRevealed() ? cardDetail().pan : '**** **** **** ' + cardDetail().last4 }}</div>
+            <div class="d-flex justify-content-between"><div class="cc-name">{{ cardDetail().name }}</div><div><span class="cc-expiry">{{ cardDetail().expiry }}</span> <span class="ms-2" style="font-family:monospace">{{ cardRevealed() ? cardDetail().cvv : '***' }}</span></div></div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center gap-2 mb-4">
+          <button class="pm-btn" (click)="revealCardDetails()"><i class="bi bi-eye text-primary"></i> Reveal Info</button>
+          <button class="pm-btn"><i class="bi bi-clipboard text-secondary"></i> Copy PAN</button>
+          <button class="pm-btn" (click)="openAndClose('freezeCardModal','cardDetailModal')"><i class="bi bi-snow text-info"></i> Freeze</button>
+        </div>
+        <div class="text-start">
+          <h6 class="fw-bold fs-6">Recent Activity</h6>
+          @for (act of cardDetail().activity; track act.id) {
+            <div class="status-row"><div><strong>{{ act.merchant }}</strong><div style="font-size:11px" class="text-muted">{{ act.date }}</div></div><strong>{{ formatKes(act.amount) }}</strong></div>
+          }
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn w-100 pm-btn-primary" (click)="closeModal('cardDetailModal')">Done</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 7. View / Change PIN -->
+@if (isModalOpen('viewPinModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-asterisk text-warning me-2"></i>Manage PIN</h5>
+        <button class="pm-modal-close" (click)="closeModal('viewPinModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='viewPinModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('viewPinModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Select Physical Card</label><select class="pm-form-control">
+            @for (card of cards(); track card.id) {
+              @if (card.type === 'physical') {
+                <option>{{ cardOptionShort(card) }}</option>
+              }
+            }
+          </select></div>
+          <div class="d-grid gap-2">
+            <button class="pm-btn justify-content-center" (click)="processAction('viewPinModal','Check your SMS for the secure PIN link.','')"><i class="bi bi-eye"></i> Send PIN via secure SMS</button>
+            <button class="pm-btn justify-content-center" (click)="processAction('viewPinModal','PIN reset initiated. Follow instructions on email.','')"><i class="bi bi-arrow-clockwise"></i> Reset Forgotten PIN</button>
+          </div>
+        }
+      </div>
+      @if (isProcessed('viewPinModal')) {
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary w-100" (click)="closeModal('viewPinModal')">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 8. Freeze / Block Card -->
+@if (isModalOpen('freezeCardModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-snow text-info me-2"></i>Freeze or Block Card</h5>
+        <button class="pm-modal-close" (click)="closeModal('freezeCardModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='freezeCardModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('freezeCardModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Select Card</label><select class="pm-form-control">
+            @for (card of cards(); track card.id) {
+              <option>{{ cardOptionShort(card) }}</option>
+            }
+          </select></div>
+          <div class="p-3 bg-light rounded mb-3">
+            @for (opt of freezeOptions(); track opt.id) {
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="blk" [checked]="opt.checked">
+                <label class="form-check-label fw-bold" [class.text-info]="opt.id==='fo1'" [class.text-danger]="opt.id==='fo2'">{{ opt.label }}</label>
+                <div class="text-muted" style="font-size:11px">{{ opt.description }}</div>
+              </div>
+              @if (!$last) { <hr> }
+            }
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('freezeCardModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('freezeCardModal')">Close</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('freezeCardModal')">Cancel</button>
+          <button class="pm-btn pm-btn-danger" (click)="processAction('freezeCardModal','Card status updated successfully.','')">Apply Status</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 9. Replace Card -->
+@if (isModalOpen('replaceCardModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-repeat text-primary me-2"></i>Replace Card</h5>
+        <button class="pm-modal-close" (click)="closeModal('replaceCardModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='replaceCardModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('replaceCardModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Select Card</label><select class="pm-form-control">
+            @for (card of cards(); track card.id) {
+              <option>{{ cardOptionShort(card) }}</option>
+            }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Reason</label><select class="pm-form-control">
+            @for (reason of replaceReasons(); track $index) {
+              <option>{{ reason }}</option>
+            }
+          </select></div>
+          <div class="p-3 bg-light rounded" style="font-size:12px"><i class="bi bi-info-circle text-primary"></i> For virtual cards, a new PAN will be generated instantly and the balance transferred automatically. Active subscriptions will need to be updated with the new number.</div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('replaceCardModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('replaceCardModal')">Close</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('replaceCardModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('replaceCardModal','Card replaced. New virtual card is active.','')">Confirm Replacement</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 10. Auto-Reload Rules -->
+@if (isModalOpen('autoReloadModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-repeat text-success me-2"></i>Set Auto-Reload Rule</h5>
+        <button class="pm-modal-close" (click)="closeModal('autoReloadModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='autoReloadModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('autoReloadModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Card</label><select class="pm-form-control">
+            @for (card of cards(); track card.id) {
+              <option>{{ cardOptionShort(card) }}</option>
+            }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Trigger Event</label><select class="pm-form-control">
+            @for (trig of autoReloadTriggers(); track $index) {
+              <option>{{ trig }}</option>
+            }
+          </select></div>
+          <div class="row g-2 mb-3"><div class="col-6"><label class="pm-form-label">Threshold (KES)</label><input type="number" class="pm-form-control" value="1000"></div><div class="col-6"><label class="pm-form-label">Load Amount (KES)</label><input type="number" class="pm-form-control" value="5000"></div></div>
+          <div class="mb-3"><label class="pm-form-label">Source Account</label><select class="pm-form-control">
+            @for (src of autoReloadSources(); track src.id) {
+              <option>{{ src.label }}</option>
+            }
+          </select></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label text-sm">Notify me each time rule executes</label></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('autoReloadModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('autoReloadModal')">Close</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('autoReloadModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('autoReloadModal','Auto-reload rule saved and activated.','')">Save Rule</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 11. Geo-Blocking -->
+@if (isModalOpen('geoBlockModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-geo-alt me-2" style="color:var(--pm-purple)"></i>Geographic Blocking</h5>
+        <button class="pm-modal-close" (click)="closeModal('geoBlockModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='geoBlockModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('geoBlockModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">{{ processed()!.message }}</h5></div>
+        } @else {
+          <p class="text-muted small">Restrict physical card usage by region to prevent skimming fraud.</p>
+          <div class="mb-3"><label class="pm-form-label">Apply to</label><select class="pm-form-control">
+            @for (opt of geoBlockApplyTo(); track $index) {
+              <option>{{ opt }}</option>
+            }
+          </select></div>
+          <div class="p-3 bg-light rounded">
+            @for (region of geoBlockRegions(); track $index) {
+              <div [class.mb-2]="!$last" class="form-check">
+                <input class="form-check-input" type="radio" name="geo" [checked]="$index===0">
+                <label class="form-check-label fw-bold">{{ region }}</label>
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('geoBlockModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('geoBlockModal')">Close</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('geoBlockModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('geoBlockModal','Geographic restrictions applied to selected cards.','')">Apply Security</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 12. MCC Blocking -->
+@if (isModalOpen('mccBlockModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shop text-danger me-2"></i>Merchant Category Blocks</h5>
+        <button class="pm-modal-close" (click)="closeModal('mccBlockModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='mccBlockModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('mccBlockModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">{{ processed()!.message }}</h5></div>
+        } @else {
+          <p class="text-muted small">Prevent card usage at specific merchant types.</p>
+          <div class="mb-3"><label class="pm-form-label">Apply to</label><select class="pm-form-control">
+            @for (opt of mccApplyTo(); track $index) {
+              <option>{{ opt }}</option>
+            }
+          </select></div>
+          <div class="p-3 bg-light rounded">
+            @for (blk of mccBlocks(); track blk.id) {
+              <div [class.mb-2]="!$last" class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" [checked]="blk.checked">
+                <label class="form-check-label">{{ blk.label }}</label>
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('mccBlockModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('mccBlockModal')">Close</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('mccBlockModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('mccBlockModal','MCC blocks updated program-wide.','')">Save Blocks</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 13. Set Limits -->
+@if (isModalOpen('cardLimitsModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-sliders text-info me-2"></i>Set Spending Limits</h5>
+        <button class="pm-modal-close" (click)="closeModal('cardLimitsModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='cardLimitsModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('cardLimitsModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Select Card</label><select class="pm-form-control">
+            @for (card of cards(); track card.id) {
+              <option>{{ cardOptionShort(card) }}</option>
+            }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Daily Spend Limit (KES)</label><input type="number" class="pm-form-control" value="10000"></div>
+          <div class="mb-3"><label class="pm-form-label">Monthly Spend Limit (KES)</label><input type="number" class="pm-form-control" value="150000"></div>
+          <div class="mb-3"><label class="pm-form-label">Per-Transaction Limit (KES)</label><input type="number" class="pm-form-control" value="5000"></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label text-sm">Decline and alert me if limit is exceeded</label></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('cardLimitsModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('cardLimitsModal')">Close</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('cardLimitsModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('cardLimitsModal','Card limits updated and enforced.','')">Save Limits</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 14. Bulk Issue Modal (Multi-step) -->
+@if (isModalOpen('bulkIssueModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-layers text-primary me-2"></i>Bulk Issue Cards (Corporate)</h5>
+        <button class="pm-modal-close" (click)="closeModal('bulkIssueModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div class="pm-stepper">
+          @for (label of bulkIssSteps; track $index) {
+            <div class="pm-step" [class.active]="stepState($index, bulkIssStep())==='active'" [class.completed]="stepState($index, bulkIssStep())==='completed'">
+              <div class="pm-step-num">
+                @if (stepState($index, bulkIssStep()) === 'completed') { <i class="bi bi-check"></i> }
+                @else { {{ $index + 1 }} }
+              </div>
+              <div class="pm-step-label">{{ label }}</div>
+            </div>
+            @if ($index < bulkIssSteps.length - 1) { <div class="pm-step-line"></div> }
+          }
+        </div>
+
+        @if (bulkIssStep() === 1) {
+          <h6 class="fw-bold mb-3">Upload Employee Data</h6>
+          <div class="p-4 border border-dashed rounded text-center mb-3 bg-light"><i class="bi bi-cloud-upload fs-1 text-muted mb-2 d-block"></i><strong>Upload CSV or Excel</strong><p class="text-muted small mt-1">Columns: Name, Email, Phone, Department, Limit</p><button class="pm-btn pm-btn-sm mt-2">Select File</button></div>
+          <div class="text-center"><a href="javascript:void(0)" class="text-decoration-none small text-primary"><i class="bi bi-download"></i> Download CSV Template</a></div>
+        }
+
+        @if (bulkIssStep() === 2) {
+          <h6 class="fw-bold mb-3">Review Batch Data</h6>
+          <div class="alert alert-success py-2"><i class="bi bi-check-circle me-1"></i> {{ bulkIssBatchSize() }} records validated successfully.</div>
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead><tr><th>Name</th><th>Dept</th><th>Card Type</th><th>Limit</th></tr></thead>
+              <tbody>
+                @for (r of bulkIssueRecords(); track r.id) {
+                  <tr><td>{{ r.name }}</td><td>{{ r.department }}</td><td>{{ r.cardType }}</td><td>KES {{ r.limit/1000 }}K</td></tr>
+                }
+                <tr><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          @if (flowLoading()) {
+            <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+          }
+        }
+
+        @if (bulkIssStep() === 3) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-all"></i></div>
+            <h5 class="fw-bold text-success">Batch Issuance Started</h5>
+            <p class="text-muted">{{ bulkIssBatchSize() }} cards are being generated.</p>
+            <div class="p-3 bg-light rounded text-start">
+              @for (stat of bulkIssueSummary(); track stat.label) {
+                <div [class.mb-1]="!$last" class="d-flex justify-content-between">
+                  <span>{{ stat.label }} ({{ stat.count }})</span>
+                  <span [class]="stat.statusClass">{{ stat.status }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal('bulkIssueModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="nextBulkIssStep()">
+          {{ bulkIssNextLabel() }}
+          @if (bulkIssStep() < 3) { <i class="bi bi-arrow-right ms-1"></i> }
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 15. Bulk Top-up Modal (Multi-step) -->
+@if (isModalOpen('bulkTopupModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-cash-stack text-success me-2"></i>Bulk Fund Cards</h5>
+        <button class="pm-modal-close" (click)="closeModal('bulkTopupModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        <div class="pm-stepper">
+          @for (label of bulkTopSteps; track $index) {
+            <div class="pm-step" [class.active]="stepState($index, bulkTopStep())==='active'" [class.completed]="stepState($index, bulkTopStep())==='completed'">
+              <div class="pm-step-num">
+                @if (stepState($index, bulkTopStep()) === 'completed') { <i class="bi bi-check"></i> }
+                @else { {{ $index + 1 }} }
+              </div>
+              <div class="pm-step-label">{{ label }}</div>
+            </div>
+            @if ($index < bulkTopSteps.length - 1) { <div class="pm-step-line"></div> }
+          }
+        </div>
+
+        @if (bulkTopStep() === 1) {
+          <h6 class="fw-bold mb-3">Select Cards &amp; Amounts</h6>
+          <div class="mb-3"><label class="pm-form-label">Funding Strategy</label><select class="pm-form-control">
+            @for (strat of bulkTopupStrategies(); track $index) {
+              <option>{{ strat }}</option>
+            }
+          </select></div>
+          <div class="table-responsive">
+            <table class="pm-table">
+              <thead><tr><th><input type="checkbox" checked></th><th>Card</th><th>Current Bal</th><th>Load Amt</th></tr></thead>
+              <tbody>
+                @for (row of bulkTopupRows(); track row.id) {
+                  <tr>
+                    <td><input type="checkbox" checked></td>
+                    <td>{{ row.cardName }}</td>
+                    <td class="text-danger">{{ formatKes(row.currentBalance) }}</td>
+                    <td><input type="number" class="form-control form-control-sm w-75" [value]="row.loadAmount"></td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="text-end fw-bold">Total Batch Load: {{ formatKes(bulkTopupTotal()) }}</div>
+        }
+
+        @if (bulkTopStep() === 2) {
+          <h6 class="fw-bold mb-3">Confirm Bulk Funding</h6>
+          <div class="p-3 bg-light rounded mb-3">
+            <div class="d-flex justify-content-between mb-2"><span>Total Cards</span><strong>{{ bulkTopupRows().length }} Cards</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span>Source</span><strong>PayMo Wallet</strong></div>
+            <hr>
+            <div class="d-flex justify-content-between fw-bold text-primary fs-5"><span>Total Deducted</span><span>{{ formatKes(bulkTopupTotal()) }}</span></div>
+          </div>
+          @if (flowLoading()) {
+            <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+          }
+        }
+
+        @if (bulkTopStep() === 3) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">Bulk Top-up Complete</h5><p class="text-muted">Funds instantly available on all selected cards.</p></div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal('bulkTopupModal')">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="nextBulkTopStep()">
+          {{ bulkTopNextLabel() }}
+          @if (bulkTopStep() < 3) { <i class="bi bi-arrow-right ms-1"></i> }
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 16. Dispute Transaction -->
+@if (isModalOpen('disputeTxModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>Dispute Transaction</h5>
+        <button class="pm-modal-close" (click)="closeModal('disputeTxModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='disputeTxModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('disputeTxModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="p-3 bg-light rounded mb-3">
+            <div class="fw-bold">{{ disputeTxData().merchant }}</div>
+            <div class="text-muted small">{{ disputeTxData().cardName }} · {{ disputeTxData().date }}</div>
+            <div class="fw-bold text-danger mt-1">{{ formatKes(disputeTxData().amount) }} (Declined)</div>
+          </div>
+          <div class="mb-3"><label class="pm-form-label">Reason for Dispute / Review</label><select class="pm-form-control">
+            @for (reason of disputeReasons(); track $index) {
+              <option>{{ reason }}</option>
+            }
+          </select></div>
+          <div class="mb-3"><label class="pm-form-label">Details</label><textarea class="pm-form-control" rows="3">We cancelled our AWS trial account 3 days ago but they still attempted to charge the card.</textarea></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label text-sm fw-bold text-danger">Freeze card temporarily while investigating</label></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('disputeTxModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('disputeTxModal')">Close</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('disputeTxModal')">Cancel</button>
+          <button class="pm-btn pm-btn-danger" (click)="processAction('disputeTxModal','Dispute ticket #DSP-9192 created and card frozen.','')">Submit Dispute</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 17. Spend Analytics -->
+@if (isModalOpen('spendAnalyticsModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-pie-chart text-info me-2"></i>Spend Analytics</h5>
+        <button class="pm-modal-close" (click)="closeModal('spendAnalyticsModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-tab-pills mb-3">
+          <button class="pm-tab-pill" [class.active]="analyticsTab()==='category'" (click)="setAnalyticsTab('category')">By Category</button>
+          <button class="pm-tab-pill" [class.active]="analyticsTab()==='merchant'" (click)="setAnalyticsTab('merchant')">By Merchant</button>
+          <button class="pm-tab-pill" [class.active]="analyticsTab()==='card'" (click)="setAnalyticsTab('card')">By Card</button>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-5">
+            <div class="p-3 bg-light rounded h-100 text-center d-flex flex-column justify-content-center">
+              <div style="width:120px;height:120px;border-radius:50%;margin:0 auto" [style.background]="spendDonutGradient()"></div>
+              <div class="fw-bold mt-3">{{ formatKes(spendTotal()) }} Total Spend</div>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <table class="pm-table">
+              <tbody>
+                @for (cat of spendCategories(); track cat.id) {
+                  <tr>
+                    <td><span class="d-inline-block rounded-circle me-2" style="width:10px;height:10px" [style.background]="cat.color"></span> <strong>{{ cat.label }}</strong></td>
+                    <td class="text-end">{{ cat.percentage }}%</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn w-100" (click)="closeModal('spendAnalyticsModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 18. Export Reports -->
+@if (isModalOpen('exportReportModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-download me-2"></i>Export Card Reports</h5>
+        <button class="pm-modal-close" (click)="closeModal('exportReportModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="position:relative">
+        @if (loadingModalId()==='exportReportModal') {
+          <div class="pm-loading-overlay"><div class="pm-spinner"></div><p class="mt-3 fw-bold text-primary small">Processing...</p></div>
+        }
+        @if (isProcessed('exportReportModal')) {
+          <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 class="fw-bold text-success">{{ processed()!.message }}</h5></div>
+        } @else {
+          <div class="mb-3"><label class="pm-form-label">Report Type</label><select class="pm-form-control">
+            @for (rt of exportReportTypes(); track $index) {
+              <option>{{ rt }}</option>
+            }
+          </select></div>
+          <div class="row g-2 mb-3"><div class="col-6"><label class="pm-form-label">Start Date</label><input type="date" class="pm-form-control" value="2025-06-01"></div><div class="col-6"><label class="pm-form-label">End Date</label><input type="date" class="pm-form-control" value="2025-06-28"></div></div>
+          <div class="mb-3"><label class="pm-form-label">Format</label><select class="pm-form-control">
+            @for (fmt of exportFormats(); track $index) {
+              <option>{{ fmt }}</option>
+            }
+          </select></div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (isProcessed('exportReportModal')) {
+          <button class="pm-btn pm-btn-primary w-100" (click)="closeModal('exportReportModal')">Close</button>
+        } @else {
+          <button class="pm-btn" (click)="closeModal('exportReportModal')">Cancel</button>
+          <button class="pm-btn pm-btn-primary" (click)="processAction('exportReportModal','Report compiled and downloaded!','')"><i class="bi bi-download"></i> Generate</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 19. Full Ledger Modal -->
+@if (isModalOpen('txLedgerModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-card-list me-2"></i>Full Transaction Ledger</h5>
+        <button class="pm-modal-close" (click)="closeModal('txLedgerModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex gap-2 mb-3 flex-wrap">
+          <select class="pm-form-control w-auto">
+            @for (flt of ledgerCardFilters(); track $index) {
+              <option>{{ flt }}</option>
+            }
+          </select>
+          <select class="pm-form-control w-auto">
+            @for (flt of ledgerDateFilters(); track $index) {
+              <option>{{ flt }}</option>
+            }
+          </select>
+          <input type="text" class="pm-form-control" placeholder="Search merchant...">
+        </div>
+        <div class="table-responsive" style="max-height:400px;overflow-y:auto">
+          <table class="pm-table">
+            <thead><tr><th>Date</th><th>Card</th><th>Merchant</th><th>Amount</th><th>Status</th><th>Auth Code</th></tr></thead>
+            <tbody>
+              @for (tx of transactions(); track tx.id) {
+                <tr>
+                  <td>{{ tx.date }}</td>
+                  <td>{{ tx.cardName }}</td>
+                  <td>{{ tx.merchant }}</td>
+                  <td>{{ formatKes(tx.amount) }}</td>
+                  <td>
+                    @if (tx.status === 'approved') { <span class="pm-badge pm-badge-success">Approved</span> }
+                    @else { <span class="pm-badge pm-badge-danger">Declined NSF</span> }
+                  </td>
+                  <td>{{ tx.authCode }}</td>
+                </tr>
+              } @empty {
+                <tr><td colspan="6" class="text-center text-muted py-3">No transactions found.</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal('txLedgerModal')">Close</button>
+        <button class="pm-btn pm-btn-primary" (click)="openAndClose('exportReportModal','txLedgerModal')">Export Data</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 20. Card List Modal -->
+@if (isModalOpen('cardListModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-list me-2"></i>All Issued Cards</h5>
+        <button class="pm-modal-close" (click)="closeModal('cardListModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="max-height:500px;overflow-y:auto">
+        <table class="pm-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Last 4</th><th>Balance</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            @for (card of cards(); track card.id) {
+              <tr>
+                <td>{{ card.name }}</td>
+                <td>{{ card.type }}</td>
+                <td>{{ card.last4 }}</td>
+                <td>{{ formatKes(card.balance) }}</td>
+                <td>
+                  @if (card.status === 'active') { <span class="pm-badge pm-badge-success">Active</span> }
+                  @else if (card.status === 'frozen') { <span class="pm-badge pm-badge-info">Frozen</span> }
+                  @else if (card.status === 'low_balance') { <span class="pm-badge pm-badge-warning">Low Bal</span> }
+                  @else { <span class="pm-badge pm-badge-danger">Blocked</span> }
+                </td>
+                <td>
+                  @if (card.status === 'low_balance') {
+                    <button class="pm-btn pm-btn-sm" (click)="openModal('topupCardModal')">Fund</button>
+                  } @else if (card.status === 'frozen') {
+                    <button class="pm-btn pm-btn-sm" (click)="openModal('freezeCardModal')">Unfreeze</button>
+                  } @else {
+                    <button class="pm-btn pm-btn-sm" (click)="openModal('cardControlsModal')">Manage</button>
+                  }
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="6" class="text-center text-muted py-3">No cards issued yet.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer"><button class="pm-btn w-100" (click)="closeModal('cardListModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 21. Tx Receipt -->
+@if (isModalOpen('txReceiptModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Transaction Receipt</h5>
+        <button class="pm-modal-close" (click)="closeModal('txReceiptModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="receipt-icon mx-auto mb-3" style="width:56px;height:56px;background:var(--pm-accent-soft);color:var(--pm-accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px"><i class="bi bi-check-circle-fill"></i></div>
+        <h3 class="fw-bold">{{ formatKes(receiptData().amount) }}</h3><p class="text-muted">{{ receiptData().merchant }}</p>
+        <div class="p-3 bg-light rounded text-start mt-4" style="font-size:13px">
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Card Used</span><strong>{{ receiptData().card }}</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Date &amp; Time</span><strong>{{ receiptData().datetime }}</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Auth Code</span><strong>{{ receiptData().authCode }}</strong></div>
+          <div class="d-flex justify-content-between"><span class="text-muted">Category</span><strong>{{ receiptData().category }}</strong></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn w-100" (click)="closeModal('txReceiptModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 22. Profile Modal -->
+@if (isModalOpen('profileModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>User Profile</h5>
+        <button class="pm-modal-close" (click)="closeModal('profileModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px" [style.background]="profileData().avatarBg">{{ profileData().initials }}</div>
+        <h5 class="fw-bold">{{ profileData().name }}</h5><p class="text-muted small">{{ profileData().role }}</p>
+        <div class="row g-2 text-start mt-3">
+          @for (stat of profileData().stats; track stat.label) {
+            <div class="col-6"><div class="p-2 bg-light rounded"><span class="text-muted small">{{ stat.label }}</span><br><strong>{{ stat.value }}</strong></div></div>
+          }
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn w-100" (click)="closeModal('profileModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 23. Notification Modal -->
+@if (isModalOpen('notificationModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notifications ({{ notifications().length }})</h5>
+        <button class="pm-modal-close" (click)="closeModal('notificationModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        @for (n of notifications(); track n.id) {
+          <div [class]="notificationRowClass($last)">
+            <div class="fw-bold" [class]="n.colorClass"><i [class]="n.iconClass"></i> {{ n.title }}</div>
+            <div class="small text-muted">{{ n.message }}</div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn w-100" (click)="closeModal('notificationModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 24. Health Check Modal -->
+@if (isModalOpen('healthCheckModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-check text-success me-2"></i>Card Program Health</h5>
+        <button class="pm-modal-close" (click)="closeModal('healthCheckModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="mb-4"><div style="font-size:48px;font-weight:800;color:var(--pm-accent)">{{ healthSummary().score }}/100</div><div class="fw-bold" [class]="healthSummary().postureClass">{{ healthSummary().posture }}</div></div>
+        <div class="text-start p-3 bg-light rounded small">
+          @for (check of healthChecks(); track check.id) {
+            <div [class]="check.rowClass"><i [class]="check.iconClass"></i> {{ check.label }}</div>
+          }
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn w-100" (click)="closeModal('healthCheckModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 25. Attention Items Modal -->
+@if (isModalOpen('attentionModal')) {
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>Attention Required</h5>
+        <button class="pm-modal-close" (click)="closeModal('attentionModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        @for (detail of attentionDetails(); track detail.id) {
+          <div [class]="attentionRowClass(detail, $last)">
+            <div class="fw-bold">{{ detail.title }}</div>
+            <div class="small text-muted">{{ detail.description }} <a href="javascript:void(0)" (click)="openAndClose(detail.actionModal, 'attentionModal')">{{ detail.actionLabel }}</a></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn w-100" (click)="closeModal('attentionModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+}

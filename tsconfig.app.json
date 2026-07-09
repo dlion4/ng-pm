@@ -1,0 +1,15 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "include": [
+    "src/**/*.ts"
+,       "src/app/app.routes copy.txt", "src/app/dev-portal/webhook/webhooks.txt", "src/app/dev-portal/tools/tools.txt", "src/app/dev-portal/sdks/sdks.t", "src/app/dev-portal/sandbox-environment/sandbox-environment .txt", "src/app/dev-portal/production-access/production-access.txt", "src/app/dev-portal/integration/integration.txt", "src/app/dev-portal/governance/governance.txt", "src/app/dev-portal/api-console/api-console.txt", "src/app/dev-portal/compliance/compliance.txt", "src/app/dev-portal/dev-dashboard/dev-dashboard.txt", "src/app/dev-portal/sdks/sdks.txt", "src/app/dev-portal/sandbox-environment/sandbox-environment.txt", "src/app/cards-hub/business-cards/business-cards.txt", "src/app/cards-hub/card-admin/card-admin.txt", "src/app/cards-hub/card-analytics/card-analytics.txt", "src/app/cards-hub/card-dashboard/card-dashboard.txt", "src/app/cards-hub/card-security/card-security.txt", "src/app/cards-hub/card-settings/card-settings.txt", "src/app/cards-hub/physical-cards/physical-cards.txt", "src/app/cards-hub/prepaid-card/prepaid-card.txt", "src/app/cards-hub/virtual-credit/virtual-credit.txt", "src/app/cards-hub/virtual-debit/virtual-debit.txt", "src/app/cards-hub/card-analytics/card-analytics.ts.txt", "src/app/cards-hub/business-cards/business-cards.ts.txt", "src/app/cards-hub/card-settings/card-settings.ts.txt", "src/app/business-portal/accounts-payable/accounts-payable.ts.txt", "src/app/layouts/dashboard-sidebar/dashboard-aside/dashboard-aside.ts.txt", "src/app/layouts/dashboard-sidebar/dashboard-header/dashboard-header.ts.txt", "src/app/layouts/dashboard-sidebar/dashboard-layout/dashboard-layout.ts.txt", "src/app/layouts/dashboard-cards/dashboard-cards-main/dashboard-cards-main.html", "src/app/layouts/dashboard-dev/dashboard-dev-main/dashboard-dev-main.html", "src/app/layouts/dashboard-utility/dashboard-utility-main/dashboard-utility-main.html"  ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
+}

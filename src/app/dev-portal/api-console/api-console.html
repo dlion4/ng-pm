@@ -1,0 +1,1052 @@
+<div class="pm-main">
+
+  <div class="pm-page-bar">
+    <div>
+      <div class="pm-breadcrumb"><span style="color:var(--pm-primary);cursor:pointer"
+          (click)="navigateTo('home')">Home</span> / <span style="color:var(--pm-primary);cursor:pointer"
+          (click)="navigateTo('dev-portal')">Developer Portal</span> / <strong>Dashboard &amp; Project
+          Management</strong>
+      </div>
+      <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 4.1 —
+        Developer Dashboard</h2>
+      <p style="font-size:13px;color:var(--pm-ink-soft);margin:0;font-family:var(--pm-font-sans)">Manage your PayMo
+        integration, track API requests, handle webhook events, and manage project access.</p>
+    </div>
+    <div class="d-flex flex-wrap" style="gap:8px">
+      <button class="pm-btn" (click)="openModal('createProjectModal')"><i class="bi bi-folder-plus"></i> New
+        Project</button>
+      <button class="pm-btn" (click)="openModal('generateKeyModal')"><i class="bi bi-key"></i> New API Key</button>
+      <button class="pm-btn pm-btn-primary" (click)="openModal('docsModal')"><i class="bi bi-book"></i> Read
+        Docs</button>
+    </div>
+  </div>
+
+  <div class="pm-content">
+
+    <!-- HERO STATS ROW -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card pm-card-accent" style="min-height:170px">
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78);font-family:var(--pm-font-sans)">Project:
+            <strong style="color:#fff">{{ currentProject.name }}</strong> <span class="ms-2"
+              [style.color]="currentProject.env === 'test' ? '#fcd34d' : '#86efac'">● {{ currentProject.env === 'test' ?
+              'Test Mode' : 'Live' }}</span>
+          </p>
+          <div class="pm-stat-value" style="margin:8px 0;color:#fff">{{ currentProject.requests | number }} <span
+              style="font-size:14px;font-weight:400;opacity:.8">requests / 24h</span></div>
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78);font-family:var(--pm-font-sans)">API Version: {{
+            currentProject.apiVersion }} · Region: {{ currentProject.region }}</p>
+          <div class="d-flex flex-wrap mt-3" style="gap:8px">
+            <button class="pm-btn pm-btn-sm"
+              style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+              (click)="openModal('apiLogsModal')">View Logs</button>
+            <button class="pm-btn pm-btn-sm"
+              style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+              (click)="openModal('goLiveChecklistModal')">Go Live Checklist</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-info)">API LATENCY (P95)</p>
+          <div class="pm-stat-value" style="margin:6px 0">{{ stats.latency }} <span
+              style="font-size:14px;color:var(--pm-muted)">ms</span></div>
+          <span class="pm-badge pm-badge-success"><i class="bi bi-graph-down"></i> {{ stats.latencyImprovement }}ms
+            improvement</span>
+          <div class="pm-mini-bars mt-3">
+            <div class="pm-mini-bar" *ngFor="let h of stats.latencyBars" [style.height.%]="h"
+              style="background:var(--pm-info)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-danger)">ERROR RATE</p>
+          <div class="pm-stat-value" style="margin:6px 0">{{ stats.errorRate }} <span
+              style="font-size:14px;color:var(--pm-muted)">%</span></div>
+          <span class="pm-badge pm-badge-warning"><i class="bi bi-exclamation-triangle"></i> {{ stats.failedReqs }}
+            failed reqs</span>
+          <div class="mt-2">
+            <div class="d-flex justify-content-between"
+              style="font-size:11px;color:var(--pm-muted);font-family:var(--pm-font-sans)"><span>Error
+                Budget</span><span>{{ stats.errorBudgetUsed }}% used</span></div>
+            <div class="pm-progress mt-1">
+              <div class="pm-progress-bar" [style.width.%]="stats.errorBudgetUsed" style="background:var(--pm-danger)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-purple)">
+          <p class="pm-stat-label" style="color:var(--pm-purple)">WEBHOOK DELIVERY</p>
+          <div class="pm-stat-value" style="margin:6px 0">{{ stats.webhookDelivery }} <span
+              style="font-size:14px;color:var(--pm-muted)">%</span></div>
+          <span class="pm-badge pm-badge-success"><i class="bi bi-check-all"></i> Healthy</span>
+          <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft);font-family:var(--pm-font-sans)">
+            <div>Active Endpoints: <strong>{{ stats.activeEndpoints }}</strong></div>
+            <div>Pending Retries: <strong>{{ stats.pendingRetries }}</strong> <button class="pm-btn pm-btn-sm ms-1"
+                style="padding:2px 6px;font-size:10px" (click)="openModal('webhookLogsModal')">View</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="pm-section-title">Requires Attention</h3>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('apiAlertsModal')">View all</button>
+          </div>
+          <div class="feed-item">
+            <div class="pm-icon-circle"
+              style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">
+              <i class="bi bi-key"></i>
+            </div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px;font-family:var(--pm-font-sans)">Test Secret Key expires in 14
+                days</div>
+              <div style="font-size:11px;color:var(--pm-muted);font-family:var(--pm-font-sans)">Key prefix:
+                sk_test_8f92...</div>
+            </div>
+            <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('rollKeyModal')">Roll Key</button>
+          </div>
+          <div class="feed-item">
+            <div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">
+              <i class="bi bi-broadcast"></i>
+            </div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px;font-family:var(--pm-font-sans)">Webhook endpoint failing</div>
+              <div style="font-size:11px;color:var(--pm-muted);font-family:var(--pm-font-sans)">
+                https://api.jenga.com/hooks returning 503</div>
+            </div>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('webhookLogsModal')">Inspect</button>
+          </div>
+          <div class="feed-item">
+            <div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">
+              <i class="bi bi-box-arrow-up-right"></i>
+            </div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px;font-family:var(--pm-font-sans)">New API Version Available
+              </div>
+              <div style="font-size:11px;color:var(--pm-muted);font-family:var(--pm-font-sans)">Upgrade to v2025-06-01
+                for new features</div>
+            </div>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('apiVersionModal')">Upgrade</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="pm-section-title">Integration Quickstart</h3>
+            <span class="pm-badge pm-badge-purple"><i class="bi bi-code"></i></span>
+          </div>
+          <p
+            style="font-size:12px;color:var(--pm-ink-soft);font-family:var(--pm-font-sans);margin-top:-8px;margin-bottom:12px">
+            Get started quickly with PayMo SDKs.</p>
+          <div class="pm-tab-pills mb-2">
+            <button *ngFor="let t of snippetTabs" class="pm-tab-pill" [class.active]="activeSnippet === t.key"
+              (click)="activeSnippet = t.key">{{ t.label }}</button>
+          </div>
+          <ng-container [ngSwitch]="activeSnippet">
+            <div *ngSwitchCase="'curl'" class="tab-panel active code-block">
+              curl https://api.paymo.com/v1/charges \
+              -H "Authorization: Bearer sk_test_8f92..." \
+              -H "Content-Type: application/json" \
+              -d '&#123; "amount": 5000, "currency": "KES", "source": "mpesa_stk", "phone": "0712345678" &#125;'
+              <button class="copy-btn" (click)="openModal('copySnippetModal')"><i class="bi bi-clipboard"></i>
+                Copy</button>
+            </div>
+            <div *ngSwitchCase="'node'" class="tab-panel active code-block">
+              const paymo = require('paymo')('sk_test_8f92...');
+              const charge = await paymo.charges.create(&#123;
+              amount: 5000,
+              currency: 'KES',
+              source: 'mpesa_stk',
+              phone: '0712345678'
+              &#125;);
+              <button class="copy-btn" (click)="openModal('copySnippetModal')"><i class="bi bi-clipboard"></i>
+                Copy</button>
+            </div>
+            <div *ngSwitchCase="'python'" class="tab-panel active code-block">
+              import paymo
+              paymo.api_key = "sk_test_8f92..."
+              charge = paymo.Charge.create(
+              amount=5000,
+              currency="KES",
+              source="mpesa_stk",
+              phone="0712345678"
+              )
+              <button class="copy-btn" (click)="openModal('copySnippetModal')"><i class="bi bi-clipboard"></i>
+                Copy</button>
+            </div>
+            <div *ngSwitchCase="'php'" class="tab-panel active code-block">
+              $paymo = new \PayMo\PayMo('sk_test_8f92...');
+              $charge = $paymo-&gt;charges-&gt;create([
+              'amount' =&gt; 5000,
+              'currency' =&gt; 'KES',
+              'source' =&gt; 'mpesa_stk',
+              'phone' =&gt; '0712345678'
+              ]);
+              <button class="copy-btn" (click)="openModal('copySnippetModal')"><i class="bi bi-clipboard"></i>
+                Copy</button>
+            </div>
+          </ng-container>
+          <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('sdkDownloadModal')"><i
+              class="bi bi-download"></i> Download Full SDKs</button>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="mb-3">
+            <h3 class="pm-section-title">Quick Actions</h3>
+            <p class="pm-section-sub">Developer tools &amp; settings</p>
+          </div>
+          <div class="quick-action-grid">
+            <button class="quick-action-btn" (click)="openModal('generateKeyModal')"><i
+                class="bi bi-key text-warning me-1"></i> API Keys</button>
+            <button class="quick-action-btn" (click)="openModal('addWebhookModal')"><i
+                class="bi bi-broadcast text-info me-1"></i> Webhooks</button>
+            <button class="quick-action-btn" (click)="openModal('apiLogsModal')"><i class="bi bi-terminal me-1"
+                style="color:var(--pm-purple)"></i> API Logs</button>
+            <button class="quick-action-btn" (click)="openModal('whitelistIpModal')"><i
+                class="bi bi-shield-lock text-success me-1"></i> IP Whitelist</button>
+            <button class="quick-action-btn" (click)="openModal('projectTeamModal')"><i
+                class="bi bi-people text-primary me-1"></i> Team Access</button>
+            <button class="quick-action-btn" (click)="openModal('rateLimitModal')"><i
+                class="bi bi-speedometer2 text-danger me-1"></i> Rate Limits</button>
+            <button class="quick-action-btn" (click)="openModal('quotaBillingModal')"><i
+                class="bi bi-wallet2 text-secondary me-1"></i> API Quota</button>
+            <button class="quick-action-btn" (click)="openModal('goLiveChecklistModal')"><i class="bi bi-rocket me-1"
+                style="color:var(--pm-accent)"></i> Go Live</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.1.1 API Keys -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-key-fill" style="color:var(--pm-warning)"></i> 4.1.1 — API Keys
+            &amp; Authentication</h3>
+          <p class="pm-section-sub">Manage your secret and publishable keys for environments. Never share your secret
+            keys.</p>
+        </div>
+        <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('generateKeyModal')"><i
+            class="bi bi-plus-lg"></i> Create Key</button>
+      </div>
+      <div class="table-responsive">
+        <table class="pm-table">
+          <thead>
+            <tr>
+              <th>Key Name / Environment</th>
+              <th>Key Token</th>
+              <th>Created</th>
+              <th>Last Used</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let k of apiKeys">
+              <td><strong>{{ k.name }}</strong><br><span class="pm-badge" [style.background]="k.envBg"
+                  [style.color]="k.envColor" style="font-size:9px">{{ k.env }}</span></td>
+              <td><code>{{ k.token }}</code></td>
+              <td>{{ k.created }}</td>
+              <td>{{ k.lastUsed }}</td>
+              <td><span class="pm-badge" [class.pm-badge-success]="k.status === 'Active'"
+                  [style.background]="k.status === 'Locked' ? '#f3f4f6' : ''"
+                  [style.color]="k.status === 'Locked' ? 'var(--pm-muted)' : ''">{{ k.status }}</span></td>
+              <td><button class="pm-btn pm-btn-sm"
+                  (click)="k.status !== 'Locked' ? openModal('rollKeyModal') : openModal('goLiveChecklistModal')">{{
+                  k.status !== 'Locked' ? 'Roll Key' : 'Unlock' }}</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4.1.2 Project Team -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-people-fill" style="color:var(--pm-info)"></i> 4.1.2 — Project
+            Team &amp; Access Control</h3>
+          <p class="pm-section-sub">Manage developers, admins, and support staff access to this project.</p>
+        </div>
+        <button class="pm-btn pm-btn-sm" (click)="openModal('projectTeamModal')"><i class="bi bi-person-plus"></i>
+          Invite Member</button>
+      </div>
+      <div class="table-responsive">
+        <table class="pm-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>MFA Status</th>
+              <th>Last Login</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of teamMembers">
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="pm-avatar" [style.background]="m.gradient" style="width:24px;height:24px;font-size:10px">
+                    {{ m.initials }}</div>
+                  <strong>{{ m.name }}</strong>
+                </div>
+              </td>
+              <td>{{ m.email }}</td>
+              <td><span class="pm-badge" [class]="m.roleBadge">{{ m.role }}</span></td>
+              <td><span class="pm-badge" [class.pm-badge-success]="m.mfa === 'Enabled'"
+                  [class.pm-badge-warning]="m.mfa === 'Disabled'"><i class="bi bi-shield-check"></i> {{ m.mfa }}</span>
+              </td>
+              <td>{{ m.lastLogin }}</td>
+              <td>
+                <button *ngIf="m.role !== 'Owner'" class="pm-btn pm-btn-sm"
+                  (click)="openModal('memberAccessModal')">Edit</button>
+                <span *ngIf="m.role === 'Owner'">—</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4.1.3 API Logs -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-terminal-fill" style="color:var(--pm-accent)"></i> 4.1.3 —
+            Integration Status &amp; Recent Logs</h3>
+          <p class="pm-section-sub">Real-time view of API requests, responses, and webhook deliveries.</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('webhookLogsModal')"><i class="bi bi-broadcast"></i>
+            Webhooks</button>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('apiLogsModal')"><i class="bi bi-list"></i> Full
+            Logs</button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="pm-table">
+          <thead>
+            <tr>
+              <th>Method / Endpoint</th>
+              <th>Status</th>
+              <th>Time</th>
+              <th>IP Address</th>
+              <th>Latency</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let l of recentLogs">
+              <td><span class="pm-badge" [class.pm-badge-success]="l.method === 'POST'"
+                  [class.pm-badge-info]="l.method === 'GET'" [class.pm-badge-warning]="l.method === 'HOOK'">{{ l.method
+                  }}</span> <code>{{ l.endpoint }}</code></td>
+              <td><span class="pm-badge" [class.pm-badge-success]="l.statusOk" [class.pm-badge-danger]="!l.statusOk">{{
+                  l.status }}</span></td>
+              <td>{{ l.time }}</td>
+              <td>{{ l.ip }}</td>
+              <td>{{ l.latency }}</td>
+              <td><button class="pm-btn pm-btn-sm"
+                  (click)="l.method === 'HOOK' ? openModal('webhookLogsModal') : openModal('requestDetailModal')">Inspect</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BACKDROP -->
+<div *ngIf="activeModalId" class="modal-backdrop fade show" style="z-index:1050" (click)="closeModal()"></div>
+
+<!-- 1. Generate Key -->
+<div *ngIf="activeModalId === 'generateKeyModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-key text-primary me-2"></i>Generate API Key</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Key Name / Description</label><input class="pm-form-control"
+            placeholder="e.g. Mobile App Prod Key"></div>
+        <div class="mb-3"><label class="pm-form-label">Environment</label><select class="pm-form-control">
+            <option>Test</option>
+            <option disabled>Live (Requires Go-Live approval)</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Expiration (Optional)</label><select class="pm-form-control">
+            <option>Never</option>
+            <option>30 Days</option>
+            <option>90 Days</option>
+            <option>1 Year</option>
+          </select></div>
+        <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px"><i
+            class="bi bi-shield-lock me-1"></i> Once generated, the secret key will only be shown once. Be prepared to
+          copy it to a secure vault.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button class="pm-btn pm-btn-primary"
+          (click)="processAction('API Key Generated. Secret: sk_test_new_a1b2c3...')">Generate Key</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Roll Key -->
+<div *ngIf="activeModalId === 'rollKeyModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-repeat text-warning me-2"></i>Roll API Key</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Rolling an API key generates a new secret key and schedules
+          the old one for deletion.</p>
+        <div class="mb-3"><label class="pm-form-label">Key to Roll</label><input class="pm-form-control"
+            value="Test Secret Key (sk_test_8f92...)" disabled></div>
+        <div class="mb-3"><label class="pm-form-label">Old Key Expiration</label><select class="pm-form-control">
+            <option>Immediately (Dangerous)</option>
+            <option selected>In 12 hours</option>
+            <option>In 24 hours</option>
+            <option>In 7 days</option>
+          </select></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="rollKeyConfirmed"><label
+            class="form-check-label" style="font-size:13px">I understand that API requests using the old key will fail
+            after expiration.</label></div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button class="pm-btn" style="background:var(--pm-warning);color:#fff;border-color:var(--pm-warning)"
+          [disabled]="!rollKeyConfirmed"
+          (click)="processAction('Key rolled successfully. Old key expires in 12 hours.')">Roll Key Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Create Project -->
+<div *ngIf="activeModalId === 'createProjectModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-folder-plus text-primary me-2"></i>Create New Project</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Project Name</label><input class="pm-form-control"
+            placeholder="e.g. E-Commerce Website"></div>
+        <div class="mb-3"><label class="pm-form-label">Primary Currency</label><select class="pm-form-control">
+            <option>KES - Kenyan Shilling</option>
+            <option>USD - US Dollar</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Associated Business Entity</label><select
+            class="pm-form-control">
+            <option>JengaPay Limited</option>
+            <option>Create new business profile...</option>
+          </select></div>
+        <p style="font-size:12px;color:var(--pm-muted)">Projects allow you to isolate API keys, webhooks, and analytics
+          for different applications within the same business.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('Project created successfully.')">Create
+          Project</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Project Team -->
+<div *ngIf="activeModalId === 'projectTeamModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-plus text-info me-2"></i>Invite Team Member</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Email Address</label><input class="pm-form-control"
+            placeholder="developer@example.com"></div>
+        <div class="mb-3"><label class="pm-form-label">Project Role</label>
+          <div class="p-2 border rounded mb-2" style="cursor:pointer"
+            [style.borderColor]="inviteRole === 'Developer' ? 'var(--pm-primary)' : ''"
+            (click)="inviteRole = 'Developer'">
+            <strong>Developer</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">Can view test data, manage test API keys, and view logs.
+            </div>
+          </div>
+          <div class="p-2 border rounded mb-2" style="cursor:pointer"
+            [style.borderColor]="inviteRole === 'Admin' ? 'var(--pm-primary)' : ''" (click)="inviteRole = 'Admin'">
+            <strong>Admin</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">Can manage live keys, team members, and settings.</div>
+          </div>
+          <div class="p-2 border rounded" style="cursor:pointer"
+            [style.borderColor]="inviteRole === 'Support' ? 'var(--pm-primary)' : ''" (click)="inviteRole = 'Support'">
+            <strong>Support</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">Can view logs and transaction data only.</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button class="pm-btn pm-btn-primary"
+          (click)="processAction('Invitation sent to developer@example.com as ' + inviteRole)">Send Invite</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. Member Access -->
+<div *ngIf="activeModalId === 'memberAccessModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-lock me-2" style="color:var(--pm-purple)"></i>Edit Member Access
+        </h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="pm-avatar" style="width:40px;height:40px;background:linear-gradient(135deg,#10b981,#047857)">SO
+          </div>
+          <div><strong>Sarah O.</strong>
+            <div style="font-size:12px;color:var(--pm-muted)">sarah@jenga.com</div>
+          </div>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">Change Role</label><select class="pm-form-control">
+            <option>Developer</option>
+            <option>Admin</option>
+            <option>Support</option>
+          </select></div>
+        <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" checked><label
+            class="form-check-label">Require Multi-Factor Authentication (MFA)</label></div>
+        <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" checked><label
+            class="form-check-label">Account Active</label></div>
+        <button class="pm-btn pm-btn-sm pm-btn-danger w-100 mt-2"
+          (click)="processAction('Member removed from project.')">Remove Member from Project</button>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('Member access updated successfully')">Save
+          Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. Webhook Logs -->
+<div *ngIf="activeModalId === 'webhookLogsModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-xl modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-broadcast text-info me-2"></i>Webhook Delivery Logs</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between mb-3 flex-wrap" style="gap:8px">
+          <select class="pm-form-control" style="width:auto">
+            <option>All Endpoints</option>
+            <option>https://api.jenga.com/hooks</option>
+          </select>
+          <select class="pm-form-control" style="width:auto">
+            <option>All Statuses</option>
+            <option>Success (2xx)</option>
+            <option>Failed (4xx/5xx)</option>
+          </select>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('addWebhookModal')">Add Endpoint</button>
+        </div>
+        <div class="table-responsive" style="max-height:400px;overflow-y:auto">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Event ID</th>
+                <th>Event Type</th>
+                <th>Endpoint</th>
+                <th>Status</th>
+                <th>Timestamp</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let w of webhookLogs">
+                <td><code>{{ w.id }}</code></td>
+                <td><code>{{ w.eventType }}</code></td>
+                <td><code>.../hooks</code></td>
+                <td><span class="pm-badge" [class.pm-badge-success]="w.ok" [class.pm-badge-danger]="!w.ok">{{ w.status
+                    }}</span></td>
+                <td>{{ w.time }}</td>
+                <td><button class="pm-btn pm-btn-sm"
+                    (click)="w.ok ? openModal('requestDetailModal') : openModal('testWebhookModal')">{{ w.ok ? 'View' :
+                    'Retry' }}</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 7. Add Webhook -->
+<div *ngIf="activeModalId === 'addWebhookModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Add Webhook Endpoint</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Endpoint URL</label><input class="pm-form-control"
+            placeholder="https://your-domain.com/paymo/webhook"></div>
+        <div class="mb-3"><label class="pm-form-label">API Version</label><select class="pm-form-control">
+            <option>v2025-01-01 (Latest)</option>
+          </select></div>
+        <label class="pm-form-label">Events to send</label>
+        <div class="p-2 border rounded mb-3" style="max-height:150px;overflow-y:auto">
+          <div class="form-check" *ngFor="let e of webhookEvents"><input class="form-check-input" type="checkbox"
+              [(ngModel)]="e.selected"><label class="form-check-label"
+              style="font-size:13px;font-family:var(--pm-font-mono)">{{ e.name }}</label></div>
+        </div>
+        <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:12px">PayMo requires HTTPS endpoints. A
+          webhook signing secret will be generated upon creation.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button class="pm-btn pm-btn-primary"
+          (click)="processAction('Webhook endpoint created. Secret: whsec_test_a1b2...')">Add Endpoint</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 8. Test Webhook -->
+<div *ngIf="activeModalId === 'testWebhookModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-lightning-charge me-2" style="color:var(--pm-accent)"></i>Test Webhook
+          Delivery</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Endpoint</label><select class="pm-form-control">
+            <option>https://api.jenga.com/hooks</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Event Type to Simulate</label><select class="pm-form-control">
+            <option>charge.success</option>
+            <option>charge.failed</option>
+            <option>transfer.success</option>
+          </select></div>
+        <div class="code-block mt-3 mb-3">&#123; "id": "evt_test_123", "type": "charge.success", "data": &#123;
+          "object": &#123; "id": "ch_test_abc", "amount": 5000, "currency": "KES", "status": "successful" &#125; &#125;
+          &#125;</div>
+        <button class="pm-btn pm-btn-sm w-100 pm-btn-accent"
+          (click)="processAction('Test event sent. Received 200 OK response.')">Send Test Event</button>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. API Logs -->
+<div *ngIf="activeModalId === 'apiLogsModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-xl modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-terminal me-2" style="color:var(--pm-purple)"></i>API Request Logs</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between mb-3 flex-wrap" style="gap:8px">
+          <div class="d-flex gap-2">
+            <select class="pm-form-control" style="width:auto">
+              <option>All Requests</option>
+              <option>POST /charges</option>
+              <option>GET /customers</option>
+              <option>POST /disbursements</option>
+            </select>
+            <select class="pm-form-control" style="width:auto">
+              <option>All Statuses</option>
+              <option>2xx Success</option>
+              <option>4xx Client Error</option>
+              <option>5xx Server Error</option>
+            </select>
+          </div>
+          <button class="pm-btn pm-btn-sm"><i class="bi bi-download"></i> Export</button>
+        </div>
+        <div class="table-responsive" style="max-height:400px;overflow-y:auto">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Status</th>
+                <th>Latency</th>
+                <th>IP</th>
+                <th>Time</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let l of apiLogsFull">
+                <td><span class="pm-badge" [class.pm-badge-success]="l.method === 'POST'"
+                    [class.pm-badge-info]="l.method === 'GET'">{{ l.method }}</span></td>
+                <td><code>{{ l.endpoint }}</code></td>
+                <td><span class="pm-badge" [class.pm-badge-success]="l.ok" [class.pm-badge-danger]="!l.ok">{{ l.status
+                    }}</span></td>
+                <td>{{ l.latency }}</td>
+                <td>{{ l.ip }}</td>
+                <td>{{ l.time }}</td>
+                <td><button class="pm-btn pm-btn-sm" (click)="openModal('requestDetailModal')">Inspect</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 10. Request Detail -->
+<div *ngIf="activeModalId === 'requestDetailModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-search me-2"></i>Request Inspector</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Request</label>
+          <div class="code-block"><span style="color:#93c5fd">POST</span> /v1/charges/mpesa HTTP/1.1
+            Host: api.paymo.com
+            Authorization: Bearer sk_test_8f92...
+            Content-Type: application/json
+
+            &#123;"amount":5000,"currency":"KES","source":"mpesa_stk","phone":"0712345678"&#125;</div>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">Response</label>
+          <div class="code-block" style="border-left:3px solid var(--pm-accent)">
+            &#123;"id":"ch_abc123","amount":5000,"currency":"KES","status":"successful","created_at":"2025-06-27T14:32:01Z"&#125;
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-4">
+            <div class="p-2 rounded text-center" style="background:var(--pm-surface-2)">
+              <div style="font-size:11px;color:var(--pm-muted)">Latency</div>
+              <div style="font-weight:700;font-family:var(--pm-font-mono)">112ms</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="p-2 rounded text-center" style="background:var(--pm-surface-2)">
+              <div style="font-size:11px;color:var(--pm-muted)">Status</div>
+              <div style="font-weight:700;color:var(--pm-accent);font-family:var(--pm-font-mono)">200 OK</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="p-2 rounded text-center" style="background:var(--pm-surface-2)">
+              <div style="font-size:11px;color:var(--pm-muted)">IP</div>
+              <div style="font-weight:700;font-family:var(--pm-font-mono)">192.168.1.45</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Close</button>
+        <button class="pm-btn pm-btn-sm" (click)="processAction('Request details copied to clipboard.')"><i
+            class="bi bi-clipboard"></i> Copy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 11. Docs -->
+<div *ngIf="activeModalId === 'docsModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-book me-2"></i>API Documentation</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6" *ngFor="let d of docsList">
+            <div class="p-3 border rounded d-flex align-items-center gap-3 doc-hover-card"
+              (mouseenter)="onDocHover($event, true)" (mouseleave)="onDocHover($event, false)"
+              (click)="processAction('Opening ' + d.title + ' documentation...')">
+              <div class="pm-icon-circle" [style.background]="d.bg" [style.color]="d.color"><i [class]="d.icon"></i>
+              </div>
+              <div><strong style="font-size:13px">{{ d.title }}</strong>
+                <div style="font-size:11px;color:var(--pm-muted)">{{ d.desc }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Close</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('Redirecting to docs.paymo.com...')">Open Full
+          Docs</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12. SDK Download -->
+<div *ngIf="activeModalId === 'sdkDownloadModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-download me-2"></i>Download SDKs</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex align-items-center gap-3 p-3 border rounded mb-2" *ngFor="let s of sdks">
+          <div class="pm-icon-circle" [style.background]="s.bg" [style.color]="s.color"><i [class]="s.icon"></i></div>
+          <div style="flex:1"><strong>{{ s.name }}</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">{{ s.version }}</div>
+          </div>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="processAction(s.name + ' SDK downloaded.')"><i
+              class="bi bi-download"></i></button>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 13. Copy Snippet -->
+<div *ngIf="activeModalId === 'copySnippetModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-clipboard me-2"></i>Copy Code Snippet</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-receipt">
+          <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700">Copied to Clipboard!</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">The {{ activeSnippet }} code snippet has been
+            copied. Paste it directly into your project.</p>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 14. IP Whitelist -->
+<div *ngIf="activeModalId === 'whitelistIpModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-lock me-2" style="color:var(--pm-accent)"></i>IP Whitelist</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:12px">Restrict API access to specific IP
+          addresses for enhanced security.</p>
+        <div class="d-flex gap-2 mb-3"><input class="pm-form-control" placeholder="e.g. 192.168.1.0/24"
+            style="font-family:var(--pm-font-mono)"><button class="pm-btn pm-btn-primary"
+            (click)="processAction('IP address added to whitelist.')"><i class="bi bi-plus"></i> Add</button></div>
+        <div class="p-2 border rounded mb-2 d-flex justify-content-between align-items-center"
+          *ngFor="let ip of ipWhitelist">
+          <code style="font-size:13px">{{ ip }}</code>
+          <button class="pm-btn pm-btn-sm pm-btn-danger" style="padding:2px 8px" (click)="removeIp(ip)"><i
+              class="bi bi-x"></i></button>
+        </div>
+        <div *ngIf="ipWhitelist.length === 0" class="text-center p-3" style="color:var(--pm-muted);font-size:13px">No IP
+          addresses whitelisted. All IPs are allowed.</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 15. Rate Limits -->
+<div *ngIf="activeModalId === 'rateLimitModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-speedometer2 me-2" style="color:var(--pm-danger)"></i>Rate Limits</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="status-row" *ngFor="let r of rateLimits">
+          <div><strong>{{ r.name }}</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">{{ r.desc }}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-family:var(--pm-font-mono);font-weight:700">{{ r.limit }}</div>
+            <div style="font-size:11px;color:var(--pm-muted)">per {{ r.window }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Close</button>
+        <button class="pm-btn pm-btn-primary" (click)="openModal('quotaBillingModal')">Request Increase</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 16. Quota & Billing -->
+<div *ngIf="activeModalId === 'quotaBillingModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-wallet2 me-2"></i>API Quota &amp; Billing</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3 mb-3">
+          <div class="col-6">
+            <div class="p-3 rounded text-center" style="background:var(--pm-surface-2)">
+              <div style="font-size:11px;color:var(--pm-muted)">REQUESTS THIS MONTH</div>
+              <div style="font-size:20px;font-weight:700;font-family:var(--pm-font-mono)">742,580</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)">
+              <div style="font-size:11px;color:#047857;font-weight:600">MONTHLY QUOTA</div>
+              <div style="font-size:20px;font-weight:700;font-family:var(--pm-font-mono);color:var(--pm-accent)">
+                1,000,000</div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>Quota
+              Used</span><span>74.3%</span></div>
+          <div class="pm-progress">
+            <div class="pm-progress-bar" style="width:74%;background:var(--pm-primary)"></div>
+          </div>
+        </div>
+        <div class="status-row">
+          <div><strong>Current Plan</strong></div><strong style="color:var(--pm-primary)">Standard (Free)</strong>
+        </div>
+        <div class="status-row">
+          <div><strong>Overage Cost</strong></div><span>KES 0.50 per 1,000 extra requests</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Close</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('Upgrade request submitted.')">Upgrade
+          Plan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 17. Go Live Checklist -->
+<div *ngIf="activeModalId === 'goLiveChecklistModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-rocket me-2" style="color:var(--pm-accent)"></i>Go Live Checklist</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Complete all steps before switching to
+          live mode.</p>
+        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="gl1"><label
+            class="form-check-label" for="gl1">Test all payment endpoints in sandbox environment</label></div>
+        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="gl2"><label
+            class="form-check-label" for="gl2">Verify webhook delivery and signature validation</label></div>
+        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="gl3"><label
+            class="form-check-label" for="gl3">Implement error handling for all error codes</label></div>
+        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="gl4"><label
+            class="form-check-label" for="gl4">Set up IP whitelist for production servers</label></div>
+        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="gl5"><label
+            class="form-check-label" for="gl5">Enable MFA for all team members with live access</label></div>
+        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="gl6"><label
+            class="form-check-label" for="gl6">Review and accept the live terms of service</label></div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button class="pm-btn pm-btn-primary"
+          (click)="processAction('Go-Live request submitted. Our team will review within 24 hours.')">Submit for
+          Review</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 18. API Alerts -->
+<div *ngIf="activeModalId === 'apiAlertsModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-bell me-2"></i>All Alerts</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="color:var(--pm-muted)">No additional alerts at this time.</p>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 19. API Version -->
+<div *ngIf="activeModalId === 'apiVersionModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-up-circle me-2" style="color:var(--pm-info)"></i>Upgrade API
+          Version</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Upgrade from <strong>v2025-01-01</strong> to
+          <strong>v2025-06-01</strong>.</p>
+        <div class="p-3 rounded mb-3" style="background:var(--pm-info-soft);font-size:12px"><strong>What's new:</strong>
+          Added batch disbursement endpoints, improved webhook retry logic, and new KYC verification fields.</div>
+        <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px"><strong>Breaking
+            changes:</strong> The <code>/v1/charges</code> response now includes an additional <code>fees</code> object.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button class="pm-btn pm-btn-primary" (click)="processAction('API version upgraded to v2025-06-01.')">Upgrade
+          Now</button>
+      </div>
+    </div>
+  </div>
+</div>

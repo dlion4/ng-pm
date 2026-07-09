@@ -1,0 +1,935 @@
+<div class="pm-app">
+<div class="pm-main">
+
+<div class="pm-page-bar">
+<div>
+<div class="pm-breadcrumb"><a href="#">Business Portal</a> / <a href="#">Operations</a> / <strong>Treasury &amp; Forex</strong></div>
+<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 3.7 — Treasury, Cash Management &amp; Forex</h2>
+<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Centralized liquidity control, automated cross-account sweeps, real-time FX trading, cross-border payments, and cash flow forecasting.</p>
+</div>
+<div class="d-flex flex-wrap" style="gap:8px">
+<button class="pm-btn" (click)="openModal('approvalQueueModal')"><i class="bi bi-ui-checks"></i> Pending Approvals</button>
+<button class="pm-btn" (click)="openModal('cashflowForecastModal')"><i class="bi bi-graph-up"></i> Forecast</button>
+<button class="pm-btn" (click)="openModal('transferFundsModal')"><i class="bi bi-arrow-left-right"></i> Internal Transfer</button>
+<button class="pm-btn pm-btn-primary" (click)="openModal('bookFXModal')"><i class="bi bi-currency-exchange"></i> Book FX Trade</button>
+</div>
+</div>
+
+<div class="pm-content">
+
+<!-- HERO STATS ROW -->
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="pm-card pm-card-accent" style="min-height:170px">
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Global consolidated liquidity <span style="color:#86efac">●</span></p>
+<div class="pm-stat-value" style="margin:8px 0;color:#fff">KES 48.2M <span style="font-size:14px;font-weight:500;opacity:.8">equiv.</span></div>
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Across 6 bank accounts, PayMo corporate wallets, and M-Pesa Tills/Paybills.</p>
+<div class="d-flex flex-wrap mt-3" style="gap:8px">
+<button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('multiAccountModal')">View accounts</button>
+<button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('transferFundsModal')">Move funds</button>
+<button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('reconciliationModal')">Reconcile</button>
+</div>
+</div>
+</div>
+<div class="col-lg-2 col-md-4 col-6">
+<div class="pm-card" style="min-height:170px">
+<p class="pm-stat-label" style="color:var(--pm-info)">NET CASH FLOW (30D)</p>
+<div class="pm-stat-value" style="margin:6px 0">+ KES 4.1M</div>
+<span class="pm-badge pm-badge-success"><i class="bi bi-arrow-up-right"></i> Positive</span>
+<div class="pm-mini-bars mt-3"><div class="pm-mini-bar" style="height:40%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:60%;background:var(--pm-info)"></div><div class="pm-mini-bar" style="height:55%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:85%;background:var(--pm-accent)"></div><div class="pm-mini-bar" style="height:45%;background:var(--pm-primary)"></div><div class="pm-mini-bar" style="height:90%;background:var(--pm-accent)"></div></div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4 col-6">
+<div class="pm-card" style="min-height:170px">
+<p class="pm-stat-label" style="color:var(--pm-purple)">ACTIVE INVESTMENTS</p>
+<div class="pm-stat-value" style="margin:6px 0">KES 18.5M</div>
+<span class="pm-badge pm-badge-purple"><i class="bi bi-piggy-bank"></i> Yielding 11.2% p.a.</span>
+<div class="mt-2"><div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>T-Bills / MMF allocation</span><span>38% of liquidity</span></div><div class="pm-progress mt-1"><div class="pm-progress-bar" style="width:38%;background:var(--pm-purple)"></div></div></div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4">
+<div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-warning)">
+<p class="pm-stat-label" style="color:var(--pm-warning)">FX EXPOSURE (USD)</p>
+<div class="pm-stat-value" style="margin:6px 0">$ 42,500</div>
+<span class="pm-badge pm-badge-warning"><i class="bi bi-globe"></i> Payables next 14D</span>
+<div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)"><div>Current Rate: <strong>129.40 KES</strong></div><div>Target Hedged: <strong>60% covered</strong></div></div>
+</div>
+</div>
+</div>
+
+<div class="row g-3">
+<!-- Attention Required -->
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Treasury Action Items</h3><button class="pm-btn pm-btn-sm" (click)="openModal('attentionModal')">View all</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">AP</div><div style="flex:1"><div style="font-weight:600;font-size:13px">3 Sweeps require approval</div><div style="font-size:11px;color:var(--pm-muted)">KES 4.2M target balancing transfers</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('approvalQueueModal')">Review</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">FX</div><div style="flex:1"><div style="font-weight:600;font-size:13px">USD/KES dropped to 129.10</div><div style="font-size:11px;color:var(--pm-muted)">Hit target alert for vendor payment</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('bookFXModal')">Trade</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple);font-size:12px">MM</div><div style="flex:1"><div style="font-weight:600;font-size:13px">T-Bill maturity tomorrow</div><div style="font-size:11px;color:var(--pm-muted)">KES 5.0M principal + interest</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('investmentPortfolioModal')">Action</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">RC</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Unreconciled bank statement</div><div style="font-size:11px;color:var(--pm-muted)">Equity Bank main op account (2 days)</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('reconciliationModal')">Fix</button></div>
+</div>
+</div>
+<!-- Smart Suggestions -->
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Liquidity Insights</h3><span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent);font-size:12px">ID</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Invest idle KES 2.5M</div><div style="font-size:11px;color:var(--pm-muted)">Not needed for 14 days based on forecast</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('investCashModal')">Invest</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">SW</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Setup Till-to-Bank sweep</div><div style="font-size:11px;color:var(--pm-muted)">Prevent manual transfer delays daily</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('sweepRuleModal')">Config</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">HG</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Hedge upcoming EUR invoice</div><div style="font-size:11px;color:var(--pm-muted)">EUR/KES volatility risk detected (3.2%)</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('fxRiskModal')">Hedge</button></div>
+<div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">ST</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Shortfall predicted on 28th</div><div style="font-size:11px;color:var(--pm-muted)">Payroll run exceeds operating balance</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('cashflowForecastModal')">Model</button></div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="mb-3"><h3 class="pm-section-title">Treasury Actions</h3><p class="pm-section-sub">Frequent cash management workflows</p></div>
+<div class="quick-action-grid">
+<button class="quick-action-btn" (click)="openModal('addAccountModal')"><i class="bi bi-bank text-primary me-1"></i> Add Account</button>
+<button class="quick-action-btn" (click)="openModal('transferFundsModal')"><i class="bi bi-arrow-left-right text-success me-1"></i> Internal Transfer</button>
+<button class="quick-action-btn" (click)="openModal('bookFXModal')"><i class="bi bi-currency-exchange text-warning me-1"></i> FX Trade</button>
+<button class="quick-action-btn" (click)="openModal('crossBorderModal')"><i class="bi bi-globe me-1" style="color:var(--pm-purple)"></i> Cross-Border</button>
+<button class="quick-action-btn" (click)="openModal('investCashModal')"><i class="bi bi-graph-up-arrow text-info me-1"></i> Invest Cash</button>
+<button class="quick-action-btn" (click)="openModal('sweepRuleModal')"><i class="bi bi-arrow-repeat text-secondary me-1"></i> Auto-Sweeps</button>
+<button class="quick-action-btn" (click)="openModal('fxAlertModal')"><i class="bi bi-bell me-1" style="color:var(--pm-accent)"></i> FX Alerts</button>
+<button class="quick-action-btn" (click)="openModal('treasuryReportModal')"><i class="bi bi-file-earmark-pdf text-danger me-1"></i> Reports</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 3.7.1 & 3.7.2 -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-bank" style="color:var(--pm-primary)"></i> 3.7.1 &amp; 3.7.2 — Multi-Account Liquidity &amp; Auto-Sweeps</h3><p class="pm-section-sub">Consolidated view of all corporate bank accounts, mobile money tills, and automated zero/target balance sweep rules.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-clock-history"></i> Sweep Log</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-plus-lg"></i> Connect Bank</button></div><div (click)="openModal('sweepHistoryModal'); openModal('addAccountModal')">
+<div class="row g-3">
+<div class="col-lg-8">
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Account Balances</h4><button class="pm-btn pm-btn-sm" (click)="openModal('multiAccountModal')">Manage Accounts</button></div>
+<div class="table-responsive"><table class="pm-table"><thead><tr><th>Institution</th><th>Account Name</th><th>Currency</th><th>Balance</th><th>Status</th><th>Auto-Sweep</th></tr></thead><tbody>
+<tr><td><div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:24px;height:24px;background:var(--pm-info-soft);color:var(--pm-info);font-size:12px"><i class="bi bi-bank"></i></div>Equity Bank</div></td><td>Main Operations</td><td>KES</td><td><strong>14,250,000</strong></td><td><span class="pm-badge pm-badge-success">Syncing</span></td><td>Target KES 5M</td></tr>
+<tr><td><div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:24px;height:24px;background:var(--pm-success-soft);color:#10B981;font-size:12px"><i class="bi bi-bank"></i></div>KCB Bank</div></td><td>Payroll Acct</td><td>KES</td><td><strong>3,800,000</strong></td><td><span class="pm-badge pm-badge-success">Syncing</span></td><td>Zero Balance</td></tr>
+<tr><td><div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:24px;height:24px;background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px"><i class="bi bi-currency-dollar"></i></div>StanChart</div></td><td>USD Receipts</td><td>USD</td><td><strong>$ 45,200</strong></td><td><span class="pm-badge pm-badge-success">Syncing</span></td><td>Manual</td></tr>
+<tr><td><div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:24px;height:24px;background:var(--pm-accent-soft);color:var(--pm-accent);font-size:12px"><i class="bi bi-phone"></i></div>Safaricom</div></td><td>HQ Till Number</td><td>KES</td><td><strong>1,450,200</strong></td><td><span class="pm-badge pm-badge-success">Live API</span></td><td>Daily to Equity</td></tr>
+<tr><td><div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:24px;height:24px;background:var(--pm-primary-soft);color:var(--pm-primary);font-size:12px">P</div>PayMo Wallet</div></td><td>Disbursement Fund</td><td>KES</td><td><strong>4,200,000</strong></td><td><span class="pm-badge pm-badge-success">Native</span></td><td>Manual</td></tr>
+</tbody></table></div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="utility-block">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Sweep Rules</h4>
+<div class="status-row"><div><strong>End of Day Till Sweep</strong><div style="font-size:11px;color:var(--pm-muted)">HQ Till → Equity Main</div></div><span class="pm-badge pm-badge-success">Active</span></div>
+<div class="status-row"><div><strong>Payroll Funding</strong><div style="font-size:11px;color:var(--pm-muted)">Equity Main → KCB (Target 4M on 25th)</div></div><span class="pm-badge pm-badge-success">Active</span></div>
+<div class="status-row"><div><strong>Excess Cash to MMF</strong><div style="font-size:11px;color:var(--pm-muted)">Equity Main > 10M → PayMo Yield</div></div><span class="pm-badge pm-badge-warning">Paused</span></div>
+<button class="pm-btn pm-btn-sm w-100 mt-3" (click)="openModal('sweepRuleModal')"><i class="bi bi-gear"></i> Configure Sweeps</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 3.7.3 -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-globe" style="color:var(--pm-warning)"></i> 3.7.3 — Foreign Exchange &amp; Cross-Border Payments</h3><p class="pm-section-sub">Live interbank FX rates, spot/forward trades, multi-currency wallets, and international SWIFT/RTGS transfers.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-graph-up-arrow"></i> Live Rates</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-send"></i> Global Transfer</button></div><div (click)="openModal('fxRatesModal'); openModal('crossBorderModal')">
+<div class="row g-3">
+<div class="col-lg-3">
+<div class="utility-block text-center">
+<div style="font-size:11px;color:var(--pm-muted);font-weight:700;margin-bottom:8px">USD / KES SPOT</div>
+<div style="font-size:32px;font-weight:800;color:var(--pm-ink);font-family:var(--pm-font-display)">129.40</div>
+<div style="font-size:12px;color:var(--pm-accent);font-weight:600"><i class="bi bi-arrow-down"></i> -0.15 (0.12%) today</div>
+<div class="mt-4"><button class="pm-btn pm-btn-sm">Buy USD</button> <button class="pm-btn pm-btn-sm pm-btn-outline">Sell USD</button><div (click)="openModal('bookFXModal'); openModal('bookFXModal')">
+</div>
+</div>
+<div class="col-lg-3">
+<div class="utility-block text-center">
+<div style="font-size:11px;color:var(--pm-muted);font-weight:700;margin-bottom:8px">EUR / KES SPOT</div>
+<div style="font-size:32px;font-weight:800;color:var(--pm-ink);font-family:var(--pm-font-display)">140.85</div>
+<div style="font-size:12px;color:var(--pm-danger);font-weight:600"><i class="bi bi-arrow-up"></i> +0.45 (0.32%) today</div>
+<div class="mt-4"><button class="pm-btn pm-btn-sm">Buy EUR</button> <button class="pm-btn pm-btn-sm pm-btn-outline">Sell EUR</button><div (click)="openModal('bookFXModal'); openModal('bookFXModal')">
+</div>
+</div>
+<div class="col-lg-6">
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Recent Cross-Border Activity</h4><button class="pm-btn pm-btn-sm" (click)="openModal('fxRiskModal')">Exposure</button></div>
+<div class="table-responsive"><table class="pm-table"><thead><tr><th>Date</th><th>Beneficiary</th><th>Currency</th><th>Amount</th><th>Rate</th><th>Status</th></tr></thead><tbody>
+<tr><td>26 Jun</td><td>Alibaba Cloud</td><td>USD</td><td>$ 4,500</td><td>129.55</td><td><span class="pm-badge pm-badge-success">Settled</span></td></tr>
+<tr><td>24 Jun</td><td>Guangzhou Mfg Ltd</td><td>USD</td><td>$ 18,200</td><td>129.80</td><td><span class="pm-badge pm-badge-info">In Transit</span></td></tr>
+<tr><td>21 Jun</td><td>EuroTech Supplies</td><td>EUR</td><td>€ 12,000</td><td>140.20</td><td><span class="pm-badge pm-badge-success">Settled</span></td></tr>
+</tbody></table></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 3.7.4 & 3.7.5 -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-piggy-bank" style="color:var(--pm-purple)"></i> 3.7.4 &amp; 3.7.5 — Yield Management &amp; Cash Flow Forecasting</h3><p class="pm-section-sub">Invest excess liquidity in Money Market Funds (MMF) or T-Bills, and model future 30/60/90 day cash flows.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-graph-up"></i> Forecast Model</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-arrow-up-right-circle"></i> Place Investment</button></div><div (click)="openModal('cashflowForecastModal'); openModal('investCashModal')">
+<div class="row g-3">
+<div class="col-lg-6">
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Investment Portfolio</h4><button class="pm-btn pm-btn-sm" (click)="openModal('investmentPortfolioModal')">Manage</button></div>
+<div class="status-row"><div><div class="d-flex align-items-center gap-2"><i class="bi bi-shield-check text-success"></i> <strong>PayMo Corporate MMF</strong></div><div style="font-size:11px;color:var(--pm-muted)">Yield: 11.2% p.a. · Liquid in 24h</div></div><div class="text-end"><strong>KES 8,500,000</strong><br><button class="pm-btn pm-btn-sm mt-1" (click)="openModal('liquidateInvestModal')">Withdraw</button></div></div>
+<div class="status-row"><div><div class="d-flex align-items-center gap-2"><i class="bi bi-bank text-info"></i> <strong>91-Day Treasury Bill</strong></div><div style="font-size:11px;color:var(--pm-muted)">Yield: 15.4% p.a. · Matures: 12 Aug</div></div><div class="text-end"><strong>KES 10,000,000</strong><br><span class="pm-badge pm-badge-info mt-1">Locked</span></div></div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-purple-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Total interest earned YTD: <strong>KES 842,500</strong>. View <span style="cursor:pointer;color:var(--pm-primary)" (click)="openModal('yieldAnalyticsModal')">Yield Analytics</span>.</div>
+</div>
+</div>
+<div class="col-lg-6">
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">30-Day Liquidity Forecast</h4><button class="pm-btn pm-btn-sm" (click)="openModal('cashflowForecastModal')">Scenarios</button></div>
+<div class="chart-bars" style="height:120px">
+<div class="chart-bar" style="height:40%;background:var(--pm-info)"><span class="bar-label">W1</span></div>
+<div class="chart-bar" style="height:65%;background:var(--pm-info)"><span class="bar-label">W2</span></div>
+<div class="chart-bar" style="height:85%;background:var(--pm-primary)"><span class="bar-label">W3</span></div>
+<div class="chart-bar" style="height:35%;background:var(--pm-warning)"><span class="bar-label">W4 (Payroll)</span></div>
+</div>
+<div class="d-flex justify-content-between mt-3" style="font-size:12px">
+<div>Expected Inflows: <strong style="color:var(--pm-accent)">+ KES 18.2M</strong></div>
+<div>Expected Outflows: <strong style="color:var(--pm-danger)">- KES 14.8M</strong></div>
+</div>
+<div class="d-flex justify-content-between mt-1" style="font-size:12px">
+<div>Net Position (30D): <strong>+ KES 3.4M</strong></div>
+<div>Lowest Point: <strong style="color:var(--pm-warning)">KES 2.1M buffer (W4)</strong></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- 1. Multi Account Modal -->
+@if (activeModal === 'multiAccountModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-bank me-2"></i>Corporate Accounts Dashboard</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body">
+<div class="d-flex justify-content-end mb-3"><button class="pm-btn pm-btn-primary pm-btn-sm" (click)="openModal('addAccountModal')"><i class="bi bi-plus"></i> Add Account</button></div>
+<div class="table-responsive"><table class="pm-table"><thead><tr><th>Bank / Wallet</th><th>Account No</th><th>Currency</th><th>Balance</th><th>Last Sync</th><th>Action</th></tr></thead><tbody>
+@for (acct of accounts; track acct.bank) {
+<tr><td>{{ acct.bank }}</td><td>{{ acct.accountNo }}</td><td>{{ acct.currency }}</td><td>{{ acct.balance }}</td><td>{{ acct.lastSync }}</td><td><button class="pm-btn pm-btn-sm" (click)="openModal('bankStatementsModal')">Stmt</button></td></tr>
+}
+</tbody></table></div>
+</div>
+<div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+</div>
+</div></div>
+
+<!-- 2. Add Bank Account (Multi-step) -->
+@if (activeModal === 'addAccountModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Connect Bank Account</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+<div class="pm-stepper">
+  @for (label of stepperLabels['addBank']; track $index) {
+    @if ($index > 0) {
+      <div class="pm-step-line"></div>
+    }
+    <div class="pm-step" [class.active]="isStepActive('addBank', $index)" [class.completed]="isStepCompleted('addBank', $index)">
+      <div class="pm-step-num">
+        @if (isStepCompleted('addBank', $index)) {
+          <i class="bi bi-check"></i>
+        } @else {
+          {{ $index + 1 }}
+        }
+      </div>
+      <div class="pm-step-label">{{ label }}</div>
+    </div>
+  }
+</div>
+@if (loadingModal === 'addAccountModal') {
+  <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+}
+@if (stepState['addBank'] === 1) {
+<div>
+<h6 style="font-weight:700">Select Bank or PSP</h6>
+<div class="mb-3"><input type="text" class="pm-form-control" placeholder="Search bank (e.g., Equity, Absa)"></div>
+<div class="row g-2">
+<div class="col-6"><div class="acct-card text-center" (click)="selectBox($event)"><i class="bi bi-bank text-info" style="font-size:24px"></i><div style="font-size:12px;font-weight:600;margin-top:8px">Equity Bank</div></div></div>
+<div class="col-6"><div class="acct-card text-center" (click)="selectBox($event)"><i class="bi bi-bank text-success" style="font-size:24px"></i><div style="font-size:12px;font-weight:600;margin-top:8px">KCB Bank</div></div></div>
+<div class="col-6"><div class="acct-card text-center" (click)="selectBox($event)"><i class="bi bi-bank text-primary" style="font-size:24px"></i><div style="font-size:12px;font-weight:600;margin-top:8px">Absa Bank</div></div></div>
+<div class="col-6"><div class="acct-card text-center" (click)="selectBox($event)"><i class="bi bi-phone" style="font-size:24px;color:var(--pm-accent)"></i><div style="font-size:12px;font-weight:600;margin-top:8px">M-Pesa Till</div></div></div>
+</div>
+</div>
+} @else if (stepState['addBank'] === 2) {
+<div>
+<h6 style="font-weight:700">Authentication</h6>
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:12px">You will be redirected securely to authenticate via Open Banking API. PayMo does not store your bank credentials.</div>
+<div class="mb-3"><label class="pm-form-label">Account Nickname</label><input type="text" class="pm-form-control" placeholder="e.g. Corporate OPEX"></div>
+<div class="mb-3"><label class="pm-form-label">Corporate ID / Phone</label><input type="text" class="pm-form-control" value="0712345678"></div>
+</div>
+} @else {
+<div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Account Connected!</h5><p style="font-size:13px;color:var(--pm-ink-soft)">Your bank account is now synced with PayMo Treasury.</p><div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px"><div class="d-flex justify-content-between mb-2"><span class="text-muted">Bank</span><strong>Equity Bank</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Account</span><strong>****4521</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Status</span><span class="pm-badge pm-badge-success">Active</span></div></div></div>
+}
+</div>
+<div class="modal-footer">
+  @if (stepState['addBank'] < 3) {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-primary" (click)="nextFlow('addBank', 3)">{{ getFlowButtonLabel('addBank', 3) }} @if (stepState['addBank'] < 2) { <i class="bi bi-arrow-right"></i> } @else { <i class="bi bi-lock"></i> }</button>
+  } @else {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 3. Transfer Funds / Internal Sweep -->
+@if (activeModal === 'transferFundsModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-left-right text-success me-2"></i>Internal Transfer</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+<div class="pm-stepper">
+  @for (label of stepperLabels['transfer']; track $index) {
+    @if ($index > 0) {
+      <div class="pm-step-line"></div>
+    }
+    <div class="pm-step" [class.active]="isStepActive('transfer', $index)" [class.completed]="isStepCompleted('transfer', $index)">
+      <div class="pm-step-num">
+        @if (isStepCompleted('transfer', $index)) {
+          <i class="bi bi-check"></i>
+        } @else {
+          {{ $index + 1 }}
+        }
+      </div>
+      <div class="pm-step-label">{{ label }}</div>
+    </div>
+  }
+</div>
+@if (loadingModal === 'transferFundsModal') {
+  <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+}
+@if (stepState['transfer'] === 1) {
+<div>
+<div class="mb-3"><label class="pm-form-label">From Account</label><select class="pm-form-control"><option>Safaricom Till (1,450,200 KES)</option><option>PayMo Wallet (4,200,000 KES)</option><option>Equity Bank Main (14,250,000 KES)</option></select></div>
+<div class="mb-3 text-center"><i class="bi bi-arrow-down fs-4 text-muted"></i></div>
+<div class="mb-3"><label class="pm-form-label">To Account</label><select class="pm-form-control"><option>Equity Bank Main</option><option>KCB Payroll Acct</option><option>PayMo Wallet</option></select></div>
+<div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input type="number" class="pm-form-control" value="1000000"></div>
+<div class="mb-3"><label class="pm-form-label">Reference</label><input type="text" class="pm-form-control" value="Daily Sweep"></div>
+</div>
+} @else if (stepState['transfer'] === 2) {
+<div>
+<h6 style="font-weight:700">Review Transfer</h6>
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:13px"><div class="d-flex justify-content-between mb-2"><span class="text-muted">From</span><strong>Safaricom Till</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">To</span><strong>Equity Bank Main</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 1,000,000</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Fee</span><strong>KES 0 (Internal)</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Execution</span><strong>Immediate</strong></div></div>
+<label class="pm-form-label">Authorizer PIN</label>
+<div class="pm-pin-input"><input type="password" maxlength="1" (input)="moveFocus($event)"><input type="password" maxlength="1" (input)="moveFocus($event)"><input type="password" maxlength="1" (input)="moveFocus($event)"><input type="password" maxlength="1" (input)="moveFocus($event)"></div>
+</div>
+} @else {
+<div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Transfer Executed</h5><p style="font-size:13px;color:var(--pm-ink-soft)">KES 1,000,000 moved to Equity Bank Main.</p><div style="font-size:12px;color:var(--pm-muted)">Ref: TRF-20250628-9921</div></div>
+}
+</div>
+<div class="modal-footer">
+  @if (stepState['transfer'] < 3) {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-primary" (click)="nextFlow('transfer', 3)">{{ getFlowButtonLabel('transfer', 3) }} @if (stepState['transfer'] < 2) { <i class="bi bi-arrow-right"></i> } @else { <i class="bi bi-lock"></i> }</button>
+  } @else {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 4. Auto-Sweep Rule Config -->
+@if (activeModal === 'sweepRuleModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-repeat text-secondary me-2"></i>Configure Automated Sweep</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+  @if (savedModals['sweepRuleModal']) {
+    <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['sweepRuleModal'].message }}</h5><p style="font-size:12px;color:var(--pm-muted)">Reference: {{ savedModals['sweepRuleModal'].ref }}</p></div>
+  } @else if (loadingModal === 'sweepRuleModal') {
+    <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+  } @else {
+    <div class="mb-3"><label class="pm-form-label">Source Account</label><select class="pm-form-control"><option>Safaricom Till</option><option>Equity Bank Main</option></select></div>
+    <div class="mb-3"><label class="pm-form-label">Destination Account</label><select class="pm-form-control"><option>Equity Bank Main</option><option>KCB Payroll Acct</option><option>PayMo Yield (MMF)</option></select></div>
+    <div class="mb-3"><label class="pm-form-label">Sweep Type</label><select class="pm-form-control"><option>Zero Balance (Sweep everything)</option><option>Target Balance (Keep minimum amount)</option><option>Threshold Sweep (Sweep amounts above X)</option></select></div>
+    <div class="mb-3"><label class="pm-form-label">Threshold / Target Amount (KES)</label><input type="number" class="pm-form-control" value="500000"></div>
+    <div class="mb-3"><label class="pm-form-label">Frequency</label><select class="pm-form-control"><option>End of Day (11:00 PM)</option><option>Real-time (Instantly above threshold)</option><option>Weekly (Friday 5 PM)</option></select></div>
+  }
+</div>
+<div class="modal-footer">
+  @if (savedModals['sweepRuleModal']) {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  } @else {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-primary" (click)="processAction('sweepRuleModal','Sweep rule configured successfully.','SWP-CFG-102')">Save Rule</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 5. Sweep History Modal -->
+@if (activeModal === 'sweepHistoryModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Automated Sweep Logs</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body">
+<div class="table-responsive"><table class="pm-table"><thead><tr><th>Date &amp; Time</th><th>Rule</th><th>Amount Swept</th><th>Status</th></tr></thead><tbody>
+@for (log of sweepLogs; track log.date) {
+<tr><td>{{ log.date }}</td><td>{{ log.rule }}</td><td>{{ log.amount }}</td><td><span class="pm-badge pm-badge-success">{{ log.status }}</span></td></tr>
+}
+</tbody></table></div>
+</div>
+<div class="modal-footer"><button class="pm-btn">Close</button><button class="pm-btn pm-btn-primary">Export Logs</button><div (click)="closeModal(); openModal('exportTreasuryModal')">
+</div>
+</div></div>
+
+<!-- 6. Book FX Trade Modal (Multi-step) -->
+@if (activeModal === 'bookFXModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-currency-exchange text-warning me-2"></i>Book FX Trade</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+<div class="pm-stepper">
+  @for (label of stepperLabels['fx']; track $index) {
+    @if ($index > 0) {
+      <div class="pm-step-line"></div>
+    }
+    <div class="pm-step" [class.active]="isStepActive('fx', $index)" [class.completed]="isStepCompleted('fx', $index)">
+      <div class="pm-step-num">
+        @if (isStepCompleted('fx', $index)) {
+          <i class="bi bi-check"></i>
+        } @else {
+          {{ $index + 1 }}
+        }
+      </div>
+      <div class="pm-step-label">{{ label }}</div>
+    </div>
+  }
+</div>
+@if (loadingModal === 'bookFXModal') {
+  <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+}
+@if (stepState['fx'] === 1) {
+<div>
+<div class="pm-tab-pills mb-3"><button class="pm-tab-pill" [class.active]="activeTabs['fxTab'] === 'spot'">Spot Trade</button><button class="pm-tab-pill" [class.active]="activeTabs['fxTab'] === 'forward'">Forward Contract</button><div (click)="activeTabs['fxTab'] = 'spot'; activeTabs['fxTab'] = 'forward'">
+<div class="row g-3">
+<div class="col-md-6"><label class="pm-form-label">Sell Currency</label><select class="pm-form-control"><option>KES - Kenyan Shilling</option><option>USD - US Dollar</option><option>EUR - Euro</option></select></div>
+<div class="col-md-6"><label class="pm-form-label">Buy Currency</label><select class="pm-form-control"><option>USD - US Dollar</option><option>KES - Kenyan Shilling</option><option>EUR - Euro</option></select></div>
+<div class="col-md-6"><label class="pm-form-label">Amount to Buy (USD)</label><input type="number" class="pm-form-control" value="10000"></div>
+<div class="col-md-6"><div class="p-2 rounded mt-4" style="background:var(--pm-surface-2);text-align:center"><div style="font-size:11px;color:var(--pm-muted)">LIVE RATE (Valid 30s)</div><div style="font-size:20px;font-weight:700">129.40</div></div></div>
+</div>
+</div>
+} @else if (stepState['fx'] === 2) {
+<div>
+<h6 style="font-weight:700">Quote Confirmation</h6>
+<div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft);font-size:13px"><div class="d-flex justify-content-between mb-2"><span class="text-muted">Buying</span><strong>$ 10,000.00</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Rate</span><strong>129.40 KES/USD</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Selling (Debit)</span><strong>KES 1,294,000.00</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Settlement Date</span><strong>Today (T+0)</strong></div></div>
+<div class="mb-3"><label class="pm-form-label">Debit Account</label><select class="pm-form-control"><option>Equity Bank Main (KES)</option></select></div>
+<div class="mb-3"><label class="pm-form-label">Credit Account</label><select class="pm-form-control"><option>StanChart USD Account</option></select></div>
+<div style="font-size:11px;color:var(--pm-danger);text-align:center;font-weight:600">Quote expires in 24 seconds...</div>
+</div>
+} @else {
+<div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Trade Executed</h5><p style="font-size:13px;color:var(--pm-ink-soft)">You have successfully bought USD 10,000.</p><div style="font-size:12px;color:var(--pm-muted)">Deal Ticket: FX-20250628-1002</div></div>
+}
+</div>
+<div class="modal-footer">
+  @if (stepState['fx'] < 3) {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-primary" (click)="nextFlow('fx', 3)">{{ getFlowButtonLabel('fx', 3) }} @if (stepState['fx'] < 2) { <i class="bi bi-arrow-right"></i> } @else { <i class="bi bi-lock"></i> }</button>
+  } @else {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 7. Cross-Border Transfer -->
+@if (activeModal === 'crossBorderModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-globe me-2" style="color:var(--pm-purple)"></i>Cross-Border Payment (SWIFT)</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+<div class="pm-stepper">
+  @for (label of stepperLabels['crossBorder']; track $index) {
+    @if ($index > 0) {
+      <div class="pm-step-line"></div>
+    }
+    <div class="pm-step" [class.active]="isStepActive('crossBorder', $index)" [class.completed]="isStepCompleted('crossBorder', $index)">
+      <div class="pm-step-num">
+        @if (isStepCompleted('crossBorder', $index)) {
+          <i class="bi bi-check"></i>
+        } @else {
+          {{ $index + 1 }}
+        }
+      </div>
+      <div class="pm-step-label">{{ label }}</div>
+    </div>
+  }
+</div>
+@if (loadingModal === 'crossBorderModal') {
+  <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+}
+@if (stepState['crossBorder'] === 1) {
+<div>
+<div class="mb-3"><label class="pm-form-label">Beneficiary</label><select class="pm-form-control"><option>Guangzhou Mfg Ltd (China)</option><option>Alibaba Cloud (Singapore)</option><option>EuroTech Supplies (Germany)</option><option>+ Add New Beneficiary</option></select></div>
+<div class="row g-3">
+<div class="col-md-6"><label class="pm-form-label">Amount (USD)</label><input type="number" class="pm-form-control" value="18200"></div>
+<div class="col-md-6"><label class="pm-form-label">Funding Account</label><select class="pm-form-control"><option>StanChart USD (Balance: $45,200)</option><option>Equity KES (Auto-convert at 129.40)</option></select></div>
+<div class="col-12"><label class="pm-form-label">Purpose of Payment (BOP Code)</label><select class="pm-form-control"><option>Import of Goods - Machinery</option><option>Software / IT Services</option><option>Consultancy Fees</option></select></div>
+</div>
+</div>
+} @else if (stepState['crossBorder'] === 2) {
+<div>
+<h6 style="font-weight:700">Review SWIFT Details</h6>
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:13px"><div class="d-flex justify-content-between mb-2"><span class="text-muted">Beneficiary</span><strong>Guangzhou Mfg Ltd</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Account No</span><strong>USD-3392810011</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">SWIFT / BIC</span><strong>BKCHCNBJ</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>$ 18,200.00</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">SWIFT Fees (OUR)</span><strong>$ 25.00</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Total Debit</span><strong style="color:var(--pm-danger)">$ 18,225.00</strong></div></div>
+<div class="mb-3"><label class="pm-form-label">Upload Invoice / Proforma (Required for KRA/CBK)</label><input type="file" class="pm-form-control"></div>
+</div>
+} @else {
+<div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-send-check"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Transfer Submitted</h5><p style="font-size:13px;color:var(--pm-ink-soft)">Your SWIFT transfer has been initiated. You can track it via SWIFT gpi in the dashboard.</p><div style="font-size:12px;color:var(--pm-muted)">UETR: 19283746-ABCD-EFGH-IJKL-1234567890AB</div></div>
+}
+</div>
+<div class="modal-footer">
+  @if (stepState['crossBorder'] < 3) {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-primary" (click)="nextFlow('crossBorder', 3)">{{ getFlowButtonLabel('crossBorder', 3) }} @if (stepState['crossBorder'] < 2) { <i class="bi bi-arrow-right"></i> } @else { <i class="bi bi-lock"></i> }</button>
+  } @else {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 8. FX Rates & Trends Modal -->
+@if (activeModal === 'fxRatesModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-graph-up-arrow text-info me-2"></i>Live Interbank FX Rates</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body">
+<div class="table-responsive"><table class="pm-table"><thead><tr><th>Pair</th><th>Bid</th><th>Ask</th><th>Spread</th><th>Trend (24h)</th><th>Action</th></tr></thead><tbody>
+@for (rate of fxRates; track rate.pair) {
+<tr><td>{{ rate.pair }}</td><td>{{ rate.bid }}</td><td>{{ rate.ask }}</td><td>{{ rate.spread }}</td><td><span [attr.style]="rate.trendColor"><i [class]="rate.trendIcon"></i> {{ rate.trendPct }}</span></td><td><button class="pm-btn pm-btn-sm" (click)="openModal('bookFXModal')">Trade</button></td></tr>
+}
+</tbody></table></div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-surface-2);font-size:12px"><i class="bi bi-info-circle me-1"></i> Rates shown are indicative interbank rates. Final executable rates are provided on the trade booking screen.</div>
+</div>
+<div class="modal-footer"><button class="pm-btn">Close</button><button class="pm-btn pm-btn-primary">Set Rate Alerts</button><div (click)="closeModal(); openModal('fxAlertModal')">
+</div>
+</div></div>
+
+<!-- 9. Invest Cash Modal -->
+@if (activeModal === 'investCashModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-graph-up text-info me-2"></i>Place Idle Cash Investment</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+<div class="pm-stepper">
+  @for (label of stepperLabels['invest']; track $index) {
+    @if ($index > 0) {
+      <div class="pm-step-line"></div>
+    }
+    <div class="pm-step" [class.active]="isStepActive('invest', $index)" [class.completed]="isStepCompleted('invest', $index)">
+      <div class="pm-step-num">
+        @if (isStepCompleted('invest', $index)) {
+          <i class="bi bi-check"></i>
+        } @else {
+          {{ $index + 1 }}
+        }
+      </div>
+      <div class="pm-step-label">{{ label }}</div>
+    </div>
+  }
+</div>
+@if (loadingModal === 'investCashModal') {
+  <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+}
+@if (stepState['invest'] === 1) {
+<div>
+<div class="row g-2 mb-3">
+<div class="col-md-4"><div class="acct-card text-center" (click)="selectBox($event)"><i class="bi bi-shield-check text-success" style="font-size:24px"></i><div style="font-size:13px;font-weight:700;margin-top:8px">PayMo MMF</div><div style="font-size:11px;color:var(--pm-muted)">Yield: 11.2% | Liquid</div></div></div>
+<div class="col-md-4"><div class="acct-card text-center" (click)="selectBox($event)"><i class="bi bi-bank text-primary" style="font-size:24px"></i><div style="font-size:13px;font-weight:700;margin-top:8px">91-Day T-Bill</div><div style="font-size:11px;color:var(--pm-muted)">Yield: 15.4% | Locked</div></div></div>
+<div class="col-md-4"><div class="acct-card text-center" (click)="selectBox($event)"><i class="bi bi-lock text-warning" style="font-size:24px"></i><div style="font-size:13px;font-weight:700;margin-top:8px">Fixed Deposit</div><div style="font-size:11px;color:var(--pm-muted)">Yield: 13.0% | 30 Days</div></div></div>
+</div>
+<div class="mb-3"><label class="pm-form-label">Funding Account</label><select class="pm-form-control"><option>Equity Bank Main (Available: KES 14.2M)</option><option>PayMo Wallet (Available: KES 4.2M)</option></select></div>
+<div class="mb-3"><label class="pm-form-label">Investment Amount (KES)</label><input type="number" class="pm-form-control" value="2500000"></div>
+</div>
+} @else if (stepState['invest'] === 2) {
+<div>
+<h6 style="font-weight:700">Review Investment</h6>
+<div class="p-3 rounded mb-3" style="background:var(--pm-info-soft);font-size:13px"><div class="d-flex justify-content-between mb-2"><span class="text-muted">Product</span><strong>PayMo Corporate MMF</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES 2,500,000</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Target Yield</span><strong>11.2% p.a.</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Est. Monthly Interest</span><strong style="color:var(--pm-accent)">~ KES 23,333</strong></div></div>
+<div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Auto-reinvest monthly interest (Compound)</label></div>
+</div>
+} @else {
+<div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Investment Placed!</h5><p style="font-size:13px;color:var(--pm-ink-soft)">KES 2,500,000 has been moved to the PayMo MMF. Interest accrues daily.</p><div style="font-size:12px;color:var(--pm-muted)">Ref: INV-20250628-331</div></div>
+}
+</div>
+<div class="modal-footer">
+  @if (stepState['invest'] < 3) {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-primary" (click)="nextFlow('invest', 3)">{{ getFlowButtonLabel('invest', 3) }} @if (stepState['invest'] < 2) { <i class="bi bi-arrow-right"></i> } @else { <i class="bi bi-lock"></i> }</button>
+  } @else {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 10. Liquidate Investment -->
+@if (activeModal === 'liquidateInvestModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-box-arrow-right text-danger me-2"></i>Withdraw / Liquidate Investment</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+  @if (savedModals['liquidateInvestModal']) {
+    <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['liquidateInvestModal'].message }}</h5><p style="font-size:12px;color:var(--pm-muted)">Reference: {{ savedModals['liquidateInvestModal'].ref }}</p></div>
+  } @else if (loadingModal === 'liquidateInvestModal') {
+    <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+  } @else {
+    <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)"><div class="d-flex justify-content-between mb-1"><span class="text-muted">Investment</span><strong>PayMo Corporate MMF</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Available Balance</span><strong style="color:var(--pm-primary)">KES 8,500,000</strong></div></div>
+    <div class="mb-3"><label class="pm-form-label">Withdrawal Amount (KES)</label><input type="number" class="pm-form-control" value="1000000"></div>
+    <div class="mb-3"><label class="pm-form-label">Destination Account</label><select class="pm-form-control"><option>Equity Bank Main</option><option>PayMo Wallet</option></select></div>
+    <div style="font-size:12px;color:var(--pm-muted)">Withdrawals from MMF reflect in your target account within 24 hours. Early withdrawal from locked deposits may incur penalty fees.</div>
+  }
+</div>
+<div class="modal-footer">
+  @if (savedModals['liquidateInvestModal']) {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  } @else {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-danger" (click)="processAction('liquidateInvestModal','Withdrawal initiated. Funds will settle within 24 hours.','WTD-9921')">Withdraw Funds</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 11. Investment Portfolio -->
+@if (activeModal === 'investmentPortfolioModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-briefcase me-2"></i>Investment Portfolio</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body">
+<div class="row g-3 mb-3">
+<div class="col-md-4"><div class="p-3 rounded" style="background:var(--pm-purple-soft)"><div style="font-size:11px;font-weight:700;color:var(--pm-purple)">TOTAL AUM</div><div style="font-size:24px;font-weight:700;color:var(--pm-purple-dark)">KES 18.5M</div></div></div>
+<div class="col-md-4"><div class="p-3 rounded" style="background:var(--pm-accent-soft)"><div style="font-size:11px;font-weight:700;color:var(--pm-accent)">YTD INTEREST</div><div style="font-size:24px;font-weight:700;color:var(--pm-accent-dark)">KES 842.5K</div></div></div>
+<div class="col-md-4"><div class="p-3 rounded" style="background:var(--pm-info-soft)"><div style="font-size:11px;font-weight:700;color:var(--pm-info)">W.A. YIELD</div><div style="font-size:24px;font-weight:700;color:var(--pm-info-dark)">13.4%</div></div></div>
+</div>
+<div class="table-responsive"><table class="pm-table"><thead><tr><th>Asset Class</th><th>Principal</th><th>Yield (p.a.)</th><th>Maturity</th><th>Action</th></tr></thead><tbody>
+<tr><td>PayMo MMF</td><td>KES 8,500,000</td><td>11.2%</td><td>Liquid</td><td><button class="pm-btn pm-btn-sm" (click)="openModal('liquidateInvestModal')">Withdraw</button></td></tr>
+<tr><td>91-Day T-Bill</td><td>KES 5,000,000</td><td>15.4%</td><td>29 Jun 2025</td><td><button class="pm-btn pm-btn-sm">Rollover</button></td></tr>
+<tr><td>182-Day T-Bill</td><td>KES 5,000,000</td><td>15.8%</td><td>12 Aug 2025</td><td><button class="pm-btn pm-btn-sm" disabled>Locked</button></td></tr>
+</tbody></table></div>
+</div>
+<div class="modal-footer"><button class="pm-btn">Close</button><button class="pm-btn pm-btn-primary">New Investment</button><div (click)="closeModal(); openModal('investCashModal')">
+</div>
+</div></div>
+
+<!-- 12. Cashflow Forecast Modal -->
+@if (activeModal === 'cashflowForecastModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-xl" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-graph-up me-2"></i>Cash Flow Forecast Model</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body">
+<div class="d-flex justify-content-between mb-3">
+<div class="pm-tab-pills"><button class="pm-tab-pill" [class.active]="activeTabs['forecastTab'] === '30d'">30 Days</button><button class="pm-tab-pill" [class.active]="activeTabs['forecastTab'] === '60d'">60 Days</button><button class="pm-tab-pill" [class.active]="activeTabs['forecastTab'] === '90d'">90 Days</button><div (click)="activeTabs['forecastTab'] = '30d'; activeTabs['forecastTab'] = '60d'; activeTabs['forecastTab'] = '90d'">
+<button class="pm-btn pm-btn-sm" (click)="openModal('cashflowScenarioModal')"><i class="bi bi-sliders"></i> Scenarios</button>
+</div>
+<div class="chart-bars" style="height:150px">
+<div class="chart-bar" style="height:30%;background:var(--pm-info)"><span class="bar-label">Jun 28</span></div>
+<div class="chart-bar" style="height:45%;background:var(--pm-info)"><span class="bar-label">Jul 05</span></div>
+<div class="chart-bar" style="height:70%;background:var(--pm-primary)"><span class="bar-label">Jul 12</span></div>
+<div class="chart-bar" style="height:85%;background:var(--pm-accent)"><span class="bar-label">Jul 19</span></div>
+<div class="chart-bar" style="height:25%;background:var(--pm-warning)"><span class="bar-label">Jul 26</span></div>
+</div>
+<div class="row g-3 mt-4">
+<div class="col-md-6"><h6 style="font-weight:700">Expected Inflows (+18.2M)</h6><ul style="font-size:12px;color:var(--pm-ink-soft)"><li>Accounts Receivable (Due &lt; 30D): KES 12.5M</li><li>Recurring Subscription Revenue: KES 4.2M</li><li>Interest/Maturities: KES 1.5M</li></ul></div>
+<div class="col-md-6"><h6 style="font-weight:700">Expected Outflows (-14.8M)</h6><ul style="font-size:12px;color:var(--pm-ink-soft)"><li>Payroll (Jul 25): KES 8.2M</li><li>Accounts Payable (Suppliers): KES 4.5M</li><li>Taxes (PAYE, VAT): KES 2.1M</li></ul></div>
+</div>
+</div>
+<div class="modal-footer"><button class="pm-btn">Close</button><button class="pm-btn pm-btn-primary">Export Model</button><div (click)="closeModal(); openModal('exportTreasuryModal')">
+</div>
+</div></div>
+
+<!-- 13. Scenario Builder Modal -->
+@if (activeModal === 'cashflowScenarioModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-sliders text-primary me-2"></i>"What-If" Scenario Builder</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+  @if (savedModals['cashflowScenarioModal']) {
+    <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['cashflowScenarioModal'].message }}</h5></div>
+  } @else if (loadingModal === 'cashflowScenarioModal') {
+    <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+  } @else {
+    <div class="mb-3"><label class="pm-form-label">Scenario Name</label><input type="text" class="pm-form-control" value="Late Client Payments"></div>
+    <div class="mb-3"><label class="pm-form-label">Receivables Delay</label><select class="pm-form-control"><option>Push all inflows by 7 days</option><option selected>Push 30% of inflows by 14 days</option><option>Push all inflows by 30 days</option></select></div>
+    <div class="mb-3"><label class="pm-form-label">Payables Strategy</label><select class="pm-form-control"><option>Pay on time (Normal)</option><option>Delay supplier payments by 7 days</option></select></div>
+    <div class="mb-3"><label class="pm-form-label">FX Shock</label><select class="pm-form-control"><option>None</option><option>KES depreciation by 5%</option></select></div>
+    <div class="p-3 rounded mt-3" style="background:var(--pm-warning-soft);font-size:12px"><i class="bi bi-exclamation-triangle me-1"></i> Under this scenario, you will face a liquidity shortfall of <strong>KES 1.2M</strong> on Jul 25 (Payroll date). Recommended mitigation: Liquidate KES 1.5M from MMF on Jul 23.</div>
+  }
+</div>
+<div class="modal-footer">
+  @if (savedModals['cashflowScenarioModal']) {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  } @else {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-primary" (click)="processAction('cashflowScenarioModal','Scenario saved and applied to forecast view.','')">Apply Scenario</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 14. Export Treasury Reports -->
+@if (activeModal === 'exportTreasuryModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-file-earmark-pdf text-danger me-2"></i>Export Treasury Reports</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+  @if (savedModals['exportTreasuryModal']) {
+    <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['exportTreasuryModal'].message }}</h5></div>
+  } @else if (loadingModal === 'exportTreasuryModal') {
+    <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+  } @else {
+    <div class="mb-3"><label class="pm-form-label">Report Type</label><select class="pm-form-control"><option>Consolidated Cash Position</option><option>FX Exposure &amp; Hedging</option><option>Investment Yield Summary</option><option>Sweep &amp; Auto-transfer Log</option><option>Cash Flow Forecast (30D)</option></select></div>
+    <div class="row g-3 mb-3"><div class="col-6"><label class="pm-form-label">From</label><input type="date" class="pm-form-control" value="2025-06-01"></div><div class="col-6"><label class="pm-form-label">To</label><input type="date" class="pm-form-control" value="2025-06-28"></div></div>
+    <div class="mb-3"><label class="pm-form-label">Format</label><select class="pm-form-control"><option>PDF</option><option>Excel (XLSX)</option><option>CSV</option></select></div>
+  }
+</div>
+<div class="modal-footer">
+  @if (savedModals['exportTreasuryModal']) {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  } @else {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-primary" (click)="processAction('exportTreasuryModal','Report generated and downloading...','')"><i class="bi bi-download"></i> Generate Report</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 15. FX Alert Modal -->
+@if (activeModal === 'fxAlertModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell me-2" style="color:var(--pm-accent)"></i>Set FX Target Alert</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+  @if (savedModals['fxAlertModal']) {
+    <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['fxAlertModal'].message }}</h5></div>
+  } @else if (loadingModal === 'fxAlertModal') {
+    <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+  } @else {
+    <div class="mb-3"><label class="pm-form-label">Currency Pair</label><select class="pm-form-control"><option>USD/KES</option><option>EUR/KES</option><option>GBP/KES</option></select></div>
+    <div class="mb-3"><label class="pm-form-label">Alert Me When Rate Is</label><select class="pm-form-control"><option>Less than or equal to (&lt;=)</option><option>Greater than or equal to (&gt;=)</option></select></div>
+    <div class="mb-3"><label class="pm-form-label">Target Rate</label><input type="number" class="pm-form-control" value="128.50" step="0.01"></div>
+    <div class="mb-3"><label class="pm-form-label">Notification Channel</label><div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">SMS / Push</label></div><div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Email</label></div></div>
+  }
+</div>
+<div class="modal-footer">
+  @if (savedModals['fxAlertModal']) {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  } @else {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-primary" (click)="processAction('fxAlertModal','Alert configured for USD/KES at 128.50.','')">Save Alert</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 16. FX Risk & Exposure -->
+@if (activeModal === 'fxRiskModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-exclamation text-warning me-2"></i>FX Exposure &amp; Hedging</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body">
+<div class="row g-3 mb-3">
+<div class="col-md-6"><div class="p-3 rounded" style="background:var(--pm-warning-soft)"><div style="font-size:11px;font-weight:700;color:var(--pm-warning)">USD PAYABLES (30D)</div><div style="font-size:24px;font-weight:700;color:var(--pm-ink)">$ 42,500</div></div></div>
+<div class="col-md-6"><div class="p-3 rounded" style="background:var(--pm-success-soft)"><div style="font-size:11px;font-weight:700;color:var(--pm-accent)">USD RECEIVABLES (30D)</div><div style="font-size:24px;font-weight:700;color:var(--pm-ink)">$ 12,000</div></div></div>
+</div>
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:13px"><div class="d-flex justify-content-between mb-1"><span>Net Short Exposure</span><strong style="color:var(--pm-danger)">$ 30,500</strong></div><div class="d-flex justify-content-between mb-1"><span>Current Hedged Position</span><strong>$ 18,200 (Forward @ 130.10)</strong></div><div class="d-flex justify-content-between"><span>Unhedged Risk</span><strong style="color:var(--pm-warning)">$ 12,300</strong></div></div>
+<h6 style="font-weight:700">Recommendation</h6>
+<p style="font-size:12px;color:var(--pm-muted)">Consider booking a forward contract for the remaining $ 12,300 to lock in current rates before expected KES depreciation next month.</p>
+</div>
+<div class="modal-footer"><button class="pm-btn">Close</button><button class="pm-btn pm-btn-primary">Book Forward Contract</button><div (click)="closeModal(); openModal('bookFXModal')">
+</div>
+</div></div>
+
+<!-- 17. Approval Queue -->
+@if (activeModal === 'approvalQueueModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-check-circle text-primary me-2"></i>Treasury Approval Queue</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+  @if (savedModals['approvalQueueModal']) {
+    <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['approvalQueueModal'].message }}</h5><p style="font-size:12px;color:var(--pm-muted)">Reference: {{ savedModals['approvalQueueModal'].ref }}</p></div>
+  } @else if (loadingModal === 'approvalQueueModal') {
+    <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+  } @else {
+    <div class="table-responsive"><table class="pm-table"><thead><tr><th>Request</th><th>Amount</th><th>Initiator</th><th>Action</th></tr></thead><tbody>
+    @for (item of approvalItems; track item.ref) {
+      <tr><td>{{ item.request }}</td><td>{{ item.amount }}</td><td>{{ item.initiator }}</td><td><div class="d-flex" style="gap:4px"><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="processAction('approvalQueueModal',item.approveMsg,item.ref)">Approve</button><button class="pm-btn pm-btn-sm pm-btn-danger">Reject</button></div></td></tr>
+    }
+    </tbody></table></div>
+  }
+</div>
+<div class="modal-footer">
+  @if (savedModals['approvalQueueModal']) {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  } @else {
+    <button class="pm-btn" (click)="closeModal()">Close</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 18. Reconciliation Modal -->
+@if (activeModal === 'reconciliationModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-file-earmark-diff text-info me-2"></i>Auto-Reconciliation</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+  @if (savedModals['reconciliationModal']) {
+    <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['reconciliationModal'].message }}</h5></div>
+  } @else if (loadingModal === 'reconciliationModal') {
+    <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+  } @else {
+    <div class="mb-3"><label class="pm-form-label">Target Account</label><select class="pm-form-control"><option>Equity Bank Main</option><option>Safaricom Till</option></select></div>
+    <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:12px">Running auto-reconciliation will match PayMo ledger entries against raw bank statements pulled via Open Banking API.</div>
+    <div class="d-flex justify-content-between mb-2" style="font-size:12px"><span>Unmatched Ledger Entries:</span><strong>14</strong></div>
+    <div class="d-flex justify-content-between" style="font-size:12px"><span>Unmatched Bank Statement Lines:</span><strong>12</strong></div>
+  }
+</div>
+<div class="modal-footer">
+  @if (savedModals['reconciliationModal']) {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  } @else {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-primary" (click)="processAction('reconciliationModal','Reconciliation complete. 12 items matched. 2 exceptions flagged.','')">Run Reconciliation</button>
+  }
+</div>
+</div>
+</div></div>
+
+<!-- 19. Bank Statements Modal -->
+@if (activeModal === 'bankStatementsModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-journal-text me-2"></i>Bank Statements (API Pulled)</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body">
+<div class="d-flex justify-content-between mb-3"><select class="pm-form-control" style="width:250px"><option>Equity Bank Main</option><option>KCB Payroll</option></select><button class="pm-btn pm-btn-sm"><i class="bi bi-arrow-clockwise"></i> Sync Now</button></div>
+<div class="table-responsive"><table class="pm-table"><thead><tr><th>Date</th><th>Description</th><th>Ref</th><th>In</th><th>Out</th><th>Balance</th></tr></thead><tbody>
+@for (stmt of bankStatements; track stmt.ref) {
+<tr><td>{{ stmt.date }}</td><td>{{ stmt.description }}</td><td>{{ stmt.ref }}</td><td>{{ stmt.inflow }}</td><td>{{ stmt.outflow }}</td><td>{{ stmt.balance }}</td></tr>
+}
+</tbody></table></div>
+</div>
+<div class="modal-footer"><button class="pm-btn">Close</button><button class="pm-btn pm-btn-primary">Export PDF/CSV</button><div (click)="closeModal(); openModal('exportTreasuryModal')">
+</div>
+</div></div>
+
+<!-- 20. Yield Analytics Modal -->
+@if (activeModal === 'yieldAnalyticsModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-bar-chart-line me-2" style="color:var(--pm-purple)"></i>Yield Analytics</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body">
+<div class="chart-bars" style="height:150px">
+<div class="chart-bar" style="height:30%;background:var(--pm-purple)"><span class="bar-label">Jan</span></div>
+<div class="chart-bar" style="height:45%;background:var(--pm-purple)"><span class="bar-label">Feb</span></div>
+<div class="chart-bar" style="height:60%;background:var(--pm-purple)"><span class="bar-label">Mar</span></div>
+<div class="chart-bar" style="height:55%;background:var(--pm-purple)"><span class="bar-label">Apr</span></div>
+<div class="chart-bar" style="height:75%;background:var(--pm-purple)"><span class="bar-label">May</span></div>
+<div class="chart-bar" style="height:85%;background:var(--pm-purple)"><span class="bar-label">Jun</span></div>
+</div>
+<div class="table-responsive mt-4"><table class="pm-table"><thead><tr><th>Month</th><th>Avg Principal</th><th>Interest Earned</th><th>Effective Annual Yield</th></tr></thead><tbody>
+@for (y of yieldData; track y.month) {
+<tr><td>{{ y.month }}</td><td>{{ y.principal }}</td><td>{{ y.interest }}</td><td>{{ y.yield }}</td></tr>
+}
+</tbody></table></div>
+</div>
+<div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+</div>
+</div></div>
+
+<!-- 21. Attention Modal -->
+@if (activeModal === 'attentionModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog modal-lg" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>Treasury Action Items</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body">
+<div class="status-row"><div><strong>3 Sweeps require approval</strong><div style="font-size:11px;color:var(--pm-muted)">KES 4.2M target balancing transfers</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('approvalQueueModal')">Review</button></div>
+<div class="status-row"><div><strong>USD/KES dropped to 129.10</strong><div style="font-size:11px;color:var(--pm-muted)">Hit target alert for vendor payment</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('bookFXModal')">Trade</button></div>
+<div class="status-row"><div><strong>T-Bill maturity tomorrow</strong><div style="font-size:11px;color:var(--pm-muted)">KES 5.0M principal + interest</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('investmentPortfolioModal')">Action</button></div>
+<div class="status-row"><div><strong>Unreconciled bank statement</strong><div style="font-size:11px;color:var(--pm-muted)">Equity Bank main op account</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('reconciliationModal')">Fix</button></div>
+</div>
+<div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+</div>
+</div></div>
+
+<!-- 22. Profile Modal -->
+@if (activeModal === 'profileModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile Summary</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body text-center">
+<div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px;background:var(--pm-gradient-slate)">EA</div>
+<h5 style="font-weight:700;margin-bottom:2px">Esther A.</h5>
+<p style="font-size:13px;color:var(--pm-muted)">esther.a@corporate.com · CFO / Treasury</p>
+<div class="row g-2 text-start mt-3" style="font-size:13px"><div class="col-6"><div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Auth Limit</span><br><strong>Unlimited</strong></div></div><div class="col-6"><div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Accounts</span><br><strong>6 managed</strong></div></div></div>
+</div>
+<div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+</div>
+</div></div>
+
+<!-- 23. Notifications Modal -->
+@if (activeModal === 'notificationsModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notifications</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="max-height:400px;overflow-y:auto">
+<div class="p-3 rounded mb-2" style="background:var(--pm-danger-soft);font-size:13px"><strong>Approval Required</strong><div style="font-size:11px;color:var(--pm-muted)">Sweep of KES 1.4M pending your approval</div></div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-warning-soft);font-size:13px"><strong>FX Alert Hit</strong><div style="font-size:11px;color:var(--pm-muted)">USD/KES fell below 129.50</div></div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-accent-soft);border:1px solid var(--pm-accent);font-size:13px"><strong>Sweep Successful</strong><div style="font-size:11px;color:var(--pm-muted)">End of day sweep completed to Equity Bank</div></div>
+</div>
+<div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+</div>
+</div></div>
+
+<!-- 24. Treasury Settings Modal -->
+@if (activeModal === 'treasurySettingsModal') {
+<div class="pm-modal-backdrop"><div class="pm-modal-dialog" (click)="closeModal(); $event.stopPropagation()">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-gear me-2"></i>Treasury Settings</h5><button class="btn-close" (click)="closeModal()"></button></div>
+<div class="modal-body" style="position:relative">
+  @if (savedModals['treasurySettingsModal']) {
+    <div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['treasurySettingsModal'].message }}</h5></div>
+  } @else if (loadingModal === 'treasurySettingsModal') {
+    <div class="pm-loading-overlay"><div class="pm-spinner"></div><p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--pm-primary)">Processing...</p></div>
+  } @else {
+    <div class="mb-3"><label class="pm-form-label">Global Daily Transfer Limit (KES)</label><input type="number" class="pm-form-control" value="50000000"></div>
+    <div class="mb-3"><label class="pm-form-label">Approval Policy</label><select class="pm-form-control"><option>Maker-Checker required for all</option><option>Required only &gt; 1,000,000 KES</option><option>Single approver</option></select></div>
+    <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Auto-reconciliation daily at 6 AM</label></div>
+    <div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Enable overnight MMF sweeps</label></div>
+  }
+</div>
+<div class="modal-footer">
+  @if (savedModals['treasurySettingsModal']) {
+    <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+  } @else {
+    <button class="pm-btn" (click)="closeModal()">Cancel</button>
+    <button class="pm-btn pm-btn-primary" (click)="processAction('treasurySettingsModal','Settings saved.','')">Save</button>
+  }
+</div>
+</div>
+</div></div>
+
+</div>
+</div>}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}

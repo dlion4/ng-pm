@@ -1,0 +1,1274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paymo V2 — Error Center</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ======================================================================
+       Paymo V2 — Error Center (Standalone)
+       ====================================================================== */
+    :root {
+      --paymo-primary: #5b4ddb;
+      --paymo-primary-600: #4338ca;
+      --paymo-primary-light: #7c6ee6;
+      --paymo-accent: #10b981;
+      --paymo-danger: #ef4444;
+      --paymo-danger-light: #fca5a5;
+      --paymo-warning: #f59e0b;
+      --paymo-info: #3b82f6;
+
+      --bg: #f4f3f9;
+      --surface: #ffffff;
+      --surface-2: #f9f8fc;
+      --surface-3: #f0eff7;
+      --text: #1d1a2e;
+      --text-secondary: #5a5668;
+      --muted: #8b8796;
+      --border: #e7e6ee;
+
+      --shadow-sm: 0 2px 8px rgba(29, 26, 46, 0.06);
+      --shadow: 0 12px 40px rgba(29, 26, 46, 0.1);
+      --shadow-glow: 0 4px 20px rgba(91, 77, 219, 0.18);
+
+      --sidebar-width: 264px;
+      --sidebar-collapsed: 76px;
+      --header-height: 72px;
+      --aside-width: 420px;
+
+      --radius-xl: 22px;
+      --radius: 16px;
+      --radius-sm: 12px;
+      --radius-xs: 8px;
+
+      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { scrollbar-width: thin; scrollbar-color: var(--border) transparent; box-sizing: border-box; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+    html, body { min-height: 100vh; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      margin: 0;
+    }
+
+    .app-shell { display: flex; min-height: 100vh; }
+
+    /* -------- Sidebar -------- */
+    .sidebar {
+      position: fixed; top: 0; left: 0; height: 100vh;
+      width: var(--sidebar-collapsed);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      z-index: 1040;
+      display: flex; flex-direction: column;
+      padding: 1rem 0.75rem;
+      transition: width var(--transition-slow), transform var(--transition-slow);
+      overflow-x: hidden; overflow-y: auto;
+    }
+    .sidebar.expanded { width: var(--sidebar-width); }
+    .sidebar.mobile-open { transform: translateX(0); width: var(--sidebar-width); }
+    .sidebar.mobile-closed { transform: translateX(-100%); }
+
+    .sidebar-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(18, 16, 32, 0.45);
+      backdrop-filter: blur(2px);
+      z-index: 1035; opacity: 0; pointer-events: none;
+      transition: opacity var(--transition-base);
+    }
+    .sidebar-backdrop.show { opacity: 1; pointer-events: auto; }
+
+    .brand {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.25rem 0.5rem 1rem; margin-bottom: 0.5rem;
+    }
+    .brand-icon {
+      flex: 0 0 auto; width: 40px; height: 40px; border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--paymo-danger), #dc2626);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.1rem; box-shadow: 0 6px 18px rgba(239, 68, 68, 0.25);
+    }
+    .brand-text {
+      font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; color: var(--text);
+      opacity: 0; white-space: nowrap; transition: opacity var(--transition-base);
+    }
+    .sidebar.expanded .brand-text, .sidebar.mobile-open .brand-text { opacity: 1; }
+    .brand-tag {
+      font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--paymo-danger); background: rgba(239, 68, 68, 0.08);
+      padding: 0.15rem 0.45rem; border-radius: 999px; margin-left: auto;
+      opacity: 0; transition: opacity var(--transition-base);
+    }
+    .sidebar.expanded .brand-tag, .sidebar.mobile-open .brand-tag { opacity: 1; }
+
+    .sidebar-toggle {
+      width: 36px; height: 36px; border-radius: var(--radius-xs);
+      border: 1px solid var(--border); background: var(--surface-2);
+      color: var(--text-secondary);
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all var(--transition-fast); font-size: 1.05rem;
+    }
+    .sidebar-toggle:hover, .sidebar-toggle:focus {
+      background: var(--paymo-primary); border-color: var(--paymo-primary); color: #fff;
+      box-shadow: var(--shadow-glow); transform: scale(1.05);
+    }
+
+    .nav-group-label {
+      display: block; padding: 0.75rem 0.85rem 0.35rem;
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--muted); white-space: nowrap; opacity: 0; transition: opacity var(--transition-base);
+    }
+    .sidebar.expanded .nav-group-label, .sidebar.mobile-open .nav-group-label { opacity: 1; }
+
+    .nav-link {
+      display: flex; align-items: center; gap: 0.85rem;
+      padding: 0.72rem 0.85rem; margin-bottom: 0.2rem; border-radius: var(--radius-sm);
+      color: var(--text-secondary); text-decoration: none; font-size: 0.92rem; font-weight: 500;
+      position: relative; overflow: hidden;
+      transition: color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+    }
+    .nav-link::before {
+      content: ''; position: absolute; left: 0; top: 50%;
+      transform: translateY(-50%) scaleY(0);
+      width: 3.5px; height: 18px; background: var(--paymo-danger);
+      border-radius: 0 4px 4px 0; transition: transform var(--transition-fast);
+    }
+    .nav-link:hover, .nav-link.active {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.04));
+      color: var(--paymo-danger);
+    }
+    .nav-link:hover { transform: translateX(2px); }
+    .nav-link.active::before { transform: translateY(-50%) scaleY(1); }
+    .nav-link .nav-icon {
+      flex: 0 0 auto; width: 24px; height: 24px; display: inline-flex;
+      align-items: center; justify-content: center; font-size: 1.28rem;
+      transition: transform var(--transition-fast), color var(--transition-fast);
+    }
+    .nav-link:hover .nav-icon, .nav-link.active .nav-icon { transform: scale(1.15); }
+    .nav-link .nav-label {
+      flex: 1 1 auto; white-space: nowrap; opacity: 0; transform: translateX(-8px);
+      transition: opacity var(--transition-base), transform var(--transition-base);
+    }
+    .sidebar.expanded .nav-label, .sidebar.mobile-open .nav-label { opacity: 1; transform: translateX(0); }
+    .nav-link .nav-badge {
+      flex: 0 0 auto; font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.5rem;
+      border-radius: 999px; background: rgba(239, 68, 68, 0.1); color: var(--paymo-danger);
+      opacity: 0; transform: scale(0.85);
+      transition: opacity var(--transition-base), transform var(--transition-base);
+    }
+    .sidebar.expanded .nav-badge, .sidebar.mobile-open .nav-badge { opacity: 1; transform: scale(1); }
+
+    .nav-link::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transform: skewX(-20deg); pointer-events: none;
+    }
+    .nav-link:hover::after { animation: shimmer 0.7s ease-in-out; }
+    @keyframes shimmer { 100% { left: 150%; } }
+
+    .sidebar-account {
+      margin-top: auto; padding: 0.85rem; border-radius: var(--radius-sm);
+      background: var(--surface-2); border: 1px solid var(--border);
+      transition: background var(--transition-fast), border-color var(--transition-fast);
+      display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
+    }
+    .sidebar-account:hover { border-color: var(--paymo-primary-light); background: #fff; }
+    .sidebar-account .avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--paymo-danger-light), var(--paymo-danger));
+      color: #fff; display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; flex: 0 0 auto;
+    }
+    .sidebar-account .details {
+      opacity: 0; max-width: 0; overflow: hidden;
+      transition: opacity var(--transition-base), max-width var(--transition-slow);
+    }
+    .sidebar.expanded .sidebar-account .details,
+    .sidebar.mobile-open .sidebar-account .details { opacity: 1; max-width: 180px; }
+
+    /* -------- Header -------- */
+    .top-header {
+      position: fixed; top: 0; right: 0; height: var(--header-height);
+      left: var(--sidebar-collapsed);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border); z-index: 1020;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.25rem; transition: left var(--transition-slow);
+    }
+    .top-header.sidebar-expanded { left: var(--sidebar-width); }
+
+    .global-search { position: relative; max-width: 420px; width: 100%; }
+    .global-search .search-icon {
+      position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%);
+      color: var(--muted); font-size: 1.05rem; pointer-events: none;
+    }
+    .global-search input {
+      width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border);
+      background: var(--surface-2); padding: 0.55rem 1rem 0.55rem 2.5rem;
+      font-size: 0.9rem; color: var(--text); transition: all var(--transition-fast);
+    }
+    .global-search input::placeholder { color: var(--muted); }
+    .global-search input:hover { background: #fff; }
+    .global-search input:focus {
+      background: #fff; border-color: var(--paymo-danger-light);
+      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12); outline: none;
+    }
+
+    .header-actions { display: flex; align-items: center; gap: 0.6rem; }
+    .header-action {
+      position: relative; width: 42px; height: 42px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background: #fff; color: var(--text-secondary);
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all var(--transition-fast);
+    }
+    .header-action:hover, .header-action[aria-expanded='true'] {
+      border-color: var(--paymo-danger-light); color: var(--paymo-danger);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15); transform: translateY(-2px);
+    }
+    .header-action .action-icon { font-size: 1.2rem; transition: transform var(--transition-fast); }
+    .header-action:hover .action-icon { transform: scale(1.12); }
+    .header-badge {
+      position: absolute; top: -3px; right: -3px; min-width: 18px; height: 18px;
+      padding: 0 4px; border-radius: 999px; background: var(--paymo-danger); color: #fff;
+      font-size: 0.6rem; font-weight: 700; display: inline-flex; align-items: center;
+      justify-content: center; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(239, 68, 68, 0.35);
+    }
+
+    .env-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.35rem 0.7rem; border-radius: 999px;
+      background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2);
+      color: var(--paymo-danger); font-size: 0.78rem; font-weight: 700;
+    }
+    .env-badge .pulse-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--paymo-danger);
+      animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .user-trigger {
+      display: inline-flex; align-items: center; gap: 0.65rem;
+      padding: 0.35rem 0.6rem 0.35rem 0.35rem; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background: #fff; cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .user-trigger:hover, .user-trigger[aria-expanded='true'] {
+      border-color: var(--paymo-primary-light); box-shadow: var(--shadow-glow);
+    }
+    .user-trigger .avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, #8b5cf6, var(--paymo-primary));
+      color: #fff; font-weight: 700; font-size: 0.8rem;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .user-trigger .user-meta { line-height: 1.15; text-align: left; }
+    .user-trigger .user-name { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+    .user-trigger .user-role { font-size: 0.7rem; color: var(--muted); }
+    .user-trigger .chev { color: var(--muted); transition: transform var(--transition-fast); }
+    .user-trigger[aria-expanded='true'] .chev { transform: rotate(180deg); }
+
+    /* -------- Dropdown panels -------- */
+    .dropdown-panel {
+      position: absolute; top: calc(100% + 12px); right: 0;
+      width: 380px; max-width: calc(100vw - 1.5rem);
+      background: #fff; border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      opacity: 0; transform: translateY(-10px) scale(0.98); pointer-events: none;
+      transition: all var(--transition-base); z-index: 1080; overflow: hidden;
+    }
+    .dropdown-panel.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    .dropdown-panel .panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.1rem; border-bottom: 1px solid var(--border);
+    }
+    .dropdown-panel .panel-title { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+    .dropdown-panel .panel-body { max-height: 360px; overflow-y: auto; }
+    .dropdown-panel .panel-footer { padding: 0.75rem 1rem; border-top: 1px solid var(--border); background: var(--surface-2); }
+
+    .notification-item {
+      display: flex; align-items: flex-start; gap: 0.85rem; padding: 0.9rem 1.1rem;
+      border-bottom: 1px solid var(--border); cursor: pointer; transition: background var(--transition-fast);
+    }
+    .notification-item:last-child { border-bottom: none; }
+    .notification-item:hover { background: var(--surface-2); }
+    .notification-item.unread { background: rgba(239, 68, 68, 0.03); }
+    .notification-icon {
+      flex: 0 0 auto; width: 38px; height: 38px; border-radius: var(--radius-xs);
+      display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem;
+    }
+    .notification-icon.primary { background: rgba(91, 77, 219, 0.1); color: var(--paymo-primary); }
+    .notification-icon.success { background: rgba(16, 185, 129, 0.1); color: var(--paymo-accent); }
+    .notification-icon.warning { background: rgba(245, 158, 11, 0.1); color: var(--paymo-warning); }
+    .notification-icon.danger { background: rgba(239, 68, 68, 0.1); color: var(--paymo-danger); }
+    .notification-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--paymo-danger); margin-top: 0.35rem; flex-shrink: 0; }
+
+    /* -------- Right aside panel -------- */
+    .right-aside {
+      position: fixed; top: 0; right: 0; height: 100vh; width: var(--aside-width); max-width: 100vw;
+      background: #fff; border-left: 1px solid var(--border);
+      box-shadow: -12px 0 50px rgba(18, 16, 32, 0.12); z-index: 1050;
+      transform: translateX(100%); transition: transform var(--transition-slow);
+      display: flex; flex-direction: column;
+    }
+    .right-aside.open { transform: translateX(0); }
+    .aside-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 1.25rem; border-bottom: 1px solid var(--border);
+    }
+    .aside-title { font-size: 1.05rem; font-weight: 800; color: var(--text); display: inline-flex; align-items: center; gap: 0.5rem; }
+    .aside-close {
+      width: 34px; height: 34px; border-radius: var(--radius-xs); border: 1px solid var(--border);
+      background: var(--surface-2); color: var(--text-secondary); display: inline-flex;
+      align-items: center; justify-content: center; cursor: pointer; transition: all var(--transition-fast);
+    }
+    .aside-close:hover { background: var(--paymo-danger); border-color: var(--paymo-danger); color: #fff; }
+    .aside-body { flex: 1 1 auto; overflow-y: auto; padding: 1.25rem; }
+    .aside-backdrop {
+      position: fixed; inset: 0; background: rgba(18, 16, 32, 0.35); backdrop-filter: blur(2px);
+      z-index: 1045; opacity: 0; pointer-events: none; transition: opacity var(--transition-base);
+    }
+    .aside-backdrop.show { opacity: 1; pointer-events: auto; }
+
+    .aside-card {
+      padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border);
+      background: var(--surface-2); margin-bottom: 1rem;
+      transition: border-color var(--transition-fast), transform var(--transition-fast);
+    }
+    .aside-card:hover { border-color: var(--paymo-primary-light); transform: translateY(-1px); }
+    .aside-card h6 {
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--muted); margin-bottom: 0.65rem;
+    }
+    .status-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+    }
+    .status-row:last-child { border-bottom: none; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 0.4rem; }
+    .status-dot.active { background: var(--paymo-accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+    .status-dot.warning { background: var(--paymo-warning); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); }
+    .status-dot.danger { background: var(--paymo-danger); box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2); }
+
+    .aside-panel-content { display: none; }
+    .aside-panel-content.active { display: block; }
+
+    /* -------- Main content -------- */
+    .main-content {
+      margin-left: var(--sidebar-collapsed); margin-top: var(--header-height);
+      min-height: calc(100vh - var(--header-height)); padding: 1.75rem;
+      transition: margin-left var(--transition-slow);
+    }
+    .main-content.sidebar-expanded { margin-left: var(--sidebar-width); }
+
+    /* -------- Error Center Specific -------- */
+    .error-hero {
+      background: linear-gradient(135deg, #fef2f2 0%, #fce7f3 50%, #f0f0ff 100%);
+      border: 1px solid rgba(239, 68, 68, 0.1);
+      border-radius: var(--radius-xl);
+      padding: 2rem 2.5rem;
+      margin-bottom: 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .error-hero::before {
+      content: ''; position: absolute; top: -40%; right: -10%; width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem;
+      transition: all var(--transition-fast);
+      position: relative; overflow: hidden;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--paymo-primary-light); }
+    .stat-card .stat-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-xs);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; margin-bottom: 0.75rem;
+    }
+    .stat-card .stat-value { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; }
+    .stat-card .stat-label { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
+
+    .error-table-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .error-table-card .card-header-custom {
+      padding: 1.1rem 1.25rem; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .error-table-card .card-header-custom h6 { font-size: 1rem; font-weight: 700; margin: 0; }
+
+    .error-row {
+      display: flex; align-items: center; padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition-fast);
+      cursor: pointer;
+    }
+    .error-row:last-child { border-bottom: none; }
+    .error-row:hover { background: var(--surface-2); }
+    .error-row.selected { background: rgba(239, 68, 68, 0.04); border-left: 3px solid var(--paymo-danger); }
+
+    .severity-badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.2rem 0.55rem; border-radius: 999px;
+      font-size: 0.7rem; font-weight: 700;
+    }
+    .severity-critical { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
+    .severity-warning { background: rgba(245, 158, 11, 0.1); color: #d97706; }
+    .severity-info { background: rgba(59, 130, 246, 0.1); color: #2563eb; }
+    .severity-resolved { background: rgba(16, 185, 129, 0.1); color: #059669; }
+
+    .code-preview {
+      background: #1e1e2e; border-radius: var(--radius-sm); padding: 1rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+      color: #d1d5db; overflow-x: auto; position: relative;
+    }
+    .code-preview .lang-tag {
+      position: absolute; top: 0.5rem; right: 0.5rem;
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+      color: #6b7280; background: rgba(255,255,255,0.05); padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+    }
+    .code-key { color: #c084fc; }
+    .code-string { color: #86efac; }
+    .code-number { color: #fbbf24; }
+    .code-error { color: #f87171; }
+
+    .timeline-item {
+      display: flex; gap: 1rem; padding: 0.75rem 0;
+      border-left: 2px solid var(--border); margin-left: 0.75rem;
+      padding-left: 1.25rem; position: relative;
+    }
+    .timeline-item::before {
+      content: ''; position: absolute; left: -6px; top: 1.1rem;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--border); border: 2px solid var(--surface);
+    }
+    .timeline-item.critical::before { background: var(--paymo-danger); }
+    .timeline-item.warning::before { background: var(--paymo-warning); }
+    .timeline-item.resolved::before { background: var(--paymo-accent); }
+
+    .quick-action-btn {
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.75rem 1rem; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--text-secondary); text-decoration: none;
+      transition: all var(--transition-fast); cursor: pointer;
+    }
+    .quick-action-btn:hover {
+      border-color: var(--paymo-primary-light); background: var(--surface-2);
+      transform: translateX(3px);
+    }
+
+    /* -------- Toasts -------- */
+    .toast-container-custom {
+      position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 1090;
+      display: flex; flex-direction: column; gap: 0.6rem;
+    }
+    .paymo-toast {
+      background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      box-shadow: var(--shadow); padding: 0.85rem 1rem; min-width: 280px;
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      animation: toastIn 0.35s ease forwards;
+    }
+    .paymo-toast.leaving { animation: toastOut 0.3s ease forwards; }
+    .paymo-toast .toast-ic {
+      width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(20px) scale(0.96); } to { opacity: 1; transform: translateX(0) scale(1); } }
+    @keyframes toastOut { from { opacity: 1; transform: translateX(0) scale(1); } to { opacity: 0; transform: translateX(20px) scale(0.96); } }
+
+    /* -------- Responsive -------- */
+    @media (max-width: 1199.98px) { .global-search { max-width: 260px; } }
+    @media (max-width: 991.98px) {
+      .top-header { left: 0 !important; }
+      .main-content { margin-left: 0 !important; }
+      .global-search { display: none; }
+      .user-trigger .user-meta { display: none; }
+      .env-badge span:not(.pulse-dot) { display: none; }
+    }
+    @media (max-width: 767.98px) {
+      .dropdown-panel { position: fixed; top: var(--header-height); left: 0.75rem; right: 0.75rem; width: auto; }
+    }
+
+    .cursor-pointer { cursor: pointer; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar mobile-closed" id="sidebar" aria-label="Primary navigation">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="brand">
+          <div class="brand-icon"><i class="bi bi-bug"></i></div>
+          <span class="brand-text">Paymo</span>
+          <span class="brand-tag">Errors</span>
+        </div>
+        <button class="sidebar-toggle d-lg-none" id="sidebarMobileClose" aria-label="Close menu">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="flex-grow-1" id="navGroups"></div>
+
+      <div class="sidebar-account">
+        <div class="avatar">JK</div>
+        <div class="details">
+          <div class="fw-bold text-truncate" style="font-size:0.82rem;color:var(--text)">James K.</div>
+          <div class="text-truncate" style="font-size:0.7rem;color:var(--muted)">Admin</div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
+    <!-- ============ HEADER ============ -->
+    <header class="top-header" id="topHeader">
+      <div class="d-flex align-items-center gap-3">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+          <i class="bi bi-list" id="toggleIcon"></i>
+        </button>
+        <div class="global-search d-none d-md-block">
+          <i class="bi bi-search search-icon"></i>
+          <input type="text" placeholder="Search error codes, traces, endpoints…" />
+        </div>
+        <div class="env-badge d-none d-sm-flex">
+          <span class="pulse-dot"></span>
+          <span>7 Active Errors</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="vr d-none d-lg-block mx-1" style="height:28px;opacity:0.15"></div>
+
+        <!-- Error Feed -->
+        <button class="header-action" data-aside-open="errorFeed" aria-label="Error feed">
+          <i class="bi bi-broadcast action-icon"></i>
+          <span class="header-badge">7</span>
+        </button>
+
+        <!-- Notifications -->
+        <div class="position-relative" data-dropdown="notifications">
+          <button class="header-action" data-dropdown-trigger="notifications" aria-expanded="false" aria-label="Notifications">
+            <i class="bi bi-bell action-icon"></i>
+            <span class="header-badge">5</span>
+          </button>
+          <div class="dropdown-panel" data-dropdown-panel="notifications">
+            <div class="panel-header">
+              <span class="panel-title">Error Alerts</span>
+              <button class="btn btn-sm btn-link text-decoration-none" style="font-size:0.75rem">Mark all read</button>
+            </div>
+            <div class="panel-body" id="notificationList"></div>
+            <div class="panel-footer text-center">
+              <button class="btn btn-sm btn-link text-decoration-none fw-semibold" style="color:var(--paymo-danger)">View all alerts</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- User -->
+        <div class="position-relative" data-dropdown="user">
+          <button class="user-trigger" data-dropdown-trigger="user" aria-expanded="false">
+            <div class="avatar">JK</div>
+            <div class="user-meta">
+              <div class="user-name">James K.</div>
+              <div class="user-role">Admin</div>
+            </div>
+            <i class="bi bi-chevron-down chev" style="font-size:0.8rem"></i>
+          </button>
+          <div class="dropdown-panel" data-dropdown-panel="user" style="width:280px">
+            <div class="p-3 d-flex align-items-center gap-3 border-bottom">
+              <div class="avatar" style="width:46px;height:46px;font-size:1rem;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,var(--paymo-primary));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">JK</div>
+              <div>
+                <div class="fw-bold" style="font-size:0.9rem">James K.</div>
+                <div class="text-muted" style="font-size:0.75rem">james.k@paymo.co</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="d-flex flex-column">
+                <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i class="bi bi-person"></i> Profile</button>
+                <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i class="bi bi-gear"></i> Settings</button>
+                <button class="btn btn-light text-start rounded-0 border-0 py-2 px-3" data-aside-open="errorConfig"><i class="bi bi-sliders"></i> Error Config</button>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <button class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2" style="font-size:0.82rem" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Log out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ MAIN ============ -->
+    <main class="main-content" id="mainContent">
+
+      <!-- Error Hero Banner -->
+      <div class="error-hero">
+        <div class="row align-items-center">
+          <div class="col-lg-7">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="severity-badge severity-critical"><i class="bi bi-exclamation-octagon-fill"></i> Critical</span>
+              <span class="text-muted" style="font-size:0.8rem">Last updated: 2 min ago</span>
+            </div>
+            <h1 class="fw-bold mb-2" style="font-size:1.75rem;letter-spacing:-0.02em">Error Monitoring Center</h1>
+            <p class="mb-3" style="color:var(--text-secondary);max-width:500px">Real-time error tracking, root cause analysis, and resolution workflows for your Paymo BaaS integration.</p>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn btn-primary px-3 py-2 rounded-3 fw-semibold" data-aside-open="errorFeed">
+                <i class="bi bi-broadcast me-2"></i>Live Feed
+              </button>
+              <button class="btn btn-outline-secondary px-3 py-2 rounded-3 fw-semibold" onclick="addToast('Error report exported','success')">
+                <i class="bi bi-download me-2"></i>Export Report
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-5 d-none d-lg-block text-end">
+            <div class="d-inline-flex gap-4">
+              <div class="text-center">
+                <div style="font-size:2.5rem;font-weight:800;color:var(--paymo-danger);line-height:1">7</div>
+                <div class="text-muted" style="font-size:0.78rem;font-weight:600">Active</div>
+              </div>
+              <div class="text-center">
+                <div style="font-size:2.5rem;font-weight:800;color:var(--paymo-warning);line-height:1">23</div>
+                <div class="text-muted" style="font-size:0.78rem;font-weight:600">Warnings</div>
+              </div>
+              <div class="text-center">
+                <div style="font-size:2.5rem;font-weight:800;color:var(--paymo-accent);line-height:1">142</div>
+                <div class="text-muted" style="font-size:0.78rem;font-weight:600">Resolved</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-3 col-6">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(239,68,68,0.1);color:var(--paymo-danger)"><i class="bi bi-x-octagon"></i></div>
+            <div class="stat-value" style="color:var(--paymo-danger)">172</div>
+            <div class="stat-label">Total Errors (30d)</div>
+            <div class="mt-1" style="font-size:0.72rem;color:var(--paymo-danger);font-weight:600"><i class="bi bi-arrow-up"></i> +12% vs last month</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(59,130,246,0.1);color:var(--paymo-info)"><i class="bi bi-clock-history"></i></div>
+            <div class="stat-value">18m</div>
+            <div class="stat-label">Avg Resolution Time</div>
+            <div class="mt-1" style="font-size:0.72rem;color:var(--paymo-accent);font-weight:600"><i class="bi bi-arrow-down"></i> -34% improvement</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(245,158,11,0.1);color:var(--paymo-warning)"><i class="bi bi-percent"></i></div>
+            <div class="stat-value">99.7%</div>
+            <div class="stat-label">API Success Rate</div>
+            <div class="mt-1" style="font-size:0.72rem;color:var(--paymo-accent);font-weight:600"><i class="bi bi-arrow-up"></i> Above SLA</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(91,77,219,0.1);color:var(--paymo-primary)"><i class="bi bi-graph-down-arrow"></i></div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Open Incidents</div>
+            <div class="mt-1" style="font-size:0.72rem;color:var(--paymo-danger);font-weight:600"><i class="bi bi-exclamation-triangle"></i> 1 critical</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Left: Error Log -->
+        <div class="col-lg-8">
+          <div class="error-table-card mb-4">
+            <div class="card-header-custom">
+              <h6><i class="bi bi-list-columns-reverse me-2 text-muted"></i>Recent Errors</h6>
+              <div class="d-flex gap-2">
+                <select class="form-select form-select-sm" style="width:auto;font-size:0.78rem;border-radius:var(--radius-xs)">
+                  <option>All Severities</option>
+                  <option>Critical</option>
+                  <option>Warning</option>
+                  <option>Info</option>
+                </select>
+                <select class="form-select form-select-sm" style="width:auto;font-size:0.78rem;border-radius:var(--radius-xs)">
+                  <option>Last 24 hours</option>
+                  <option>Last 7 days</option>
+                  <option>Last 30 days</option>
+                </select>
+              </div>
+            </div>
+            <div id="errorList">
+              <div class="error-row selected" data-error="1">
+                <div class="me-3" style="width:8px"><span class="status-dot danger"></span></div>
+                <div class="flex-grow-1" style="min-width:0">
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="font-mono fw-bold" style="font-size:0.82rem;color:var(--paymo-danger)">ERR_503</span>
+                    <span class="severity-badge severity-critical">Critical</span>
+                  </div>
+                  <div class="text-truncate" style="font-size:0.82rem;color:var(--text)">Webhook delivery failed — timeout after 30s to endpoint /api/hooks</div>
+                  <div class="d-flex gap-3 mt-1" style="font-size:0.72rem;color:var(--muted)">
+                    <span><i class="bi bi-broadcast me-1"></i>webhooks</span>
+                    <span><i class="bi bi-clock me-1"></i>2 min ago</span>
+                    <span><i class="bi bi-hash me-1"></i>47 occurrences</span>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline-danger rounded-3 ms-2" data-aside-open="errorDetail"><i class="bi bi-arrow-right"></i></button>
+              </div>
+
+              <div class="error-row" data-error="2">
+                <div class="me-3" style="width:8px"><span class="status-dot danger"></span></div>
+                <div class="flex-grow-1" style="min-width:0">
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="font-mono fw-bold" style="font-size:0.82rem;color:var(--paymo-danger)">ERR_422</span>
+                    <span class="severity-badge severity-critical">Critical</span>
+                  </div>
+                  <div class="text-truncate" style="font-size:0.82rem;color:var(--text)">Disbursement validation failed — missing required field 'bank_code'</div>
+                  <div class="d-flex gap-3 mt-1" style="font-size:0.72rem;color:var(--muted)">
+                    <span><i class="bi bi-arrow-left-right me-1"></i>transfers</span>
+                    <span><i class="bi bi-clock me-1"></i>18 min ago</span>
+                    <span><i class="bi bi-hash me-1"></i>12 occurrences</span>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline-danger rounded-3 ms-2"><i class="bi bi-arrow-right"></i></button>
+              </div>
+
+              <div class="error-row" data-error="3">
+                <div class="me-3" style="width:8px"><span class="status-dot warning"></span></div>
+                <div class="flex-grow-1" style="min-width:0">
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="font-mono fw-bold" style="font-size:0.82rem;color:var(--paymo-warning)">ERR_429</span>
+                    <span class="severity-badge severity-warning">Warning</span>
+                  </div>
+                  <div class="text-truncate" style="font-size:0.82rem;color:var(--text)">Rate limit exceeded — 1,500 req/min on /v1/accounts endpoint</div>
+                  <div class="d-flex gap-3 mt-1" style="font-size:0.72rem;color:var(--muted)">
+                    <span><i class="bi bi-speedometer2 me-1"></i>api</span>
+                    <span><i class="bi bi-clock me-1"></i>35 min ago</span>
+                    <span><i class="bi bi-hash me-1"></i>8 occurrences</span>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline-warning rounded-3 ms-2"><i class="bi bi-arrow-right"></i></button>
+              </div>
+
+              <div class="error-row" data-error="4">
+                <div class="me-3" style="width:8px"><span class="status-dot warning"></span></div>
+                <div class="flex-grow-1" style="min-width:0">
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="font-mono fw-bold" style="font-size:0.82rem;color:var(--paymo-warning)">ERR_401</span>
+                    <span class="severity-badge severity-warning">Warning</span>
+                  </div>
+                  <div class="text-truncate" style="font-size:0.82rem;color:var(--text)">Authentication token expired — refresh token rotation failed</div>
+                  <div class="d-flex gap-3 mt-1" style="font-size:0.72rem;color:var(--muted)">
+                    <span><i class="bi bi-key me-1"></i>auth</span>
+                    <span><i class="bi bi-clock me-1"></i>1h ago</span>
+                    <span><i class="bi bi-hash me-1"></i>3 occurrences</span>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline-warning rounded-3 ms-2"><i class="bi bi-arrow-right"></i></button>
+              </div>
+
+              <div class="error-row" data-error="5">
+                <div class="me-3" style="width:8px"><span class="status-dot active"></span></div>
+                <div class="flex-grow-1" style="min-width:0">
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="font-mono fw-bold" style="font-size:0.82rem;color:var(--paymo-accent)">ERR_200</span>
+                    <span class="severity-badge severity-resolved">Resolved</span>
+                  </div>
+                  <div class="text-truncate" style="font-size:0.82rem;color:var(--text)">Card tokenization service recovered after 3min downtime</div>
+                  <div class="d-flex gap-3 mt-1" style="font-size:0.72rem;color:var(--muted)">
+                    <span><i class="bi bi-credit-card me-1"></i>cards</span>
+                    <span><i class="bi bi-clock me-1"></i>2h ago</span>
+                    <span><i class="bi bi-hash me-1"></i>Auto-resolved</span>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline-success rounded-3 ms-2"><i class="bi bi-arrow-right"></i></button>
+              </div>
+            </div>
+            <div class="p-3 text-center border-top">
+              <button class="btn btn-sm btn-link text-decoration-none fw-semibold text-primary">View all 172 errors →</button>
+            </div>
+          </div>
+
+          <!-- Error Trace Panel -->
+          <div class="error-table-card mb-4">
+            <div class="card-header-custom">
+              <h6><i class="bi bi-code-slash me-2 text-muted"></i>Error Trace — ERR_503</h6>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-secondary rounded-3" onclick="addToast('Trace copied to clipboard','success')"><i class="bi bi-clipboard me-1"></i>Copy</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-3"><i class="bi bi-fullscreen me-1"></i>Expand</button>
+              </div>
+            </div>
+            <div class="p-3">
+              <div class="code-preview">
+                <span class="lang-tag">JSON</span>
+<pre class="m-0" style="font-size:0.8rem;line-height:1.7">{
+  <span class="code-key">"error_id"</span>: <span class="code-string">"err_8x29kl4m5n"</span>,
+  <span class="code-key">"type"</span>: <span class="code-string">"webhook_delivery_timeout"</span>,
+  <span class="code-key">"code"</span>: <span class="code-number">503</span>,
+  <span class="code-key">"message"</span>: <span class="code-string">"Webhook endpoint unreachable after 30s"</span>,
+  <span class="code-key">"endpoint"</span>: <span class="code-string">"https://api.client.com/hooks/paymo"</span>,
+  <span class="code-key">"retry_count"</span>: <span class="code-number">3</span>,
+  <span class="code-key">"next_retry_at"</span>: <span class="code-string">"2026-07-09T14:35:00Z"</span>,
+  <span class="code-key">"stack_trace"</span>: <span class="code-error">"...DeliveryService.timeout_handler:47..."</span>
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4">
+          <!-- Error Timeline -->
+          <div class="stat-card mb-4">
+            <h6 class="fw-bold mb-3" style="font-size:0.92rem"><i class="bi bi-clock-history me-2 text-muted"></i>Incident Timeline</h6>
+            <div class="timeline-item critical">
+              <div style="min-width:0">
+                <div class="fw-semibold" style="font-size:0.82rem">Webhook timeouts spike</div>
+                <div class="text-muted" style="font-size:0.72rem">47 failures in last 15 min</div>
+                <div class="text-muted mt-1" style="font-size:0.7rem"><i class="bi bi-clock me-1"></i>2 min ago</div>
+              </div>
+            </div>
+            <div class="timeline-item warning">
+              <div style="min-width:0">
+                <div class="fw-semibold" style="font-size:0.82rem">API rate limit warnings</div>
+                <div class="text-muted" style="font-size:0.72rem">Threshold exceeded on 3 endpoints</div>
+                <div class="text-muted mt-1" style="font-size:0.7rem"><i class="bi bi-clock me-1"></i>35 min ago</div>
+              </div>
+            </div>
+            <div class="timeline-item resolved">
+              <div style="min-width:0">
+                <div class="fw-semibold" style="font-size:0.82rem">Card service recovered</div>
+                <div class="text-muted" style="font-size:0.72rem">Auto-healed after 3 min</div>
+                <div class="text-muted mt-1" style="font-size:0.7rem"><i class="bi bi-clock me-1"></i>2h ago</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="stat-card mb-4">
+            <h6 class="fw-bold mb-3" style="font-size:0.92rem"><i class="bi bi-lightning me-2 text-muted"></i>Quick Actions</h6>
+            <div class="d-grid gap-2">
+              <div class="quick-action-btn" data-aside-open="errorConfig">
+                <i class="bi bi-gear text-primary"></i>
+                <span class="fw-semibold" style="font-size:0.85rem">Alert Configuration</span>
+                <i class="bi bi-chevron-right ms-auto text-muted" style="font-size:0.75rem"></i>
+              </div>
+              <div class="quick-action-btn">
+                <i class="bi bi-arrow-repeat text-warning"></i>
+                <span class="fw-semibold" style="font-size:0.85rem">Retry Failed Webhooks</span>
+                <i class="bi bi-chevron-right ms-auto text-muted" style="font-size:0.75rem"></i>
+              </div>
+              <div class="quick-action-btn">
+                <i class="bi bi-shield-exclamation text-danger"></i>
+                <span class="fw-semibold" style="font-size:0.85rem">Escalate Incident</span>
+                <i class="bi bi-chevron-right ms-auto text-muted" style="font-size:0.75rem"></i>
+              </div>
+              <div class="quick-action-btn" onclick="addToast('Report generating…','info')">
+                <i class="bi bi-file-earmark-bar-graph text-success"></i>
+                <span class="fw-semibold" style="font-size:0.85rem">Generate Report</span>
+                <i class="bi bi-chevron-right ms-auto text-muted" style="font-size:0.75rem"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Affected Services -->
+          <div class="stat-card">
+            <h6 class="fw-bold mb-3" style="font-size:0.92rem"><i class="bi bi-hdd-network me-2 text-muted"></i>Service Health</h6>
+            <div class="status-row">
+              <div class="d-flex align-items-center"><span class="status-dot danger"></span><span class="fw-semibold" style="font-size:0.82rem">Webhooks</span></div>
+              <span class="severity-badge severity-critical">Degraded</span>
+            </div>
+            <div class="status-row">
+              <div class="d-flex align-items-center"><span class="status-dot warning"></span><span class="fw-semibold" style="font-size:0.82rem">Transfers API</span></div>
+              <span class="severity-badge severity-warning">Slow</span>
+            </div>
+            <div class="status-row">
+              <div class="d-flex align-items-center"><span class="status-dot active"></span><span class="fw-semibold" style="font-size:0.82rem">Payments</span></div>
+              <span class="severity-badge severity-resolved">Healthy</span>
+            </div>
+            <div class="status-row">
+              <div class="d-flex align-items-center"><span class="status-dot active"></span><span class="fw-semibold" style="font-size:0.82rem">Cards</span></div>
+              <span class="severity-badge severity-resolved">Healthy</span>
+            </div>
+            <div class="status-row">
+              <div class="d-flex align-items-center"><span class="status-dot active"></span><span class="fw-semibold" style="font-size:0.82rem">KYC / KYB</span></div>
+              <span class="severity-badge severity-resolved">Healthy</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ============ RIGHT ASIDE ============ -->
+    <div class="aside-backdrop" id="asideBackdrop" aria-hidden="true"></div>
+    <aside class="right-aside" id="rightAside" aria-label="Context panel">
+      <!-- Error Detail Panel -->
+      <div class="aside-panel-content" data-aside-content="errorDetail">
+        <div class="aside-header">
+          <span class="aside-title"><i class="bi bi-bug text-danger"></i> Error Detail</span>
+          <button class="aside-close" data-aside-close aria-label="Close"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="aside-body">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="font-mono fw-bold" style="font-size:1rem;color:var(--paymo-danger)">ERR_503</span>
+            <span class="severity-badge severity-critical">Critical</span>
+          </div>
+          <div class="aside-card">
+            <h6>Error Information</h6>
+            <div class="status-row"><span class="text-muted" style="font-size:0.82rem">Type</span><span class="fw-semibold" style="font-size:0.82rem">Webhook Timeout</span></div>
+            <div class="status-row"><span class="text-muted" style="font-size:0.82rem">First Seen</span><span class="fw-semibold" style="font-size:0.82rem">2 min ago</span></div>
+            <div class="status-row"><span class="text-muted" style="font-size:0.82rem">Occurrences</span><span class="fw-semibold" style="font-size:0.82rem">47</span></div>
+            <div class="status-row"><span class="text-muted" style="font-size:0.82rem">Impact</span><span class="severity-badge severity-critical">High</span></div>
+          </div>
+          <div class="aside-card">
+            <h6>Affected Endpoint</h6>
+            <div class="code-preview" style="font-size:0.75rem">
+              <span class="lang-tag">URL</span>
+              <div class="text-break" style="color:#86efac">https://api.client.com/hooks/paymo</div>
+            </div>
+          </div>
+          <div class="aside-card">
+            <h6>Resolution Steps</h6>
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-primary btn-sm text-start"><i class="bi bi-arrow-repeat me-2"></i>Retry Now</button>
+              <button class="btn btn-outline-warning btn-sm text-start"><i class="bi bi-pause-circle me-2"></i>Pause Webhook</button>
+              <button class="btn btn-outline-danger btn-sm text-start"><i class="bi bi-flag me-2"></i>Escalate</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Feed Panel -->
+      <div class="aside-panel-content" data-aside-content="errorFeed">
+        <div class="aside-header">
+          <span class="aside-title"><i class="bi bi-broadcast text-danger"></i> Live Error Feed</span>
+          <button class="aside-close" data-aside-close aria-label="Close"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="aside-body">
+          <div class="d-flex align-items-center gap-2 mb-3 p-2 rounded-3" style="background:rgba(239,68,68,0.05)">
+            <span class="status-dot danger"></span>
+            <span class="fw-bold" style="font-size:0.85rem;color:var(--paymo-danger)">Live — streaming errors in real-time</span>
+          </div>
+          <div id="liveFeed">
+            <div class="aside-card" style="border-left:3px solid var(--paymo-danger)">
+              <div class="d-flex justify-content-between align-items-start">
+                <span class="font-mono fw-bold" style="font-size:0.78rem">ERR_503</span>
+                <span style="font-size:0.7rem;color:var(--muted)">Just now</span>
+              </div>
+              <div style="font-size:0.82rem;margin-top:0.3rem">Webhook timeout: /api/hooks</div>
+            </div>
+            <div class="aside-card" style="border-left:3px solid var(--paymo-danger)">
+              <div class="d-flex justify-content-between align-items-start">
+                <span class="font-mono fw-bold" style="font-size:0.78rem">ERR_503</span>
+                <span style="font-size:0.7rem;color:var(--muted)">1 min ago</span>
+              </div>
+              <div style="font-size:0.82rem;margin-top:0.3rem">Webhook timeout: /api/hooks</div>
+            </div>
+            <div class="aside-card" style="border-left:3px solid var(--paymo-warning)">
+              <div class="d-flex justify-content-between align-items-start">
+                <span class="font-mono fw-bold" style="font-size:0.78rem">ERR_429</span>
+                <span style="font-size:0.7rem;color:var(--muted)">5 min ago</span>
+              </div>
+              <div style="font-size:0.82rem;margin-top:0.3rem">Rate limit on /v1/accounts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Config Panel -->
+      <div class="aside-panel-content" data-aside-content="errorConfig">
+        <div class="aside-header">
+          <span class="aside-title"><i class="bi bi-gear text-primary"></i> Alert Configuration</span>
+          <button class="aside-close" data-aside-close aria-label="Close"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="aside-body">
+          <div class="aside-card">
+            <h6>Notification Channels</h6>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-semibold" style="font-size:0.85rem">Email Alerts</span>
+              <div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked></div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-semibold" style="font-size:0.85rem">Slack Integration</span>
+              <div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked></div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-semibold" style="font-size:0.85rem">PagerDuty</span>
+              <div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox"></div>
+            </div>
+          </div>
+          <div class="aside-card">
+            <h6>Severity Thresholds</h6>
+            <div class="mb-3">
+              <label class="form-label" style="font-size:0.82rem;font-weight:600">Critical Alert After</label>
+              <select class="form-select form-select-sm" style="border-radius:var(--radius-xs)">
+                <option>5 occurrences</option>
+                <option selected>10 occurrences</option>
+                <option>25 occurrences</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" style="font-size:0.82rem;font-weight:600">Auto-Escalate After</label>
+              <select class="form-select form-select-sm" style="border-radius:var(--radius-xs)">
+                <option>15 minutes</option>
+                <option selected>30 minutes</option>
+                <option>1 hour</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary w-100 py-2 rounded-3 fw-semibold" onclick="addToast('Alert config saved','success')">Save Configuration</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============ TOASTS ============ -->
+    <div class="toast-container-custom" id="toastContainer"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const NAV_GROUPS = [
+        { title: 'Monitoring', items: [
+          { key: 'dashboard', label: 'Dashboard', icon: 'bi-grid-1x2' },
+          { key: 'errors', label: 'Error Log', icon: 'bi-bug', badge: '7' },
+          { key: 'incidents', label: 'Incidents', icon: 'bi-exclamation-triangle', badge: '3' },
+          { key: 'traces', label: 'Stack Traces', icon: 'bi-code-slash' },
+        ]},
+        { title: 'Analysis', items: [
+          { key: 'trends', label: 'Error Trends', icon: 'bi-graph-down' },
+          { key: 'patterns', label: 'Pattern Detection', icon: 'bi-diagram-3' },
+          { key: 'impact', label: 'Impact Analysis', icon: 'bi-lightning' },
+        ]},
+        { title: 'Infrastructure', items: [
+          { key: 'health', label: 'Service Health', icon: 'bi-heart-pulse' },
+          { key: 'webhooks', label: 'Webhook Monitor', icon: 'bi-broadcast' },
+          { key: 'alerts', label: 'Alert Rules', icon: 'bi-bell' },
+        ]},
+        { title: 'System', items: [
+          { key: 'config', label: 'Configuration', icon: 'bi-gear' },
+          { key: 'support', label: 'Support', icon: 'bi-life-preserver' },
+          { key: 'logout', label: 'Logout', icon: 'bi-box-arrow-right' },
+        ]},
+      ];
+
+      const NOTIFICATIONS = [
+        { id: 1, icon: 'bi-x-octagon', tone: 'danger', title: 'Webhook delivery failure spike', desc: '47 failures in the last 15 minutes.', time: '2m', unread: true },
+        { id: 2, icon: 'bi-exclamation-triangle', tone: 'warning', title: 'Rate limit threshold approaching', desc: '/v1/accounts at 92% capacity.', time: '35m', unread: true },
+        { id: 3, icon: 'bi-key', tone: 'warning', title: 'Auth token rotation failure', desc: '3 clients affected by expired tokens.', time: '1h', unread: true },
+        { id: 4, icon: 'bi-check-circle', tone: 'success', title: 'Card service recovered', desc: 'Auto-healed after 3 min downtime.', time: '2h', unread: false },
+      ];
+
+      let isDesktop = window.innerWidth >= 992;
+      let sidebarExpanded = isDesktop;
+      let mobileOpen = false;
+      let activeSection = 'errors';
+      let openDropdown = null;
+      let openAsidePanel = null;
+
+      const sidebar = document.getElementById('sidebar');
+      const topHeader = document.getElementById('topHeader');
+      const mainContent = document.getElementById('mainContent');
+      const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const sidebarMobileClose = document.getElementById('sidebarMobileClose');
+      const toggleIcon = document.getElementById('toggleIcon');
+      const navGroupsEl = document.getElementById('navGroups');
+      const notificationListEl = document.getElementById('notificationList');
+      const rightAside = document.getElementById('rightAside');
+      const asideBackdrop = document.getElementById('asideBackdrop');
+      const toastContainer = document.getElementById('toastContainer');
+
+      function renderNav() {
+        navGroupsEl.innerHTML = NAV_GROUPS.map(group => `
+          <div class="mb-2">
+            <span class="nav-group-label">${group.title}</span>
+            <nav class="d-flex flex-column">
+              ${group.items.map(item => `
+                <a href="#${item.key}" class="nav-link ${activeSection === item.key ? 'active' : ''}"
+                   data-nav="${item.key}">
+                  <span class="nav-icon"><i class="bi ${item.icon}"></i></span>
+                  <span class="nav-label">${item.label}</span>
+                  ${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}
+                </a>`).join('')}
+            </nav>
+          </div>`).join('');
+
+        navGroupsEl.querySelectorAll('[data-nav]').forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const key = link.getAttribute('data-nav');
+            if (key === 'logout') { handleLogout(); return; }
+            activeSection = key;
+            navGroupsEl.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            if (!isDesktop) closeMobile();
+          });
+        });
+      }
+
+      function renderNotifications() {
+        notificationListEl.innerHTML = NOTIFICATIONS.map(n => `
+          <div class="notification-item ${n.unread ? 'unread' : ''}">
+            <div class="notification-icon ${n.tone}"><i class="bi ${n.icon}"></i></div>
+            <div class="flex-grow-1" style="min-width:0">
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <span class="fw-semibold" style="font-size:0.82rem;color:var(--text)">${n.title}</span>
+                ${n.unread ? '<span class="notification-dot"></span>' : ''}
+              </div>
+              <div class="text-muted text-truncate" style="font-size:0.75rem">${n.desc}</div>
+            </div>
+            <span class="text-muted flex-shrink-0" style="font-size:0.7rem">${n.time}</span>
+          </div>`).join('');
+      }
+
+      function applyLayout() {
+        sidebar.classList.toggle('expanded', isDesktop && sidebarExpanded);
+        sidebar.classList.toggle('mobile-open', !isDesktop && mobileOpen);
+        sidebar.classList.toggle('mobile-closed', !isDesktop && !mobileOpen);
+        topHeader.classList.toggle('sidebar-expanded', isDesktop && sidebarExpanded);
+        mainContent.classList.toggle('sidebar-expanded', isDesktop && sidebarExpanded);
+        sidebarBackdrop.classList.toggle('show', !isDesktop && mobileOpen);
+        const open = (mobileOpen || (isDesktop && sidebarExpanded));
+        toggleIcon.className = open ? 'bi bi-x-lg' : 'bi bi-list';
+        renderNav();
+      }
+
+      function toggleSidebar() {
+        if (isDesktop) sidebarExpanded = !sidebarExpanded;
+        else mobileOpen = !mobileOpen;
+        applyLayout();
+      }
+      function closeMobile() { mobileOpen = false; applyLayout(); }
+
+      sidebarToggle.addEventListener('click', toggleSidebar);
+      sidebarMobileClose.addEventListener('click', closeMobile);
+      sidebarBackdrop.addEventListener('click', closeMobile);
+
+      /* Dropdowns */
+      function closeAllDropdowns() {
+        document.querySelectorAll('[data-dropdown-panel]').forEach(p => p.classList.remove('show'));
+        document.querySelectorAll('[data-dropdown-trigger]').forEach(t => t.setAttribute('aria-expanded', 'false'));
+        openDropdown = null;
+      }
+      function toggleDropdown(name) {
+        if (openDropdown === name) { closeAllDropdowns(); return; }
+        closeAllDropdowns();
+        const panel = document.querySelector(`[data-dropdown-panel="${name}"]`);
+        const trigger = document.querySelector(`[data-dropdown-trigger="${name}"]`);
+        if (panel) panel.classList.add('show');
+        if (trigger) trigger.setAttribute('aria-expanded', 'true');
+        openDropdown = name;
+      }
+      document.querySelectorAll('[data-dropdown-trigger]').forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleDropdown(trigger.getAttribute('data-dropdown-trigger'));
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('[data-dropdown]')) closeAllDropdowns();
+      });
+
+      /* Aside panels */
+      function openAside(type) {
+        openAsidePanel = type;
+        document.querySelectorAll('[data-aside-content]').forEach(c => {
+          c.classList.toggle('active', c.getAttribute('data-aside-content') === type);
+        });
+        rightAside.classList.add('open');
+        asideBackdrop.classList.add('show');
+        closeAllDropdowns();
+      }
+      function closeAside() {
+        openAsidePanel = null;
+        rightAside.classList.remove('open');
+        asideBackdrop.classList.remove('show');
+      }
+      document.querySelectorAll('[data-aside-open]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openAside(btn.getAttribute('data-aside-open'));
+        });
+      });
+      document.querySelectorAll('[data-aside-close]').forEach(btn => btn.addEventListener('click', closeAside));
+      asideBackdrop.addEventListener('click', closeAside);
+
+      /* Toasts */
+      window.addToast = function(message, type) {
+        type = type || 'info';
+        const tones = {
+          success: { bg: 'rgba(16,185,129,0.1)', color: 'var(--paymo-accent)', icon: 'bi-check-lg', title: 'Success' },
+          danger: { bg: 'rgba(239,68,68,0.1)', color: 'var(--paymo-danger)', icon: 'bi-x-lg', title: 'Error' },
+          warning: { bg: 'rgba(245,158,11,0.1)', color: 'var(--paymo-warning)', icon: 'bi-exclamation-triangle', title: 'Warning' },
+          info: { bg: 'rgba(91,77,219,0.1)', color: 'var(--paymo-primary)', icon: 'bi-bell', title: 'Info' },
+        };
+        const t = tones[type] || tones.info;
+        const el = document.createElement('div');
+        el.className = 'paymo-toast';
+        el.innerHTML = `
+          <div class="toast-ic" style="background:${t.bg};color:${t.color}"><i class="bi ${t.icon}"></i></div>
+          <div class="flex-grow-1">
+            <div class="fw-semibold" style="font-size:0.82rem">${t.title}</div>
+            <div class="text-muted" style="font-size:0.75rem">${message}</div>
+          </div>
+          <button class="btn btn-link text-muted p-0 ms-2" style="font-size:0.8rem"><i class="bi bi-x-lg"></i></button>`;
+        const remove = () => { el.classList.add('leaving'); setTimeout(() => el.remove(), 300); };
+        el.querySelector('button').addEventListener('click', remove);
+        toastContainer.appendChild(el);
+        setTimeout(remove, 4500);
+      }
+
+      function handleLogout() { addToast('Logged out successfully', 'success'); closeAllDropdowns(); }
+      document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+
+      window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') { e.preventDefault(); toggleSidebar(); }
+        if (e.key === 'Escape') { closeAllDropdowns(); closeAside(); if (!isDesktop) closeMobile(); }
+      });
+
+      window.addEventListener('resize', () => {
+        const desktop = window.innerWidth >= 992;
+        if (desktop !== isDesktop) {
+          isDesktop = desktop;
+          if (desktop) mobileOpen = false; else sidebarExpanded = false;
+          applyLayout();
+        }
+      });
+
+      renderNotifications();
+      applyLayout();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,598 @@
+<div class="pm-main">
+  <header class="pm-header">
+    <div class="pm-header-title" style="flex-shrink:0">
+      <div class="d-flex align-items-center gap-2">
+        <div class="pm-avatar" style="background:var(--pm-info);width:36px;height:36px;font-size:13px">MN</div>
+        <div>
+          <h1>Water Management</h1>
+          <p>Utility bills, meter analytics, leak detection, and bowser supply</p>
+        </div>
+      </div>
+    </div>
+    <div class="pm-header-search">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Search water accounts, counties, bowsers, disputes..." [(ngModel)]="searchQuery">
+    </div>
+    <div class="pm-header-actions">
+      <button class="pm-header-btn" (click)="openModal('waterHealthModal')"><i class="bi bi-heart-pulse"></i></button>
+      <button class="pm-header-btn" (click)="openModal('waterNotificationsModal')"><i class="bi bi-bell"></i><span class="counter">4</span></button>
+    </div>
+  </header>
+
+  <div class="pm-page-bar">
+    <div>
+      <div class="pm-breadcrumb"><span>Home</span> / <span>Utilities Hub</span> / <span>Water</span> / <strong>Deep Dive</strong></div>
+      <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 2.3 — Water Management (Deep Dive)</h2>
+      <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Manage county water accounts, track m³ consumption, report bursts/leaks, and source emergency bulk water via verified bowsers.</p>
+    </div>
+    <div class="d-flex flex-wrap" style="gap:8px">
+      <button class="pm-btn" (click)="openModal('waterHealthModal')"><i class="bi bi-heart-pulse text-info"></i> Health Check</button>
+      <button class="pm-btn" (click)="openModal('orderBowserModal')"><i class="bi bi-truck text-primary"></i> Order Bowser</button>
+      <button class="pm-btn pm-btn-info" (click)="openModal('payWaterModal')"><i class="bi bi-droplet"></i> Pay Bill</button>
+      <button class="pm-btn pm-btn-primary" (click)="openModal('addWaterMeterModal')"><i class="bi bi-plus-lg"></i> Add Account</button>
+    </div>
+  </div>
+
+  <div class="pm-content">
+    <!-- HERO STATS ROW -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card pm-card-accent" style="min-height:170px">
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Water operations active <span style="color:#67e8f9">●</span></p>
+          <div class="pm-stat-value" style="margin:8px 0;color:#fff">{{waterAccounts.length}} water accounts</div>
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Nairobi Water, Mombasa Water, and private boreholes managed in one place.</p>
+          <div class="d-flex flex-wrap mt-3" style="gap:8px">
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('payWaterModal')">Pay account</button>
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('orderBowserModal')">Emergency supply</button>
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('autoPayWaterModal')">Auto-pay</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-warning)">DUE IN 7 DAYS</p>
+          <div class="pm-stat-value" style="margin:6px 0">KES 8,350</div>
+          <span class="pm-badge pm-badge-warning"><i class="bi bi-clock"></i> 2 bills due</span>
+          <div class="mt-3" style="font-size:12px;color:var(--pm-ink-soft)">
+            <div class="d-flex justify-content-between mb-1"><span>NCWSC</span><strong>KES 3,200</strong></div>
+            <div class="d-flex justify-content-between"><span>KIWASCO</span><strong>KES 5,150</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-info)">TOTAL CONSUMPTION</p>
+          <div class="pm-stat-value" style="margin:6px 0">124 m³</div>
+          <span class="pm-badge pm-badge-danger"><i class="bi bi-graph-up-arrow"></i> 12% above average</span>
+          <div class="mt-2"><div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>Usage vs Budget</span><span>88%</span></div><div class="pm-progress mt-1"><div class="pm-progress-bar" style="width:88%;background:var(--pm-info)"></div></div></div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-accent)">
+          <p class="pm-stat-label" style="color:var(--pm-accent)">LEAK & PRESSURE STATUS</p>
+          <div class="pm-stat-value" style="margin:6px 0">1 Alert</div>
+          <span class="pm-badge pm-badge-warning"><i class="bi bi-exclamation-triangle"></i> Continuous flow detected</span>
+          <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)"><div>Meter: <strong>Rental Unit A</strong></div><div>Est. waste: <strong>1.5 m³/day</strong></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATTENTION & QUICK ACTIONS ROW -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Water Alerts</h3><button class="pm-btn pm-btn-sm" (click)="openModal('waterNotificationsModal')">View all</button></div>
+          <div *ngFor="let item of waterAlerts" class="feed-item">
+            <div class="pm-icon-circle" [style.background]="item.bgColor" [style.color]="item.textColor" [innerHTML]="item.iconHtml"></div>
+            <div style="flex:1"><div style="font-weight:600;font-size:13px">{{item.title}}</div><div style="font-size:11px;color:var(--pm-muted)">{{item.subtitle}}</div></div>
+            <button class="pm-btn pm-btn-sm" [ngClass]="item.btnClass" (click)="openModal(item.modal)">{{item.btnText}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Smart Suggestions</h3><span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span></div>
+          <div *ngFor="let item of waterSuggestions" class="feed-item">
+            <div class="pm-icon-circle" [style.background]="item.bgColor" [style.color]="item.textColor" [innerHTML]="item.iconHtml"></div>
+            <div style="flex:1"><div style="font-weight:600;font-size:13px">{{item.title}}</div><div style="font-size:11px;color:var(--pm-muted)">{{item.subtitle}}</div></div>
+            <button class="pm-btn pm-btn-sm" (click)="openModal(item.modal)">{{item.btnText}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="mb-3"><h3 class="pm-section-title">Quick Actions</h3><p class="pm-section-sub">Frequent water management workflows</p></div>
+          <div class="quick-action-grid">
+            <button class="quick-action-btn" (click)="openModal('payWaterModal')"><i class="bi bi-droplet text-info me-1"></i> Pay Bill</button>
+            <button class="quick-action-btn" (click)="openModal('orderBowserModal')"><i class="bi bi-truck text-primary me-1"></i> Order Bowser</button>
+            <button class="quick-action-btn" (click)="openModal('addWaterMeterModal')"><i class="bi bi-plus-circle text-success me-1"></i> Add Account</button>
+            <button class="quick-action-btn" (click)="openModal('bulkWaterPayModal')"><i class="bi bi-collection me-1" style="color:var(--pm-purple)"></i> Bulk Pay</button>
+            <button class="quick-action-btn" (click)="openModal('uploadWaterReadingModal')"><i class="bi bi-camera text-info me-1"></i> Submit Reading</button>
+            <button class="quick-action-btn" (click)="openModal('reportLeakModal')"><i class="bi bi-exclamation-triangle text-danger me-1"></i> Report Leak</button>
+            <button class="quick-action-btn" (click)="openModal('outageWaterModal')"><i class="bi bi-cone-striped text-warning me-1"></i> Outages / Supply</button>
+            <button class="quick-action-btn" (click)="openModal('exportWaterModal')"><i class="bi bi-download me-1" style="color:var(--pm-accent)"></i> Statements</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2.3.1 -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div><h3 class="pm-section-title"><i class="bi bi-droplet-half" style="color:var(--pm-info)"></i> 2.3.1 — Water Bill Payments & Account Wallet</h3><p class="pm-section-sub">Manage 47-county water utility providers, pay bills, handle connection fees.</p></div>
+        <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('exportWaterModal')"><i class="bi bi-clock-history"></i> History</button><button class="pm-btn pm-btn-sm pm-btn-info" (click)="openModal('payWaterModal')"><i class="bi bi-credit-card"></i> Pay Bill</button></div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-8">
+          <div class="utility-block">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+              <h4 style="font-size:14px;font-weight:700;margin:0">Active Water Accounts</h4>
+              <div class="pm-tab-pills">
+                <button class="pm-tab-pill" [ngClass]="{'active': waterTab === 'all'}" (click)="filterWater('all')">All</button>
+                <button class="pm-tab-pill" [ngClass]="{'active': waterTab === 'due'}" (click)="filterWater('due')">Due</button>
+                <button class="pm-tab-pill" [ngClass]="{'active': waterTab === 'paid'}" (click)="filterWater('paid')">Paid</button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="pm-table">
+                <thead><tr><th>Provider</th><th>Account</th><th>Nickname</th><th>Amount Due</th><th>Due Date</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let acc of filteredWaterAccounts">
+                    <td><strong>{{acc.provider}}</strong></td>
+                    <td style="font-family:monospace">{{acc.account}}</td>
+                    <td>{{acc.nickname}}</td>
+                    <td><strong>{{acc.amount}}</strong></td>
+                    <td>{{acc.dueDate}}</td>
+                    <td><span class="pm-badge" [ngClass]="acc.statusClass">{{acc.status}}</span></td>
+                    <td><button class="pm-btn pm-btn-sm pm-btn-info" (click)="openModal('payWaterModal')">Pay</button></td>
+                  </tr>
+                  <tr *ngIf="filteredWaterAccounts.length === 0"><td colspan="7" style="text-align:center;color:var(--pm-muted);padding:24px">No accounts found for this filter.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="utility-block mb-3">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Last Paid Bill Breakdown</h4>
+            <div class="status-row"><div><strong>Water Charge</strong><div style="font-size:11px;color:var(--pm-muted)">Volume usage</div></div><strong>KES 2,100</strong></div>
+            <div class="status-row"><div><strong>Sewerage Charge</strong><div style="font-size:11px;color:var(--pm-muted)">Sanitation</div></div><strong>KES 800</strong></div>
+            <div class="status-row"><div><strong>Meter Rent</strong><div style="font-size:11px;color:var(--pm-muted)">Maintenance</div></div><strong>KES 50</strong></div>
+            <div class="status-row"><div><strong>VAT (16%)</strong><div style="font-size:11px;color:var(--pm-muted)">Taxes</div></div><strong>KES 250</strong></div>
+            <div class="status-row"><div><strong>Total Paid</strong><div style="font-size:11px;color:var(--pm-muted)">Nairobi Water</div></div><strong style="color:var(--pm-accent)">KES 3,200</strong></div>
+            <div class="d-flex mt-3" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('waterBillBreakdownModal')">View full statement</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2.3.2 -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div><h3 class="pm-section-title"><i class="bi bi-graph-up-arrow" style="color:var(--pm-primary)"></i> 2.3.2 — Consumption Analytics & Dispute</h3><p class="pm-section-sub">Track cubic meters (m³), detect abnormal surges, and resolve disputes.</p></div>
+        <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('waterAnalyticsModal')"><i class="bi bi-bar-chart"></i> Deep Dive</button><button class="pm-btn pm-btn-sm" (click)="openModal('disputeWaterModal')"><i class="bi bi-exclamation-circle"></i> Dispute</button></div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-5">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">6-Month Portfolio Consumption (m³)</h4>
+            <div class="chart-bars">
+              <div *ngFor="let bar of consumptionChart" class="chart-bar" [style.height]="bar.height" [style.background]="bar.color" (click)="openModal('waterAnalyticsModal')"><span class="bar-label">{{bar.label}}</span></div>
+            </div>
+            <div class="d-flex mt-3 flex-wrap" style="gap:10px;font-size:12px">
+              <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pm-info);margin-right:5px"></span>Current month</span>
+              <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pm-danger);margin-right:5px"></span>Anomaly/Leak detected</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Key Metrics</h4>
+            <div class="p-3 rounded mb-2" style="background:var(--pm-surface)"><div style="font-size:11px;color:var(--pm-muted)">Total Properties</div><div style="font-size:20px;font-weight:700">5 linked</div></div>
+            <div class="p-3 rounded mb-2" style="background:var(--pm-danger-soft)"><div style="font-size:11px;color:#991B1B">Leak Suspected</div><div style="font-size:20px;font-weight:700;color:var(--pm-danger)">Rental Unit A</div></div>
+            <div class="p-3 rounded" style="background:var(--pm-info-soft)"><div style="font-size:11px;color:#1D4ED8">Avg Price per m³</div><div style="font-size:20px;font-weight:700;color:var(--pm-info)">KES 85.50</div></div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Open Disputes & Issues</h4>
+            <div class="status-row"><div><strong>DSP-W-9912</strong><div style="font-size:11px;color:var(--pm-muted)">Unusually high May bill</div></div><span class="pm-badge pm-badge-warning">In Review</span></div>
+            <div class="status-row"><div><strong>LEAK-1044</strong><div style="font-size:11px;color:var(--pm-muted)">Continuous meter spin</div></div><span class="pm-badge pm-badge-info">Plumber Dispatched</span></div>
+            <div class="d-flex mt-3" style="gap:8px"><button class="pm-btn pm-btn-sm pm-btn-danger" (click)="openModal('reportLeakModal')">Report new leak</button><button class="pm-btn pm-btn-sm" (click)="openModal('disputeWaterModal')">Raise dispute</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2.3.3 -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div><h3 class="pm-section-title"><i class="bi bi-truck" style="color:var(--pm-accent)"></i> 2.3.3 — Bulk Water & Emergency Supply</h3><p class="pm-section-sub">Order from verified private boreholes, manage truck deliveries.</p></div>
+        <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('outageWaterModal')"><i class="bi bi-cone-striped"></i> Rationing</button><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('orderBowserModal')"><i class="bi bi-plus-lg"></i> Book Delivery</button></div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-8">
+          <div class="utility-block">
+            <div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Verified Private Bowser Suppliers</h4><button class="pm-btn pm-btn-sm" (click)="openModal('compareSuppliersModal')">Compare Prices</button></div>
+            <div class="table-responsive">
+              <table class="pm-table">
+                <thead><tr><th>Supplier</th><th>Verified</th><th>Cost (10k Liters)</th><th>Delivery SLA</th><th>Action</th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let sup of bowserSuppliers">
+                    <td><strong>{{sup.name}}</strong></td>
+                    <td><i class="bi bi-patch-check-fill text-success"></i> {{sup.cert}}</td>
+                    <td>{{sup.cost}}</td>
+                    <td>{{sup.sla}}</td>
+                    <td><button class="pm-btn pm-btn-sm" (click)="openModal('orderBowserModal')">Order</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Deliveries</h4>
+            <div class="p-3 rounded mb-3 text-center" style="background:var(--pm-surface);border:1px solid var(--pm-primary-light)">
+              <i class="bi bi-truck d-block mb-2" style="font-size:24px;color:var(--pm-primary)"></i>
+              <strong>Delivery in Progress</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">Nairobi Pure Water Ltd · 10,000L</div>
+              <div class="pm-progress mt-2 mb-1"><div class="pm-progress-bar" style="width:75%;background:var(--pm-primary)"></div></div>
+              <div style="font-size:11px;font-weight:600">Arriving in approx 45 mins</div>
+            </div>
+            <button class="pm-btn pm-btn-sm w-100 justify-content-center" (click)="openModal('waterHealthModal')">View Storage Capacity</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS BACKDROP -->
+<div *ngIf="activeModal" class="modal-backdrop show" style="position:fixed;inset:0;z-index:1040" (click)="closeModal()"></div>
+
+<!-- 1. Pay Water Modal (Multi-step) -->
+<div class="modal" [class.show]="activeModal === 'payWaterModal'" [style.display]="activeModal === 'payWaterModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-droplet text-info me-2"></i>Pay Water Bill</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="pm-stepper">
+        <div class="pm-step" [ngClass]="{'active': waterStep===1, 'completed': waterStep>1}"><div class="pm-step-num">1</div><span class="pm-step-label">Account</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': waterStep===2, 'completed': waterStep>2}"><div class="pm-step-num">2</div><span class="pm-step-label">Amount</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': waterStep===3, 'completed': waterStep>3}"><div class="pm-step-num">3</div><span class="pm-step-label">Confirm</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': waterStep===4}"><div class="pm-step-num">4</div><span class="pm-step-label">Receipt</span></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': waterStep === 1}">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 1: Select Water Account</h6>
+        <div class="mb-3"><label class="pm-form-label">Saved Accounts</label><select class="pm-form-control" [(ngModel)]="selectedWaterAcc"><option *ngFor="let a of waterAccounts" [value]="a.account">{{a.provider}} — {{a.account}}</option></select></div>
+        <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:13px">
+          <div class="d-flex justify-content-between mb-1"><span>Current Balance</span><strong>KES 3,200</strong></div>
+          <div class="d-flex justify-content-between mb-1"><span>Due Date</span><strong style="color:var(--pm-danger)">Tomorrow</strong></div>
+          <div class="d-flex justify-content-between"><span>Status</span><span class="pm-badge pm-badge-warning">Due Soon</span></div>
+        </div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': waterStep === 2}">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 2: Enter Amount</h6>
+        <label class="pm-form-label">Amount to Pay</label>
+        <div class="pm-amount-chips mb-3">
+          <span class="pm-amount-chip" [ngClass]="{'active': waterAmount===3200}" (click)="waterAmount=3200">Full Bill (3,200)</span>
+          <span class="pm-amount-chip" [ngClass]="{'active': waterAmount===1600}" (click)="waterAmount=1600">Half Bill (1,600)</span>
+          <span class="pm-amount-chip" [ngClass]="{'active': waterAmount===5000}" (click)="waterAmount=5000">Overpay (5,000)</span>
+        </div>
+        <input type="number" class="pm-form-control" [(ngModel)]="waterAmount">
+        <div class="mt-3"><label class="pm-form-label">Payment Method</label>
+          <div class="pm-pay-option" [ngClass]="{'selected': selectedPayMethod==='mpesa'}" (click)="selectedPayMethod='mpesa'"><input type="radio" [checked]="selectedPayMethod==='mpesa'"> <i class="bi bi-phone" style="font-size:20px;color:var(--pm-accent)"></i><div><strong>M-Pesa</strong><div style="font-size:11px;color:var(--pm-muted)">0712***890</div></div></div>
+          <div class="pm-pay-option" [ngClass]="{'selected': selectedPayMethod==='wallet'}" (click)="selectedPayMethod='wallet'"><input type="radio" [checked]="selectedPayMethod==='wallet'"> <i class="bi bi-wallet2" style="font-size:20px;color:var(--pm-primary)"></i><div><strong>PayMo Wallet</strong><div style="font-size:11px;color:var(--pm-muted)">Balance KES 24,500</div></div></div>
+        </div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': waterStep === 3}">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 3: Confirm & Authorize</h6>
+        <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+          <div class="d-flex justify-content-between mb-1"><span>Provider</span><strong>Nairobi Water (NCWSC)</strong></div>
+          <div class="d-flex justify-content-between mb-1"><span>Account</span><strong>{{selectedWaterAcc}}</strong></div>
+          <div class="d-flex justify-content-between mb-1"><span>Fee</span><strong>KES 0</strong></div>
+          <hr class="pm-divider"><div class="d-flex justify-content-between"><span style="font-weight:700">Total</span><strong style="font-size:18px;color:var(--pm-primary)">KES {{waterAmount | number}}</strong></div>
+        </div>
+        <label class="pm-form-label text-center d-block">Enter PIN to authorize M-Pesa</label>
+        <div class="pm-pin-input"><input *ngFor="let i of [0,1,2,3]" type="password" maxlength="1" (input)="moveFocus($event, i)"></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': waterStep === 4}">
+        <div class="pm-receipt">
+          <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">Water Bill Paid!</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Your payment to Nairobi Water has been processed.</p>
+          <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>KES {{waterAmount | number}}</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Account</span><strong>{{selectedWaterAcc}}</strong></div>
+            <div class="d-flex justify-content-between"><span class="text-muted">Reference</span><strong>WTR-PM-20250627-8834</strong></div>
+          </div>
+          <div class="d-flex justify-content-center mt-3" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('shareReceiptModal')">Share</button><button class="pm-btn pm-btn-sm" (click)="openModal('exportWaterModal')">Download</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="pm-btn" *ngIf="waterStep > 1 && waterStep < 4" (click)="waterStep = waterStep - 1"><i class="bi bi-arrow-left"></i> Back</button>
+      <div style="flex:1"></div>
+      <button class="pm-btn" (click)="closeModal()">Cancel</button>
+      <button class="pm-btn pm-btn-info" *ngIf="waterStep < 3" (click)="waterStep = waterStep + 1">Continue <i class="bi bi-arrow-right"></i></button>
+      <button class="pm-btn pm-btn-accent" *ngIf="waterStep === 3" (click)="waterStep = 4"><i class="bi bi-lock"></i> Confirm & Pay</button>
+      <button class="pm-btn pm-btn-primary" *ngIf="waterStep === 4" (click)="closeModal()">Done</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- 2. Add Water Meter Modal (Multi-step) -->
+<div class="modal" [class.show]="activeModal === 'addWaterMeterModal'" [style.display]="activeModal === 'addWaterMeterModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Add Water Account</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="pm-stepper">
+        <div class="pm-step" [ngClass]="{'active': addMeterStep===1, 'completed': addMeterStep>1}"><div class="pm-step-num">1</div><span class="pm-step-label">Provider</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': addMeterStep===2, 'completed': addMeterStep>2}"><div class="pm-step-num">2</div><span class="pm-step-label">Details</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': addMeterStep===3, 'completed': addMeterStep>3}"><div class="pm-step-num">3</div><span class="pm-step-label">Verify</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': addMeterStep===4}"><div class="pm-step-num">4</div><span class="pm-step-label">Done</span></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': addMeterStep === 1}">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 1: Select County / Provider</h6>
+        <input class="pm-form-control mb-3" placeholder="Search provider or county...">
+        <div class="pm-pay-option" [ngClass]="{'selected': selectedProvider==='NCWSC'}" (click)="selectedProvider='NCWSC'"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info)"><i class="bi bi-droplet"></i></div><div><strong>Nairobi Water (NCWSC)</strong><div style="font-size:11px;color:var(--pm-muted)">Paybill 444400</div></div></div>
+        <div class="pm-pay-option" [ngClass]="{'selected': selectedProvider==='MOWASSCO'}" (click)="selectedProvider='MOWASSCO'"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info)"><i class="bi bi-droplet"></i></div><div><strong>Mombasa Water (MOWASSCO)</strong><div style="font-size:11px;color:var(--pm-muted)">Paybill 614614</div></div></div>
+        <div class="pm-pay-option" [ngClass]="{'selected': selectedProvider==='KIWASCO'}" (click)="selectedProvider='KIWASCO'"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info)"><i class="bi bi-droplet"></i></div><div><strong>Kisumu Water (KIWASCO)</strong><div style="font-size:11px;color:var(--pm-muted)">Paybill 300300</div></div></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': addMeterStep === 2}">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 2: Account Details</h6>
+        <div class="mb-3"><label class="pm-form-label">Account Number</label><input class="pm-form-control" placeholder="Enter water account number"></div>
+        <div class="mb-3"><label class="pm-form-label">Property Nickname</label><input class="pm-form-control" placeholder="e.g. Home Kilimani, Office"></div>
+        <div class="mb-3"><label class="pm-form-label">Property Type</label><select class="pm-form-control"><option>Residential</option><option>Commercial</option><option>Industrial</option></select></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': addMeterStep === 3}">
+        <div class="p-4 text-center"><div class="pm-spinner mx-auto mb-3" style="border-top-color:var(--pm-info)"></div><p style="font-size:13px;color:var(--pm-ink-soft)">Contacting provider to verify account details...</p></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': addMeterStep === 4}">
+        <div class="pm-receipt">
+          <div class="receipt-icon" style="background:var(--pm-info-soft);color:var(--pm-info)"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-info)">Account Verified</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Water account successfully linked.</p>
+          <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px"><div class="d-flex justify-content-between mb-2"><span class="text-muted">Status</span><span class="pm-badge pm-badge-success">Active</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="pm-btn" *ngIf="addMeterStep > 1 && addMeterStep < 4" (click)="addMeterStep = addMeterStep - 1">Back</button>
+      <div style="flex:1"></div>
+      <button class="pm-btn" (click)="closeModal()">Cancel</button>
+      <button class="pm-btn pm-btn-info" *ngIf="addMeterStep < 3" (click)="addMeterStep = addMeterStep + 1">Continue</button>
+      <button class="pm-btn pm-btn-accent" *ngIf="addMeterStep === 3" (click)="addMeterStep = 4">Verify</button>
+      <button class="pm-btn pm-btn-primary" *ngIf="addMeterStep === 4" (click)="closeModal()">Done</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- 3. Order Bowser Modal (Multi-step) -->
+<div class="modal" [class.show]="activeModal === 'orderBowserModal'" [style.display]="activeModal === 'orderBowserModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-truck text-primary me-2"></i>Order Emergency Water Bowser</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="pm-stepper">
+        <div class="pm-step" [ngClass]="{'active': bowserStep===1, 'completed': bowserStep>1}"><div class="pm-step-num">1</div><span class="pm-step-label">Location</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': bowserStep===2, 'completed': bowserStep>2}"><div class="pm-step-num">2</div><span class="pm-step-label">Supplier</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': bowserStep===3, 'completed': bowserStep>3}"><div class="pm-step-num">3</div><span class="pm-step-label">Confirm</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [ngClass]="{'active': bowserStep===4}"><div class="pm-step-num">4</div><span class="pm-step-label">Ordered</span></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': bowserStep === 1}">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 1: Location & Size</h6>
+        <div class="mb-3"><label class="pm-form-label">Delivery Address</label><input class="pm-form-control" value="Apt 4B, Kilimani Heights, Nairobi"></div>
+        <label class="pm-form-label">Water Capacity Needed</label>
+        <div class="row g-2 mb-3">
+          <div class="col-4"><div class="p-3 border rounded text-center" style="cursor:pointer" [ngClass]="{'selected': bowserSize==='5000'}" (click)="bowserSize='5000'"><i class="bi bi-truck d-block mb-1" style="font-size:20px;color:var(--pm-primary)"></i><strong>5,000 L</strong><div style="font-size:11px;color:var(--pm-muted)">Small truck</div></div></div>
+          <div class="col-4"><div class="p-3 border rounded text-center" style="cursor:pointer" [ngClass]="{'selected': bowserSize==='10000'}" (click)="bowserSize='10000'"><i class="bi bi-truck d-block mb-1" style="font-size:24px;color:var(--pm-primary)"></i><strong>10,000 L</strong><div style="font-size:11px;color:var(--pm-muted)">Standard</div></div></div>
+          <div class="col-4"><div class="p-3 border rounded text-center" style="cursor:pointer" [ngClass]="{'selected': bowserSize==='20000'}" (click)="bowserSize='20000'"><i class="bi bi-truck d-block mb-1" style="font-size:28px;color:var(--pm-primary)"></i><strong>20,000 L</strong><div style="font-size:11px;color:var(--pm-muted)">Large tank</div></div></div>
+        </div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': bowserStep === 2}">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 2: Choose Supplier</h6>
+        <div class="table-responsive"><table class="pm-table"><thead><tr><th>Supplier</th><th>Price</th><th>ETA</th><th>Select</th></tr></thead>
+        <tbody><tr *ngFor="let sup of bowserSuppliers"><td><strong>{{sup.name}}</strong><br><small class="text-success"><i class="bi bi-patch-check"></i> Verified clean</small></td><td>{{sup.cost}}</td><td>{{sup.sla}}</td><td><input type="radio" name="bsup" [checked]="selectedBowserSup===sup.name" (change)="selectedBowserSup=sup.name"></td></tr></tbody>
+        </table></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': bowserStep === 3}">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 3: Confirm Payment</h6>
+        <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+          <div class="d-flex justify-content-between mb-1"><span>Supplier</span><strong>{{selectedBowserSup}}</strong></div>
+          <div class="d-flex justify-content-between mb-1"><span>Size</span><strong>{{bowserSize | number}} Liters</strong></div>
+          <hr class="pm-divider"><div class="d-flex justify-content-between"><span style="font-weight:700">Total</span><strong style="font-size:18px;color:var(--pm-primary)">KES 7,500</strong></div>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">Payment Method</label><select class="pm-form-control"><option>M-Pesa on Delivery</option><option>Pay Now via Wallet</option></select></div>
+      </div>
+      <div [ngClass]="{'fade-step': true, 'active': bowserStep === 4}">
+        <div class="pm-receipt">
+          <div class="receipt-icon" style="background:var(--pm-info-soft);color:var(--pm-info)"><i class="bi bi-truck"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-info)">Bowser Ordered Successfully</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Driver details sent via SMS.</p>
+          <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px"><div class="d-flex justify-content-between mb-2"><span class="text-muted">Order ID</span><strong>BWS-PM-9941</strong></div><div class="d-flex justify-content-between mb-2"><span class="text-muted">Driver</span><strong>Kamau (KCD 412F)</strong></div><div class="d-flex justify-content-between"><span class="text-muted">ETA</span><strong>Today, 3:30 PM</strong></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="pm-btn" *ngIf="bowserStep > 1 && bowserStep < 4" (click)="bowserStep = bowserStep - 1">Back</button>
+      <div style="flex:1"></div>
+      <button class="pm-btn" (click)="closeModal()">Cancel</button>
+      <button class="pm-btn pm-btn-primary" *ngIf="bowserStep < 4" (click)="bowserStep = bowserStep + 1">Continue</button>
+      <button class="pm-btn pm-btn-primary" *ngIf="bowserStep === 4" (click)="closeModal()">Done</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- 4. Water Health Modal -->
+<div class="modal" [class.show]="activeModal === 'waterHealthModal'" [style.display]="activeModal === 'waterHealthModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-heart-pulse text-info me-2"></i>System Health Check</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="status-row"><div><strong>NCWSC API</strong></div><span class="pm-badge pm-badge-success">Healthy</span></div>
+      <div class="status-row"><div><strong>KIWASCO Portal</strong></div><span class="pm-badge pm-badge-warning">Slow</span></div>
+      <div class="status-row"><div><strong>M-Pesa STK</strong></div><span class="pm-badge pm-badge-success">Healthy</span></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 5. Notifications Modal -->
+<div class="modal" [class.show]="activeModal === 'waterNotificationsModal'" [style.display]="activeModal === 'waterNotificationsModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell text-warning me-2"></i>Water Notifications</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger)"><i class="bi bi-droplet"></i></div><div style="flex:1"><div style="font-weight:600">Continuous flow detected</div><div style="font-size:11px;color:var(--pm-muted)">2 hours ago</div></div></div>
+      <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i class="bi bi-clock"></i></div><div style="flex:1"><div style="font-weight:600">Bill due tomorrow</div><div style="font-size:11px;color:var(--pm-muted)">5 hours ago</div></div></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Mark Read & Close</button></div>
+  </div></div>
+</div>
+
+<!-- 6. Report Leak Modal -->
+<div class="modal" [class.show]="activeModal === 'reportLeakModal'" [style.display]="activeModal === 'reportLeakModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger me-2"></i>Report Leak / Burst</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Property / Meter</label><select class="pm-form-control"><option *ngFor="let a of waterAccounts">{{a.nickname}} ({{a.account}})</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Leak Severity</label><select class="pm-form-control"><option>Minor Drip</option><option>Major Burst</option><option>Underground Suspicion</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Description / Evidence</label><textarea class="pm-form-control" rows="3" placeholder="Describe the issue..."></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-danger">Submit Report</button></div>
+  </div></div>
+</div>
+
+<!-- 7. Outage/Rationing Modal -->
+<div class="modal" [class.show]="activeModal === 'outageWaterModal'" [style.display]="activeModal === 'outageWaterModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-cone-striped text-warning me-2"></i>Rationing & Outages</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="status-row"><div><strong>Nairobi West Area</strong><div style="font-size:11px;color:var(--pm-muted)">Thu-Fri, 9AM - 5PM</div></div><span class="pm-badge pm-badge-warning">Scheduled</span></div>
+      <div class="status-row"><div><strong>Kilimani Heights</strong><div style="font-size:11px;color:var(--pm-muted)">Low pressure expected</div></div><span class="pm-badge pm-badge-info">Advisory</span></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 8. Upload Reading Modal -->
+<div class="modal" [class.show]="activeModal === 'uploadWaterReadingModal'" [style.display]="activeModal === 'uploadWaterReadingModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-camera text-info me-2"></i>Submit Meter Reading</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Account</label><select class="pm-form-control"><option *ngFor="let a of waterAccounts">{{a.nickname}}</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Reading (m³)</label><input type="number" class="pm-form-control" placeholder="Enter current reading"></div>
+      <div class="mb-3"><label class="pm-form-label">Photo Evidence</label><input type="file" class="form-control"></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-info">Submit Reading</button></div>
+  </div></div>
+</div>
+
+<!-- 9. Service/Plumber Modal -->
+<div class="modal" [class.show]="activeModal === 'serviceWaterModal'" [style.display]="activeModal === 'serviceWaterModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-tools text-warning me-2"></i>Request Plumber</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Issue</label><select class="pm-form-control"><option>Leak Repair</option><option>Pipe Replacement</option><option>Meter Fix</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Preferred Time</label><input type="datetime-local" class="pm-form-control"></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Book Plumber</button></div>
+  </div></div>
+</div>
+
+<!-- 10. Auto-Pay Modal -->
+<div class="modal" [class.show]="activeModal === 'autoPayWaterModal'" [style.display]="activeModal === 'autoPayWaterModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-repeat text-primary me-2"></i>Setup Auto-Pay</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Select Account</label><select class="pm-form-control"><option *ngFor="let a of waterAccounts">{{a.provider}} - {{a.account}}</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Trigger</label><select class="pm-form-control"><option>On Due Date</option><option>When Bill Arrives</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-info">Save Rule</button></div>
+  </div></div>
+</div>
+
+<!-- 11. Dispute Modal -->
+<div class="modal" [class.show]="activeModal === 'disputeWaterModal'" [style.display]="activeModal === 'disputeWaterModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-circle me-2" style="color:var(--pm-purple)"></i>Dispute Bill</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Account</label><select class="pm-form-control"><option *ngFor="let a of waterAccounts">{{a.nickname}}</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Reason</label><select class="pm-form-control"><option>Unusually High Bill</option><option>Estimated Reading Error</option><option>Leak Adjustment</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Details</label><textarea class="pm-form-control" rows="3"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Submit Dispute</button></div>
+  </div></div>
+</div>
+
+<!-- 12. Bulk Pay Modal -->
+<div class="modal" [class.show]="activeModal === 'bulkWaterPayModal'" [style.display]="activeModal === 'bulkWaterPayModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-collection me-2" style="color:var(--pm-purple)"></i>Bulk Water Pay</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="status-row" *ngFor="let a of waterAccounts"><div><input type="checkbox"> <strong>{{a.nickname}}</strong> - {{a.amount}}</div></div>
+      <div class="p-3 mt-3 rounded" style="background:var(--pm-surface-2)"><div class="d-flex justify-content-between"><strong>Total Selected</strong><strong style="color:var(--pm-primary)">KES 8,350</strong></div></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-info" (click)="openModal('payWaterModal')">Pay Selected</button></div>
+  </div></div>
+</div>
+
+<!-- 13. Export Statements Modal -->
+<div class="modal" [class.show]="activeModal === 'exportWaterModal'" [style.display]="activeModal === 'exportWaterModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-download me-2" style="color:var(--pm-accent)"></i>Export Statements</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Period</label><select class="pm-form-control"><option>Last Month</option><option>Last 3 Months</option><option>Year to Date</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Format</label><select class="pm-form-control"><option>PDF</option><option>CSV</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary">Download</button></div>
+  </div></div>
+</div>
+
+<!-- 14. Bill Breakdown Modal -->
+<div class="modal" [class.show]="activeModal === 'waterBillBreakdownModal'" [style.display]="activeModal === 'waterBillBreakdownModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Full Statement</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-file-text"></i></div><h5>NCWSC Statement</h5><p style="font-size:13px;color:var(--pm-ink-soft)">Detailed breakdown available for download.</p></div></div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button></div>
+  </div></div>
+</div>
+
+<!-- 15. Analytics Deep Dive Modal -->
+<div class="modal" [class.show]="activeModal === 'waterAnalyticsModal'" [style.display]="activeModal === 'waterAnalyticsModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bar-chart text-info me-2"></i>Analytics Deep Dive</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--pm-ink-soft)">Advanced m³ tracking, property comparisons, and anomaly detection reporting.</p>
+      <div class="chart-bars" style="height:150px">
+        <div *ngFor="let bar of consumptionChart" class="chart-bar" [style.height]="bar.height" [style.background]="bar.color"><span class="bar-label">{{bar.label}}</span></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 16. Compare Suppliers Modal -->
+<div class="modal" [class.show]="activeModal === 'compareSuppliersModal'" [style.display]="activeModal === 'compareSuppliersModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-left-right text-primary me-2"></i>Compare Bowser Suppliers</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="table-responsive"><table class="pm-table"><thead><tr><th>Supplier</th><th>Cost (10kL)</th><th>SLA</th><th>Rating</th></tr></thead>
+      <tbody><tr *ngFor="let sup of bowserSuppliers"><td><strong>{{sup.name}}</strong></td><td>{{sup.cost}}</td><td>{{sup.sla}}</td><td><i class="bi bi-star-fill text-warning"></i> 4.8</td></tr></tbody></table></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+  </div></div>
+</div>
+
+<!-- 17. Share Receipt Modal -->
+<div class="modal" [class.show]="activeModal === 'shareReceiptModal'" [style.display]="activeModal === 'shareReceiptModal' ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered" style="position:relative;z-index:1050"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-share me-2"></i>Share Receipt</h5><button type="button" class="btn-close" (click)="closeModal()"></button></div>
+    <div class="modal-body">
+      <div class="d-flex justify-content-center gap-3">
+        <button class="pm-btn"><i class="bi bi-whatsapp text-success"></i> WhatsApp</button>
+        <button class="pm-btn"><i class="bi bi-envelope text-info"></i> Email</button>
+        <button class="pm-btn"><i class="bi bi-telegram" style="color:var(--pm-primary)"></i> Telegram</button>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button></div>
+  </div></div>
+</div>

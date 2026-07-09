@@ -1,0 +1,1200 @@
+<div class="pm-app">
+  <div class="pm-main">
+    <div class="pm-page-bar">
+      <div>
+        <div class="pm-breadcrumb"><a href="javascript:void(0)">Developer Portal</a> / <a
+            href="javascript:void(0)">APIs</a> / <strong>Compliance &amp; Audit</strong></div>
+        <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 4.12 —
+          Compliance, Audit &amp; Regulatory Integration</h2>
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Integrate real-time regulatory reporting, manage
+          immutable audit trails, and ensure strict compliance.</p>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <button class="pm-btn" (click)="openModal('envSwitcherModal')"><i class="bi bi-hdd-network"></i>
+          Environment</button>
+        <button class="pm-btn" (click)="openModal('auditAlertsModal')"><i class="bi bi-bell"></i> Alerts <span
+            class="pm-badge pm-badge-danger" style="margin-left:4px">3</span></button>
+        <button class="pm-btn" (click)="openModal('isoMessageModal')"><i class="bi bi-globe"></i> ISO 20022
+          Tester</button>
+        <button class="pm-btn" (click)="openModal('dsarRequestModal')"><i class="bi bi-person-bounding-box"></i> DSAR
+          API</button>
+        <button class="pm-btn" (click)="openModal('kraEtimModal')"><i class="bi bi-receipt-cutoff"></i> KRA e-TIMS
+          Check</button>
+        <button class="pm-btn pm-btn-primary" (click)="openModal('genAuditTokenModal')"><i class="bi bi-key"></i> Audit
+          Access Token</button>
+      </div>
+    </div>
+    <div class="pm-content">
+      <div class="row g-3">
+        <div class="col-lg-3 col-md-6">
+          <div class="pm-card" style="min-height:140px;border-left:4px solid var(--pm-accent)">
+            <p class="pm-stat-label" style="color:var(--pm-accent)">COMPLIANCE HEALTH</p>
+            <div class="pm-stat-value" style="margin:6px 0;color:var(--pm-ink)">100%</div><span
+              class="pm-badge pm-badge-success"><i class="bi bi-check-circle"></i> Fully Compliant</span>
+            <div style="font-size:11px;color:var(--pm-muted);margin-top:8px">CBK, KRA, ODPC checks passed</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="pm-card" style="min-height:140px">
+            <p class="pm-stat-label" style="color:var(--pm-info)">AUDIT LOG ENTRIES (30D)</p>
+            <div class="pm-stat-value" style="margin:6px 0">2.4M</div><span class="pm-badge pm-badge-info"><i
+                class="bi bi-shield-lock"></i> WORM Encrypted</span>
+            <div style="font-size:11px;color:var(--pm-muted);margin-top:8px">Last synced: 2 mins ago</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="pm-card" style="min-height:140px">
+            <p class="pm-stat-label" style="color:var(--pm-warning)">PENDING REG. FILINGS</p>
+            <div class="pm-stat-value" style="margin:6px 0">2</div><span class="pm-badge pm-badge-warning"><i
+                class="bi bi-clock"></i> Next due in 4 days</span>
+            <div style="font-size:11px;color:var(--pm-muted);margin-top:8px">KRA DST, NSSF Tier II</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="pm-card pm-card-dark" style="min-height:140px">
+            <p class="pm-stat-label" style="color:rgba(255,255,255,0.7)">API RATE LIMIT STATUS</p>
+            <div class="pm-stat-value" style="margin:6px 0;color:#fff">Healthy</div><span
+              class="pm-badge pm-badge-slate"><i class="bi bi-activity"></i> 450 req/sec</span>
+            <div class="pm-progress mt-2">
+              <div class="pm-progress-bar" style="width:15%;background:var(--pm-accent)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-8">
+          <div class="pm-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+              <h3 class="pm-section-title"><i class="bi bi-bank" style="color:var(--pm-primary)"></i> 4.12.1 —
+                Regulatory Reporting APIs</h3>
+              <div class="pm-tab-pills">
+                <button class="pm-tab-pill" [class.active]="activeRegTab === 'cbk'"
+                  (click)="switchMainTab('reg','cbk')">CBK &amp; AML</button>
+                <button class="pm-tab-pill" [class.active]="activeRegTab === 'kra'"
+                  (click)="switchMainTab('reg','kra')">KRA &amp; Taxes</button>
+                <button class="pm-tab-pill" [class.active]="activeRegTab === 'odpc'"
+                  (click)="switchMainTab('reg','odpc')">Data Privacy (ODPC)</button>
+              </div>
+            </div>
+            @switch (activeRegTab) {
+            @case ('cbk') {
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Endpoints for CBK reporting, AML, and large transaction
+              flagging.</p>
+            <div class="endpoint-card mb-2" (click)="openModal('apiEndpointModal','cbkLarge')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                      style="font-family:monospace">/v1/compliance/cbk/large-transaction</strong></div>
+                  <div style="font-size:12px;color:var(--pm-muted)">Report transactions exceeding KES 1M to the FRC.
+                  </div>
+                </div><span class="pm-badge pm-badge-success">Operational</span>
+              </div>
+            </div>
+            <div class="endpoint-card mb-2" (click)="openModal('apiEndpointModal','cbkStr')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                      style="font-family:monospace">/v1/compliance/cbk/str</strong></div>
+                  <div style="font-size:12px;color:var(--pm-muted)">Submit STRs based on ML risk scoring.</div>
+                </div><span class="pm-badge pm-badge-success">Operational</span>
+              </div>
+            </div>
+            <div class="endpoint-card" (click)="openModal('apiEndpointModal','cbkKyc')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="d-flex align-items-center mb-1"><span class="api-method api-get">GET</span> <strong
+                      style="font-family:monospace">/v1/compliance/kyc/pep-screening</strong></div>
+                  <div style="font-size:12px;color:var(--pm-muted)">Screen against PEP and sanction lists.</div>
+                </div><span class="pm-badge pm-badge-success">Operational</span>
+              </div>
+            </div>
+            <div class="mt-3 text-end"><button class="pm-btn pm-btn-sm" (click)="openModal('simulateCbkModal')">Simulate
+                AML Trigger</button></div>
+            }
+            @case ('kra') {
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Tax compliance integrations for e-TIMS, PAYE, and VAT.
+            </p>
+            <div class="endpoint-card mb-2" (click)="openModal('kraEtimModal')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                      style="font-family:monospace">/v1/tax/kra/e-tims/invoice</strong></div>
+                  <div style="font-size:12px;color:var(--pm-muted)">Push invoice data to KRA e-TIMS.</div>
+                </div><span class="pm-badge pm-badge-success">Operational</span>
+              </div>
+            </div>
+            <div class="endpoint-card mb-2" (click)="openModal('apiEndpointModal','kraPaye')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                      style="font-family:monospace">/v1/tax/kra/paye/submit</strong></div>
+                  <div style="font-size:12px;color:var(--pm-muted)">Submit monthly PAYE returns to iTax.</div>
+                </div><span class="pm-badge pm-badge-warning">Maintenance at 10 PM</span>
+              </div>
+            </div>
+            <div class="endpoint-card" (click)="openModal('apiEndpointModal','kraWht')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                      style="font-family:monospace">/v1/tax/kra/wht/certificate</strong></div>
+                  <div style="font-size:12px;color:var(--pm-muted)">Generate WHT certificates.</div>
+                </div><span class="pm-badge pm-badge-success">Operational</span>
+              </div>
+            </div>
+            }
+            @case ('odpc') {
+            <p style="font-size:13px;color:var(--pm-ink-soft)">APIs mapped to Data Protection Act 2019 requirements.</p>
+            <div class="endpoint-card mb-2" (click)="openModal('dsarRequestModal')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                      style="font-family:monospace">/v1/privacy/dsar/request</strong></div>
+                  <div style="font-size:12px;color:var(--pm-muted)">Initiate DSAR.</div>
+                </div><span class="pm-badge pm-badge-success">Operational</span>
+              </div>
+            </div>
+            <div class="endpoint-card mb-2" (click)="openModal('apiEndpointModal','odpcErase')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="d-flex align-items-center mb-1"><span class="api-method api-del">DEL</span> <strong
+                      style="font-family:monospace">/v1/privacy/data/erase</strong></div>
+                  <div style="font-size:12px;color:var(--pm-muted)">Execute right to erasure.</div>
+                </div><span class="pm-badge pm-badge-success">Operational</span>
+              </div>
+            </div>
+            <div class="endpoint-card" (click)="openModal('apiEndpointModal','odpcConsent')">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="d-flex align-items-center mb-1"><span class="api-method api-put">PUT</span> <strong
+                      style="font-family:monospace">/v1/privacy/consent/update</strong></div>
+                  <div style="font-size:12px;color:var(--pm-muted)">Manage user consent flags.</div>
+                </div><span class="pm-badge pm-badge-success">Operational</span>
+              </div>
+            </div>
+            }
+            }
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="pm-card h-100">
+            <h3 class="pm-section-title mb-3">Quick Tools</h3>
+            <div class="quick-action-grid mb-4">
+              <button class="quick-action-btn" (click)="openModal('genAuditTokenModal')"><i
+                  class="bi bi-key text-warning me-1"></i> Audit Token</button>
+              <button class="quick-action-btn" (click)="openModal('isoMessageModal')"><i
+                  class="bi bi-file-code text-info me-1"></i> MX Validator</button>
+              <button class="quick-action-btn" (click)="openModal('swiftRouteModal')"><i
+                  class="bi bi-send text-primary me-1"></i> SWIFT Route</button>
+              <button class="quick-action-btn" (click)="openModal('openBankingModal')"><i
+                  class="bi bi-unlock text-success me-1"></i> OB Consent</button>
+              <button class="quick-action-btn" (click)="openModal('auditReportModal')"><i
+                  class="bi bi-cloud-download text-danger me-1"></i> Export Logs</button>
+              <button class="quick-action-btn" (click)="openModal('complianceDashModal')"><i
+                  class="bi bi-speedometer me-1" style="color:var(--pm-purple)"></i> Dashboard</button>
+            </div>
+            <div class="utility-block">
+              <h4 style="font-size:13px;font-weight:700;margin:0 0 10px">Documentation Hub</h4>
+              <div class="feed-item py-2"><i class="bi bi-journal-text text-muted"></i> <a href="javascript:void(0)"
+                  (click)="selectedDoc=docItems[0];openModal('docViewerModal')"
+                  style="font-size:13px;font-weight:500;color:var(--pm-primary);text-decoration:none">KYC/AML
+                  Implementation Guide</a></div>
+              <div class="feed-item py-2"><i class="bi bi-journal-text text-muted"></i> <a href="javascript:void(0)"
+                  (click)="selectedDoc=docItems[1];openModal('docViewerModal')"
+                  style="font-size:13px;font-weight:500;color:var(--pm-primary);text-decoration:none">Data Privacy
+                  Compliance Checklist</a></div>
+              <div class="feed-item py-2"><i class="bi bi-journal-text text-muted"></i> <a href="javascript:void(0)"
+                  (click)="selectedDoc=docItems[2];openModal('docViewerModal')"
+                  style="font-size:13px;font-weight:500;color:var(--pm-primary);text-decoration:none">KRA e-TIMS API
+                  Spec v2.1</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="pm-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="pm-section-title"><i class="bi bi-shield-check" style="color:var(--pm-accent)"></i> 4.12.2 —
+                Audit &amp; Compliance Tools</h3><button class="pm-btn pm-btn-sm"
+                (click)="openModal('auditLogsModal')">View Logs</button>
+            </div>
+            <div class="p-3 border rounded mb-3" style="background:var(--pm-surface-2)">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <div style="font-weight:600;font-size:14px">Immutable Audit Trail (WORM)</div><span
+                  class="pm-badge pm-badge-success">Active</span>
+              </div>
+              <p style="font-size:12px;color:var(--pm-muted);margin-bottom:12px">All transaction states and access logs
+                are written to a WORM datastore.</p>
+              <div class="d-flex gap-2"><button class="pm-btn pm-btn-sm" (click)="openModal('verifyLogModal')"><i
+                    class="bi bi-check-circle"></i> Verify Hash</button><button class="pm-btn pm-btn-sm"
+                  (click)="openModal('thirdPartyAuditModal')"><i class="bi bi-people"></i> Auditor Portal</button></div>
+            </div>
+            <h4 style="font-size:13px;font-weight:700;margin:0 0 10px">Recent System Audit Events</h4>
+            <div class="feed-item py-2">
+              <div class="pm-icon-circle"
+                style="width:32px;height:32px;background:var(--pm-primary-soft);color:var(--pm-primary)"><i
+                  class="bi bi-key" style="font-size:14px"></i></div>
+              <div style="flex:1">
+                <div style="font-weight:600;font-size:12px">API Key Rotated</div>
+                <div style="font-size:11px;color:var(--pm-muted)">User: dev.admin@paymo.co.ke</div>
+              </div>
+              <div style="font-size:11px;color:var(--pm-muted)">10 mins ago</div>
+            </div>
+            <div class="feed-item py-2">
+              <div class="pm-icon-circle"
+                style="width:32px;height:32px;background:var(--pm-danger-soft);color:var(--pm-danger)"><i
+                  class="bi bi-person-x" style="font-size:14px"></i></div>
+              <div style="flex:1">
+                <div style="font-weight:600;font-size:12px">Failed Login Attempt (x5)</div>
+                <div style="font-size:11px;color:var(--pm-muted)">Account: system.hook@paymo.co.ke</div>
+              </div>
+              <div style="font-size:11px;color:var(--pm-muted)">1 hr ago</div>
+            </div>
+            <div class="feed-item py-2">
+              <div class="pm-icon-circle"
+                style="width:32px;height:32px;background:var(--pm-warning-soft);color:var(--pm-warning)"><i
+                  class="bi bi-gear" style="font-size:14px"></i></div>
+              <div style="flex:1">
+                <div style="font-weight:600;font-size:12px">Webhook URL Changed</div>
+                <div style="font-size:11px;color:var(--pm-muted)">Event: payout.completed</div>
+              </div>
+              <div style="font-size:11px;color:var(--pm-muted)">4 hrs ago</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="pm-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="pm-section-title"><i class="bi bi-globe" style="color:var(--pm-purple)"></i> 4.12.3 —
+                International Standards</h3><button class="pm-btn pm-btn-sm"
+                (click)="openModal('isoDocsModal')">Standards Docs</button>
+            </div>
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="utility-block" style="border-left:3px solid var(--pm-primary)">
+                  <div class="d-flex justify-content-between">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 4px">ISO 20022 Messaging</h4><span
+                      class="pm-badge pm-badge-success">Enabled</span>
+                  </div>
+                  <p style="font-size:12px;color:var(--pm-muted);margin-bottom:8px">API support for standardized
+                    financial messaging.</p>
+                  <div class="d-flex gap-2 flex-wrap"><span class="pm-badge pm-badge-slate">pain.001</span><span
+                      class="pm-badge pm-badge-slate">camt.052/053</span></div>
+                  <div class="mt-2"><button class="pm-btn pm-btn-sm pm-btn-outline"
+                      (click)="openModal('isoMessageModal')">Validate Payload</button></div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="utility-block" style="border-left:3px solid var(--pm-warning)">
+                  <div class="d-flex justify-content-between">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 4px">SWIFT &amp; Cross-Border</h4><span
+                      class="pm-badge pm-badge-success">Enabled</span>
+                  </div>
+                  <p style="font-size:12px;color:var(--pm-muted);margin-bottom:8px">SWIFT gpi tracking and correspondent
+                    routing.</p>
+                  <div class="d-flex gap-2 mt-2"><button class="pm-btn pm-btn-sm pm-btn-outline"
+                      (click)="openModal('swiftRouteModal')">Route Check</button><button
+                      class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('gpiTrackerModal')">gpi
+                      Tracker</button></div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="utility-block" style="border-left:3px solid var(--pm-accent)">
+                  <div class="d-flex justify-content-between">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 4px">Open Banking (PSD2/Kenya)</h4><span
+                      class="pm-badge pm-badge-success">Compliant</span>
+                  </div>
+                  <p style="font-size:12px;color:var(--pm-muted);margin-bottom:8px">AIS, PIS, and SCA implementation.
+                  </p>
+                  <div class="d-flex gap-2 mt-2"><button class="pm-btn pm-btn-sm pm-btn-outline"
+                      (click)="openModal('openBankingModal')">Consent Mgmt</button><button
+                      class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('scaSettingsModal')">SCA Rules</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (activeModalId) {
+<div class="modal-backdrop fade show" style="z-index:1050" (click)="closeModal()"></div>
+}
+
+<!-- 1. API Endpoint Inspector -->
+@if (activeModalId === 'apiEndpointModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-terminal me-2"></i>API Endpoint Explorer</h5><button class="btn-close"
+          (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-tab-pills mb-3"><button class="pm-tab-pill" [class.active]="activeEpTab === 'req'"
+            (click)="switchTab('epTab','req')">Request</button><button class="pm-tab-pill"
+            [class.active]="activeEpTab === 'res'" (click)="switchTab('epTab','res')">Response</button><button
+            class="pm-tab-pill" [class.active]="activeEpTab === 'auth'" (click)="switchTab('epTab','auth')">Auth &amp;
+            Scopes</button></div>
+        @switch (activeEpTab) {
+        @case ('req') {
+        <div class="d-flex align-items-center mb-3"><span class="api-method"
+            [ngClass]="currentEndpoint.methodClass">{{currentEndpoint.method}}</span><input type="text"
+            class="pm-form-control" [value]="currentEndpoint.url" readonly
+            style="font-family:monospace;background:var(--pm-surface-2)"></div><label class="pm-form-label">Payload
+          Schema</label>
+        <div class="code-block">
+          <pre><code>{{currentEndpoint.payload}}</code></pre>
+        </div>
+        }
+        @case ('res') {
+        <label class="pm-form-label">Success Response</label>
+        <div class="code-block">
+          <pre><code>{{currentEndpoint.response}}</code></pre>
+        </div><label class="pm-form-label mt-3">Error Responses</label>
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (e of currentEndpoint.errors; track e.code) {
+              <tr>
+                <td>{{e.code}}</td>
+                <td>{{e.reason}}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        }
+        @case ('auth') {
+        <div class="p-3 border rounded mb-3">
+          <h6 style="font-size:13px;font-weight:700">Authentication Required</h6>
+          <p style="font-size:12px;color:var(--pm-muted)">OAuth 2.0 Client Credentials with signed JWT.</p>
+          <div class="d-flex gap-2">
+            @for (a of currentEndpoint.authTypes; track $index) {
+            <span class="pm-badge" [ngClass]="currentEndpoint.authClasses[$index]">{{a}}</span>
+            }
+          </div>
+        </div>
+        <div class="p-3 border rounded">
+          <h6 style="font-size:13px;font-weight:700">Required OAuth Scopes</h6>
+          <ul style="font-size:12px;color:var(--pm-muted);margin:0;padding-left:16px">
+            @for (s of currentEndpoint.scopes; track s) {
+            <li><code>{{s}}</code></li>
+            }
+          </ul>
+        </div>
+        }
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-primary" (click)="closeModal();openModal('simulateCbkModal')">Test in Sandbox</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 2. Simulate CBK/AML -->
+@if (activeModalId === 'simulateCbkModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-exclamation text-warning me-2"></i>Simulate CBK / AML Trigger
+        </h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          @for (s of cbkSteps; track s.num) {
+          <div class="pm-step" [ngClass]="{active: cbkCurrentStep===s.num, completed: cbkCurrentStep>s.num}">
+            <div class="pm-step-num">{{cbkCurrentStep > s.num ? '&#10003;' : s.num}}</div><span
+              class="pm-step-label">{{s.label}}</span>
+            @if (s.num < cbkTotalSteps) { <div class="pm-step-line">
+          </div>
+          }
+        </div>
+        }
+      </div>
+      @switch (cbkCurrentStep) {
+      @case (1) {
+      <h6 style="font-weight:700;margin-bottom:16px">Step 1: Configure Params</h6>
+      <div class="row g-3">
+        <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control"
+            value="1500000"></div>
+        <div class="col-md-6"><label class="pm-form-label">Scenario</label><select class="pm-form-control">
+            <option>Large Transaction</option>
+            <option>Structuring</option>
+            <option>High-Risk Jurisdiction</option>
+          </select></div>
+        <div class="col-md-6"><label class="pm-form-label">Sender</label><input class="pm-form-control"
+            value="John Doe Test"></div>
+        <div class="col-md-6"><label class="pm-form-label">Destination</label><select class="pm-form-control">
+            <option>Kenya</option>
+            <option>UAE</option>
+            <option>Cayman Islands</option>
+          </select></div>
+      </div>
+      }
+      @case (2) {
+      <h6 style="font-weight:700;margin-bottom:16px">Step 2: Payload &amp; Hash</h6>
+      <div class="code-block mb-3" style="max-height:200px">
+        <pre><code>&#123; "tx_ref": "SIM-8849-221A", "amount": 1500000.00, "currency": "KES", "type": "B2B_TRANSFER" &#125;</code></pre>
+      </div>
+      <div class="mb-3"><label class="pm-form-label">HMAC-SHA256 Signature</label><input class="pm-form-control"
+          value="a8b9c7d6e5f4..." readonly style="font-family:monospace;background:var(--pm-surface-2)"></div>
+      }
+      @case (3) {
+      <div class="pm-receipt">
+        <div class="receipt-icon" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i
+            class="bi bi-shield-exclamation"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-warning)">AML Alert Triggered</h5>
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Mock STR report generated.</p>
+        <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Rule Triggered</span><strong>Rule
+              14A</strong></div>
+          <div class="d-flex justify-content-between mb-2"><span class="text-muted">Risk Score</span><strong>85 /
+              100</strong></div>
+          <div class="d-flex justify-content-between"><span class="text-muted">FRC Mock Ref</span><strong
+              style="font-family:monospace">FRC-MOCK-9912</strong></div>
+        </div>
+      </div>
+      }
+      }
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button>
+      @if (cbkCurrentStep > 1) {
+      <button class="pm-btn" (click)="prevCbkStep()"><i class="bi bi-arrow-left"></i> Back</button>
+      }
+      @if (cbkCurrentStep < cbkTotalSteps) { <button class="pm-btn pm-btn-primary" (click)="nextCbkStep()">Next <i
+          class="bi bi-arrow-right"></i></button>
+        }
+        @if (cbkCurrentStep === cbkTotalSteps) {
+        <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        }
+    </div>
+  </div>
+</div>
+</div>
+}
+
+<!-- 3. KRA e-TIMS -->
+@if (activeModalId === 'kraEtimModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-receipt-cutoff text-success me-2"></i>KRA e-TIMS Validator</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (!isProcessed) {
+        <div class="mb-3"><label class="pm-form-label">Invoice Number</label><input class="pm-form-control"
+            value="INV-2025-0899"></div>
+        <div class="mb-3"><label class="pm-form-label">Gross Amount (KES)</label><input class="pm-form-control"
+            value="45000"></div>
+        <div class="mb-3"><label class="pm-form-label">Tax Category</label><select class="pm-form-control">
+            <option>16% VAT</option>
+            <option>Zero Rated</option>
+            <option>Exempt</option>
+          </select></div>
+        <div class="p-3 rounded mt-3" style="background:var(--pm-surface-2);font-size:12px">Simulates posting to KRA
+          e-TIMS middleware.</div>
+        } @else {
+        <div class="pm-receipt">
+          <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">{{processedTitle}}</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin:8px 0 0">{{processedDetail}}</p>
+        </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button>
+        @if (!isProcessed) {
+        <button class="pm-btn pm-btn-accent"
+          (click)="processAction('e-TIMS Mock Successful!','CU Num: 0011223344/20250627/0001')">Simulate e-TIMS
+          Post</button>
+        }
+        @if (isProcessed) {
+        <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 4. DSAR -->
+@if (activeModalId === 'dsarRequestModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-bounding-box me-2" style="color:var(--pm-purple)"></i>Initiate
+          DSAR</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (!isProcessed) {
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Simulate a Data Subject Access Request.</p>
+        <div class="mb-3"><label class="pm-form-label">Customer ID or Phone</label><input class="pm-form-control"
+            placeholder="e.g. 254712345678"></div>
+        <div class="mb-3"><label class="pm-form-label">Request Type</label><select class="pm-form-control">
+            <option>Full Data Export</option>
+            <option>Right to Erasure</option>
+            <option>Consent Review</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Webhook URL</label><input class="pm-form-control"
+            value="https://api.yourdomain.com/webhooks/dsar"></div>
+        } @else {
+        <div class="pm-receipt">
+          <div class="receipt-icon" style="background:var(--pm-purple-soft);color:var(--pm-purple)"><i
+              class="bi bi-person-check"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-purple)">{{processedTitle}}</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin:8px 0 0">{{processedDetail}}</p>
+        </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button>
+        @if (!isProcessed) {
+        <button class="pm-btn pm-btn-primary"
+          (click)="processAction('DSAR compilation started.','Job ID: DSAR-8812-X')">Initiate Request</button>
+        }
+        @if (isProcessed) {
+        <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 5. Generate Audit Token -->
+@if (activeModalId === 'genAuditTokenModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-key text-warning me-2"></i>Generate Auditor Token</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (!isProcessed) {
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Create a time-bound, read-only JWT for external auditors.</p>
+        <div class="mb-3"><label class="pm-form-label">Auditor Firm</label><input class="pm-form-control"
+            placeholder="e.g. KPMG, PwC"></div>
+        <div class="mb-3"><label class="pm-form-label">Expiration Date</label><input type="datetime-local"
+            class="pm-form-control" value="2025-07-04T17:00"></div>
+        <div class="mb-3"><label class="pm-form-label">Scopes</label>
+          <div class="form-check"><input class="form-check-input" type="checkbox" checked disabled><label
+              class="form-check-label" style="font-size:13px"><code>audit:read</code></label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" checked><label
+              class="form-check-label" style="font-size:13px"><code>transactions:read</code></label></div>
+        </div>
+        } @else {
+        <div class="pm-receipt">
+          <div class="receipt-icon" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i
+              class="bi bi-key-fill"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-warning)">{{processedTitle}}</h5>
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin:8px 0 0">{{processedDetail}}</p>
+        </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button>
+        @if (!isProcessed) {
+        <button class="pm-btn pm-btn-primary"
+          (click)="processAction('Token Generated!','Token begins: eyJhbGciOiJIUzI1...')">Generate JWT</button>
+        }
+        @if (isProcessed) {
+        <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 6. Audit Logs -->
+@if (activeModalId === 'auditLogsModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-xl modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-list-columns me-2"></i>Immutable Audit Logs</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex gap-2 mb-3 flex-wrap"><input type="text" class="pm-form-control" style="width:200px"
+            placeholder="Search..."><select class="pm-form-control" style="width:auto">
+            <option>All Events</option>
+            <option>Auth</option>
+            <option>Transactions</option>
+          </select><button class="pm-btn"><i class="bi bi-funnel"></i> Filter</button></div>
+        <div class="table-responsive" style="max-height:400px;overflow-y:auto">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Event ID</th>
+                <th>Event Type</th>
+                <th>Actor</th>
+                <th>IP</th>
+                <th>Hash</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (log of auditLogs; track log.eventId) {
+              <tr>
+                <td>{{log.timestamp}}</td>
+                <td><code>{{log.eventId}}</code></td>
+                <td>{{log.eventType}}</td>
+                <td>{{log.actor}}</td>
+                <td>{{log.ip}}</td>
+                <td><i class="bi bi-check-circle-fill text-success"></i></td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-primary" (click)="closeModal();openModal('auditReportModal')">Export</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 7. Verify Log -->
+@if (activeModalId === 'verifyLogModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-check-circle me-2" style="color:var(--pm-accent)"></i>Verify Hash</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (!verifyResult) {
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Enter an Event ID to verify.</p>
+        <div class="mb-3"><label class="pm-form-label">Event ID</label><input class="pm-form-control" value="evt_889a">
+        </div>
+        } @else {
+        <div class="pm-receipt">
+          <div class="receipt-icon"><i class="bi bi-shield-check"></i></div>
+          <h5 style="font-weight:700;color:var(--pm-accent)">Hash Verified</h5>
+          <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Event Hash</span><strong
+                style="font-family:monospace;font-size:11px">{{verifyResult?.hash}}</strong></div>
+            <div class="d-flex justify-content-between"><span class="text-muted">Previous Hash</span><strong
+                style="font-family:monospace;font-size:11px">{{verifyResult?.prevHash}}</strong></div>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button>
+        @if (!verifyResult) {
+        <button class="pm-btn pm-btn-primary" (click)="verifyLog()">Verify</button>
+        }
+        @if (verifyResult) {
+        <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 8. Environment Switcher -->
+@if (activeModalId === 'envSwitcherModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-hdd-network me-2"></i>Switch Environment</h5><button class="btn-close"
+          (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Select the target API environment.</p>
+        @for (env of environments; track env.key) {
+        <div class="endpoint-card mb-2" [style.borderLeft]="'3px solid ' + env.color" (click)="switchEnv(env.key)">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <div style="font-weight:700;font-size:14px">{{env.label}}</div>
+              <div style="font-size:12px;color:var(--pm-muted);font-family:monospace">{{env.url}}</div>
+            </div>
+            @if (currentEnv === env.key) {
+            <span class="pm-badge pm-badge-success"><i class="bi bi-check-circle"></i> Active</span>
+            }
+            @if (currentEnv !== env.key) {
+            <span class="pm-badge pm-badge-slate">Switch</span>
+            }
+          </div>
+        </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 9. Audit Alerts -->
+@if (activeModalId === 'auditAlertsModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-bell me-2" style="color:var(--pm-warning)"></i>Compliance Alerts <span
+            class="pm-badge pm-badge-danger" style="margin-left:8px">{{complianceAlerts.length}}</span></h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @for (alert of complianceAlerts; track alert.title) {
+        <div class="p-3 border rounded mb-2" [style.borderLeft]="getAlertBorder(alert.severity)">
+          <div class="d-flex justify-content-between align-items-start mb-1"><span class="pm-badge"
+              [class.pm-badge-danger]="alert.severity === 'danger'"
+              [class.pm-badge-warning]="alert.severity === 'warning'"
+              [class.pm-badge-info]="alert.severity === 'info'">{{alert.severity === 'danger' ? 'Critical' :
+              alert.severity === 'warning' ? 'Warning' : 'Info'}}</span><span
+              style="font-size:11px;color:var(--pm-muted)">{{alert.time}}</span></div>
+          <h6 style="font-size:14px;font-weight:700;margin:6px 0 4px">{{alert.title}}</h6>
+          <p style="font-size:12px;color:var(--pm-ink-soft);margin:0 0 8px">{{alert.description}}</p><button
+            class="pm-btn pm-btn-sm" (click)="closeModal();openModal(alert.action)"><i class="bi bi-arrow-right"></i>
+            Take Action</button>
+        </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-primary" (click)="closeModal();openModal('auditReportModal')">View Full Report</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 10. Audit Report -->
+@if (activeModalId === 'auditReportModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-pdf me-2" style="color:var(--pm-danger)"></i>Generate Audit Report
+        </h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          @for (s of reportSteps; track s.num) {
+          <div class="pm-step" [ngClass]="{active: reportCurrentStep===s.num, completed: reportCurrentStep>s.num}">
+            <div class="pm-step-num">{{reportCurrentStep > s.num ? '&#10003;' : s.num}}</div><span
+              class="pm-step-label">{{s.label}}</span>
+            @if (s.num < reportTotalSteps) { <div class="pm-step-line">
+          </div>
+          }
+        </div>
+        }
+      </div>
+      @switch (reportCurrentStep) {
+      @case (1) {
+      <h6 style="font-weight:700;margin-bottom:16px">Step 1: Configure</h6>
+      <div class="mb-3"><label class="pm-form-label">Report Type</label><select class="pm-form-control"
+          [(ngModel)]="selectedReportType">
+          @for (r of reportTypes; track r.key) {
+          <option [value]="r.key">{{r.label}}</option>
+          }
+        </select></div>
+      <div class="row g-3">
+        <div class="col-md-6"><label class="pm-form-label">Date From</label><input type="date" class="pm-form-control"
+            value="2025-06-01"></div>
+        <div class="col-md-6"><label class="pm-form-label">Date To</label><input type="date" class="pm-form-control"
+            value="2025-06-27"></div>
+      </div>
+      }
+      @case (2) {
+      <h6 style="font-weight:700;margin-bottom:16px">Step 2: Columns</h6>
+      @for (col of reportColumns; track col.label) {
+      <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="col.checked"><label
+          class="form-check-label" style="font-size:13px">{{col.label}}</label></div>
+      }
+      }
+      @case (3) {
+      @if (!isProcessed) {
+      <div class="text-center py-4"><i class="bi bi-file-earmark-pdf" style="font-size:48px;color:var(--pm-muted)"></i>
+        <p style="font-size:14px;color:var(--pm-ink-soft);margin-top:12px">Click Generate to compile.</p>
+      </div>
+      } @else {
+      <div class="pm-receipt">
+        <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-accent)">{{processedTitle}}</h5>
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin:8px 0 0">{{processedDetail}}</p>
+      </div>
+      }
+      }
+      }
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button>
+      @if (reportCurrentStep > 1 && !isProcessed) {
+      <button class="pm-btn" (click)="prevReportStep()"><i class="bi bi-arrow-left"></i> Back</button>
+      }
+      @if (reportCurrentStep === reportTotalSteps && !isProcessed) {
+      <button class="pm-btn pm-btn-primary"
+        (click)="processAction('Report Generated!','compliance-audit-2025-06-27.pdf')">Generate</button>
+      }
+      @if (isProcessed) {
+      <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+      }
+      @if (reportCurrentStep < reportTotalSteps && !isProcessed) { <button class="pm-btn pm-btn-primary"
+        (click)="nextReportStep()">Next <i class="bi bi-arrow-right"></i></button>
+        }
+    </div>
+  </div>
+</div>
+</div>
+}
+
+<!-- 11. ISO 20022 -->
+@if (activeModalId === 'isoMessageModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-globe me-2" style="color:var(--pm-info)"></i>ISO 20022 Tester</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          @for (s of isoSteps; track s.num) {
+          <div class="pm-step" [ngClass]="{active: isoCurrentStep===s.num, completed: isoCurrentStep>s.num}">
+            <div class="pm-step-num">{{isoCurrentStep > s.num ? '&#10003;' : s.num}}</div><span
+              class="pm-step-label">{{s.label}}</span>
+            @if (s.num < isoTotalSteps) { <div class="pm-step-line">
+          </div>
+          }
+        </div>
+        }
+      </div>
+      @switch (isoCurrentStep) {
+      @case (1) {
+      <h6 style="font-weight:700;margin-bottom:16px">Step 1: Select Message Type</h6>
+      @for (mt of isoMessageTypes; track mt.key) {
+      <div class="endpoint-card mb-2"
+        [style.borderLeft]="selectedIsoType === mt.key ? '3px solid var(--pm-primary)' : '3px solid transparent'"
+        (click)="selectedIsoType = mt.key">
+        <div class="d-flex justify-content-between">
+          <div><strong style="font-size:13px">{{mt.label}}</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">{{mt.category}}</div>
+          </div>
+          @if (selectedIsoType === mt.key) {
+          <span class="pm-badge pm-badge-primary">Selected</span>
+          }
+        </div>
+      </div>
+      }
+      }
+      @case (2) {
+      <h6 style="font-weight:700;margin-bottom:16px">Step 2: Payload</h6>
+      <div class="code-block" style="max-height:200px">
+        <pre><code>&lt;Document xmlns="urn:iso:std:iso:20022:tech:xsd:{{selectedIsoType}}.001.03"&gt;
+  &lt;!-- Sample Payload --&gt;
+&lt;/Document&gt;</code></pre>
+      </div>
+      }
+      @case (3) {
+      <div class="pm-receipt">
+        <div class="receipt-icon" style="background:var(--pm-info-soft);color:var(--pm-info)"><i
+            class="bi bi-check-circle"></i></div>
+        <h5 style="font-weight:700;color:var(--pm-info)">Valid</h5>
+        <p style="font-size:13px;color:var(--pm-ink-soft)">The {{selectedIsoType}} message is valid.</p>
+      </div>
+      }
+      }
+    </div>
+    <div class="modal-footer">
+      @if (isoCurrentStep > 1) {
+      <button class="pm-btn" (click)="prevIsoStep()"><i class="bi bi-arrow-left"></i> Back</button>
+      }
+      @if (isoCurrentStep < isoTotalSteps) { <button class="pm-btn pm-btn-primary" (click)="nextIsoStep()">Next <i
+          class="bi bi-arrow-right"></i></button>
+        }
+        @if (isoCurrentStep === isoTotalSteps) {
+        <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        }
+    </div>
+  </div>
+</div>
+</div>
+}
+
+<!-- 12. SWIFT Route -->
+@if (activeModalId === 'swiftRouteModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-send me-2" style="color:var(--pm-warning)"></i>SWIFT Route Check</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (!routeResult) {
+        <div class="mb-3"><label class="pm-form-label">BIC From</label><input class="pm-form-control"
+            value="KCABOROXXXX"></div>
+        <div class="mb-3"><label class="pm-form-label">BIC To</label><input class="pm-form-control" value="BARCGB22XXX">
+        </div>
+        } @else {
+        <h6 style="font-weight:700;margin-bottom:12px">Route Chain</h6>
+        @for (hop of routeResult.chain; track hop.bank) {
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <div class="pm-icon-circle"
+            style="width:32px;height:32px;background:var(--pm-warning-soft);color:var(--pm-warning)"><i
+              class="bi bi-bank"></i></div>
+          <div><strong style="font-size:13px">{{hop.bank}}</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">{{hop.country}}</div>
+          </div>
+        </div>
+        }
+        <div class="mt-3 p-2 rounded" style="background:var(--pm-surface-2);font-size:12px"><i
+            class="bi bi-clock me-1"></i> Estimated: <strong>{{routeResult.estimatedTime}}</strong></div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button>
+        @if (!routeResult) {
+        <button class="pm-btn pm-btn-primary" (click)="checkSwiftRoute()">Check Route</button>
+        }
+        @if (routeResult) {
+        <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 13. GPI Tracker -->
+@if (activeModalId === 'gpiTrackerModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-geo-alt me-2" style="color:var(--pm-primary)"></i>gpi Tracker</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (!gpiResult) {
+        <div class="mb-3"><label class="pm-form-label">UETR</label><input class="pm-form-control"
+            placeholder="e.g. UETR-1234567890"></div>
+        } @else {
+        <div class="p-3 border rounded mb-3"><strong>UETR:</strong> <code>{{gpiResult?.uetr}}</code> <span
+            class="pm-badge pm-badge-info ms-2">{{gpiResult?.status}}</span></div>
+        @for (evt of gpiResult.events; track evt.status) {
+        <div class="d-flex gap-2 mb-2 align-items-center">
+          <div class="pm-icon-circle"
+            style="width:28px;height:28px;background:var(--pm-primary-soft);color:var(--pm-primary);font-size:11px;font-weight:700">
+            {{evt.status}}</div>
+          <span style="font-size:12px;color:var(--pm-muted)">{{evt.time}}</span>
+        </div>
+        }
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button>
+        @if (!gpiResult) {
+        <button class="pm-btn pm-btn-primary" (click)="trackGpi()">Track</button>
+        }
+        @if (gpiResult) {
+        <button class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 14. Open Banking -->
+@if (activeModalId === 'openBankingModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-unlock me-2" style="color:var(--pm-accent)"></i>Open Banking Consent
+          Management</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Scopes</th>
+                <th>Status</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (c of obConsents; track c.id) {
+              <tr>
+                <td>{{c.customer}}</td>
+                <td>{{c.scopes}}</td>
+                <td><span class="pm-badge pm-badge-success">{{c.status}}</span></td>
+                <td>{{c.created}}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-primary" (click)="processAction('Consent created.','Consent ID: OB-CNS-8821')">Create
+          New</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 15. SCA Settings -->
+@if (activeModalId === 'scaSettingsModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-lock me-2" style="color:var(--pm-purple)"></i>SCA Rules</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @for (rule of scaRules; track rule.id) {
+        <div class="p-3 border rounded mb-2 d-flex justify-content-between align-items-center">
+          <div><strong style="font-size:13px">{{rule.name}}</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">{{rule.desc}}</div>
+          </div>
+          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" [checked]="rule.enabled"
+              (change)="toggleSca(rule.id)"></div>
+        </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('Settings updated.','Changes apply to new sessions.')">Save</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 16. Doc Viewer -->
+@if (activeModalId === 'docViewerModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-journal-text me-2"></i>{{selectedDoc.title}}</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex gap-2 mb-3"><span class="pm-badge pm-badge-slate">{{selectedDoc.category}}</span><span
+            class="pm-badge pm-badge-info">{{selectedDoc.version}}</span></div>
+        <p style="font-size:14px;color:var(--pm-ink-soft);line-height:1.7">{{selectedDoc.content}}</p>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('Preparing PDF...','File: ' + selectedDoc.title + '.pdf')">Download</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 17. Third Party Audit -->
+@if (activeModalId === 'thirdPartyAuditModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-people me-2" style="color:var(--pm-warning)"></i>Third-Party Auditor
+          Portal</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Firm</th>
+                <th>Contact</th>
+                <th>Status</th>
+                <th>Expires</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (a of auditors; track a.firm) {
+              <tr>
+                <td>{{a.firm}}</td>
+                <td>{{a.contact}}</td>
+                <td><span class="pm-badge pm-badge-success">{{a.status}}</span></td>
+                <td>{{a.expires}}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-3"><label class="pm-form-label">Grant Access Duration</label><select class="pm-form-control"
+            style="width:auto">
+            <option>24 Hours</option>
+            <option>7 Days</option>
+            <option>30 Days</option>
+          </select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('Link generated.','Link expires in selected duration.')">Generate Access Link</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 18. Compliance Dashboard -->
+@if (activeModalId === 'complianceDashModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-xl modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-speedometer me-2" style="color:var(--pm-purple)"></i>Compliance
+          Dashboard</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center py-4"><i class="bi bi-speedometer" style="font-size:48px;color:var(--pm-purple)"></i>
+          <h5 style="font-weight:700;margin-top:12px">Overall Score: 98%</h5>
+          <p style="color:var(--pm-muted)">All major compliance checks passing.</p>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('Report exported.','CSV file downloaded.')">Export</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 19. ISO Docs -->
+@if (activeModalId === 'isoDocsModal') {
+<div class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-book me-2" style="color:var(--pm-info)"></i>Standards Documentation</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @for (d of docItems; track d.title) {
+        <div class="endpoint-card mb-2" (click)="selectedDoc=d;closeModal();openModal('docViewerModal')">
+          <div><strong style="font-size:13px">{{d.title}}</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">{{d.category}} | {{d.version}}</div>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+}

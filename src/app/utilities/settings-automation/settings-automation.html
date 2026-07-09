@@ -1,0 +1,739 @@
+<div class="pm-main">
+    <!-- PAGE BAR -->
+    <div class="pm-page-bar">
+        <div>
+            <div class="pm-breadcrumb"><span style="color:var(--pm-primary);cursor:pointer"
+                    (click)="navigateTo('home')">Home</span> / <span style="color:var(--pm-primary);cursor:pointer"
+                    (click)="navigateTo('utilities')">Utilities Hub</span> / <strong>Settings & Automation</strong>
+            </div>
+            <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 2.10 —
+                Utility Settings & Automation</h2>
+            <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Configure robust auto-pay frameworks, optimize
+                monthly utility budgets, tune alert preferences, and manage multi-user household access.</p>
+        </div>
+        <div class="d-flex flex-wrap" style="gap:8px">
+            <button class="pm-btn" (click)="openModal('budgetWizardModal')"><i class="bi bi-magic"></i> Budget
+                Wizard</button>
+            <button class="pm-btn" (click)="openModal('addMemberModal')"><i class="bi bi-person-plus"></i> Add
+                Member</button>
+            <button class="pm-btn pm-btn-primary" (click)="openModal('autoPaySetupModal')"><i class="bi bi-plus-lg"></i>
+                New Auto-Pay Rule</button>
+        </div>
+    </div>
+
+    <!-- PAGE CONTENT -->
+    <div class="pm-content">
+
+        <!-- HERO STATS ROW -->
+        <div class="row g-3">
+            <div class="col-lg-3 col-6">
+                <div class="pm-card pm-card-accent" style="min-height:160px">
+                    <p class="pm-stat-label" style="color:rgba(255,255,255,.7)">ACTIVE AUTOMATIONS</p>
+                    <div class="pm-stat-value" style="margin:6px 0;color:#fff">{{ activeAutomationsCount }} Rules</div>
+                    <span class="pm-badge" style="background:rgba(255,255,255,.15);color:#fff"><i
+                            class="bi bi-arrow-repeat"></i> Running smoothly</span>
+                    <div class="mt-3"><button class="pm-btn pm-btn-sm"
+                            style="background:rgba(255,255,255,.15);border-color:transparent;color:#fff"
+                            (click)="openModal('autoPaySetupModal')">Add rule</button></div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="pm-card" style="min-height:160px">
+                    <p class="pm-stat-label" style="color:var(--pm-info)">TOTAL UTILITY BUDGET</p>
+                    <div class="pm-stat-value" style="margin:6px 0">KES {{ totalBudget }}k</div>
+                    <span class="pm-badge pm-badge-info"><i class="bi bi-piggy-bank"></i> KES {{ budgetUnderLimit }}
+                        under limit</span>
+                    <div class="pm-progress mt-3">
+                        <div class="pm-progress-bar" [style.width.%]="totalBudgetPercent"
+                            style="background:var(--pm-info)"></div>
+                    </div>
+                    <div style="font-size:11px;color:var(--pm-muted);margin-top:4px">{{ totalBudgetPercent }}% utilized
+                        this month</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="pm-card" style="min-height:160px">
+                    <p class="pm-stat-label" style="color:var(--pm-purple)">HOUSEHOLD MEMBERS</p>
+                    <div class="pm-stat-value" style="margin:6px 0">{{ members.length }} Users</div>
+                    <div class="d-flex align-items-center mt-2 mb-2" style="margin-left:8px">
+                        <div *ngFor="let m of members; let i = index" class="pm-avatar" [style.background]="m.gradient"
+                            style="width:24px;height:24px;margin-left:-8px;border:2px solid #fff;font-size:9px">{{ i < 3
+                                ? m.initials : '+1' }}</div>
+                        </div>
+                        <button class="pm-btn pm-btn-sm w-100" (click)="openModal('addMemberModal')"><i
+                                class="bi bi-person-plus"></i> Manage</button>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="pm-card" style="min-height:160px;border-left:3px solid var(--pm-warning)">
+                        <p class="pm-stat-label" style="color:var(--pm-warning)">ALERTS TRIGGERED</p>
+                        <div class="pm-stat-value" style="margin:6px 0">{{ alertsTriggered }}</div>
+                        <span class="pm-badge pm-badge-warning"><i class="bi bi-bell"></i> Last 7 days</span>
+                        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+                            <div><i class="bi bi-envelope text-muted"></i> {{ dueReminders }} Due Reminders</div>
+                            <div><i class="bi bi-exclamation-triangle text-muted"></i> {{ lowBalances }} Low Balances
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIONS ROW -->
+            <div class="row g-3">
+                <div class="col-lg-4">
+                    <div class="pm-card">
+                                  <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Attention Needed</h3></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">AP</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Pending payment approval</div><div style="font-size:11px;color:var(--pm-muted)">Brian (Child) requested KES 500</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('approvalRequestModal')">Review</button></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">FA</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Auto-pay failed (Card expired)</div><div style="font-size:11px;color:var(--pm-muted)">Zuku Internet · KES 5,500</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('failureHandlingModal')">Fix</button></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">SM</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Unused budget detected</div><div style="font-size:11px;color:var(--pm-muted)">Rollover KES 4,500 to savings?</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('rolloverSettingsModal')">Setup</button></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Smart Config Suggestions</h3><span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent);font-size:12px">SW</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Run Budget Wizard</div><div style="font-size:11px;color:var(--pm-muted)">Align limits to 3-month avg spend</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('budgetWizardModal')">Run</button></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple);font-size:12px">SP</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Enable Smart Auto-Pay</div><div style="font-size:11px;color:var(--pm-muted)">Prevent bill shock on variable utilities</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('smartAutoPayModal')">Enable</button></div>
+          <div class="feed-item"><div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">OS</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Block overspend payments</div><div style="font-size:11px;color:var(--pm-muted)">Enforce strict household budget caps</div></div><button class="pm-btn pm-btn-sm" (click)="openModal('overspendPreventionModal')">Apply</button></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="mb-3"><h3 class="pm-section-title">Settings Quick Links</h3><p class="pm-section-sub">Jump straight to configuration modes</p></div>
+          <div class="quick-action-grid">
+            <button class="quick-action-btn" (click)="openModal('autoPaySetupModal')"><i class="bi bi-arrow-repeat text-primary me-1"></i> New Rule</button>
+            <button class="quick-action-btn" (click)="openModal('addMemberModal')"><i class="bi bi-person-plus text-success me-1"></i> Add Member</button>
+            <button class="quick-action-btn" (click)="openModal('paymentSourcePriorityModal')"><i class="bi bi-sort-numeric-down text-info me-1"></i> Priorities</button>
+            <button class="quick-action-btn" (click)="openModal('alertSettingsModal')"><i class="bi bi-bell text-warning me-1"></i> Alert Prefs</button>
+            <button class="quick-action-btn" (click)="openModal('splitBillModal')"><i class="bi bi-pie-chart me-1" style="color:var(--pm-purple)"></i> Split Bills</button>
+            <button class="quick-action-btn" (click)="openModal('childAccountModal')"><i class="bi bi-person-badge text-danger me-1"></i> Child Acct</button>
+            <button class="quick-action-btn" (click)="openModal('elderlyParentModal')"><i class="bi bi-person-heart me-1" style="color:var(--pm-accent)"></i> Elder Acct</button>
+            <button class="quick-action-btn" (click)="openModal('healthCheckModal')"><i class="bi bi-shield-check text-secondary me-1"></i> System Check</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEC 2.10.1: AUTO-PAY CONFIGURATION -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div><h3 class="pm-section-title"><i class="bi bi-arrow-repeat" style="color:var(--pm-primary)"></i> 2.10.1 — Auto-Pay Configuration Engine</h3><p class="pm-section-sub">Service-level automation, execution timing, amount rules, priority routing, and smart deviation bounds.</p></div>
+        <div class="d-flex" style="gap:8px">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('smartAutoPayModal')"><i class="bi bi-cpu"></i> Smart Settings</button>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('paymentSourcePriorityModal')"><i class="bi bi-wallet2"></i> Funding Priority</button>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('autoPaySetupModal')"><i class="bi bi-plus"></i> Add Rule</button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="pm-table">
+          <thead><tr><th>Utility Service</th><th>Amount Rule</th><th>Timing Strategy</th><th>Funding Source</th><th>Smart Logic</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let rule of autoPayRules; let i = index">
+              <td><div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" [style.background]="rule.iconBg" [style.color]="rule.iconColor" style="width:32px;height:32px;font-size:14px"><i [class]="rule.icon"></i></div>{{ rule.utility }}</div></td>
+              <td>{{ rule.amountRule }}</td>
+              <td>{{ rule.timing }}</td>
+              <td><span class="pm-badge pm-badge-info">{{ rule.source }}</span></td>
+              <td>{{ rule.smartLogic }}</td>
+              <td><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="rule.active"></div></td>
+              <td><div class="d-flex" style="gap:4px"><button class="pm-btn pm-btn-sm" (click)="openEditRule(i)"><i class="bi bi-pencil"></i></button><button class="pm-btn pm-btn-sm" (click)="openDeleteRule(i)" style="color:var(--pm-danger)"><i class="bi bi-trash"></i></button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SEC 2.10.2: BUDGET & ALERT SETTINGS -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div><h3 class="pm-section-title"><i class="bi bi-piggy-bank" style="color:var(--pm-accent)"></i> 2.10.2 — Budget Logic & Alert System</h3><p class="pm-section-sub">Category budget tracking, rollover tools, overspend protection, and comprehensive notification tuning.</p></div>
+        <div class="d-flex" style="gap:8px">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('alertSettingsModal')"><i class="bi bi-bell"></i> Global Alerts</button>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('editBudgetModal')"><i class="bi bi-sliders"></i> Edit Limits</button>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Category Budgets</h4>
+            <div class="mb-3" *ngFor="let b of budgetCategories">
+              <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>{{ b.name }}</span><span>KES {{ b.spent.toLocaleString() }} / {{ b.limit.toLocaleString() }} ({{ b.percent }}%)</span></div>
+              <div class="pm-progress"><div class="pm-progress-bar" [style.width.%]="b.percent" [style.background]="b.color"></div></div>
+            </div>
+            <div class="mt-3 p-3 rounded d-flex justify-content-between align-items-center" style="background:var(--pm-surface);border:1px solid var(--pm-border)">
+              <div><strong style="font-size:13px">Rollover Enabled</strong><div style="font-size:11px;color:var(--pm-muted)">Unused budget flows to Savings</div></div>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('rolloverSettingsModal')">Configure</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="utility-block">
+            <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Event Alert Toggles</h4>
+            <div class="switch-item"><div><strong>Due Date Reminders</strong><div style="font-size:11px;color:var(--pm-muted)">7 days, 3 days, and 1 day before due</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="alertConfigs.dueDateReminders"></div></div>
+            <div class="switch-item"><div><strong>Low Balance Warnings</strong><div style="font-size:11px;color:var(--pm-muted)">When prepaid units drop below safety threshold</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="alertConfigs.lowBalanceWarnings"></div></div>
+            <div class="switch-item"><div><strong>Unusual Usage Detection</strong><div style="font-size:11px;color:var(--pm-muted)">Spikes greater than 20% vs average</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="alertConfigs.unusualUsage"></div></div>
+            <div class="switch-item"><div><strong>Provider Price/Tariff Changes</strong><div style="font-size:11px;color:var(--pm-muted)">Get notified when providers adjust rates</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="alertConfigs.priceChange" (change)="openModal('priceChangeNotifModal')"></div></div>
+            <div class="switch-item"><div><strong>Service Outages & Maintenance</strong><div style="font-size:11px;color:var(--pm-muted)">KPLC / NCWSC local outage bulletins</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="alertConfigs.serviceOutage" (change)="openModal('serviceOutageNotifModal')"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEC 2.10.3: HOUSEHOLD MEMBER MANAGEMENT -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div><h3 class="pm-section-title"><i class="bi bi-people" style="color:var(--pm-purple)"></i> 2.10.3 — Household & Family Account Management</h3><p class="pm-section-sub">Add dependents, spouses, or caretakers. Assign granular permission levels, budget limits, and split responsibilities.</p></div>
+        <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('addMemberModal')"><i class="bi bi-person-plus"></i> Add Member</button>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-4" *ngFor="let m of members; let i = index">
+          <div class="member-card position-relative">
+            <span *ngIf="m.badge" class="pm-badge position-absolute" [class]="m.badge" style="top:16px;right:16px">{{ m.badgeText }}</span>
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="pm-avatar" [style.background]="m.gradient" style="width:48px;height:48px;font-size:16px">{{ m.initials }}</div>
+              <div><h5 style="margin:0;font-size:15px;font-weight:700">{{ m.name }}</h5><div style="font-size:12px;color:var(--pm-muted)">{{ m.role }}</div></div>
+            </div>
+            <div class="p-2 rounded mb-3" style="background:var(--pm-surface-2);font-size:12px">
+              <div class="d-flex justify-content-between mb-1"><span>Spend Limit</span><strong>{{ m.spendLimit }}</strong></div>
+              <div class="d-flex justify-content-between" [ngClass]="m.accessColor || ''"><span>{{ m.accessLabel || 'Access' }}</span><strong>{{ m.access }}</strong></div>
+            </div>
+            <div class="d-flex" style="gap:8px">
+              <button *ngIf="m.role === 'Primary Admin'" class="pm-btn pm-btn-sm flex-1 w-100" (click)="openModal('memberActivityLogModal')">Activity</button>
+              <button *ngIf="m.role === 'Spouse (Co-Payer)'" class="pm-btn pm-btn-sm w-100" (click)="openModal('editMemberModal')">Manage</button>
+              <button *ngIf="m.role === 'Spouse (Co-Payer)'" class="pm-btn pm-btn-sm w-100" (click)="openModal('splitBillModal')">Split Bill</button>
+              <button *ngIf="m.role === 'Child Account'" class="pm-btn pm-btn-sm w-100" (click)="openModal('childAccountModal')">Controls</button>
+              <button *ngIf="m.role === 'Child Account'" class="pm-btn pm-btn-sm w-100" (click)="openModal('suspendMemberModal')">Suspend</button>
+              <button *ngIf="m.role === 'Elderly Parent'" class="pm-btn pm-btn-sm w-100" (click)="openModal('elderlyParentModal')">Remote Config</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL BACKDROP (z-index forces it behind modals) -->
+<div *ngIf="activeModalId" class="modal-backdrop fade show" style="z-index:1050" (click)="closeModal()"></div>
+
+<!-- 1. Auto-Pay Setup Modal (3-Step) -->
+<div *ngIf="activeModalId === 'autoPaySetupModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-repeat text-primary me-2"></i>Create Auto-Pay Rule</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="apStep===1" [class.completed]="apStep>1"><div class="pm-step-num">1</div><div class="pm-step-label">Select</div></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="apStep===2" [class.completed]="apStep>2"><div class="pm-step-num">2</div><div class="pm-step-label">Amount</div></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="apStep===3" [class.completed]="apStep>3"><div class="pm-step-num">3</div><div class="pm-step-label">Guardrails</div></div>
+        </div>
+        <div *ngIf="apStep===1">
+          <h6 style="font-weight:700;margin-bottom:16px">Step 1: Select Utility & Type</h6>
+          <div class="mb-3"><label class="pm-form-label">Utility Account</label><select class="pm-form-control" [(ngModel)]="newRule.utility"><option>KPLC Prepaid (14825739)</option><option>NCWSC Water (290081)</option><option>DSTV (20491867421)</option><option>Safaricom Fibre (SF-40812)</option></select></div>
+          <div class="row g-3">
+            <div class="col-md-6"><div class="p-3 border rounded text-center" [style.cursor]="'pointer'" [style.borderColor]="newRule.type==='schedule'?'var(--pm-primary)':''" [style.background]="newRule.type==='schedule'?'rgba(79,70,229,.04)':''" (click)="newRule.type='schedule'"><i class="bi bi-calendar-check d-block mb-1" style="font-size:24px;color:var(--pm-primary)"></i><strong>Schedule Based</strong><div style="font-size:11px;color:var(--pm-muted)">Pay on fixed dates or due dates</div></div></div>
+            <div class="col-md-6"><div class="p-3 border rounded text-center" [style.cursor]="'pointer'" [style.borderColor]="newRule.type==='threshold'?'var(--pm-primary)':''" [style.background]="newRule.type==='threshold'?'rgba(79,70,229,.04)':''" (click)="newRule.type='threshold'"><i class="bi bi-thermometer-half d-block mb-1" style="font-size:24px;color:var(--pm-warning)"></i><strong>Threshold Based</strong><div style="font-size:11px;color:var(--pm-muted)">Top-up when balance drops</div></div></div>
+          </div>
+        </div>
+        <div *ngIf="apStep===2">
+          <h6 style="font-weight:700;margin-bottom:16px">Step 2: Define Amount & Timing</h6>
+          <div class="mb-3"><label class="pm-form-label">Amount Rule</label><select class="pm-form-control" [(ngModel)]="newRule.amountType"><option>Fetch exactly full billed amount</option><option>Fixed amount (custom)</option><option>Variable, up to a monthly cap</option></select></div>
+          <div class="mb-3"><label class="pm-form-label">Set Cap / Fixed Amount (KES)</label><input type="number" class="pm-form-control" [(ngModel)]="newRule.capAmount"></div>
+          <div class="mb-3"><label class="pm-form-label">Execution Timing</label><select class="pm-form-control" [(ngModel)]="newRule.timing"><option>2 days before due date</option><option>Exactly on due date</option><option>5 days before due date</option><option>1st of every month</option></select></div>
+        </div>
+        <div *ngIf="apStep===3">
+          <h6 style="font-weight:700;margin-bottom:16px">Step 3: Guardrails & Funding</h6>
+          <div class="mb-3"><label class="pm-form-label">Primary Funding Source</label><select class="pm-form-control" [(ngModel)]="newRule.primarySource"><option>PayMo Wallet</option><option>M-Pesa 0712***890</option><option>Equity Bank ***4521</option></select></div>
+          <div class="mb-3"><label class="pm-form-label">Fallback Funding Source</label><select class="pm-form-control" [(ngModel)]="newRule.fallbackSource"><option>M-Pesa 0712***890</option><option>PayMo Wallet</option><option>None (Fail if primary fails)</option></select></div>
+          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="newRule.requireApproval"><label class="form-check-label">Require manual approval if bill is 20% higher than average</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="newRule.notifyExecution"><label class="form-check-label">Notify me instantly upon execution</label></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button *ngIf="apStep < 3" class="pm-btn pm-btn-primary" (click)="incrementApStep()">Continue <i class="bi bi-arrow-right"></i></button>
+        <button *ngIf="apStep === 3" class="pm-btn pm-btn-primary" (click)="saveAutoPayRule()">Create Rule <i class="bi bi-check-lg"></i></button>
+        <button *ngIf="apStep > 1" class="pm-btn" (click)="decrementApStep()"><i class="bi bi-arrow-left"></i> Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Edit Auto-Pay Modal -->
+<div *ngIf="activeModalId === 'editAutoPayModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Edit Auto-Pay Rule</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Utility</label><input class="pm-form-control" [value]="editingRule?.utility || ''" disabled style="background:var(--pm-surface-2)"></div>
+        <div class="mb-3"><label class="pm-form-label">Top-up Amount</label><input type="number" class="pm-form-control" [(ngModel)]="editForm.amount"></div>
+        <div class="mb-3"><label class="pm-form-label">Trigger Condition</label><select class="pm-form-control" [(ngModel)]="editForm.trigger"><option>When balance drops below 20 units</option><option>When balance drops below 50 units</option><option>Weekly on Monday</option></select></div>
+        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="editForm.active"><label class="form-check-label">Rule Active</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="saveEditRule()">Save Changes</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Smart Auto-Pay Modal -->
+<div *ngIf="activeModalId === 'smartAutoPayModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-cpu me-2" style="color:var(--pm-purple)"></i>Smart Auto-Pay Logic</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-3" style="background:var(--pm-purple-soft);font-size:13px"><i class="bi bi-stars me-1" style="color:var(--pm-purple)"></i> Let AI manage your variable utility bills to prevent bill shock and optimize liquidity.</div>
+        <div class="switch-item"><div><strong>Deviation Guard</strong><div style="font-size:11px;color:var(--pm-muted)">Only auto-pay if bill is within X% of your 6-month average</div></div><div class="d-flex align-items-center gap-2"><input class="pm-form-control" style="width:70px;padding:6px 10px" [(ngModel)]="smartConfig.deviationPercent"><span style="font-size:12px">%</span><div class="form-check form-switch ms-2"><input class="form-check-input" type="checkbox" [(ngModel)]="smartConfig.deviationGuard"></div></div></div>
+        <div class="switch-item"><div><strong>Hard Cap Alert</strong><div style="font-size:11px;color:var(--pm-muted)">Pause auto-pay and alert me if single bill exceeds KES limit</div></div><div class="d-flex align-items-center gap-2"><input class="pm-form-control" style="width:100px;padding:6px 10px" [(ngModel)]="smartConfig.hardCapAmount"><div class="form-check form-switch ms-2"><input class="form-check-input" type="checkbox" [(ngModel)]="smartConfig.hardCapAlert"></div></div></div>
+        <div class="switch-item"><div><strong>Seasonal Adjustments</strong><div style="font-size:11px;color:var(--pm-muted)">Automatically allow higher electricity thresholds in cold months (Jun-Aug)</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="smartConfig.seasonalAdjustments"></div></div>
+        <div class="switch-item"><div><strong>Liquidity Check</strong><div style="font-size:11px;color:var(--pm-muted)">Delay non-critical payments by 2 days if main bank account balance is low</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="smartConfig.liquidityCheck"></div></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Smart logic applied to all eligible auto-pay rules.')">Activate Smart Logic</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Budget Wizard Modal (2-Step) -->
+<div *ngIf="activeModalId === 'budgetWizardModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-magic me-2" style="color:var(--pm-accent)"></i>Budget Allocation Wizard</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="bwStep===1" [class.completed]="bwStep>1"><div class="pm-step-num">1</div><div class="pm-step-label">Analyze</div></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="bwStep===2" [class.completed]="bwStep>2"><div class="pm-step-num">2</div><div class="pm-step-label">Allocate</div></div>
+        </div>
+        <div *ngIf="bwStep===1">
+          <h6 style="font-weight:700">Analyze & Forecast</h6>
+          <p style="font-size:13px;color:var(--pm-ink-soft)">PayMo has analyzed your last 6 months of utility transactions.</p>
+          <div class="row g-3">
+            <div class="col-6"><div class="p-3 rounded text-center" style="background:var(--pm-surface-2)"><div style="font-size:11px;color:var(--pm-muted)">AVERAGE MONTHLY SPEND</div><div style="font-size:22px;font-weight:700">KES 46,200</div></div></div>
+            <div class="col-6"><div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)"><div style="font-size:11px;color:#047857;font-weight:700">RECOMMENDED BUDGET</div><div style="font-size:22px;font-weight:700;color:var(--pm-accent)">KES 50,000</div></div></div>
+          </div>
+          <div class="mt-3 text-center"><button class="pm-btn pm-btn-primary" (click)="incrementBwStep()">Generate Plan <i class="bi bi-arrow-right"></i></button></div>
+        </div>
+        <div *ngIf="bwStep===2">
+          <h6 style="font-weight:700;margin-bottom:16px">Proposed Allocation</h6>
+          <div class="mb-3" *ngFor="let b of budgetWizardItems">
+            <div class="d-flex justify-content-between mb-1" style="font-size:12px"><span>{{ b.name }}</span><span><input class="pm-form-control p-1 text-end" style="width:100px;height:24px" [(ngModel)]="b.amount"></span></div>
+            <div class="pm-progress"><div class="pm-progress-bar" [style.width.%]="b.percent" [style.background]="b.color"></div></div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center p-3 rounded" style="background:var(--pm-surface-2)"><span style="font-weight:700">Total Validated</span><strong style="font-size:18px;color:var(--pm-primary)">KES {{ budgetWizardTotal.toLocaleString() }}</strong></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button *ngIf="bwStep > 1" class="pm-btn" (click)="decrementBwStep()"><i class="bi bi-arrow-left"></i> Back</button>
+        <button *ngIf="bwStep === 2" class="pm-btn pm-btn-primary" (click)="processAction('Budget perfectly aligned and applied!')">Save Budget</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. Edit Budget Modal -->
+<div *ngIf="activeModalId === 'editBudgetModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-sliders me-2"></i>Edit Budget Limits</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3" *ngFor="let b of budgetCategories"><label class="pm-form-label">{{ b.name }} Limit</label><input type="number" class="pm-form-control" [(ngModel)]="b.limit"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Limits updated!')">Update Limits</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. Alert Settings Modal -->
+<div *ngIf="activeModalId === 'alertSettingsModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell me-2" style="color:var(--pm-warning)"></i>Global Alert Configuration</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <h6 style="font-weight:700;margin-bottom:12px">Notification Channels</h6>
+        <div class="switch-item"><div><strong>Push Notifications</strong><div style="font-size:11px;color:var(--pm-muted)">Instant alerts on your device</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="alertChannels.push"></div></div>
+        <div class="switch-item"><div><strong>Email Digests</strong><div style="font-size:11px;color:var(--pm-muted)">Daily summary at 8:00 AM</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="alertChannels.email"></div></div>
+        <div class="switch-item"><div><strong>SMS Alerts</strong><div style="font-size:11px;color:var(--pm-muted)">Critical alerts only (failed payments, outages)</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="alertChannels.sms"></div></div>
+        <hr class="pm-divider">
+        <h6 style="font-weight:700;margin-bottom:12px">Quiet Hours</h6>
+        <div class="row g-3">
+          <div class="col-6"><label class="pm-form-label">From</label><input type="time" class="pm-form-control" [(ngModel)]="alertChannels.quietFrom"></div>
+          <div class="col-6"><label class="pm-form-label">To</label><input type="time" class="pm-form-control" [(ngModel)]="alertChannels.quietTo"></div>
+        </div>
+        <div class="form-check mt-3"><input class="form-check-input" type="checkbox" [(ngModel)]="alertChannels.quietOverride"><label class="form-check-label">Override quiet hours for critical alerts (failed payments, service outages)</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Alert preferences saved successfully.')">Save Preferences</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 7. Add Member Modal (3-Step) -->
+<div *ngIf="activeModalId === 'addMemberModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-plus me-2" style="color:var(--pm-accent)"></i>Add Household Member</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="amStep===1" [class.completed]="amStep>1"><div class="pm-step-num">1</div><div class="pm-step-label">Info</div></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="amStep===2" [class.completed]="amStep>2"><div class="pm-step-num">2</div><div class="pm-step-label">Role</div></div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="amStep===3" [class.completed]="amStep>3"><div class="pm-step-num">3</div><div class="pm-step-label">Limits</div></div>
+        </div>
+        <div *ngIf="amStep===1">
+          <h6 style="font-weight:700;margin-bottom:16px">Step 1: Basic Information</h6>
+          <div class="mb-3"><label class="pm-form-label">Full Name</label><input type="text" class="pm-form-control" [(ngModel)]="newMember.name" placeholder="Enter full name"></div>
+          <div class="row g-3">
+            <div class="col-6"><div class="mb-3"><label class="pm-form-label">Phone Number</label><input type="tel" class="pm-form-control" [(ngModel)]="newMember.phone" placeholder="0712XXX"></div></div>
+            <div class="col-6"><div class="mb-3"><label class="pm-form-label">Email</label><input type="email" class="pm-form-control" [(ngModel)]="newMember.email" placeholder="email@example.com"></div></div>
+          </div>
+          <div class="mb-3"><label class="pm-form-label">Relationship</label><select class="pm-form-control" [(ngModel)]="newMember.relationship"><option>Spouse / Partner</option><option>Child</option><option>Parent</option><option>Caretaker</option><option>Roommate</option></select></div>
+        </div>
+        <div *ngIf="amStep===2">
+          <h6 style="font-weight:700;margin-bottom:16px">Step 2: Role & Permissions</h6>
+          <div class="mb-3"><label class="pm-form-label">Account Role</label><select class="pm-form-control" [(ngModel)]="newMember.role"><option>Co-Payer (Full access with limits)</option><option>Viewer (Read-only)</option><option>Child Account (Restricted)</option><option>Elderly Parent (Simplified)</option><option>Caretaker (Limited payment)</option></select></div>
+          <div class="mb-3"><label class="pm-form-label">Utility Access</label><div class="d-flex flex-wrap gap-2 mt-1"><label class="d-flex align-items-center gap-1" style="font-size:13px" *ngFor="let u of utilityOptions"><input type="checkbox" [(ngModel)]="u.selected"> {{ u.name }}</label></div></div>
+        </div>
+        <div *ngIf="amStep===3">
+          <h6 style="font-weight:700;margin-bottom:16px">Step 3: Budget Limits & Review</h6>
+          <div class="mb-3"><label class="pm-form-label">Monthly Spend Limit (KES)</label><input type="number" class="pm-form-control" [(ngModel)]="newMember.spendLimit" placeholder="0 for unlimited"></div>
+          <div class="mb-3"><label class="pm-form-label">Approval Required Above (KES)</label><input type="number" class="pm-form-control" [(ngModel)]="newMember.approvalThreshold" placeholder="0 to disable"></div>
+          <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">
+            <strong>Summary:</strong> {{ newMember.name || 'New Member' }} — {{ newMember.role }} · Limit: KES {{ newMember.spendLimit || 0 }} · {{ newMember.approvalThreshold ? 'Approval > KES '+newMember.approvalThreshold : 'No approval required' }}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button *ngIf="amStep > 1" class="pm-btn" (click)="decrementAmStep()"><i class="bi bi-arrow-left"></i> Back</button>
+        <button *ngIf="amStep < 3" class="pm-btn pm-btn-primary" (click)="incrementAmStep()">Continue <i class="bi bi-arrow-right"></i></button>
+        <button *ngIf="amStep === 3" class="pm-btn pm-btn-primary" (click)="saveNewMember()">Add Member <i class="bi bi-check-lg"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 8. Member Activity Log Modal -->
+<div *ngIf="activeModalId === 'memberActivityLogModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Member Activity Log</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="d-flex gap-2 mb-3"><input type="text" class="pm-form-control" placeholder="Search activity..." [(ngModel)]="activitySearch"><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-search"></i></button></div>
+        <table class="pm-table">
+          <thead><tr><th>Timestamp</th><th>Action</th><th>Details</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let a of memberActivity"><td style="font-size:12px;color:var(--pm-muted)">{{ a.time }}</td><td>{{ a.action }}</td><td style="font-size:12px">{{ a.details }}</td><td><span class="pm-badge" [class.pm-badge-success]="a.status==='Success'" [class.pm-badge-danger]="a.status==='Failed'" [class.pm-badge-warning]="a.status==='Pending'">{{ a.status }}</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-sm" (click)="processAction('Activity log exported.')"><i class="bi bi-download"></i> Export</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. Edit Member Modal -->
+<div *ngIf="activeModalId === 'editMemberModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-gear me-2"></i>Manage Member</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Member</label><input class="pm-form-control" value="Grace Kamau" disabled style="background:var(--pm-surface-2)"></div>
+        <div class="mb-3"><label class="pm-form-label">Role</label><select class="pm-form-control"><option>Spouse / Co-Payer</option><option>Viewer</option><option>Child Account</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Monthly Spend Limit (KES)</label><input type="number" class="pm-form-control" value="30000"></div>
+        <div class="mb-3"><label class="pm-form-label">Approval Threshold (KES)</label><input type="number" class="pm-form-control" value="5000"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Member settings updated.')">Save Changes</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 10. Split Bill Modal -->
+<div *ngIf="activeModalId === 'splitBillModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-pie-chart me-2" style="color:var(--pm-purple)"></i>Split Bill Configuration</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Utility to Split</label><select class="pm-form-control"><option>All Utilities (Proportional)</option><option>Electricity Only</option><option>Water Only</option><option>Internet & TV</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Split Method</label><select class="pm-form-control"><option>Equal Split</option><option>By Percentage</option><option>By Fixed Amount</option><option>By Usage (where available)</option></select></div>
+        <h6 style="font-weight:700;margin:16px 0 8px">Member Allocation</h6>
+        <div class="d-flex align-items-center gap-2 mb-2" *ngFor="let s of splitAllocations"><div class="pm-avatar" style="width:28px;height:28px;font-size:10px;flex-shrink:0" [style.background]="s.gradient">{{ s.initials }}</div><span style="flex:1;font-size:13px;font-weight:500">{{ s.name }}</span><input type="number" class="pm-form-control" style="width:80px;padding:6px 10px" [(ngModel)]="s.percent"><span style="font-size:12px">%</span></div>
+        <div class="p-2 rounded text-center" style="background:var(--pm-surface-2);font-size:13px"><strong>Total: {{ splitTotal }}%</strong> <span *ngIf="splitTotal !== 100" style="color:var(--pm-danger);margin-left:8px">Must equal 100%</span></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" [disabled]="splitTotal !== 100" (click)="processAction('Split bill configuration saved.')">Save Split</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 11. Child Account Modal -->
+<div *ngIf="activeModalId === 'childAccountModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-badge me-2" style="color:var(--pm-danger)"></i>Child Account Controls</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-3 d-flex align-items-center gap-3" style="background:var(--pm-surface-2)"><div class="pm-avatar" style="width:40px;height:40px;background:var(--pm-gradient-blue)">BK</div><div><strong>Brian Kamau</strong><div style="font-size:12px;color:var(--pm-muted)">Child Account · Active</div></div></div>
+        <div class="mb-3"><label class="pm-form-label">Monthly Spend Limit (KES)</label><input type="number" class="pm-form-control" value="2000"></div>
+        <div class="mb-3"><label class="pm-form-label">Approval Required Above (KES)</label><input type="number" class="pm-form-control" value="500"></div>
+        <div class="mb-3"><label class="pm-form-label">Allowed Utilities</label>
+          <div class="d-flex flex-wrap gap-2 mt-1"><label class="d-flex align-items-center gap-1" style="font-size:13px" *ngFor="let u of childUtilities"><input type="checkbox" [(ngModel)]="u.allowed"> {{ u.name }}</label></div>
+        </div>
+        <div class="switch-item"><div><strong>Time Restrictions</strong><div style="font-size:11px;color:var(--pm-muted)">Block payments outside allowed hours</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="childConfig.timeRestriction"></div></div>
+        <div *ngIf="childConfig.timeRestriction" class="row g-2 mt-1">
+          <div class="col-6"><label class="pm-form-label">Allowed From</label><input type="time" class="pm-form-control" [(ngModel)]="childConfig.fromTime"></div>
+          <div class="col-6"><label class="pm-form-label">Allowed To</label><input type="time" class="pm-form-control" [(ngModel)]="childConfig.toTime"></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Child account controls updated.')">Save Controls</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 12. Suspend Member Modal -->
+<div *ngIf="activeModalId === 'suspendMemberModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-pause-circle me-2" style="color:var(--pm-warning)"></i>Suspend Member</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body text-center">
+        <div class="pm-icon-circle mx-auto mb-3" style="width:56px;height:56px;font-size:24px;background:var(--pm-warning-soft);color:var(--pm-warning)"><i class="bi bi-exclamation-triangle"></i></div>
+        <h5 style="font-weight:700">Suspend Brian Kamau?</h5>
+        <p style="font-size:13px;color:var(--pm-ink-soft)">This will immediately revoke all payment and access privileges. Auto-pay rules linked to this account will be paused.</p>
+        <div class="mb-3 text-start"><label class="pm-form-label">Reason for Suspension</label><select class="pm-form-control"><option>Exceeded spending limit</option><option>Temporary restriction</option><option>Security concern</option><option>Other</option></select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-danger" (click)="processAction('Member suspended successfully.')"><i class="bi bi-pause-circle"></i> Suspend Member</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 13. Elderly Parent Modal -->
+<div *ngIf="activeModalId === 'elderlyParentModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-heart me-2" style="color:var(--pm-accent)"></i>Elderly Parent Remote Config</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-3 d-flex align-items-center gap-3" style="background:var(--pm-surface-2)"><div class="pm-avatar" style="width:40px;height:40px;background:var(--pm-gradient-violet)">MN</div><div><strong>Mama Nyokabi</strong><div style="font-size:12px;color:var(--pm-muted)">Elderly Parent · View Only</div></div></div>
+        <div class="switch-item"><div><strong>Linked Home Meter Auto-Pay</strong><div style="font-size:11px;color:var(--pm-muted)">Automatically top-up KPLC for their meter</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked></div></div>
+        <div class="mb-3"><label class="pm-form-label">Auto Top-up Amount (KES)</label><input type="number" class="pm-form-control" value="1500"></div>
+        <div class="mb-3"><label class="pm-form-label">Trigger When Balance Below (Units)</label><input type="number" class="pm-form-control" value="10"></div>
+        <div class="switch-item"><div><strong>Send SMS Receipts to Parent</strong><div style="font-size:11px;color:var(--pm-muted)">Simple confirmation after each top-up</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked></div></div>
+        <div class="switch-item"><div><strong>Assign Caretaker Access</strong><div style="font-size:11px;color:var(--pm-muted)">Allow a trusted person to view status</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox"></div></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Elderly parent configuration saved.')">Save Config</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 14. Delete Rule Modal -->
+<div *ngIf="activeModalId === 'deleteRuleModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-trash me-2" style="color:var(--pm-danger)"></i>Delete Auto-Pay Rule</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body text-center">
+        <div class="pm-icon-circle mx-auto mb-3" style="width:56px;height:56px;font-size:24px;background:var(--pm-danger-soft);color:var(--pm-danger)"><i class="bi bi-trash"></i></div>
+        <h5 style="font-weight:700">Delete this rule?</h5>
+        <p style="font-size:13px;color:var(--pm-ink-soft)">You are about to delete the auto-pay rule for <strong>{{ deletingRule?.utility || 'this utility' }}</strong>. This action cannot be undone.</p>
+        <div class="form-check text-start"><input class="form-check-input" type="checkbox" [(ngModel)]="deleteConfirm"><label class="form-check-label" style="font-size:13px">I understand this will stop automatic payments for this service</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-danger" [disabled]="!deleteConfirm" (click)="confirmDeleteRule()"><i class="bi bi-trash"></i> Delete Rule</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 15. Approval Request Modal -->
+<div *ngIf="activeModalId === 'approvalRequestModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-check2-square me-2" style="color:var(--pm-warning)"></i>Payment Approval Request</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft)">
+          <div class="d-flex align-items-center gap-3 mb-2"><div class="pm-avatar" style="width:40px;height:40px;background:var(--pm-gradient-blue)">BK</div><div><strong>Brian Kamau</strong><div style="font-size:12px;color:var(--pm-ink-soft)">Child Account · Requesting Payment</div></div></div>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">Requested Amount</label><div class="pm-form-control" style="background:var(--pm-surface-2)">KES 500</div></div>
+        <div class="mb-3"><label class="pm-form-label">Purpose</label><div class="pm-form-control" style="background:var(--pm-surface-2)">Safaricom Airtime Top-up</div></div>
+        <div class="mb-3"><label class="pm-form-label">Remaining Monthly Limit</label><div class="pm-form-control" style="background:var(--pm-surface-2)">KES 1,500 of 2,000 used</div></div>
+        <div class="mb-3"><label class="pm-form-label">Add Note (Optional)</label><textarea class="pm-form-control" rows="2" placeholder="Add a note for the member..."></textarea></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-danger" (click)="processAction('Payment request denied.')"><i class="bi bi-x-lg"></i> Deny</button><button class="pm-btn pm-btn-primary" (click)="processAction('Payment approved and processed.')"><i class="bi bi-check-lg"></i> Approve & Pay</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 16. Failure Handling Modal -->
+<div *ngIf="activeModalId === 'failureHandlingModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2" style="color:var(--pm-danger)"></i>Auto-Pay Failure</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft);font-size:13px"><i class="bi bi-x-circle me-1" style="color:var(--pm-danger)"></i> <strong>Zuku Internet</strong> auto-pay of KES 5,500 failed on {{ failureDate }}</div>
+        <div class="mb-3"><label class="pm-form-label">Failure Reason</label><div class="pm-form-control" style="background:var(--pm-surface-2);color:var(--pm-danger)">Card expired — Equity Bank ***4521</div></div>
+        <div class="mb-3"><label class="pm-form-label">Action</label><select class="pm-form-control" [(ngModel)]="failureAction"><option>Update payment method & retry</option><option>Switch to M-Pesa & retry</option><option>Switch to Wallet & retry</option><option>Pause this rule (fix manually)</option></select></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Retry immediately after updating</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Dismiss</button><button class="pm-btn pm-btn-primary" (click)="processAction('Failure resolved. Payment retried successfully.')"><i class="bi bi-arrow-repeat"></i> Apply & Retry</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 17. Rollover Settings Modal -->
+<div *ngIf="activeModalId === 'rolloverSettingsModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-clockwise me-2" style="color:var(--pm-info)"></i>Budget Rollover Settings</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="switch-item"><div><strong>Enable Rollover</strong><div style="font-size:11px;color:var(--pm-muted)">Transfer unused budget at month end</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="rolloverConfig.enabled"></div></div>
+        <div class="mb-3 mt-3"><label class="pm-form-label">Rollover Destination</label><select class="pm-form-control" [(ngModel)]="rolloverConfig.destination"><option>PayMo Savings Wallet</option><option>Next Month's Budget</option><option>Split: 50% Savings / 50% Next Month</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Minimum Rollover Amount (KES)</label><input type="number" class="pm-form-control" [(ngModel)]="rolloverConfig.minimum"></div>
+        <div class="mb-3"><label class="pm-form-label">Categories to Exclude</label><div class="d-flex flex-wrap gap-2 mt-1"><label class="d-flex align-items-center gap-1" style="font-size:13px" *ngFor="let c of rolloverCategories"><input type="checkbox" [(ngModel)]="c.excluded"> {{ c.name }}</label></div></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Rollover settings saved.')">Save Settings</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 18. Overspend Prevention Modal -->
+<div *ngIf="activeModalId === 'overspendPreventionModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-exclamation me-2" style="color:var(--pm-danger)"></i>Overspend Prevention</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft);font-size:13px"><i class="bi bi-shield-fill-exclamation me-1" style="color:var(--pm-danger)"></i> Block or warn before payments that would exceed category or total budget caps.</div>
+        <div class="switch-item"><div><strong>Enforce Hard Caps</strong><div style="font-size:11px;color:var(--pm-muted)">Completely block payments over limit</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="overspendConfig.hardCaps"></div></div>
+        <div class="switch-item"><div><strong>Warn & Require Confirmation</strong><div style="font-size:11px;color:var(--pm-muted)">Show warning but allow override</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="overspendConfig.warnConfirm"></div></div>
+        <div class="mb-3"><label class="pm-form-label">Total Household Monthly Cap (KES)</label><input type="number" class="pm-form-control" [(ngModel)]="overspendConfig.totalCap"></div>
+        <div class="switch-item"><div><strong>Include Auto-Pay in Cap Check</strong><div style="font-size:11px;color:var(--pm-muted)">Also validate auto-pay rules against caps</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="overspendConfig.includeAutoPay"></div></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Overspend prevention activated.')">Apply Settings</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 19. Payment Source Priority Modal -->
+<div *ngIf="activeModalId === 'paymentSourcePriorityModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-sort-numeric-down me-2" style="color:var(--pm-info)"></i>Payment Source Priority</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Drag to reorder or use arrows. PayMo will try each source in order before failing.</p>
+        <div *ngFor="let s of paymentSources; let i = index" class="source-drag-item">
+          <div style="width:28px;height:28px;background:var(--pm-primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">{{ i + 1 }}</div>
+          <div style="flex:1"><strong style="font-size:13px">{{ s.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ s.detail }}</div></div>
+          <div class="d-flex flex-column" style="gap:2px">
+            <button class="pm-btn pm-btn-sm" style="padding:2px 8px" [disabled]="i === 0" (click)="moveSourceUp(i)"><i class="bi bi-chevron-up"></i></button>
+            <button class="pm-btn pm-btn-sm" style="padding:2px 8px" [disabled]="i === paymentSources.length - 1" (click)="moveSourceDown(i)"><i class="bi bi-chevron-down"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Payment source priority updated.')">Save Order</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 20. Health Check Modal -->
+<div *ngIf="activeModalId === 'healthCheckModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-check me-2" style="color:var(--pm-accent)"></i>System Health Check</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div *ngFor="let h of healthChecks" class="d-flex align-items-center gap-3 mb-3 p-2 rounded" style="background:var(--pm-surface-2)">
+          <div class="pm-icon-circle" [style.background]="h.passed ? 'var(--pm-accent-soft)' : 'var(--pm-danger-soft)'" [style.color]="h.passed ? 'var(--pm-accent)' : 'var(--pm-danger)'" style="width:36px;height:36px;font-size:14px"><i [class]="h.passed ? 'bi-check-lg' : 'bi-x-lg'"></i></div>
+          <div style="flex:1"><strong style="font-size:13px">{{ h.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ h.detail }}</div></div>
+          <span class="pm-badge" [class.pm-badge-success]="h.passed" [class.pm-badge-danger]="!h.passed">{{ h.passed ? 'Passed' : 'Failed' }}</span>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('Health check complete.')"><i class="bi bi-arrow-repeat"></i> Re-run Check</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 21. Activity History Modal -->
+<div *ngIf="activeModalId === 'activityHistoryModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Full Activity History</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="d-flex gap-2 mb-3 flex-wrap">
+          <input type="text" class="pm-form-control" placeholder="Search..." style="max-width:200px">
+          <select class="pm-form-control" style="max-width:160px"><option>All Types</option><option>Payments</option><option>Settings</option><option>Members</option><option>Alerts</option></select>
+          <button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-funnel"></i> Filter</button>
+        </div>
+        <table class="pm-table">
+          <thead><tr><th>Time</th><th>Type</th><th>Description</th><th>User</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let a of activityHistory"><td style="font-size:12px;color:var(--pm-muted);white-space:nowrap">{{ a.time }}</td><td><span class="pm-badge" [class.pm-badge-info]="a.type==='Payment'" [class.pm-badge-purple]="a.type==='Settings'" [class.pm-badge-success]="a.type==='Member'" [class.pm-badge-warning]="a.type==='Alert'">{{ a.type }}</span></td><td style="font-size:13px">{{ a.description }}</td><td style="font-size:12px">{{ a.user }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-sm" (click)="processAction('History exported.')"><i class="bi bi-download"></i> Export CSV</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 22. Notifications Modal -->
+<div *ngIf="activeModalId === 'notificationsModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notifications <span class="pm-badge pm-badge-danger ms-2">4</span></h5><div><button class="pm-btn pm-btn-sm me-2" (click)="markAllRead()">Mark all read</button><button class="btn-close" (click)="closeModal()"></button></div></div>
+      <div class="modal-body" style="padding:0;max-height:400px;overflow-y:auto">
+        <div *ngFor="let n of notifications" class="d-flex align-items-start gap-3 p-3" [style.background]="n.read ? 'transparent' : 'var(--pm-info-soft)'" style="border-bottom:1px solid var(--pm-border);cursor:pointer" (click)="n.read = true">
+          <div class="pm-icon-circle flex-shrink-0" [style.background]="n.bgColor" [style.color]="n.iconColor" style="width:36px;height:36px;font-size:14px"><i [class]="n.icon"></i></div>
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600">{{ n.title }}</div><div style="font-size:12px;color:var(--pm-ink-soft)">{{ n.body }}</div><div style="font-size:11px;color:var(--pm-muted);margin-top:2px">{{ n.time }}</div></div>
+          <div *ngIf="!n.read" style="width:8px;height:8px;background:var(--pm-primary);border-radius:50%;flex-shrink:0;margin-top:6px"></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-sm" (click)="processAction('All notifications cleared.')"><i class="bi bi-trash"></i> Clear All</button><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 23. Profile Modal -->
+<div *ngIf="activeModalId === 'profileModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile Settings</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="text-center mb-4"><div class="pm-avatar mx-auto mb-2" style="width:64px;height:64px;font-size:22px;background:var(--pm-gradient-hero)">JK</div><h5 style="margin:0;font-weight:700">James Kamau</h5><div style="font-size:12px;color:var(--pm-muted)">Primary Admin</div></div>
+        <div class="mb-3"><label class="pm-form-label">Full Name</label><input type="text" class="pm-form-control" value="James Kamau"></div>
+        <div class="mb-3"><label class="pm-form-label">Email</label><input type="email" class="pm-form-control" value="james.kamau@email.com"></div>
+        <div class="mb-3"><label class="pm-form-label">Phone</label><input type="tel" class="pm-form-control" value="0712 345 890"></div>
+        <hr class="pm-divider">
+        <div class="mb-3"><label class="pm-form-label">New Password (leave blank to keep)</label><input type="password" class="pm-form-control" placeholder="Enter new password"></div>
+        <div class="mb-3"><label class="pm-form-label">Confirm Password</label><input type="password" class="pm-form-control" placeholder="Confirm new password"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Profile updated successfully.')">Save Profile</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 24. Price Change Notification Modal -->
+<div *ngIf="activeModalId === 'priceChangeNotifModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-tag me-2" style="color:var(--pm-warning)"></i>Price/Tariff Change Alerts</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Select which providers to monitor for price or tariff changes.</p>
+        <div class="switch-item" *ngFor="let p of priceChangeProviders"><div><strong>{{ p.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ p.detail }}</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="p.monitored"></div></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Price change monitoring configured.')">Save</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 25. Service Outage Notification Modal -->
+<div *ngIf="activeModalId === 'serviceOutageNotifModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055" (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-broadcast me-2" style="color:var(--pm-danger)"></i>Service Outage Alerts</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Get notified about planned maintenance and unplanned outages in your area.</p>
+        <div class="switch-item" *ngFor="let o of outageProviders"><div><strong>{{ o.name }}</strong><div style="font-size:11px;color:var(--pm-muted)">{{ o.detail }}</div></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" [(ngModel)]="o.monitored"></div></div>
+        <div class="mt-3"><label class="pm-form-label">Your Area / Meter ID</label><input type="text" class="pm-form-control" placeholder="e.g., Nairobi West / 14825739"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('Outage alerts configured.')">Save</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div *ngIf="toastMessage" class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div class="alert alert-success d-flex align-items-center shadow-sm" style="border:none;border-radius:var(--pm-r-md)">
+    <i class="bi bi-check-circle-fill me-2"></i> {{ toastMessage }}
+  </div>
+</div>

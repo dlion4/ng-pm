@@ -1,0 +1,31 @@
+<div class="sidebar-backdrop" [class.show]="mobileOpen" (click)="onBackdropClick()"></div>
+<aside [class]="sidebarClasses" aria-label="Cards navigation">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="brand">
+            <div class="brand-icon" style="background:linear-gradient(135deg,#1e293b,#0f172a)"><i class="bi bi-credit-card-2-front"></i></div>
+            <span class="brand-text">Paymo</span>
+            <span class="brand-tag" style="color:#3b82f6;background:rgba(59,130,246,0.08)">Cards</span>
+        </div>
+        <button class="sidebar-toggle d-lg-none" (click)="onCloseMobile()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="flex-grow-1">
+        <ng-container *ngFor="let group of navGroups">
+            <div class="mb-2">
+                <span class="nav-group-label">{{ group.title }}</span>
+                <nav class="d-flex flex-column">
+                    <ng-container *ngFor="let item of group.items">
+                        <a [routerLink]="item.route" routerLinkActive="active" class="nav-link" [class.active]="activeSection === item.key" (click)="onNavItemClick(item)">
+                            <span class="nav-icon"><i class="bi" [ngClass]="item.icon"></i></span>
+                            <span class="nav-label">{{ item.label }}</span>
+                            <span class="nav-badge" *ngIf="item.badge">{{ item.badge }}</span>
+                        </a>
+                    </ng-container>
+                </nav>
+            </div>
+        </ng-container>
+    </div>
+    <div class="sidebar-account">
+        <div class="avatar" style="background:linear-gradient(135deg,#1e293b,#0f172a)">JK</div>
+        <div class="details"><div class="fw-bold text-truncate" style="font-size:0.82rem;color:var(--text)">James K.</div><div class="text-truncate" style="font-size:0.7rem;color:var(--muted)">Card Admin</div></div>
+    </div>
+</aside>

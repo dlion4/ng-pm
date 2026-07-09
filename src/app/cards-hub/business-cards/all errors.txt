@@ -1,0 +1,971 @@
+i want you to find all permanent fixes for this changes and apply them for them to work without clashing and raising more annoying errors every time i fix manually
+
+using latest Angular or newer, replace the legacy structural directive *ngIf with the modern, more performant control flow block in your HTML template to completely avoid strict type-checking bugs with *ngIf:
+
+fix the errors using format that are non strict for check and that are easier or universal for angular without failures
+
+if there is packages from bootstrap useable to fix some errors use them since my angular have bootstrap installed
+
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:771:103:
+      771 │ ...tton class="pm-btn" (click)="closeModal()">Cancel</button><button
+          ╵                                                              ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:774:39:
+      774 │                         Global Policies</button></div>
+          ╵                                        ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. Did you forget to close the <div> element? If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:775:6:
+      775 │       }
+          ╵       ^
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:788:4:
+      788 │     </div>
+          ╵     ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:789:2:
+      789 │   </div>
+          ╵   ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:791:0:
+      791 │ }
+          ╵ ^
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:824:103:
+      824 │ ...tton class="pm-btn" (click)="closeModal()">Cancel</button><button
+          ╵                                                              ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:825:157:
+      825 │ ...cy group created successfully.','')\">Create Group</button></div>
+          ╵                                                      ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:950:73:
+      950 │ ...lex justify-content-between"><button class="pm-btn pm-btn-danger"
+          ╵                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:952:62:
+      952 │ ...bi bi-x-circle"></i> Reject</button><button class="pm-btn pm-b...
+          ╵                               ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:952:71:
+      952 │ ...circle"></i> Reject</button><button class="pm-btn pm-btn-success"
+          ╵                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:955:67:
+      955 │ ...           class="bi bi-check-circle"></i> Approve</button></div>
+          ╵                                                      ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1022:103:
+      1022 │ ...ton class="pm-btn" (click)="closeModal()">Cancel</button><button
+           ╵                                                             ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1025:78:
+      1025 │ ...lass="bi bi-cloud-upload"></i> Sync to Accounting</button></div>
+           ╵                                                     ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1144:103:
+      1144 │ ...ton class="pm-btn" (click)="closeModal()">Cancel</button><button
+           ╵                                                             ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1147:31:
+      1147 │                         Receipt</button></div>
+           ╵                                ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1318:102:
+      1318 │ ...tton class="pm-btn" (click)="closeModal()">Close</button><button
+           ╵                                                             ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1321:31:
+      1321 │                         Changes</button></div>
+           ╵                                ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1366:103:
+      1366 │ ...ton class="pm-btn" (click)="closeModal()">Cancel</button><button
+           ╵                                                             ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1369:29:
+      1369 │                         Limit</button></div>
+           ╵                              ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1436:102:
+      1436 │ ...tton class="pm-btn" (click)="closeModal()">Close</button><button
+           ╵                                                             ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1439:30:
+      1439 │                         Coding</button></div>
+           ╵                               ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1543:102:
+      1543 │ ...tton class="pm-btn" (click)="closeModal()">Close</button><button
+           ╵                                                             ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1546:30:
+      1546 │                         Action</button></div>
+           ╵                               ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1582:20:
+      1582 │ ...          <button class="pm-tab-pill" [class.active]="activeT...
+           ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1583:85:
+      1583 │ ...,'deposit',$event)\">Deposit</button><button class="pm-tab-pill"
+           ╵                                ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1583:94:
+      1583 │ ...,'deposit',$event)\">Deposit</button><button class="pm-tab-pill"
+           ╵                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1584:87:
+      1584 │ ...withdraw',$event)\">Withdraw</button><button class="pm-tab-pill"
+           ╵                                ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1584:96:
+      1584 │ ...withdraw',$event)\">Withdraw</button><button class="pm-tab-pill"
+           ╵                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1585:88:
+      1585 │ ...witchTab('fundTab','autofund',$event)\">Auto-Fund</button></div>
+           ╵                                                     ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1611:16:
+      1611 │                 </div>
+           ╵                 ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1612:103:
+      1612 │ ...ton class="pm-btn" (click)="closeModal()">Cancel</button><button
+           ╵                                                             ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1615:32:
+      1615 │                         Transfer</button></div>
+           ╵                                 ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. Did you forget to close the <div> element? If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1616:6:
+      1616 │       } @else {
+           ╵       ^
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1628:4:
+      1628 │     </div>
+           ╵     ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1629:2:
+      1629 │   </div>
+           ╵   ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1630:0:
+      1630 │ </div>
+           ╵ ~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1631:0:
+      1631 │ }
+           ╵ ^
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1667:103:
+      1667 │ ...ton class="pm-btn" (click)="closeModal()">Cancel</button><button
+           ╵                                                             ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1670:71:
+      1670 │ ...      class="bi bi-download"></i> Generate Report</button></div>
+           ╵                                                     ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1780:103:
+      1780 │ ...ton class="pm-btn" (click)="closeModal()">Cancel</button><button
+           ╵                                                             ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1783:31:
+      1783 │                         Payment</button></div>
+           ╵                                ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1899:103:
+      1899 │ ...ton class="pm-btn" (click)="closeModal()">Cancel</button><button
+           ╵                                                             ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1902:29:
+      1902 │                         Setup</button></div>
+           ╵                              ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Opening tag "button" not terminated. [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1963:103:
+      1963 │ ...ton class="pm-btn" (click)="closeModal()">Cancel</button><button
+           ╵                                                             ~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "button". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:1966:32:
+      1966 │                         Branding</button></div>
+           ╵                                 ~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unclosed block "if" [plugin angular-compiler]
+
+    src/app/cards-hub/business-cards/business-cards.html:2022:0:
+      2022 │ @if (activeModal === 'companyProfileModal') {
+           ╵ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component BusinessCardsComponent.
+
+    src/app/cards-hub/business-cards/business-cards.ts:179:15:
+      179 │   templateUrl: './business-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG2008: Could not find template file './card-admin.component.html'. [plugin angular-compiler]
+
+    src/app/cards-hub/card-admin/card-admin.ts:349:15:
+      349 │   templateUrl: './card-admin.component.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:223:0:
+      223 │ </div><!-- end pm-app -->
+          ╵ ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:247:652:
+      247 │ ...orm-check-label">Corporate Spend & Violations</label></div></div>
+          ╵                                                               ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:249:467:
+      249 │ ...ion>CSV</option><option>PDF Summary</option></select></div></div>
+          ╵                                                               ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:251:357:
+      251 │ ...al('exportReportModal')">Download File</button></div></div></div>
+          ╵                                                         ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:253:4:
+      253 │     </div>
+          ╵     ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:254:2:
+      254 │   </div>
+          ╵   ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:255:0:
+      255 │ </div>
+          ╵ ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing block. The block may have been closed earlier. If you meant to write the `}` character, you should use the "&#125;" HTML entity instead. [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:256:0:
+      256 │ }
+          ╵ ^
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:294:283:
+      294 │ ...tion><option>Custom: Marketing Dept Spend</option></select></div>
+          ╵                                                               ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:296:399:
+      296 │ ...ut type="time" class="pm-form-control" value="08:00"></div></div>
+          ╵                                                               ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:298:428:
+      298 │ ...xcel</option><option>CSV link</option></select></div></div></div>
+          ╵                                                         ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:300:4:
+      300 │     </div>
+          ╵     ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:301:2:
+      301 │   </div>
+          ╵   ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-analytics/card-analytics.html:302:0:
+      302 │ </div>
+          ╵ ~~~~~~
+
+  Error occurs in the template of component CardAnalyticsComponent.
+
+    src/app/cards-hub/card-analytics/card-analytics.ts:96:15:
+      96 │   templateUrl: './card-analytics.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:389:8:
+      389 │         </div><!-- pm-content -->
+          ╵         ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:390:4:
+      390 │     </div><!-- pm-main -->
+          ╵     ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "div". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:391:4:
+      391 │     </div><!-- pm-app -->
+          ╵     ~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unclosed block "if" [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:399:0:
+      399 │ @if (activeModal === 'changePinModal') {
+          ╵ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unclosed block "for" [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:410:22:
+      410 │ ...                 @for (label of pinStepperLabels; track $index) {
+          ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unclosed block "else" [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:413:110:
+      413 │ ...1) { <i class="bi bi-check"></i> } @else { { $index + 1 } }</div>
+          ╵                                       ~~~~~~~
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Invalid ICU message. Missing '}'. [plugin angular-compiler]
+
+    src/app/cards-hub/card-settings/card-settings.html:471:40:
+      471 │ @if (activeModal === 'freezeCardModal') {
+          ╵                                         ^
+
+  Error occurs in the template of component CardSettingsComponent.
+
+    src/app/cards-hub/card-settings/card-settings.ts:128:15:
+      128 │   templateUrl: './card-settings.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Missing closing parentheses at column 61 in [geoCountries.set($any($event.target).value.split(',').map((c:string)=>c.trim()).filter((c:string)=>c))] in C:\Users\Admin\Desktop\Paymo Angular\paymo\src\app\cards-hub\physical-cards\physical-cards.html@835:33 [plugin angular-compiler]
+
+    src/app/cards-hub/physical-cards/physical-cards.html:836:33:
+      836 │ ... (input)="geoCountries.set($any($event.target).value.split(','...
+          ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component PhysicalCardsComponent.
+
+    src/app/cards-hub/physical-cards/physical-cards.ts:134:15:
+      134 │   templateUrl: './physical-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Missing expected ) at column 69 in [geoCountries.set($any($event.target).value.split(',').map((c:string)=>c.trim()).filter((c:string)=>c))] in C:\Users\Admin\Desktop\Paymo Angular\paymo\src\app\cards-hub\physical-cards\physical-cards.html@835:33 [plugin angular-compiler]
+
+    src/app/cards-hub/physical-cards/physical-cards.html:836:33:
+      836 │ ... (input)="geoCountries.set($any($event.target).value.split(','...
+          ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component PhysicalCardsComponent.
+
+    src/app/cards-hub/physical-cards/physical-cards.ts:134:15:
+      134 │   templateUrl: './physical-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Unexpected token ')' at column 79 in [geoCountries.set($any($event.target).value.split(',').map((c:string)=>c.trim()).filter((c:string)=>c))] in C:\Users\Admin\Desktop\Paymo Angular\paymo\src\app\cards-hub\physical-cards\physical-cards.html@835:33 [plugin angular-compiler]
+
+    src/app/cards-hub/physical-cards/physical-cards.html:836:33:
+      836 │ ... (input)="geoCountries.set($any($event.target).value.split(','...
+          ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component PhysicalCardsComponent.
+
+    src/app/cards-hub/physical-cards/physical-cards.ts:134:15:
+      134 │   templateUrl: './physical-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] TS2339: Property 'c' does not exist on type 'PhysicalCardsComponent'. [plugin angular-compiler]
+
+    src/app/cards-hub/physical-cards/physical-cards.html:836:92:
+      836 │ ....target).value.split(',').map((c:string)=>c.trim()).filter((c:...
+          ╵                                   ^
+
+  Error occurs in the template of component PhysicalCardsComponent.
+
+    src/app/cards-hub/physical-cards/physical-cards.ts:134:15:
+      134 │   templateUrl: './physical-cards.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG2008: Could not find stylesheet file './prepaid-cardcss'. [plugin angular-compiler]
+
+    src/app/cards-hub/prepaid-card/prepaid-card.ts:330:14:
+      330 │   styleUrls: ['./prepaid-cardcss'],
+          ╵               ~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG2008: Could not find template file './virtual-credit-card.html'. [plugin angular-compiler]
+
+    src/app/cards-hub/virtual-credit/virtual-credit.ts:103:15:
+      103 │   templateUrl: './virtual-credit-card.html',
+          ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

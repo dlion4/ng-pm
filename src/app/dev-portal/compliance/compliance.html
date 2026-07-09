@@ -1,0 +1,1353 @@
+<div class="pm-app">
+  <div class="pm-main">
+
+    <div class="pm-page-bar">
+      <div>
+        <div class="pm-breadcrumb"><a href="javascript:void(0)">Developer
+            Portal</a> / <a href="javascript:void(0)">APIs</a> /
+          <strong>Compliance &amp; Audit</strong>
+        </div>
+        <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE
+          4.12 — Compliance, Audit &amp; Regulatory Integration</h2>
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Integrate
+          real-time regulatory reporting, manage immutable audit trails, and
+          ensure strict compliance with KRA, CBK, and global standards.</p>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <button class="pm-btn" (click)="openModal('envSwitcherModal')"><i class="bi bi-hdd-network"></i>
+          Environment</button>
+        <button class="pm-btn" (click)="openModal('auditAlertsModal')"><i class="bi bi-bell"></i> Alerts <span
+            class="pm-badge pm-badge-danger" style="margin-left:4px">3</span></button>
+        <button class="pm-btn" (click)="openModal('isoMessageModal')"><i class="bi bi-globe"></i> ISO 20022
+          Tester</button>
+        <button class="pm-btn" (click)="openModal('dsarRequestModal')"><i class="bi bi-person-bounding-box"></i> DSAR
+          API</button>
+        <button class="pm-btn" (click)="openModal('kraEtimModal')"><i class="bi bi-receipt-cutoff"></i> KRA e-TIMS
+          Check</button>
+        <button class="pm-btn pm-btn-primary" (click)="openModal('genAuditTokenModal')"><i class="bi bi-key"></i>
+          Audit Access Token</button>
+      </div>
+    </div>
+
+    <div class="pm-content">
+
+      <div class="row g-3">
+        <div class="col-lg-3 col-md-6">
+          <div class="pm-card" style="min-height:140px;border-left:4px solid var(--pm-accent)">
+            <p class="pm-stat-label" style="color:var(--pm-accent)">COMPLIANCE
+              HEALTH</p>
+            <div class="pm-stat-value" style="margin:6px 0;color:var(--pm-ink)">100%</div>
+            <span class="pm-badge pm-badge-success"><i class="bi bi-check-circle"></i> Fully Compliant</span>
+            <div style="font-size:11px;color:var(--pm-muted);margin-top:8px">CBK,
+              KRA, ODPC checks passed</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="pm-card" style="min-height:140px">
+            <p class="pm-stat-label" style="color:var(--pm-info)">AUDIT LOG
+              ENTRIES (30D)</p>
+            <div class="pm-stat-value" style="margin:6px 0">2.4M</div>
+            <span class="pm-badge pm-badge-info"><i class="bi bi-shield-lock"></i> WORM Encrypted</span>
+            <div style="font-size:11px;color:var(--pm-muted);margin-top:8px">Last
+              synced: 2 mins ago</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="pm-card" style="min-height:140px">
+            <p class="pm-stat-label" style="color:var(--pm-warning)">PENDING
+              REG. FILINGS</p>
+            <div class="pm-stat-value" style="margin:6px 0">2</div>
+            <span class="pm-badge pm-badge-warning"><i class="bi bi-clock"></i>
+              Next due in 4 days</span>
+            <div style="font-size:11px;color:var(--pm-muted);margin-top:8px">KRA
+              DST, NSSF Tier II</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="pm-card pm-card-dark" style="min-height:140px">
+            <p class="pm-stat-label" style="color:rgba(255,255,255,0.7)">API
+              RATE LIMIT STATUS</p>
+            <div class="pm-stat-value" style="margin:6px 0;color:#fff">Healthy</div>
+            <span class="pm-badge pm-badge-slate"><i class="bi bi-activity"></i>
+              450 req/sec</span>
+            <div class="pm-progress mt-2">
+              <div class="pm-progress-bar" style="width:15%;background:var(--pm-accent)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-lg-8">
+          <div class="pm-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+              <h3 class="pm-section-title"><i class="bi bi-bank" style="color:var(--pm-primary)"></i> 4.12.1 —
+                Regulatory
+                Reporting APIs</h3>
+              <div class="pm-tab-pills">
+                <button class="pm-tab-pill" [class.active]="activeRegTab === 'cbk'"
+                  (click)="switchMainTab('reg','cbk')">CBK &amp; AML</button>
+                <button class="pm-tab-pill" [class.active]="activeRegTab === 'kra'"
+                  (click)="switchMainTab('reg','kra')">KRA &amp; Taxes</button>
+                <button class="pm-tab-pill" [class.active]="activeRegTab === 'odpc'"
+                  (click)="switchMainTab('reg','odpc')">Data Privacy
+                  (ODPC)</button>
+              </div>
+            </div>
+
+            <ng-container [ngSwitch]="activeRegTab">
+              <div *ngSwitchCase="'cbk'">
+                <p style="font-size:13px;color:var(--pm-ink-soft)">Endpoints for
+                  Central Bank of Kenya reporting, Anti-Money Laundering (AML),
+                  and large transaction flagging.</p>
+                <div class="endpoint-card mb-2" (click)="openModal('apiEndpointModal','cbkLarge')">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                          style="font-family:monospace">/v1/compliance/cbk/large-transaction</strong></div>
+                      <div style="font-size:12px;color:var(--pm-muted)">Report
+                        transactions exceeding KES 1M equivalent to the
+                        FRC.</div>
+                    </div>
+                    <span class="pm-badge pm-badge-success">Operational</span>
+                  </div>
+                </div>
+                <div class="endpoint-card mb-2" (click)="openModal('apiEndpointModal','cbkStr')">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                          style="font-family:monospace">/v1/compliance/cbk/str</strong></div>
+                      <div style="font-size:12px;color:var(--pm-muted)">Submit
+                        Suspicious Transaction Reports (STR) based on ML risk
+                        scoring.</div>
+                    </div>
+                    <span class="pm-badge pm-badge-success">Operational</span>
+                  </div>
+                </div>
+                <div class="endpoint-card" (click)="openModal('apiEndpointModal','cbkKyc')">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <div class="d-flex align-items-center mb-1"><span class="api-method api-get">GET</span> <strong
+                          style="font-family:monospace">/v1/compliance/kyc/pep-screening</strong></div>
+                      <div style="font-size:12px;color:var(--pm-muted)">Screen
+                        entities against PEP and global sanction lists.</div>
+                    </div>
+                    <span class="pm-badge pm-badge-success">Operational</span>
+                  </div>
+                </div>
+                <div class="mt-3 text-end"><button class="pm-btn pm-btn-sm"
+                    (click)="openModal('simulateCbkModal')">Simulate AML
+                    Trigger</button></div>
+              </div>
+
+              <div *ngSwitchCase="'kra'">
+                <p style="font-size:13px;color:var(--pm-ink-soft)">Tax
+                  compliance integrations for e-TIMS, PAYE, and automated VAT
+                  reporting.</p>
+                <div class="endpoint-card mb-2" (click)="openModal('kraEtimModal')">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                          style="font-family:monospace">/v1/tax/kra/e-tims/invoice</strong></div>
+                      <div style="font-size:12px;color:var(--pm-muted)">Push
+                        B2B/B2C invoice data directly to KRA e-TIMS.</div>
+                    </div>
+                    <span class="pm-badge pm-badge-success">Operational</span>
+                  </div>
+                </div>
+                <div class="endpoint-card mb-2" (click)="openModal('apiEndpointModal','kraPaye')">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                          style="font-family:monospace">/v1/tax/kra/paye/submit</strong></div>
+                      <div style="font-size:12px;color:var(--pm-muted)">Submit
+                        automated monthly PAYE returns to iTax.</div>
+                    </div>
+                    <span class="pm-badge pm-badge-warning">Maintenance at 10
+                      PM</span>
+                  </div>
+                </div>
+                <div class="endpoint-card" (click)="openModal('apiEndpointModal','kraWht')">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                          style="font-family:monospace">/v1/tax/kra/wht/certificate</strong></div>
+                      <div style="font-size:12px;color:var(--pm-muted)">Generate
+                        and remit Withholding Tax certificates.</div>
+                    </div>
+                    <span class="pm-badge pm-badge-success">Operational</span>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngSwitchCase="'odpc'">
+                <p style="font-size:13px;color:var(--pm-ink-soft)">APIs mapped
+                  to Data Protection Act 2019 (Kenya) requirements.</p>
+                <div class="endpoint-card mb-2" (click)="openModal('dsarRequestModal')">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <div class="d-flex align-items-center mb-1"><span class="api-method api-post">POST</span> <strong
+                          style="font-family:monospace">/v1/privacy/dsar/request</strong></div>
+                      <div style="font-size:12px;color:var(--pm-muted)">Initiate
+                        Data Subject Access Request (DSAR).</div>
+                    </div>
+                    <span class="pm-badge pm-badge-success">Operational</span>
+                  </div>
+                </div>
+                <div class="endpoint-card mb-2" (click)="openModal('apiEndpointModal','odpcErase')">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <div class="d-flex align-items-center mb-1"><span class="api-method api-del">DEL</span> <strong
+                          style="font-family:monospace">/v1/privacy/data/erase</strong></div>
+                      <div style="font-size:12px;color:var(--pm-muted)">Execute
+                        right to erasure across non-immutable stores.</div>
+                    </div>
+                    <span class="pm-badge pm-badge-success">Operational</span>
+                  </div>
+                </div>
+                <div class="endpoint-card" (click)="openModal('apiEndpointModal','odpcConsent')">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <div class="d-flex align-items-center mb-1"><span class="api-method api-put">PUT</span> <strong
+                          style="font-family:monospace">/v1/privacy/consent/update</strong></div>
+                      <div style="font-size:12px;color:var(--pm-muted)">Manage
+                        granular user consent flags.</div>
+                    </div>
+                    <span class="pm-badge pm-badge-success">Operational</span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="pm-card h-100">
+            <h3 class="pm-section-title mb-3">Quick Tools</h3>
+            <div class="quick-action-grid mb-4">
+              <button class="quick-action-btn" (click)="openModal('genAuditTokenModal')"><i
+                  class="bi bi-key text-warning me-1"></i> Audit Token</button>
+              <button class="quick-action-btn" (click)="openModal('isoMessageModal')"><i
+                  class="bi bi-file-code text-info me-1"></i> MX
+                Validator</button>
+              <button class="quick-action-btn" (click)="openModal('swiftRouteModal')"><i
+                  class="bi bi-send text-primary me-1"></i> SWIFT Route</button>
+              <button class="quick-action-btn" (click)="openModal('openBankingModal')"><i
+                  class="bi bi-unlock text-success me-1"></i> OB
+                Consent</button>
+              <button class="quick-action-btn" (click)="openModal('auditReportModal')"><i
+                  class="bi bi-cloud-download text-danger me-1"></i> Export
+                Logs</button>
+              <button class="quick-action-btn" (click)="openModal('complianceDashModal')"><i
+                  class="bi bi-speedometer me-1" style="color:var(--pm-purple)"></i> Dashboard</button>
+            </div>
+            <div class="utility-block">
+              <h4 style="font-size:13px;font-weight:700;margin:0 0 10px">Documentation
+                Hub</h4>
+              <div class="feed-item py-2"><i class="bi bi-journal-text text-muted"></i> <a href="javascript:void(0)"
+                  (click)="selectedDoc=docItems[0];openModal('docViewerModal')"
+                  style="font-size:13px;font-weight:500;color:var(--pm-primary);text-decoration:none">KYC/AML
+                  Implementation Guide</a></div>
+              <div class="feed-item py-2"><i class="bi bi-journal-text text-muted"></i> <a href="javascript:void(0)"
+                  (click)="selectedDoc=docItems[1];openModal('docViewerModal')"
+                  style="font-size:13px;font-weight:500;color:var(--pm-primary);text-decoration:none">Data
+                  Privacy Compliance Checklist</a></div>
+              <div class="feed-item py-2"><i class="bi bi-journal-text text-muted"></i> <a href="javascript:void(0)"
+                  (click)="selectedDoc=docItems[2];openModal('docViewerModal')"
+                  style="font-size:13px;font-weight:500;color:var(--pm-primary);text-decoration:none">KRA
+                  e-TIMS API Spec v2.1</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="pm-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="pm-section-title"><i class="bi bi-shield-check" style="color:var(--pm-accent)"></i> 4.12.2 —
+                Audit &amp;
+                Compliance Tools</h3>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('auditLogsModal')">View Logs</button>
+            </div>
+            <div class="p-3 border rounded mb-3" style="background:var(--pm-surface-2)">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <div style="font-weight:600;font-size:14px">Immutable Audit
+                  Trail (WORM)</div>
+                <span class="pm-badge pm-badge-success">Active</span>
+              </div>
+              <p style="font-size:12px;color:var(--pm-muted);margin-bottom:12px">All
+                transaction states, configuration changes, and access logs are
+                written to a WORM datastore.</p>
+              <div class="d-flex gap-2">
+                <button class="pm-btn pm-btn-sm" (click)="openModal('verifyLogModal')"><i
+                    class="bi bi-check-circle"></i> Verify Hash</button>
+                <button class="pm-btn pm-btn-sm" (click)="openModal('thirdPartyAuditModal')"><i
+                    class="bi bi-people"></i> Auditor Portal</button>
+              </div>
+            </div>
+            <h4 style="font-size:13px;font-weight:700;margin:0 0 10px">Recent
+              System Audit Events</h4>
+            <div class="feed-item py-2">
+              <div class="pm-icon-circle"
+                style="width:32px;height:32px;background:var(--pm-primary-soft);color:var(--pm-primary)"><i
+                  class="bi bi-key" style="font-size:14px"></i></div>
+              <div style="flex:1">
+                <div style="font-weight:600;font-size:12px">API Key
+                  Rotated</div>
+                <div style="font-size:11px;color:var(--pm-muted)">User:
+                  dev.admin@paymo.co.ke</div>
+              </div>
+              <div style="font-size:11px;color:var(--pm-muted)">10 mins
+                ago</div>
+            </div>
+            <div class="feed-item py-2">
+              <div class="pm-icon-circle"
+                style="width:32px;height:32px;background:var(--pm-danger-soft);color:var(--pm-danger)"><i
+                  class="bi bi-person-x" style="font-size:14px"></i></div>
+              <div style="flex:1">
+                <div style="font-weight:600;font-size:12px">Failed Login Attempt
+                  (x5)</div>
+                <div style="font-size:11px;color:var(--pm-muted)">Account:
+                  system.hook@paymo.co.ke</div>
+              </div>
+              <div style="font-size:11px;color:var(--pm-muted)">1 hr ago</div>
+            </div>
+            <div class="feed-item py-2">
+              <div class="pm-icon-circle"
+                style="width:32px;height:32px;background:var(--pm-warning-soft);color:var(--pm-warning)"><i
+                  class="bi bi-gear" style="font-size:14px"></i></div>
+              <div style="flex:1">
+                <div style="font-weight:600;font-size:12px">Webhook URL
+                  Changed</div>
+                <div style="font-size:11px;color:var(--pm-muted)">Event:
+                  payout.completed</div>
+              </div>
+              <div style="font-size:11px;color:var(--pm-muted)">4 hrs ago</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="pm-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="pm-section-title"><i class="bi bi-globe" style="color:var(--pm-purple)"></i> 4.12.3 —
+                International
+                Standards</h3>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('isoDocsModal')">Standards Docs</button>
+            </div>
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="utility-block" style="border-left:3px solid var(--pm-primary)">
+                  <div class="d-flex justify-content-between">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 4px">ISO
+                      20022 Messaging</h4><span class="pm-badge pm-badge-success">Enabled</span>
+                  </div>
+                  <p style="font-size:12px;color:var(--pm-muted);margin-bottom:8px">API
+                    support for standardized financial messaging formats.</p>
+                  <div class="d-flex gap-2 flex-wrap"><span class="pm-badge pm-badge-slate">pain.001</span><span
+                      class="pm-badge pm-badge-slate">pain.002</span><span
+                      class="pm-badge pm-badge-slate">camt.052/053</span></div>
+                  <div class="mt-2"><button class="pm-btn pm-btn-sm pm-btn-outline"
+                      (click)="openModal('isoMessageModal')">Validate
+                      Payload</button></div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="utility-block" style="border-left:3px solid var(--pm-warning)">
+                  <div class="d-flex justify-content-between">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 4px">SWIFT
+                      &amp; Cross-Border</h4><span class="pm-badge pm-badge-success">Enabled</span>
+                  </div>
+                  <p style="font-size:12px;color:var(--pm-muted);margin-bottom:8px">SWIFT
+                    gpi tracking, MT103 generation, and correspondent
+                    routing.</p>
+                  <div class="d-flex gap-2 mt-2"><button class="pm-btn pm-btn-sm pm-btn-outline"
+                      (click)="openModal('swiftRouteModal')">Route
+                      Check</button><button class="pm-btn pm-btn-sm pm-btn-outline"
+                      (click)="openModal('gpiTrackerModal')">gpi
+                      Tracker</button></div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="utility-block" style="border-left:3px solid var(--pm-accent)">
+                  <div class="d-flex justify-content-between">
+                    <h4 style="font-size:14px;font-weight:700;margin:0 0 4px">Open
+                      Banking (PSD2/Kenya)</h4><span class="pm-badge pm-badge-success">Compliant</span>
+                  </div>
+                  <p style="font-size:12px;color:var(--pm-muted);margin-bottom:8px">AIS,
+                    PIS, and strict SCA implementation.</p>
+                  <div class="d-flex gap-2 mt-2"><button class="pm-btn pm-btn-sm pm-btn-outline"
+                      (click)="openModal('openBankingModal')">Consent Mgmt
+                      API</button><button class="pm-btn pm-btn-sm pm-btn-outline"
+                      (click)="openModal('scaSettingsModal')">SCA
+                      Rules</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- BACKDROP -->
+<div *ngIf="activeModalId" class="modal-backdrop fade show" style="z-index:1050" (click)="closeModal()"></div>
+
+<!-- 1. API Endpoint Inspector -->
+<div *ngIf="activeModalId === 'apiEndpointModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-terminal me-2"></i>API Endpoint Explorer</h5><button class="btn-close"
+          (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-tab-pills mb-3">
+          <button class="pm-tab-pill" [class.active]="activeEpTab === 'req'"
+            (click)="switchTab('epTab','req')">Request</button>
+          <button class="pm-tab-pill" [class.active]="activeEpTab === 'res'"
+            (click)="switchTab('epTab','res')">Response</button>
+          <button class="pm-tab-pill" [class.active]="activeEpTab === 'auth'" (click)="switchTab('epTab','auth')">Auth
+            &amp; Scopes</button>
+        </div>
+        <ng-container [ngSwitch]="activeEpTab">
+          <div *ngSwitchCase="'req'">
+            <div class="d-flex align-items-center mb-3"><span class="api-method"
+                [ngClass]="currentEndpoint.methodClass">{{currentEndpoint.method}}</span><input type="text"
+                class="pm-form-control" [value]="currentEndpoint.url" readonly
+                style="font-family:monospace;background:var(--pm-surface-2)"></div>
+            <label class="pm-form-label">Payload Schema (JSON)</label>
+            <div class="code-block">
+              <pre><code>{{currentEndpoint.payload}}</code></pre>
+            </div>
+          </div>
+          <div *ngSwitchCase="'res'">
+            <label class="pm-form-label">Success Response (201 Created)</label>
+            <div class="code-block">
+              <pre><code>{{currentEndpoint.response}}</code></pre>
+            </div>
+            <label class="pm-form-label mt-3">Error Responses</label>
+            <div class="table-responsive">
+              <table class="pm-table">
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Reason</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let e of currentEndpoint.errors">
+                    <td>{{e.code}}</td>
+                    <td>{{e.reason}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngSwitchCase="'auth'">
+            <div class="p-3 border rounded mb-3">
+              <h6 style="font-size:13px;font-weight:700">Authentication
+                Required</h6>
+              <p style="font-size:12px;color:var(--pm-muted)">OAuth 2.0 Client
+                Credentials flow with signed JWT or HMAC-SHA256 payload
+                signature.</p>
+              <div class="d-flex gap-2"><span *ngFor="let a of currentEndpoint.authTypes; let i=index" class="pm-badge"
+                  [ngClass]="currentEndpoint.authClasses[i]">{{a}}</span></div>
+            </div>
+            <div class="p-3 border rounded">
+              <h6 style="font-size:13px;font-weight:700">Required OAuth
+                Scopes</h6>
+              <ul style="font-size:12px;color:var(--pm-muted);margin:0;padding-left:16px">
+                <li *ngFor="let s of currentEndpoint.scopes"><code>{{s}}</code></li>
+              </ul>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-primary" (click)="closeModal();openModal('simulateCbkModal')">Test in
+          Sandbox</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Simulate CBK/AML -->
+<div *ngIf="activeModalId === 'simulateCbkModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-exclamation text-warning me-2"></i>Simulate CBK
+          / AML Trigger</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div *ngFor="let s of cbkSteps" class="pm-step"
+            [ngClass]="{active: cbkCurrentStep===s.num, completed: cbkCurrentStep>s.num}">
+            <div class="pm-step-num">{{cbkCurrentStep > s.num ? '&#10003;' :
+              s.num}}</div>
+            <span class="pm-step-label">{{s.label}}</span>
+            <div *ngIf="s.num < cbkTotalSteps" class="pm-step-line"></div>
+          </div>
+        </div>
+        <ng-container [ngSwitch]="cbkCurrentStep">
+          <div *ngSwitchCase="1">
+            <h6 style="font-weight:700;margin-bottom:16px">Step 1: Configure
+              Transaction Params</h6>
+            <div class="row g-3">
+              <div class="col-md-6"><label class="pm-form-label">Transaction
+                  Amount (KES)</label><input class="pm-form-control" value="1500000"></div>
+              <div class="col-md-6"><label class="pm-form-label">Scenario
+                  Type</label><select class="pm-form-control">
+                  <option>Large
+                    Transaction</option>
+                  <option>Structuring /
+                    Smurfing</option>
+                  <option>High-Risk
+                    Jurisdiction</option>
+                  <option>PEP
+                    Match</option>
+                </select></div>
+              <div class="col-md-6"><label class="pm-form-label">Sender
+                  Name</label><input class="pm-form-control" value="John Doe Test"></div>
+              <div class="col-md-6"><label class="pm-form-label">Destination
+                  Country</label><select class="pm-form-control">
+                  <option>Kenya
+                    (Local)</option>
+                  <option>Uganda</option>
+                  <option>UAE</option>
+                  <option>Cayman
+                    Islands</option>
+                </select></div>
+            </div>
+          </div>
+          <div *ngSwitchCase="2">
+            <h6 style="font-weight:700;margin-bottom:16px">Step 2: Generate
+              Payload &amp; Hash</h6>
+            <div class="code-block mb-3" style="max-height:200px">
+              <pre><code>&#123;
+  "tx_ref": "SIM-8849-221A",
+  "amount": 1500000.00,
+  "currency": "KES",
+  "sender": "John Doe Test",
+  "destination": "KE",
+  "type": "B2B_TRANSFER"
+&#125;</code></pre>
+            </div>
+            <div class="mb-3"><label class="pm-form-label">HMAC-SHA256 Signature
+                (Auto-generated)</label><input class="pm-form-control" value="a8b9c7d6e5f4g3h2i1j0k9l8m7n6o5p4q3r2s1t0"
+                readonly style="font-family:monospace;background:var(--pm-surface-2)"></div>
+          </div>
+          <div *ngSwitchCase="3">
+            <div class="pm-receipt">
+              <div class="receipt-icon" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i
+                  class="bi bi-shield-exclamation"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-warning)">AML Alert
+                Triggered Successfully</h5>
+              <p style="font-size:13px;color:var(--pm-ink-soft)">A mock STR
+                report has been generated.</p>
+              <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Rule
+                    Triggered</span><strong>Rule 14A
+                    (Large Txn)</strong></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Risk Score</span><strong>85 /
+                    100</strong></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Action Taken</span><strong
+                    style="color:var(--pm-danger)">Transaction
+                    Frozen</strong></div>
+                <div class="d-flex justify-content-between"><span class="text-muted">FRC Mock Ref</span><strong
+                    style="font-family:monospace">FRC-MOCK-9912</strong></div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button *ngIf="cbkCurrentStep > 1" class="pm-btn" (click)="prevCbkStep()"><i class="bi bi-arrow-left"></i>
+          Back</button>
+        <button *ngIf="cbkCurrentStep < cbkTotalSteps" class="pm-btn pm-btn-primary" (click)="nextCbkStep()">Next Step
+          <i class="bi bi-arrow-right"></i></button>
+        <button *ngIf="cbkCurrentStep === cbkTotalSteps" class="pm-btn pm-btn-primary"
+          (click)="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. KRA e-TIMS -->
+<div *ngIf="activeModalId === 'kraEtimModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-receipt-cutoff text-success me-2"></i>KRA e-TIMS
+          Validator</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="!isProcessed; else processedSuccess">
+          <div class="mb-3"><label class="pm-form-label">Invoice
+              Number</label><input class="pm-form-control" value="INV-2025-0899"></div>
+          <div class="mb-3"><label class="pm-form-label">Gross Amount
+              (KES)</label><input class="pm-form-control" value="45000"></div>
+          <div class="mb-3"><label class="pm-form-label">Tax
+              Category</label><select class="pm-form-control">
+              <option>16%
+                VAT</option>
+              <option>8% VAT</option>
+              <option>Zero
+                Rated</option>
+              <option>Exempt</option>
+            </select></div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-surface-2);font-size:12px">Simulates
+            posting an invoice payload to KRA e-TIMS middleware.</div>
+        </ng-container>
+        <ng-template #processedSuccess>
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{processedTitle}}</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft);margin:8px 0 0">{{processedDetail}}</p>
+          </div>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Close</button>
+        <button *ngIf="!isProcessed" class="pm-btn pm-btn-accent"
+          (click)="processAction('e-TIMS Mock Generation Successful!','CU Num: 0011223344/20250627/0001')">Simulate
+          e-TIMS Post</button>
+        <button *ngIf="isProcessed" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. DSAR Request -->
+<div *ngIf="activeModalId === 'dsarRequestModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-bounding-box me-2" style="color:var(--pm-purple)"></i>Initiate
+          DSAR (ODPC)</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="!isProcessed; else processedSuccess">
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Simulate a Data
+            Subject Access Request per the Kenya Data Protection Act 2019.</p>
+          <div class="mb-3"><label class="pm-form-label">Customer ID or
+              Phone</label><input class="pm-form-control" placeholder="e.g. 254712345678"></div>
+          <div class="mb-3"><label class="pm-form-label">Request
+              Type</label><select class="pm-form-control">
+              <option>Full Data
+                Export (JSON)</option>
+              <option>Right to
+                Erasure</option>
+              <option>Consent Review</option>
+            </select></div>
+          <div class="form-check mb-3"><input class="form-check-input" type="checkbox" checked><label
+              class="form-check-label" style="font-size:13px">Trigger async compilation (Callback
+              Webhook)</label></div>
+          <div class="mb-3"><label class="pm-form-label">Webhook
+              URL</label><input class="pm-form-control" value="https://api.yourdomain.com/webhooks/dsar"></div>
+        </ng-container>
+        <ng-template #processedSuccess>
+          <div class="pm-receipt">
+            <div class="receipt-icon" style="background:var(--pm-purple-soft);color:var(--pm-purple)"><i
+                class="bi bi-person-check"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-purple)">{{processedTitle}}</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft);margin:8px 0 0">{{processedDetail}}</p>
+          </div>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Close</button>
+        <button *ngIf="!isProcessed" class="pm-btn pm-btn-primary"
+          (click)="processAction('DSAR compilation job started.','Job ID: DSAR-8812-X')">Initiate
+          Request</button>
+        <button *ngIf="isProcessed" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. Generate Audit Token -->
+<div *ngIf="activeModalId === 'genAuditTokenModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-key text-warning me-2"></i>Generate Auditor
+          Token</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="!isProcessed; else processedSuccess">
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Create a
+            time-bound, read-only JWT token for external auditors.</p>
+          <div class="mb-3"><label class="pm-form-label">Auditor Name /
+              Firm</label><input class="pm-form-control" placeholder="e.g. KPMG, PwC"></div>
+          <div class="mb-3"><label class="pm-form-label">Expiration
+              Date</label><input type="datetime-local" class="pm-form-control" value="2025-07-04T17:00"></div>
+          <div class="mb-3"><label class="pm-form-label">Allowed Scopes</label>
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked disabled><label
+                class="form-check-label" style="font-size:13px"><code>audit:read</code></label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" checked><label
+                class="form-check-label" style="font-size:13px"><code>transactions:read</code></label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label"
+                style="font-size:13px"><code>kyc:read</code></label></div>
+          </div>
+          <div class="mb-3"><label class="pm-form-label">IP Whitelist
+              (Optional)</label><input class="pm-form-control" placeholder="e.g. 192.168.1.1/32"></div>
+        </ng-container>
+        <ng-template #processedSuccess>
+          <div class="pm-receipt">
+            <div class="receipt-icon" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i
+                class="bi bi-key-fill"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-warning)">{{processedTitle}}</h5>
+            <p style="font-size:13px;color:var(--pm-ink-soft);margin:8px 0 0">{{processedDetail}}</p>
+          </div>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Close</button>
+        <button *ngIf="!isProcessed" class="pm-btn pm-btn-primary"
+          (click)="processAction('Token Generated!','Token begins: eyJhbGciOiJIUzI1...')">Generate
+          JWT</button>
+        <button *ngIf="isProcessed" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. Audit Logs -->
+<div *ngIf="activeModalId === 'auditLogsModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-xl modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-list-columns me-2"></i>Immutable Audit Logs</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex gap-2 mb-3 flex-wrap">
+          <input type="text" class="pm-form-control" style="width:200px" placeholder="Search event, user, IP...">
+          <select class="pm-form-control" style="width:auto">
+            <option>All Event
+              Types</option>
+            <option>Auth &amp;
+              Access</option>
+            <option>Transactions</option>
+          </select>
+          <select class="pm-form-control" style="width:auto">
+            <option>Last 24
+              Hours</option>
+            <option>Last 7 Days</option>
+            <option>Last 30
+              Days</option>
+          </select>
+          <button class="pm-btn"><i class="bi bi-funnel"></i> Filter</button>
+        </div>
+        <div class="table-responsive" style="max-height:400px;overflow-y:auto">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Timestamp (UTC)</th>
+                <th>Event
+                  ID</th>
+                <th>Event Type</th>
+                <th>Actor</th>
+                <th>IP
+                  Address</th>
+                <th>Hash Valid</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let log of auditLogs">
+                <td>{{log.timestamp}}</td>
+                <td><code>{{log.eventId}}</code></td>
+                <td>{{log.eventType}}</td>
+                <td>{{log.actor}}</td>
+                <td>{{log.ip}}</td>
+                <td><i class="bi bi-check-circle-fill text-success"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:11px;color:var(--pm-muted);margin-top:10px"><i class="bi bi-shield-lock me-1"></i> Logs
+          stored in append-only AWS
+          QLDB ledger.</p>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-primary" (click)="closeModal();openModal('auditReportModal')">Export Log
+          Batch</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 7. Verify Log Hash -->
+<div *ngIf="activeModalId === 'verifyLogModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-check-circle me-2" style="color:var(--pm-accent)"></i>Verify Audit Log
+          Hash</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="!verifyResult; else verifyBlock">
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Enter an Event ID
+            to verify its cryptographic hash.</p>
+          <div class="mb-3"><label class="pm-form-label">Event ID</label><input class="pm-form-control"
+              value="evt_889a"></div>
+          <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:12px"><i
+              class="bi bi-info-circle me-1"></i> Computes SHA-256 hash and
+            compares against stored hash in the Merkle tree.</div>
+        </ng-container>
+        <ng-template #verifyBlock>
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-shield-check"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">Hash Verified —
+              Integrity Intact</h5>
+            <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Event Hash</span><strong
+                  style="font-family:monospace;font-size:11px">{{verifyResult?.hash}}</strong></div>
+              <div class="d-flex justify-content-between mb-2"><span class="text-muted">Previous Hash</span><strong
+                  style="font-family:monospace;font-size:11px">{{verifyResult?.prevHash}}</strong></div>
+              <div class="d-flex justify-content-between"><span class="text-muted">Chain Valid</span><strong
+                  style="color:var(--pm-accent)"><i class="bi bi-check-circle-fill"></i> Yes</strong></div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Close</button>
+        <button *ngIf="!verifyResult" class="pm-btn pm-btn-primary" (click)="verifyLog()">Verify Hash</button>
+        <button *ngIf="verifyResult" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 8. Environment Switcher -->
+<div *ngIf="activeModalId === 'envSwitcherModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-hdd-network me-2"></i>Switch Environment</h5><button class="btn-close"
+          (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Select the target API
+          environment.</p>
+        <div *ngFor="let env of environments" class="endpoint-card mb-2" [style.borderLeft]="'3px solid ' + env.color"
+          (click)="switchEnv(env.key)">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <div style="font-weight:700;font-size:14px">{{env.label}}</div>
+              <div style="font-size:12px;color:var(--pm-muted);font-family:monospace">{{env.url}}</div>
+            </div>
+            <span *ngIf="currentEnv === env.key" class="pm-badge pm-badge-success"><i class="bi bi-check-circle"></i>
+              Active</span>
+            <span *ngIf="currentEnv !== env.key" class="pm-badge pm-badge-slate">Switch</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. Audit Alerts -->
+<div *ngIf="activeModalId === 'auditAlertsModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-bell me-2" style="color:var(--pm-warning)"></i>Compliance Alerts <span
+            class="pm-badge pm-badge-danger" style="margin-left:8px">{{complianceAlerts.length}}</span></h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let alert of complianceAlerts" class="p-3 border rounded mb-2"
+          [style.borderLeft]="getAlertBorder(alert.severity)">
+          <div class="d-flex justify-content-between align-items-start mb-1">
+            <span class="pm-badge" [class.pm-badge-danger]="alert.severity === 'danger'"
+              [class.pm-badge-warning]="alert.severity === 'warning'"
+              [class.pm-badge-info]="alert.severity === 'info'">{{alert.severity
+              === 'danger' ? 'Critical' : alert.severity === 'warning' ?
+              'Warning' : 'Info'}}</span>
+            <span style="font-size:11px;color:var(--pm-muted)">{{alert.time}}</span>
+          </div>
+          <h6 style="font-size:14px;font-weight:700;margin:6px 0 4px">{{alert.title}}</h6>
+          <p style="font-size:12px;color:var(--pm-ink-soft);margin:0 0 8px">{{alert.description}}</p>
+          <button class="pm-btn pm-btn-sm" (click)="closeModal();openModal(alert.action)"><i
+              class="bi bi-arrow-right"></i> Take Action</button>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-primary" (click)="closeModal();openModal('auditReportModal')">View Full
+          Report</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 10. Audit Report -->
+<div *ngIf="activeModalId === 'auditReportModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-pdf me-2" style="color:var(--pm-danger)"></i>Generate Audit Report
+        </h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div *ngFor="let s of reportSteps" class="pm-step"
+            [ngClass]="{active: reportCurrentStep===s.num, completed: reportCurrentStep>s.num}">
+            <div class="pm-step-num">{{reportCurrentStep > s.num ? '&#10003;' :
+              s.num}}</div>
+            <span class="pm-step-label">{{s.label}}</span>
+            <div *ngIf="s.num < reportTotalSteps" class="pm-step-line"></div>
+          </div>
+        </div>
+        <ng-container [ngSwitch]="reportCurrentStep">
+          <div *ngSwitchCase="1">
+            <h6 style="font-weight:700;margin-bottom:16px">Step 1: Configure
+              Report</h6>
+            <div class="mb-3"><label class="pm-form-label">Report
+                Type</label><select class="pm-form-control" [(ngModel)]="selectedReportType">
+                <option *ngFor="let r of reportTypes" [value]="r.key">{{r.label}}</option>
+              </select></div>
+            <div class="row g-3">
+              <div class="col-md-6"><label class="pm-form-label">Date
+                  From</label><input type="date" class="pm-form-control" value="2025-06-01"></div>
+              <div class="col-md-6"><label class="pm-form-label">Date
+                  To</label><input type="date" class="pm-form-control" value="2025-06-27"></div>
+            </div>
+            <div class="mb-3 mt-3"><label class="pm-form-label">Format</label><select class="pm-form-control">
+                <option>PDF</option>
+                <option>CSV</option>
+                <option>JSON</option>
+              </select></div>
+          </div>
+          <div *ngSwitchCase="2">
+            <h6 style="font-weight:700;margin-bottom:16px">Step 2: Select
+              Columns</h6>
+            <div class="form-check mb-2" *ngFor="let col of reportColumns"><input class="form-check-input"
+                type="checkbox" [(ngModel)]="col.checked"><label class="form-check-label"
+                style="font-size:13px">{{col.label}}</label></div>
+          </div>
+          <div *ngSwitchCase="3">
+            <ng-container *ngIf="!isProcessed; else processedSuccess">
+              <div class="text-center py-4"><i class="bi bi-file-earmark-pdf"
+                  style="font-size:48px;color:var(--pm-muted)"></i>
+                <p style="font-size:14px;color:var(--pm-ink-soft);margin-top:12px">Click
+                  Generate to compile the report.</p>
+              </div>
+            </ng-container>
+            <ng-template #processedSuccess>
+              <div class="pm-receipt">
+                <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+                <h5 style="font-weight:700;color:var(--pm-accent)">{{processedTitle}}</h5>
+                <p style="font-size:13px;color:var(--pm-ink-soft);margin:8px 0 0">{{processedDetail}}</p>
+              </div>
+            </ng-template>
+          </div>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button *ngIf="reportCurrentStep > 1 && !isProcessed" class="pm-btn" (click)="prevReportStep()"><i
+            class="bi bi-arrow-left"></i>
+          Back</button>
+        <button *ngIf="reportCurrentStep === reportTotalSteps && !isProcessed" class="pm-btn pm-btn-primary"
+          (click)="processAction('Report Generated Successfully!','File: compliance-audit-2025-06-27.pdf')">Generate
+          Report</button>
+        <button *ngIf="isProcessed" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        <button *ngIf="reportCurrentStep < reportTotalSteps && !isProcessed" class="pm-btn pm-btn-primary"
+          (click)="nextReportStep()">Next Step <i class="bi bi-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 11. ISO 20022 Message Tester -->
+<div *ngIf="activeModalId === 'isoMessageModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-globe me-2" style="color:var(--pm-info)"></i>ISO 20022
+          Message Tester</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div *ngFor="let s of isoSteps" class="pm-step"
+            [ngClass]="{active: isoCurrentStep===s.num, completed: isoCurrentStep>s.num}">
+            <div class="pm-step-num">{{isoCurrentStep > s.num ? '&#10003;' :
+              s.num}}</div>
+            <span class="pm-step-label">{{s.label}}</span>
+            <div *ngIf="s.num < isoTotalSteps" class="pm-step-line"></div>
+          </div>
+        </div>
+        <ng-container [ngSwitch]="isoCurrentStep">
+          <div *ngSwitchCase="1">
+            <h6 style="font-weight:700;margin-bottom:16px">Step 1: Select
+              Message Type</h6>
+            <div *ngFor="let mt of isoMessageTypes" class="endpoint-card mb-2"
+              [style.borderLeft]="selectedIsoType === mt.key ? '3px solid var(--pm-primary)' : '3px solid transparent'"
+              (click)="selectedIsoType = mt.key">
+              <div class="d-flex justify-content-between">
+                <div><strong style="font-size:13px">{{mt.label}}</strong>
+                  <div style="font-size:11px;color:var(--pm-muted)">Category:
+                    {{mt.category}}</div>
+                </div><span *ngIf="selectedIsoType === mt.key" class="pm-badge pm-badge-primary">Selected</span>
+              </div>
+            </div>
+          </div>
+          <div *ngSwitchCase="2">
+            <h6 style="font-weight:700;margin-bottom:16px">Step 2: XML
+              Payload</h6>
+            <div class="code-block" style="max-height:300px;overflow-y:auto">
+              <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Document xmlns="urn:iso:std:iso:20022:tech:xsd:{{selectedIsoType}}.001.03"&gt;
+  &lt;CstmrCdtTrfInitn&gt;
+    &lt;GrpHdr&gt;
+      &lt;MsgId&gt;MSG-20250627-001&lt;/MsgId&gt;
+      &lt;CreDtTm&gt;2025-06-27T10:00:00Z&lt;/CreDtTm&gt;
+      &lt;NbOfTxs&gt;1&lt;/NbOfTxs&gt;
+    &lt;/GrpHdr&gt;
+    &lt;PmtInf&gt;
+      &lt;PmtId&gt;&lt;EndToEndId&gt;E2E-001&lt;/EndToEndId&gt;&lt;/PmtId&gt;
+      &lt;Amt&gt;&lt;InstdAmt Ccy="KES"&gt;1500000.00&lt;/InstdAmt&gt;&lt;/Amt&gt;
+    &lt;/PmtInfo&gt;
+  &lt;/CstmrCdtTrfInitn&gt;
+&lt;/Document&gt;</code></pre>
+            </div>
+          </div>
+          <div *ngSwitchCase="3">
+            <div class="pm-receipt">
+              <div class="receipt-icon" style="background:var(--pm-info-soft);color:var(--pm-info)"><i
+                  class="bi bi-check-lg"></i></div>
+              <h5 style="font-weight:700;color:var(--pm-info)">Validation
+                Passed</h5>
+              <p style="font-size:13px;color:var(--pm-ink-soft)">The
+                {{selectedIsoType}} message is valid against the ISO 20022
+                schema.</p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Cancel</button>
+        <button *ngIf="isoCurrentStep > 1" class="pm-btn" (click)="prevIsoStep()"><i class="bi bi-arrow-left"></i>
+          Back</button>
+        <button *ngIf="isoCurrentStep < isoTotalSteps" class="pm-btn pm-btn-primary" (click)="nextIsoStep()">Next <i
+            class="bi bi-arrow-right"></i></button>
+        <button *ngIf="isoCurrentStep === isoTotalSteps" class="pm-btn pm-btn-primary"
+          (click)="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12. SWIFT Route Check -->
+<div *ngIf="activeModalId === 'swiftRouteModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-send me-2" style="color:var(--pm-primary)"></i>SWIFT
+          Route Check</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="!routeResult; else routeBlock">
+          <div class="mb-3"><label class="pm-form-label">Destination
+              BIC</label><input class="pm-form-control" value="DEUTDEFF" style="font-family:monospace"></div>
+          <div class="mb-3"><label class="pm-form-label">Currency &amp;
+              Amount</label><input class="pm-form-control" value="EUR 50,000.00"></div>
+          <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:12px"><i
+              class="bi bi-info-circle me-1"></i> Simulates SWIFT network
+            routing to determine correspondent chain.</div>
+        </ng-container>
+        <ng-template #routeBlock>
+          <h6 style="font-weight:700;margin-bottom:12px">Correspondent
+            Chain</h6>
+          <div *ngFor="let hop of routeResult?.chain" class="d-flex align-items-center gap-3 mb-2 p-2 border rounded">
+            <div class="pm-icon-circle"
+              style="background:var(--pm-primary-soft);color:var(--pm-primary);font-size:12px"><i
+                class="bi bi-bank"></i></div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">{{hop?.bank}}</div>
+              <div style="font-size:11px;color:var(--pm-muted);font-family:monospace">{{hop?.bic}}</div>
+            </div>
+          </div>
+          <div class="p-3 rounded mt-3" style="background:var(--pm-accent-soft);font-size:13px"><i
+              class="bi bi-clock me-1"></i> Estimated Time:
+            <strong>{{routeResult?.estimatedTime}}</strong>
+          </div>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Close</button>
+        <button *ngIf="!routeResult" class="pm-btn pm-btn-primary" (click)="checkSwiftRoute()">Check Route</button>
+        <button *ngIf="routeResult" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 13. GPI Tracker -->
+<div *ngIf="activeModalId === 'gpiTrackerModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-activity me-2" style="color:var(--pm-accent)"></i>SWIFT
+          gpi Tracker</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="!gpiResult; else gpiBlock">
+          <div class="mb-3"><label class="pm-form-label">UETR (Unique End-to-End
+              Transaction Reference)</label><input class="pm-form-control" placeholder="e.g. UETR-20250627-XXXXX"
+              style="font-family:monospace"></div>
+          <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:12px"><i
+              class="bi bi-info-circle me-1"></i> Track cross-border payment
+            status in real-time via SWIFT gpi.</div>
+        </ng-container>
+        <ng-template #gpiBlock>
+          <div class="p-3 border rounded mb-3"><strong>UETR:</strong>
+            <code>{{gpiResult?.uetr}}</code> &nbsp; <span class="pm-badge pm-badge-info">{{gpiResult?.status}}</span>
+          </div>
+          <div *ngFor="let evt of gpiResult?.events" class="d-flex gap-3 mb-3">
+            <div class="pm-icon-circle"
+              style="background:var(--pm-accent-soft);color:var(--pm-accent);font-size:11px;min-width:32px;height:32px">
+              <i class="bi bi-geo-alt"></i></div>
+            <div>
+              <div style="font-weight:600;font-size:12px">{{evt?.status}}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{evt?.time}} ·
+                {{evt?.location}}</div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal()">Close</button>
+        <button *ngIf="!gpiResult" class="pm-btn pm-btn-primary" (click)="trackGpi()">Track Payment</button>
+        <button *ngIf="gpiResult" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 14. Open Banking -->
+<div *ngIf="activeModalId === 'openBankingModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-unlock me-2" style="color:var(--pm-success)"></i>Open
+          Banking Consent Management</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <h6 style="font-weight:700;margin-bottom:12px">Active Consents</h6>
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Consent
+                  ID</th>
+                <th>Customer</th>
+                <th>Type</th>
+                <th>Accounts</th>
+                <th>Status</th>
+                <th>Expires</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of obConsents">
+                <td><code>{{c.id}}</code></td>
+                <td>{{c.customer}}</td>
+                <td><span class="pm-badge pm-badge-info">{{c.type}}</span></td>
+                <td>{{c.accounts}}</td>
+                <td><span class="pm-badge" [class.pm-badge-success]="c.status === 'Active'"
+                    [class.pm-badge-danger]="c.status === 'Expired'">{{c.status}}</span></td>
+                <td>{{c.expires}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 15. SCA Settings -->
+<div *ngIf="activeModalId === 'scaSettingsModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-lock me-2" style="color:var(--pm-purple)"></i>SCA Rule
+          Configuration</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Configure
+          Strong Customer Authentication rules per PSD2/Kenya guidelines.</p>
+        <div *ngFor="let rule of scaRules"
+          class="p-3 border rounded mb-2 d-flex justify-content-between align-items-center">
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:13px">{{rule.name}}</div>
+            <div style="font-size:11px;color:var(--pm-muted)">{{rule.description}}</div>
+            <div style="font-size:11px;color:var(--pm-muted);margin-top:4px">Threshold:
+              <strong>{{rule.threshold}}</strong>
+            </div>
+          </div>
+          <div class="form-check form-switch ms-3"><input class="form-check-input" type="checkbox"
+              [checked]="rule.enabled" (change)="toggleSca(rule.id)"></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-primary" (click)="closeModal()">Save
+          Changes</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 16. Doc Viewer -->
+<div *ngIf="activeModalId === 'docViewerModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-journal-text me-2"></i>{{selectedDoc.title}}</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex gap-2 mb-3"><span class="pm-badge pm-badge-slate">{{selectedDoc.category}}</span><span
+            class="pm-badge pm-badge-info">{{selectedDoc.version}}</span></div>
+        <p style="font-size:13px;color:var(--pm-ink-soft);line-height:1.7">{{selectedDoc.content}}</p>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+          class="pm-btn pm-btn-primary" (click)="closeModal()">Downloading
+          PDF... File: {{selectedDoc.title}}.pdf</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 17. Third Party Audit -->
+<div *ngIf="activeModalId === 'thirdPartyAuditModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-people me-2" style="color:var(--pm-primary)"></i>Auditor Access
+          Portal</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th>Firm</th>
+                <th>Contact</th>
+                <th>Status</th>
+                <th>Token
+                  Expiry</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let a of auditors">
+                <td><strong>{{a.firm}}</strong></td>
+                <td>{{a.contact}}</td>
+                <td><span class="pm-badge" [class.pm-badge-success]="a.status === 'Active'"
+                    [class.pm-badge-danger]="a.status === 'Expired'">{{a.status}}</span></td>
+                <td>{{a.tokenExpiry}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 18. Compliance Dashboard -->
+<div *ngIf="activeModalId === 'complianceDashModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-speedometer me-2" style="color:var(--pm-purple)"></i>Compliance
+          Dashboard</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3 mb-3">
+          <div class="col-6">
+            <div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)">
+              <div style="font-size:11px;color:var(--pm-muted)">CBK
+                FILING</div>
+              <div style="font-size:20px;font-weight:700;color:var(--pm-accent)">100%</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 rounded text-center" style="background:var(--pm-warning-soft)">
+              <div style="font-size:11px;color:var(--pm-muted)">KRA
+                FILING</div>
+              <div style="font-size:20px;font-weight:700;color:var(--pm-warning)">87%</div>
+            </div>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="p-3 rounded text-center" style="background:var(--pm-info-soft)">
+              <div style="font-size:11px;color:var(--pm-muted)">ODPC
+                COMPLIANCE</div>
+              <div style="font-size:20px;font-weight:700;color:var(--pm-info)">95%</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 rounded text-center" style="background:var(--pm-danger-soft)">
+              <div style="font-size:11px;color:var(--pm-muted)">OPEN
+                ALERTS</div>
+              <div style="font-size:20px;font-weight:700;color:var(--pm-danger)">3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 19. ISO Docs -->
+<div *ngIf="activeModalId === 'isoDocsModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="stopEvent($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-earmark-code me-2" style="color:var(--pm-info)"></i>Standards
+          Documentation</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let d of docItems" class="endpoint-card mb-2"
+          (click)="selectedDoc=d;closeModal();openModal('docViewerModal')">
+          <div class="d-flex justify-content-between align-items-center">
+            <div><strong style="font-size:13px">{{d.title}}</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">{{d.category}} ·
+                {{d.version}}</div>
+            </div>
+            <i class="bi bi-arrow-right" style="color:var(--pm-muted)"></i>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>

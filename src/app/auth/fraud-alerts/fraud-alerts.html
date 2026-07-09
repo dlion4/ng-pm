@@ -1,0 +1,178 @@
+<!-- Background Elements -->
+<div class="bg-gradient"></div>
+<div class="bg-grid"></div>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="brand">
+        <div class="brand-logo">{{ brandLogo }}</div>
+        <div class="brand-text">
+            <h1>{{ brandTitle }}</h1>
+            <span>{{ brandSubtitle }}</span>
+        </div>
+    </div>
+    <div class="nav-right">
+        <div class="session-badge">
+            {{ sessionBadgeText }}
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar">{{ userAvatar }}</div>
+            <div class="user-info">
+                <h4>{{ userName }}</h4>
+                <span>{{ userStatus }}</span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <!-- Alert Banner -->
+    <div class="alert-banner">
+        <div class="alert-icon">
+            <i class="fas {{ alertIcon }}"></i>
+        </div>
+        <div class="alert-content">
+            <h2>
+                {{ alertTitle }}
+                <span *ngFor="let badge of alertBadges; trackBy: trackByIndex" class="status-badge"
+                    [class.status-frozen]="badge.type === 'frozen'" [class.status-flagged]="badge.type === 'flagged'"
+                    [class.status-verification]="badge.type === 'verification'"
+                    [class.status-dormant]="badge.type === 'dormant'">
+                    {{ badge.label }}
+                </span>
+            </h2>
+            <p>{{ alertDescription }}</p>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-main">
+            <div class="page-indicator">
+                <i class="fas fa-shield-alt"></i>
+                {{ pageIndicator }}
+            </div>
+            <h1 class="hero-title">
+                {{ heroTitle }} <span>{{ heroTitleAccent }}</span>
+            </h1>
+            <p class="hero-description">
+                {{ heroDescription }}
+            </p>
+            <div class="risk-indicator">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>{{ riskText }} <strong>{{ riskLevel }}</strong> {{ riskSuffix }}</span>
+            </div>
+        </div>
+
+        <div class="hero-sidebar">
+            <div class="account-summary">
+                <div class="summary-header">
+                    <div>
+                        <span class="summary-type">{{ summaryType }}</span>
+                        <h3>{{ summaryTitle }}</h3>
+                    </div>
+                    <i class="fas {{ summaryIcon }}" style="color: var(--accent-red);"></i>
+                </div>
+                <div class="account-flow">
+                    <div *ngFor="let step of flowSteps; let last = last; trackBy: trackByIndex" class="flow-step"
+                        [class.active]="step.active">
+                        <i class="fas {{ step.icon }}"></i>
+                        <span>{{ step.label }}</span>
+                    </div>
+                    <div *ngFor="let line of [0,1]; trackBy: trackByIndex" class="flow-line"></div>
+                </div>
+                <div class="route-info">
+                    {{ routeInfo }}
+                </div>
+                <div class="enabled-modules">
+                    <h4>Restricted Modules</h4>
+                    <div class="module-tags">
+                        <span *ngFor="let tag of moduleTags; trackBy: trackByIndex" class="module-tag"
+                            [class.locked]="tag.locked">
+                            {{ tag.label }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Header -->
+    <div class="section-header">
+        <h2>{{ sectionTitle }}</h2>
+        <p>{{ sectionDescription }}</p>
+    </div>
+
+    <!-- Action Cards Grid -->
+    <div class="cards-grid">
+        <a *ngFor="let card of actionCards; trackBy: trackByCardId" [href]="card.href" target="_blank"
+            class="action-card {{ card.cardClass }}">
+            <span class="external-link"><i class="fas fa-external-link-alt"></i></span>
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas {{ card.icon }}"></i>
+                </div>
+                <span class="card-status {{ card.statusClass }}">{{ card.status }}</span>
+            </div>
+            <h3 class="card-title">{{ card.title }}</h3>
+            <p class="card-description">{{ card.description }}</p>
+            <div class="card-details">
+                <div *ngFor="let detail of card.details; trackBy: trackByIndex" class="detail-row">
+                    <span class="detail-label">{{ detail.label }}</span>
+                    <span class="detail-value" [style.color]="detail.highlight ? 'var(--accent-red)' : null">{{
+                        detail.value }}</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="card-meta">
+                    <span *ngFor="let meta of card.meta; trackBy: trackByIndex" class="meta-item">
+                        <i class="fas {{ meta.icon }}"></i>
+                        {{ meta.label }}
+                    </span>
+                </div>
+                <span class="card-action">
+                    {{ card.actionLabel }} <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="card.progressWidth"></div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Info Section -->
+    <div class="info-section">
+        <div class="info-card">
+            <h3><i class="fas fa-exclamation-triangle"></i> Important Warnings</h3>
+            <ul class="warning-list">
+                <li *ngFor="let warning of warnings; trackBy: trackByIndex">
+                    <i class="fas {{ warning.icon }}"></i>
+                    <span>{{ warning.text }}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-card">
+            <h3><i class="fas fa-lightbulb"></i> Tips to Unlock Faster</h3>
+            <ul class="tip-list">
+                <li *ngFor="let tip of tips; trackBy: trackByIndex">
+                    <i class="fas {{ tip.icon }}"></i>
+                    <span>{{ tip.text }}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="contact-section">
+        <h3>{{ contactTitle }}</h3>
+        <p>{{ contactDescription }}</p>
+        <div class="contact-buttons">
+            <a *ngFor="let btn of contactButtons; trackBy: trackByIndex" [href]="btn.href" target="_blank"
+                class="contact-btn">
+                <i class="fas {{ btn.icon }}"></i>
+                {{ btn.label }}
+            </a>
+        </div>
+    </div>
+</div>

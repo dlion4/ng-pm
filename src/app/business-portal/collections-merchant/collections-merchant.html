@@ -1,0 +1,1271 @@
+<div class="paymo-angular-page">
+  <div class="pm-toast" role="status" [style.display]="toastMessage ? 'flex' : 'none'">
+<i class="bi bi-check-circle-fill"></i>
+<span>{{ toastMessage }}</span>
+<button (click)="clearToast()" class="pm-toast-close" type="button">×</button>
+</div>
+<!-- ===== Angularized body content from source 3.2.html ===== -->
+<div><section class="paymo-page-source" id="p32_page">
+<div class="pm-page-bar">
+<div>
+<div class="pm-breadcrumb"><a (click)="notify('Link action handled')" role="button" tabindex="0">Business Portal</a> / <a (click)="notify('Link action handled')" role="button" tabindex="0">Commerce</a> /
+                        <strong>Collections</strong></div>
+<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE
+                        3.2 — Collections &amp; Merchant Services</h2>
+<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Manage your PayBill, Till, Card, and
+                        PesaLink collections. Track real-time settlements, handle refunds, and manage customer payment
+                        data.</p>
+</div>
+<div class="d-flex flex-wrap" style="gap:8px">
+<button (click)="openModal('p32_generateQRModal')" class="pm-btn" type="button"><i class="bi bi-qr-code"></i> Generate
+                        QR</button>
+<button (click)="openModal('p32_settlementModal')" class="pm-btn" type="button"><i class="bi bi-clock-history"></i>
+                        Settlements</button>
+<button (click)="openModal('p32_receivePaymentModal')" class="pm-btn pm-btn-primary" type="button"><i class="bi bi-plus-lg"></i> Collect Payment</button>
+</div>
+</div>
+<div class="pm-content">
+<!-- Hero Stats Row -->
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="pm-card pm-card-accent" style="min-height:170px">
+<div class="d-flex justify-content-between align-items-start">
+<div>
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Collections engine is
+                                        live <span style="color:#86efac">●</span></p>
+<div class="pm-stat-value" style="margin:8px 0;color:#fff">KES 412,500</div>
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Collected today
+                                        across 184 transactions.</p>
+</div>
+<div class="pm-icon-circle" style="background:rgba(255,255,255,0.2);color:#fff"><i class="bi bi-wallet2"></i></div>
+</div>
+<div class="d-flex flex-wrap mt-3" style="gap:8px">
+<button (click)="openModal('p32_receivePaymentModal')" class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Collect Now</button>
+<button (click)="openModal('p32_refundModal')" class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Refund</button>
+</div>
+</div>
+</div>
+<div class="col-lg-2 col-md-4 col-6">
+<div class="pm-card" style="min-height:170px">
+<p class="pm-stat-label" style="color:var(--pm-info)">PENDING SETTLEMENT</p>
+<div class="pm-stat-value" style="margin:6px 0">KES 89,200</div>
+<span class="pm-badge pm-badge-info"><i class="bi bi-bank"></i> T+1 schedule</span>
+<div class="pm-mini-bars mt-3">
+<div class="pm-mini-bar" style="height:40%;background:var(--pm-info)"></div>
+<div class="pm-mini-bar" style="height:70%;background:var(--pm-primary)"></div>
+<div class="pm-mini-bar" style="height:50%;background:var(--pm-info)"></div>
+<div class="pm-mini-bar" style="height:85%;background:var(--pm-primary)"></div>
+<div class="pm-mini-bar" style="height:60%;background:var(--pm-info)"></div>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4 col-6">
+<div class="pm-card" style="min-height:170px">
+<p class="pm-stat-label" style="color:var(--pm-accent)">SUCCESS RATE (TODAY)</p>
+<div class="pm-stat-value" style="margin:6px 0">98.4%</div>
+<span class="pm-badge pm-badge-success"><i class="bi bi-check-circle"></i> 181
+                                successful</span>
+<div class="mt-2">
+<div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>Failed (3
+                                        txn)</span><span>1.6%</span></div>
+<div class="pm-progress mt-1">
+<div class="pm-progress-bar" style="width:98.4%;background:var(--pm-accent)"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4">
+<div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-warning)">
+<p class="pm-stat-label" style="color:var(--pm-warning)">DISPUTES &amp; REFUNDS</p>
+<div class="pm-stat-value" style="margin:6px 0">4 Active</div>
+<span class="pm-badge pm-badge-warning"><i class="bi bi-exclamation-triangle"></i> Needs
+                                attention</span>
+<div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+<div>Pending Refunds: <strong>2</strong></div>
+<div>Open Disputes: <strong>2</strong></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Attention & Quick Actions -->
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h3 class="pm-section-title">Attention Required</h3><button (click)="openModal('p32_attentionDetailModal')" class="pm-btn pm-btn-sm" type="button">View all</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">CB
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">Chargeback received</div>
+<div style="font-size:11px;color:var(--pm-muted)">Visa ***4112 · KES 12,500</div>
+</div><button (click)="openModal('p32_disputeModal')" class="pm-btn pm-btn-sm pm-btn-danger" type="button">Defend</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">RF
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">Refund approval needed</div>
+<div style="font-size:11px;color:var(--pm-muted)">Customer: John Mark · KES 3,400
+                                    </div>
+</div><button (click)="openModal('p32_refundModal')" class="pm-btn pm-btn-sm" type="button">Review</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">KYC</div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">PayBill KYC update required</div>
+<div style="font-size:11px;color:var(--pm-muted)">Upload CR12 for PB 512234</div>
+</div><button (click)="openModal('p32_paybillConfigModal')" class="pm-btn pm-btn-sm" type="button">Upload</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple);font-size:12px">API
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">LNMO API token expires soon</div>
+<div style="font-size:11px;color:var(--pm-muted)">Rotate keys in 3 days</div>
+</div><button (click)="openModal('p32_apiConfigModal')" class="pm-btn pm-btn-sm" type="button">Rotate</button>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h3 class="pm-section-title">Smart Suggestions</h3><span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent);font-size:12px">QR
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">Deploy Dynamic QR for delivery</div>
+<div style="font-size:11px;color:var(--pm-muted)">Reduce manual entry errors by 40%
+                                    </div>
+</div><button (click)="openModal('p32_generateQRModal')" class="pm-btn pm-btn-sm" type="button">Setup</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">PR
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">Send reminders to 14 customers</div>
+<div style="font-size:11px;color:var(--pm-muted)">Invoices due this week · KES 142k
+                                    </div>
+</div><button (click)="openModal('p32_sendReminderModal')" class="pm-btn pm-btn-sm" type="button">Remind</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">TK</div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">Enable card tokenization</div>
+<div style="font-size:11px;color:var(--pm-muted)">Increase repeat purchase checkout
+                                        speed</div>
+</div><button (click)="openModal('p32_cardConfigModal')" class="pm-btn pm-btn-sm" type="button">Enable</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple);font-size:12px">SG
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">New VIP segment detected</div>
+<div style="font-size:11px;color:var(--pm-muted)">24 customers have spent >KES 50k
+                                    </div>
+</div><button (click)="openModal('p32_customerSegmentModal')" class="pm-btn pm-btn-sm" type="button">View</button>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="mb-3">
+<h3 class="pm-section-title">Quick Actions</h3>
+<p class="pm-section-sub">Frequent merchant workflows</p>
+</div>
+<div class="quick-action-grid">
+<button (click)="openModal('p32_receivePaymentModal')" class="quick-action-btn" type="button"><i class="bi bi-wallet2 text-primary me-1"></i> Collect Pay</button>
+<button (click)="openModal('p32_generateQRModal')" class="quick-action-btn" type="button"><i class="bi bi-qr-code text-info me-1"></i> New QR</button>
+<button (click)="openModal('p32_refundModal')" class="quick-action-btn" type="button"><i class="bi bi-arrow-return-left text-warning me-1"></i> Refund</button>
+<button (click)="openModal('p32_disputeModal')" class="quick-action-btn" type="button"><i class="bi bi-shield-exclamation text-danger me-1"></i> Dispute</button>
+<button (click)="openModal('p32_apiConfigModal')" class="quick-action-btn" type="button"><i class="bi bi-code-slash text-purple me-1" style="color:var(--pm-purple)"></i>
+                                    API Keys</button>
+<button (click)="openModal('p32_sendReminderModal')" class="quick-action-btn" type="button"><i class="bi bi-chat-dots text-success me-1"></i> Reminder</button>
+<button (click)="openModal('p32_feeCalculatorModal')" class="quick-action-btn" type="button"><i class="bi bi-calculator text-secondary me-1"></i> Calculate Fees</button>
+<button (click)="openModal('p32_exportReportModal')" class="quick-action-btn" type="button"><i class="bi bi-file-earmark-spreadsheet me-1" style="color:var(--pm-primary)"></i>
+                                    Export Data</button>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.2.1 -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="pm-section-title"><i class="bi bi-grid-fill" style="color:var(--pm-primary)"></i>
+                                3.2.1 — Payment Collection Methods</h3>
+<p class="pm-section-sub">Manage your active payment rails, integrations, and POS channels.
+                            </p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('p32_apiConfigModal')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-code"></i> API</button><button (click)="openModal('p32_receivePaymentModal')" class="pm-btn pm-btn-sm pm-btn-primary" type="button">New
+                                Transaction</button></div>
+</div>
+<div class="row g-3">
+<div class="col-md-3">
+<div (click)="openModal('p32_paybillConfigModal')" class="method-card">
+<div class="d-flex justify-content-between mb-3">
+<div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent)"><i class="bi bi-phone"></i></div><span class="pm-badge pm-badge-success">Active</span>
+</div>
+<h4 style="font-size:15px;font-weight:700;margin:0 0 4px">M-Pesa PayBill</h4>
+<p style="font-size:12px;color:var(--pm-muted);margin:0 0 12px;flex:1">Shortcode 512234.
+                                    Supports LNMO, STK Push &amp; account validation.</p>
+<div class="d-flex justify-content-between align-items-center border-top pt-2 mt-auto">
+<span style="font-size:12px;font-weight:600">MDR: 1.5%</span><i class="bi bi-chevron-right text-muted"></i>
+</div>
+</div>
+</div>
+<div class="col-md-3">
+<div (click)="openModal('p32_tillConfigModal')" class="method-card">
+<div class="d-flex justify-content-between mb-3">
+<div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info)"><i class="bi bi-shop"></i></div><span class="pm-badge pm-badge-success">Active</span>
+</div>
+<h4 style="font-size:15px;font-weight:700;margin:0 0 4px">M-Pesa Till (Buy Goods)</h4>
+<p style="font-size:12px;color:var(--pm-muted);margin:0 0 12px;flex:1">Till number
+                                    882001. Ideal for in-person POS transactions.</p>
+<div class="d-flex justify-content-between align-items-center border-top pt-2 mt-auto">
+<span style="font-size:12px;font-weight:600">MDR: 1.0%</span><i class="bi bi-chevron-right text-muted"></i>
+</div>
+</div>
+</div>
+<div class="col-md-3">
+<div (click)="openModal('p32_cardConfigModal')" class="method-card">
+<div class="d-flex justify-content-between mb-3">
+<div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple)"><i class="bi bi-credit-card"></i></div><span class="pm-badge pm-badge-success">Active</span>
+</div>
+<h4 style="font-size:15px;font-weight:700;margin:0 0 4px">Card Payments</h4>
+<p style="font-size:12px;color:var(--pm-muted);margin:0 0 12px;flex:1">Visa/Mastercard
+                                    with 3D Secure. Tokenization ready.</p>
+<div class="d-flex justify-content-between align-items-center border-top pt-2 mt-auto">
+<span style="font-size:12px;font-weight:600">MDR: 2.9%</span><i class="bi bi-chevron-right text-muted"></i>
+</div>
+</div>
+</div>
+<div class="col-md-3">
+<div (click)="openModal('p32_pesalinkConfigModal')" class="method-card">
+<div class="d-flex justify-content-between mb-3">
+<div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i class="bi bi-bank"></i></div><span class="pm-badge pm-badge-warning">Pending</span>
+</div>
+<h4 style="font-size:15px;font-weight:700;margin:0 0 4px">PesaLink Collections</h4>
+<p style="font-size:12px;color:var(--pm-muted);margin:0 0 12px;flex:1">Real-time
+                                    collections from 50+ banks. Awaiting KYC approval.</p>
+<div class="d-flex justify-content-between align-items-center border-top pt-2 mt-auto">
+<span style="font-size:12px;font-weight:600">MDR: Fixed KES 45</span><i class="bi bi-chevron-right text-muted"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.2.2 -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="pm-section-title"><i class="bi bi-bar-chart-line-fill" style="color:var(--pm-info)"></i> 3.2.2 — Collections Dashboard &amp; Settlement</h3>
+<p class="pm-section-sub">Monitor live transaction feeds, analyze volume trends, and track
+                                bank settlements.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('p32_analyticsModal')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-graph-up"></i> Deep
+                                Analytics</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-8">
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h4 style="font-size:14px;font-weight:700;margin:0">Live Transaction Feed</h4>
+<div class="pm-tab-pills"><button (click)="notify('All handled')" class="pm-tab-pill active" type="button">All</button><button (click)="notify('Successful handled')" class="pm-tab-pill" type="button">Successful</button><button (click)="notify('Failed handled')" class="pm-tab-pill" type="button">Failed</button></div>
+</div>
+<div class="table-responsive">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Time</th>
+<th>Customer</th>
+<th>Ref / ID</th>
+<th>Method</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="p32_transactionFeedBody">
+@for (txn of mockData.collectionTransactions; track txn.ref) {
+<tr>
+<td>{{ txn.time }}</td>
+<td>{{ txn.customer }}</td>
+<td><code>{{ txn.ref }}</code></td>
+<td>{{ txn.method }}</td>
+<td><strong>{{ txn.amount }}</strong></td>
+<td><span [ngClass]="badgeClass(txn.status)" class="pm-badge">{{ txn.status }}</span></td>
+<td><button (click)="openModal('p32_txnDetailModal')" class="pm-btn pm-btn-sm" type="button">View</button></td>
+</tr>
+}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="utility-block mb-3">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Collection Breakdown</h4>
+<div class="pm-chart-bar-group" style="height:120px;margin-bottom:24px;display:flex;align-items:flex-end;gap:6px">
+<div class="pm-chart-bar" style="height:85%;background:var(--pm-accent);flex:1;border-radius:4px 4px 0 0;position:relative">
+<span class="bar-label" style="position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--pm-muted)">PayBill</span>
+</div>
+<div class="pm-chart-bar" style="height:60%;background:var(--pm-info);flex:1;border-radius:4px 4px 0 0;position:relative">
+<span class="bar-label" style="position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--pm-muted)">Till</span>
+</div>
+<div class="pm-chart-bar" style="height:40%;background:var(--pm-purple);flex:1;border-radius:4px 4px 0 0;position:relative">
+<span class="bar-label" style="position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--pm-muted)">Card</span>
+</div>
+<div class="pm-chart-bar" style="height:15%;background:var(--pm-warning);flex:1;border-radius:4px 4px 0 0;position:relative">
+<span class="bar-label" style="position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--pm-muted)">Bank</span>
+</div>
+</div>
+<div class="d-flex flex-wrap gap-2 mt-2" style="font-size:11px">
+<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pm-accent);margin-right:4px"></span>PayBill:
+                                        62%</span>
+<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pm-info);margin-right:4px"></span>Till:
+                                        24%</span>
+<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pm-purple);margin-right:4px"></span>Card:
+                                        11%</span>
+<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pm-warning);margin-right:4px"></span>PesaLink:
+                                        3%</span>
+</div>
+</div>
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-2">
+<h4 style="font-size:14px;font-weight:700;margin:0">Settlement Pipeline</h4>
+<button (click)="openModal('p32_settlementModal')" class="pm-btn pm-btn-sm" type="button">View</button>
+</div>
+<div class="status-row">
+<div><strong>T+0 (Today)</strong>
+<div style="font-size:11px;color:var(--pm-muted)">M-Pesa balance</div>
+</div><strong>KES 304,100</strong>
+</div>
+<div class="status-row">
+<div><strong>T+1 (Tomorrow)</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Card &amp; Bank batches</div>
+</div><strong>KES 89,200</strong>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.2.3 -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="pm-section-title"><i class="bi bi-people-fill" style="color:var(--pm-purple)"></i> 3.2.3 — Customer Management</h3>
+<p class="pm-section-sub">Customer directory, lifetime value tracking, communication and
+                                segmentation.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('p32_sendReminderModal')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-chat-dots"></i>
+                                Message</button><button (click)="openModal('p32_addCustomerModal')" class="pm-btn pm-btn-sm pm-btn-primary" type="button"><i class="bi bi-person-plus"></i> Add
+                                Customer</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-3">
+<div class="utility-block text-center">
+<div class="pm-icon-circle mx-auto mb-2" style="background:var(--pm-purple-soft);color:var(--pm-purple);width:48px;height:48px;font-size:20px">
+<i class="bi bi-star"></i></div>
+<div style="font-size:24px;font-weight:700">1,204</div>
+<div style="font-size:11px;font-weight:600;color:var(--pm-muted);text-transform:uppercase;letter-spacing:0.05em">
+                                    Total Customers</div>
+<hr class="pm-divider"/>
+<div class="d-flex justify-content-between text-start mb-2" style="font-size:12px">
+<span>VIP (>KES 50k)</span><strong>142</strong></div>
+<div class="d-flex justify-content-between text-start mb-2" style="font-size:12px">
+<span>Regular</span><strong>810</strong></div>
+<div class="d-flex justify-content-between text-start" style="font-size:12px"><span>New
+                                        (30 days)</span><strong>252</strong></div>
+<button (click)="openModal('p32_customerSegmentModal')" class="pm-btn pm-btn-sm w-100 mt-3" type="button">Manage Segments</button>
+</div>
+</div>
+<div class="col-lg-9">
+<div class="utility-block">
+<div class="d-flex justify-content-between mb-3">
+<div class="pm-header-search" style="max-width:300px"><i class="bi bi-search"></i><input placeholder="Search customer name or phone" type="text"/></div>
+</div>
+<div class="table-responsive">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Customer Name</th>
+<th>Contact</th>
+<th>Segment</th>
+<th>LTV (Total Spend)</th>
+<th>Last Payment</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="p32_customerTableBody">
+@for (customer of mockData.collectionCustomers; track customer.phone) {
+<tr>
+<td><strong>{{ customer.name }}</strong></td>
+<td>{{ customer.phone }}</td>
+<td><span [ngClass]="customerBadgeClass(customer.segment)" class="pm-badge">{{ customer.segment }}</span></td>
+<td>{{ customer.ltv }}</td>
+<td>{{ customer.lastPayment }}</td>
+<td><button (click)="openModal('p32_sendReminderModal')" class="pm-btn pm-btn-sm" type="button">Msg</button></td>
+</tr>
+}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.2.4 -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="pm-section-title"><i class="bi bi-shield-exclamation" style="color:var(--pm-warning)"></i> 3.2.4 — Refund &amp; Dispute Management</h3>
+<p class="pm-section-sub">Process full/partial refunds, manage chargebacks, and track
+                                resolution workflows.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('p32_refundModal')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-arrow-return-left"></i> Process
+                                Refund</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-6">
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h4 style="font-size:14px;font-weight:700;margin:0">Active Disputes (Chargebacks)
+                                    </h4><span class="pm-badge pm-badge-warning">2 Action Required</span>
+</div>
+<div class="status-row border rounded p-3 mb-2" style="background:#fff;border-left:3px solid var(--pm-danger)!important">
+<div><strong>CB-20250627-01</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Reason: Fraudulent transaction
+                                            claim</div>
+<div style="font-weight:600;font-size:13px;margin-top:4px">Visa ***4112 · KES
+                                            12,500</div>
+</div>
+<div class="text-end"><span class="pm-badge pm-badge-danger mb-2">Due in 2
+                                            days</span><br/><button (click)="openModal('p32_disputeModal')" class="pm-btn pm-btn-sm pm-btn-danger" type="button">Defend</button></div>
+</div>
+<div class="status-row border rounded p-3" style="background:#fff;border-left:3px solid var(--pm-warning)!important">
+<div><strong>CB-20250625-04</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Reason: Goods not as described
+                                        </div>
+<div style="font-weight:600;font-size:13px;margin-top:4px">M-Pesa · KES 4,200
+                                        </div>
+</div>
+<div class="text-end"><span class="pm-badge pm-badge-warning mb-2">Reviewing</span><br/><button (click)="openModal('p32_disputeModal')" class="pm-btn pm-btn-sm" type="button">Details</button></div>
+</div>
+</div>
+</div>
+<div class="col-lg-6">
+<div class="utility-block">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h4 style="font-size:14px;font-weight:700;margin:0">Refund Queue</h4><span class="pm-badge pm-badge-info">2 Pending Approval</span>
+</div>
+<div class="status-row border rounded p-3 mb-2" style="background:#fff">
+<div><strong>RF-20250627-11</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Customer: John Mark · M-Pesa
+                                        </div>
+<div style="font-weight:600;font-size:13px;margin-top:4px">KES 3,400 (Full)
+                                        </div>
+</div>
+<div class="text-end"><span class="pm-badge pm-badge-info mb-2">Pending</span><br/><button (click)="openModal('p32_refundModal')" class="pm-btn pm-btn-sm" type="button">Approve</button>
+</div>
+</div>
+<div class="status-row border rounded p-3" style="background:#fff">
+<div><strong>RF-20250626-09</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Customer: Sarah W. · Visa
+                                            ***1180</div>
+<div style="font-weight:600;font-size:13px;margin-top:4px">KES 1,500 (Partial)
+                                        </div>
+</div>
+<div class="text-end"><span class="pm-badge pm-badge-info mb-2">Pending</span><br/><button (click)="openModal('p32_refundModal')" class="pm-btn pm-btn-sm" type="button">Approve</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section class="paymo-page-modals" id="p32_modals"><div (click)="closeModal('p32_receivePaymentModal')" [attr.aria-hidden]="isModalOpen('p32_receivePaymentModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_receivePaymentModal') ? 'true' : null" [class.show]="isModalOpen('p32_receivePaymentModal')" [style.display]="isModalOpen('p32_receivePaymentModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_receivePaymentModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-wallet2 text-primary me-2"></i>Receive Payment</h5><button (click)="closeModal('p32_receivePaymentModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body" id="p32_recvBody">
+<div class="pm-stepper" id="p32_recvStepper">
+  @for (step of stepperItems('p32_recv'); track step.index) {
+    <div [class.active]="step.index === currentStep('p32_recv')" [class.completed]="step.index < currentStep('p32_recv')" class="pm-step">
+<div class="step-n">{{ step.index }}</div>
+      <div class="pm-step-label">{{ step.label }}</div>
+    </div>
+<div class="pm-step-line" [style.display]="step.last ? 'none' : ''"></div>
+  }
+</div>
+<div [class.active]="isStep('p32_recv', 1)" [style.display]="isStep('p32_recv', 1) ? 'block' : 'none'" class="fade-step active" id="p32_recvStep1">
+<h6 style="font-weight:700;margin-bottom:16px">Step 1: Transaction Details</h6>
+<div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" id="p32_recvAmount" type="number" value="1500"/></div>
+<div class="mb-3"><label class="pm-form-label">Customer Name (Optional)</label><input class="pm-form-control" placeholder="Enter customer name"/></div>
+<div class="mb-3"><label class="pm-form-label">Reference / Order ID</label><input class="pm-form-control" value="ORD-2025-0891"/></div>
+</div>
+<div [class.active]="isStep('p32_recv', 2)" [style.display]="isStep('p32_recv', 2) ? 'block' : 'none'" class="fade-step" id="p32_recvStep2">
+<h6 style="font-weight:700;margin-bottom:16px">Step 2: Collection Method</h6>
+<div (click)="selectRadio($event)" class="p-3 border rounded mb-2 d-flex align-items-center gap-3" style="border-color:var(--pm-primary)!important;background:rgba(79,70,229,.04)"><input checked="" name="rcvm" type="radio"/>
+<div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent);width:32px;height:32px">
+<i class="bi bi-phone"></i></div>
+<div><strong>M-Pesa STK Push</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Send prompt to customer's phone</div>
+</div>
+</div>
+<div (click)="selectRadio($event)" class="p-3 border rounded mb-2 d-flex align-items-center gap-3"><input name="rcvm" type="radio"/>
+<div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);width:32px;height:32px"><i class="bi bi-qr-code"></i></div>
+<div><strong>Dynamic QR Code</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Customer scans to pay</div>
+</div>
+</div>
+<div (click)="selectRadio($event)" class="p-3 border rounded mb-2 d-flex align-items-center gap-3"><input name="rcvm" type="radio"/>
+<div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple);width:32px;height:32px">
+<i class="bi bi-link"></i></div>
+<div><strong>Payment Link</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Send link via SMS/WhatsApp</div>
+</div>
+</div>
+</div>
+<div [class.active]="isStep('p32_recv', 3)" [style.display]="isStep('p32_recv', 3) ? 'block' : 'none'" class="fade-step" id="p32_recvStep3">
+<h6 style="font-weight:700;margin-bottom:16px">Step 3: Execute</h6>
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+<div class="d-flex justify-content-between mb-1"><span>Amount</span><strong>KES
+                                    1,500</strong></div>
+<div class="d-flex justify-content-between"><span>Method</span><strong>M-Pesa STK
+                                    Push</strong></div>
+</div>
+<div class="mb-3"><label class="pm-form-label">Customer Phone Number</label><input class="pm-form-control" placeholder="07XX XXX XXX" value="0712345678"/></div>
+<p style="font-size:12px;color:var(--pm-muted)">Clicking submit will trigger an M-Pesa PIN
+                            prompt on the customer's phone.</p>
+</div>
+<div [class.active]="isStep('p32_recv', 4)" [style.display]="isStep('p32_recv', 4) ? 'block' : 'none'" class="fade-step" id="p32_recvStep4">
+<div class="pm-receipt">
+<div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+<h5 style="font-weight:700;color:var(--pm-accent)">STK Push Sent!</h5>
+<p style="font-size:13px;color:var(--pm-ink-soft)">Awaiting customer to enter PIN.</p>
+<div class="spinner-border text-primary my-3" role="status"><span class="visually-hidden">Loading...</span></div>
+<p style="font-size:12px;color:var(--pm-muted)">Status will update automatically once
+                                payment is received.</p>
+</div>
+</div>
+</div>
+<div class="modal-footer" id="p32_recvFooter"><button (click)="closeModal('p32_receivePaymentModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="nextStepFlow('p32_recv', 4, 'p32_receivePaymentModal', 'STK Push Sent! Awaiting customer PIN.', '')" class="pm-btn pm-btn-primary" id="p32_recvNextBtn" type="button">Continue <i class="bi bi-arrow-right"></i></button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_generateQRModal')" [attr.aria-hidden]="isModalOpen('p32_generateQRModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_generateQRModal') ? 'true' : null" [class.show]="isModalOpen('p32_generateQRModal')" [style.display]="isModalOpen('p32_generateQRModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_generateQRModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-qr-code text-info me-2"></i>Generate Payment QR</h5><button (click)="closeModal('p32_generateQRModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="pm-tab-pills mb-3"><button (click)="switchTab('p32_qr', 'dynamic', $event)" class="pm-tab-pill active" type="button">Dynamic (Specific Amount)</button><button (click)="switchTab('p32_qr', 'static', $event)" class="pm-tab-pill" type="button">Static (Any Amount)</button>
+</div>
+<div [class.active]="activeTab('p32_qr') === 'dynamic'" class="tab-panel active" id="p32_qr-dynamic">
+<div class="mb-3"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" type="number" value="2500"/></div>
+<div class="mb-3"><label class="pm-form-label">Order Reference</label><input class="pm-form-control" value="INV-99201"/></div>
+</div>
+<div [class.active]="activeTab('p32_qr') === 'static'" class="tab-panel" id="p32_qr-static">
+<div class="mb-3"><label class="pm-form-label">Till / PayBill Routing</label><select class="pm-form-control">
+<option>Till Number 882001</option>
+<option>PayBill 512234</option>
+</select></div>
+<p style="font-size:12px;color:var(--pm-muted)">Customer will scan and enter the amount
+                            manually.</p>
+</div>
+<div class="p-3 rounded text-center border mt-3"><img alt="QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&amp;data=paymo://pay?amount=2500&amp;ref=INV-99201" style="width:150px;height:150px;mix-blend-mode:multiply"/>
+<div class="mt-2" style="font-size:12px;font-weight:600">Scan with PayMo or M-Pesa App</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_generateQRModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button><button (click)="processAction('p32_generateQRModal', 'QR Code Generated &amp; Saved to Gallery', '')" class="pm-btn pm-btn-primary" type="button"><i class="bi bi-download"></i> Download / Print</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_paybillConfigModal')" [attr.aria-hidden]="isModalOpen('p32_paybillConfigModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_paybillConfigModal') ? 'true' : null" [class.show]="isModalOpen('p32_paybillConfigModal')" [style.display]="isModalOpen('p32_paybillConfigModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_paybillConfigModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-phone text-accent me-2"></i>M-Pesa PayBill Settings</h5>
+<button (click)="closeModal('p32_paybillConfigModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Shortcode</label><input class="pm-form-control" disabled="" style="background:var(--pm-surface-2)" value="512234"/></div>
+<div class="mb-3"><label class="pm-form-label">Account Number Validation</label><select class="pm-form-control">
+<option>Enabled (Strict API Lookup)</option>
+<option>Regex Pattern matching</option>
+<option>Disabled (Accept any)</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">Customer Fee Configuration</label><select class="pm-form-control">
+<option>Customer pays M-Pesa fee</option>
+<option>Merchant absorbs fee (Zero-rated)</option>
+</select></div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-warning-soft);font-size:12px"><i class="bi bi-exclamation-triangle me-1"></i> KYC Update Required: Please upload your latest
+                        CR12 document to avoid service suspension.</div>
+<div class="mt-2"><input class="pm-form-control pm-btn-sm" type="file"/></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_paybillConfigModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p32_paybillConfigModal', 'PayBill configuration saved. KYC document uploaded.', '')" class="pm-btn pm-btn-primary" type="button">Save
+                        Settings</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_tillConfigModal')" [attr.aria-hidden]="isModalOpen('p32_tillConfigModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_tillConfigModal') ? 'true' : null" [class.show]="isModalOpen('p32_tillConfigModal')" [style.display]="isModalOpen('p32_tillConfigModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_tillConfigModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-shop text-info me-2"></i>M-Pesa Till Settings</h5><button (click)="closeModal('p32_tillConfigModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Till Number</label><input class="pm-form-control" disabled="" style="background:var(--pm-surface-2)" value="882001"/></div>
+<div class="mb-3"><label class="pm-form-label">Store / Branch Name</label><input class="pm-form-control" value="Nairobi CBD Branch"/></div>
+<div class="form-check form-switch mb-3"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Enable LNMO API for online checkout</label></div>
+<div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox"/><label class="form-check-label">Allow staff to initiate reversals</label></div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-surface-2);font-size:12px">
+<div class="d-flex justify-content-between mb-1"><span>Current MDR
+                                Rate</span><strong>1.0%</strong></div>
+<div class="d-flex justify-content-between"><span>Settlement</span><strong>Real-time to
+                                Wallet</strong></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_tillConfigModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p32_tillConfigModal', 'Till settings updated successfully.', '')" class="pm-btn pm-btn-primary" type="button">Save
+                        Settings</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_pesalinkConfigModal')" [attr.aria-hidden]="isModalOpen('p32_pesalinkConfigModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_pesalinkConfigModal') ? 'true' : null" [class.show]="isModalOpen('p32_pesalinkConfigModal')" [style.display]="isModalOpen('p32_pesalinkConfigModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_pesalinkConfigModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-bank text-warning me-2"></i>PesaLink Collections</h5><button (click)="closeModal('p32_pesalinkConfigModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="text-center p-4">
+<div class="pm-icon-circle mx-auto mb-3" style="width:64px;height:64px;background:var(--pm-warning-soft);color:var(--pm-warning);font-size:28px">
+<i class="bi bi-hourglass-split"></i></div>
+<h5 style="font-weight:700">Awaiting KYC Approval</h5>
+<p style="font-size:13px;color:var(--pm-ink-soft)">Your PesaLink merchant account request is
+                            currently under review by the acquiring bank. This usually takes 24-48 hours.</p>
+</div>
+<div class="p-3 rounded mt-2 border">
+<div style="font-size:12px;font-weight:600;margin-bottom:8px">Features once activated:</div>
+<ul style="font-size:12px;color:var(--pm-muted);margin:0;padding-left:16px">
+<li>Receive funds from 50+ local banks instantly</li>
+<li>Alias routing (Pay to phone number/Till)</li>
+<li>Fixed KES 45 fee per transaction regardless of amount</li>
+<li>Higher transaction limits (up to KES 999,999)</li>
+</ul>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_pesalinkConfigModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_cardConfigModal')" [attr.aria-hidden]="isModalOpen('p32_cardConfigModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_cardConfigModal') ? 'true' : null" [class.show]="isModalOpen('p32_cardConfigModal')" [style.display]="isModalOpen('p32_cardConfigModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_cardConfigModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-credit-card text-purple me-2" style="color:var(--pm-purple)"></i>Card Payment Settings</h5><button (click)="closeModal('p32_cardConfigModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="form-check form-switch mb-3"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Accept Visa / Mastercard</label></div>
+<div class="form-check form-switch mb-3"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Enforce 3D Secure Authentication</label></div>
+<div class="p-3 border rounded mb-3" style="background:var(--pm-info-soft)">
+<div class="d-flex justify-content-between align-items-center">
+<div><strong style="font-size:13px">Enable Tokenization</strong>
+<div style="font-size:11px;color:var(--pm-ink-soft)">Allow customers to save cards
+                                    securely for 1-click checkout. Recommended by AI.</div>
+</div>
+<div class="form-check form-switch"><input class="form-check-input" type="checkbox"/></div>
+</div>
+</div>
+<div class="mb-3"><label class="pm-form-label">Accepted Currencies</label>
+<div class="d-flex gap-2"><span class="pm-badge pm-badge-success">KES</span><span class="pm-badge" style="background:var(--pm-surface-2)">USD</span><span class="pm-badge" style="background:var(--pm-surface-2)">EUR</span><span class="pm-badge" style="background:var(--pm-surface-2)">GBP</span></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_cardConfigModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p32_cardConfigModal', 'Card settings updated. Tokenization activated.', '')" class="pm-btn pm-btn-primary" type="button">Save
+                        Settings</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_apiConfigModal')" [attr.aria-hidden]="isModalOpen('p32_apiConfigModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_apiConfigModal') ? 'true' : null" [class.show]="isModalOpen('p32_apiConfigModal')" [style.display]="isModalOpen('p32_apiConfigModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_apiConfigModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-code-slash me-2" style="color:var(--pm-purple)"></i>API
+                        Integration &amp; Keys</h5><button (click)="closeModal('p32_apiConfigModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="pm-tab-pills mb-3"><button (click)="switchTab('p32_api', 'keys', $event)" class="pm-tab-pill active" type="button">API Keys</button><button (click)="switchTab('p32_api', 'webhooks', $event)" class="pm-tab-pill" type="button">Webhooks</button><button (click)="switchTab('p32_api', 'logs', $event)" class="pm-tab-pill" type="button">Logs</button></div>
+<div [class.active]="activeTab('p32_api') === 'keys'" class="tab-panel active" id="p32_api-keys">
+<div class="p-3 rounded mb-3" style="background:var(--pm-purple-soft);font-size:12px"><i class="bi bi-exclamation-triangle me-1"></i> Your LNMO Production Keys will expire in 3
+                            days. Please rotate them.</div>
+<div class="mb-3"><label class="pm-form-label">Consumer Key</label>
+<div class="d-flex gap-2"><input class="pm-form-control" readonly="" type="password" value="asdfasdfasdfasdf"/><button (click)="notify('Action handled')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-clipboard"></i></button></div>
+</div>
+<div class="mb-3"><label class="pm-form-label">Consumer Secret</label>
+<div class="d-flex gap-2"><input class="pm-form-control" readonly="" type="password" value="asdfasdfasdfasdf"/><button (click)="notify('Action handled')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-clipboard"></i></button></div>
+</div><button (click)="processAction('p32_apiConfigModal', 'Keys rotated successfully. Update your application.', '')" class="pm-btn pm-btn-sm pm-btn-danger" type="button"><i class="bi bi-arrow-repeat"></i> Rotate Keys</button>
+</div>
+<div [class.active]="activeTab('p32_api') === 'webhooks'" class="tab-panel" id="p32_api-webhooks">
+<div class="mb-3"><label class="pm-form-label">Validation URL</label><input class="pm-form-control" value="https://api.yourdomain.com/paymo/validate"/></div>
+<div class="mb-3"><label class="pm-form-label">Confirmation URL</label><input class="pm-form-control" value="https://api.yourdomain.com/paymo/confirm"/></div><button (click)="notify('Save Endpoints handled')" class="pm-btn pm-btn-sm pm-btn-primary" type="button">Save Endpoints</button>
+</div>
+<div [class.active]="activeTab('p32_api') === 'logs'" class="tab-panel" id="p32_api-logs">
+<div class="table-responsive">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Time</th>
+<th>Endpoint</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10:41 AM</td>
+<td>/v1/stkpush/process</td>
+<td><span class="pm-badge pm-badge-success">200 OK</span></td>
+</tr>
+<tr>
+<td>10:35 AM</td>
+<td>/v1/validation</td>
+<td><span class="pm-badge pm-badge-success">200 OK</span></td>
+</tr>
+<tr>
+<td>09:12 AM</td>
+<td>/v1/stkpush/process</td>
+<td><span class="pm-badge pm-badge-danger">500 ERR</span></td>
+</tr></tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_apiConfigModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_settlementModal')" [attr.aria-hidden]="isModalOpen('p32_settlementModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_settlementModal') ? 'true' : null" [class.show]="isModalOpen('p32_settlementModal')" [style.display]="isModalOpen('p32_settlementModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_settlementModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-bank me-2 text-info"></i>Settlement Pipeline</h5><button (click)="closeModal('p32_settlementModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="row g-3 mb-3">
+<div class="col-md-4">
+<div class="p-3 rounded" style="background:var(--pm-surface-2)">
+<div style="font-size:11px;color:var(--pm-muted);font-weight:600">CLEARED (WALLET)</div>
+<div style="font-size:24px;font-weight:700;color:var(--pm-primary)">KES 304,100</div>
+<div style="font-size:11px;color:var(--pm-muted)">Available for payout</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="p-3 rounded" style="background:var(--pm-info-soft)">
+<div style="font-size:11px;color:#1D4ED8;font-weight:600">PENDING (T+1)</div>
+<div style="font-size:24px;font-weight:700;color:var(--pm-info)">KES 89,200</div>
+<div style="font-size:11px;color:var(--pm-muted)">Card &amp; Bank clearing</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="p-3 rounded" style="background:var(--pm-warning-soft)">
+<div style="font-size:11px;color:#B45309;font-weight:600">HELD (RESERVE)</div>
+<div style="font-size:24px;font-weight:700;color:var(--pm-warning)">KES 25,000</div>
+<div style="font-size:11px;color:var(--pm-muted)">Chargeback rolling reserve</div>
+</div>
+</div>
+</div>
+<h6 style="font-weight:700">Scheduled Bank Payouts</h6>
+<div class="table-responsive">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Batch ID</th>
+<th>Date</th>
+<th>Gross</th>
+<th>Fees</th>
+<th>Net Payout</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SET-8821</td>
+<td>Today 4PM</td>
+<td>KES 142,500</td>
+<td>KES 2,137</td>
+<td>KES 140,363</td>
+<td><span class="pm-badge pm-badge-info">Processing</span></td>
+</tr>
+<tr>
+<td>SET-8820</td>
+<td>Yesterday</td>
+<td>KES 210,000</td>
+<td>KES 3,150</td>
+<td>KES 206,850</td>
+<td><span class="pm-badge pm-badge-success">Cleared</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-3"><button (click)="processAction('p32_settlementModal', 'Manual withdrawal of KES 304,100 initiated to Equity Bank.', '')" class="pm-btn pm-btn-sm pm-btn-primary" type="button">Withdraw
+                            Available Funds to Bank</button></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_settlementModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_analyticsModal')" [attr.aria-hidden]="isModalOpen('p32_analyticsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_analyticsModal') ? 'true' : null" [class.show]="isModalOpen('p32_analyticsModal')" [style.display]="isModalOpen('p32_analyticsModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_analyticsModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-xl modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-graph-up me-2"></i>Collection Analytics</h5><button (click)="closeModal('p32_analyticsModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="row g-3">
+<div class="col-lg-8">
+<h6 style="font-size:13px;font-weight:700">Volume Trend (Last 7 Days)</h6>
+<div class="chart-bars">
+<div class="chart-bar" style="height:40%;background:var(--pm-primary-light)"><span class="bar-label">Mon</span></div>
+<div class="chart-bar" style="height:60%;background:var(--pm-primary-light)"><span class="bar-label">Tue</span></div>
+<div class="chart-bar" style="height:85%;background:var(--pm-primary)"><span class="bar-label">Wed</span></div>
+<div class="chart-bar" style="height:55%;background:var(--pm-primary-light)"><span class="bar-label">Thu</span></div>
+<div class="chart-bar" style="height:95%;background:var(--pm-primary)"><span class="bar-label">Fri</span></div>
+<div class="chart-bar" style="height:35%;background:var(--pm-primary-light)"><span class="bar-label">Sat</span></div>
+<div class="chart-bar" style="height:25%;background:var(--pm-primary-light)"><span class="bar-label">Sun</span></div>
+</div>
+</div>
+<div class="col-lg-4">
+<h6 style="font-size:13px;font-weight:700">Key Metrics</h6>
+<div class="p-3 border rounded mb-2">
+<div style="font-size:11px;color:var(--pm-muted)">Avg Transaction Value</div><strong style="font-size:18px">KES 2,240</strong>
+</div>
+<div class="p-3 border rounded mb-2">
+<div style="font-size:11px;color:var(--pm-muted)">Peak Collection Hour</div><strong style="font-size:18px">1:00 PM - 2:00 PM</strong>
+</div>
+<div class="p-3 border rounded">
+<div style="font-size:11px;color:var(--pm-muted)">New vs Repeat Customers</div><strong style="font-size:18px">32% / 68%</strong>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_analyticsModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button><button (click)="openModal('p32_exportReportModal')" class="pm-btn pm-btn-primary" type="button">Export Data</button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_refundModal')" [attr.aria-hidden]="isModalOpen('p32_refundModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_refundModal') ? 'true' : null" [class.show]="isModalOpen('p32_refundModal')" [style.display]="isModalOpen('p32_refundModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_refundModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-arrow-return-left text-warning me-2"></i>Process Refund</h5>
+<button (click)="closeModal('p32_refundModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="pm-stepper" id="p32_refStepper">
+  @for (step of stepperItems('p32_ref'); track step.index) {
+    <div [class.active]="step.index === currentStep('p32_ref')" [class.completed]="step.index < currentStep('p32_ref')" class="pm-step">
+<div class="step-n">{{ step.index }}</div>
+      <div class="pm-step-label">{{ step.label }}</div>
+    </div>
+<div class="pm-step-line" [style.display]="step.last ? 'none' : ''"></div>
+  }
+</div>
+<div [class.active]="isStep('p32_ref', 1)" [style.display]="isStep('p32_ref', 1) ? 'block' : 'none'" class="fade-step active" id="p32_refStep1">
+<h6 style="font-weight:700;margin-bottom:16px">Step 1: Select Transaction</h6><input class="pm-form-control mb-3" placeholder="Enter Transaction ID or Phone number"/>
+<div class="p-3 border rounded mb-2" style="cursor:pointer;border-color:var(--pm-primary)!important;background:rgba(79,70,229,.04)">
+<div class="d-flex justify-content-between"><strong>John Mark</strong><strong>KES
+                                    3,400</strong></div>
+<div style="font-size:11px;color:var(--pm-muted)">TXN-99120 • M-Pesa • Today 11:42 AM</div>
+</div>
+<div class="p-3 border rounded mb-2" style="cursor:pointer">
+<div class="d-flex justify-content-between"><strong>Sarah W.</strong><strong>KES
+                                    1,500</strong></div>
+<div style="font-size:11px;color:var(--pm-muted)">TXN-88192 • Visa • Yesterday</div>
+</div>
+</div>
+<div [class.active]="isStep('p32_ref', 2)" [style.display]="isStep('p32_ref', 2) ? 'block' : 'none'" class="fade-step" id="p32_refStep2">
+<h6 style="font-weight:700;margin-bottom:16px">Step 2: Refund Details</h6>
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:12px">Original
+                            Transaction: KES 3,400 (John Mark)</div>
+<div class="mb-3"><label class="pm-form-label">Refund Type</label><select class="pm-form-control">
+<option>Full Refund (KES 3,400)</option>
+<option>Partial Refund</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">Reason</label><select class="pm-form-control">
+<option>Customer requested cancellation</option>
+<option>Out of stock / Unavailable</option>
+<option>Fraudulent transaction</option>
+<option>Duplicate charge</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">PIN to authorize</label>
+<div class="pm-pin-input"><input (input)="moveFocus($event)" maxlength="1" type="password"/><input (input)="moveFocus($event)" maxlength="1" type="password"/><input (input)="moveFocus($event)" maxlength="1" type="password"/><input (input)="moveFocus($event)" maxlength="1" type="password"/></div>
+</div>
+</div>
+<div [class.active]="isStep('p32_ref', 3)" [style.display]="isStep('p32_ref', 3) ? 'block' : 'none'" class="fade-step" id="p32_refStep3">
+<div class="pm-receipt">
+<div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+<h5 style="font-weight:700;color:var(--pm-accent)">Refund Initiated</h5>
+<p style="font-size:13px;color:var(--pm-ink-soft)">KES 3,400 will be reversed to John Mark's
+                                M-Pesa account.</p>
+<p style="font-size:11px;color:var(--pm-muted)">Ref: REF-PM-20250627-011</p>
+</div>
+</div>
+</div>
+<div class="modal-footer" id="p32_refFooter"><button (click)="closeModal('p32_refundModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="nextStepFlow('p32_ref', 3, 'p32_refundModal', 'Refund authorization completed.', '')" class="pm-btn pm-btn-warning" id="p32_refNextBtn" style="color:#fff" type="button">Continue <i class="bi bi-arrow-right"></i></button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_disputeModal')" [attr.aria-hidden]="isModalOpen('p32_disputeModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_disputeModal') ? 'true' : null" [class.show]="isModalOpen('p32_disputeModal')" [style.display]="isModalOpen('p32_disputeModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_disputeModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-shield-exclamation text-danger me-2"></i>Dispute /
+                        Chargeback Management</h5><button (click)="closeModal('p32_disputeModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="row g-3">
+<div class="col-md-5">
+<div class="p-3 border rounded" style="background:var(--pm-surface-2)">
+<h6 style="font-size:13px;font-weight:700">Dispute Details</h6>
+<div class="d-flex justify-content-between mb-1" style="font-size:12px"><span class="text-muted">ID</span><strong>CB-20250627-01</strong></div>
+<div class="d-flex justify-content-between mb-1" style="font-size:12px"><span class="text-muted">Amount</span><strong style="color:var(--pm-danger)">KES
+                                        12,500</strong></div>
+<div class="d-flex justify-content-between mb-1" style="font-size:12px"><span class="text-muted">Method</span><strong>Visa ***4112</strong></div>
+<div class="d-flex justify-content-between mb-1" style="font-size:12px"><span class="text-muted">Reason</span><strong>Fraud Claim</strong></div>
+<div class="d-flex justify-content-between" style="font-size:12px"><span class="text-muted">Deadline</span><strong style="color:var(--pm-danger)">2
+                                        days</strong></div>
+</div>
+</div>
+<div class="col-md-7">
+<h6 style="font-size:13px;font-weight:700">Action: Defend Chargeback</h6>
+<div class="mb-3"><label class="pm-form-label">Defense Evidence</label><select class="pm-form-control">
+<option>Proof of delivery / receipt</option>
+<option>Customer communication logs</option>
+<option>Digital service access logs</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">Upload Documents</label><input class="pm-form-control" multiple="" type="file"/></div>
+<div class="mb-3"><label class="pm-form-label">Notes</label><textarea class="pm-form-control" rows="3">Customer signed for the delivery on 25 Jun. Attached is the signed waybill and GPS logs.</textarea>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="processAction('p32_disputeModal', 'Chargeback accepted. KES 12,500 reversed.', '')" class="pm-btn pm-btn-danger" type="button">Accept
+                        Chargeback (Refund)</button><button (click)="processAction('p32_disputeModal', 'Evidence submitted to acquiring bank. Status changed to Reviewing.', '')" class="pm-btn pm-btn-primary" type="button">Submit
+                        Evidence</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_txnDetailModal')" [attr.aria-hidden]="isModalOpen('p32_txnDetailModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_txnDetailModal') ? 'true' : null" [class.show]="isModalOpen('p32_txnDetailModal')" [style.display]="isModalOpen('p32_txnDetailModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_txnDetailModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Transaction Details</h5><button (click)="closeModal('p32_txnDetailModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="text-center mb-3">
+<div style="font-size:28px;font-weight:700;color:var(--pm-primary)">KES 4,500</div><span class="pm-badge pm-badge-success">Success</span>
+</div>
+<div class="p-3 border rounded" style="font-size:13px">
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Txn
+                                ID</span><strong>TXN-PM-892110</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Date</span><strong>27
+                                Jun 2025, 14:32</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Customer</span><strong>Alice Wanjiku</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Phone</span><strong>0722 *** 112</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Method</span><strong>M-Pesa PayBill</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">MDR Fee</span><strong>KES
+                                67.50</strong></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="openModal('p32_refundModal'); closeModal('p32_txnDetailModal')" class="pm-btn" type="button">Refund</button><button (click)="processAction('p32_txnDetailModal', 'Receipt sent to customer via SMS.', '')" class="pm-btn pm-btn-primary" type="button"><i class="bi bi-send"></i> Send Receipt</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_customerSegmentModal')" [attr.aria-hidden]="isModalOpen('p32_customerSegmentModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_customerSegmentModal') ? 'true' : null" [class.show]="isModalOpen('p32_customerSegmentModal')" [style.display]="isModalOpen('p32_customerSegmentModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_customerSegmentModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-pie-chart me-2"></i>Customer Segments &amp; VIPs</h5><button (click)="closeModal('p32_customerSegmentModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="row g-3 mb-3">
+<div class="col-md-4">
+<div class="p-3 border rounded text-center">
+<div style="font-size:12px;font-weight:600;color:var(--pm-purple)">VIP (>KES 50k LTV)
+                                </div>
+<div style="font-size:24px;font-weight:700">142</div><button (click)="openModal('p32_sendReminderModal')" class="pm-btn pm-btn-sm mt-2" type="button">Message
+                                    VIPs</button>
+</div>
+</div>
+<div class="col-md-4">
+<div class="p-3 border rounded text-center">
+<div style="font-size:12px;font-weight:600;color:var(--pm-info)">REGULAR (Repeat)</div>
+<div style="font-size:24px;font-weight:700">810</div><button (click)="notify('View List handled')" class="pm-btn pm-btn-sm mt-2" type="button">View List</button>
+</div>
+</div>
+<div class="col-md-4">
+<div class="p-3 border rounded text-center">
+<div style="font-size:12px;font-weight:600;color:var(--pm-danger)">CHURN RISK</div>
+<div style="font-size:24px;font-weight:700">45</div><button (click)="notify('Send Promo handled')" class="pm-btn pm-btn-sm mt-2" type="button">Send Promo</button>
+</div>
+</div>
+</div>
+<div class="mb-3"><label class="pm-form-label">Auto-Segmentation Rules</label>
+<div class="p-2 border rounded d-flex justify-content-between align-items-center mb-1"><span style="font-size:12px">Mark as VIP if Lifetime Value > KES 50,000</span><button (click)="notify('Action handled')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-pencil"></i></button></div>
+<div class="p-2 border rounded d-flex justify-content-between align-items-center"><span style="font-size:12px">Mark as Churn Risk if no payment in 90 days</span><button (click)="notify('Action handled')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-pencil"></i></button></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_customerSegmentModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_sendReminderModal')" [attr.aria-hidden]="isModalOpen('p32_sendReminderModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_sendReminderModal') ? 'true' : null" [class.show]="isModalOpen('p32_sendReminderModal')" [style.display]="isModalOpen('p32_sendReminderModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_sendReminderModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-chat-dots text-success me-2"></i>Send Message / Reminder
+                    </h5><button (click)="closeModal('p32_sendReminderModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Target Audience</label><select class="pm-form-control">
+<option>Customers with Pending Invoices (14)</option>
+<option>VIP Customers (142)</option>
+<option>Churn Risk Customers (45)</option>
+<option>Single Customer</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">Channel</label><select class="pm-form-control">
+<option>SMS</option>
+<option>WhatsApp Business</option>
+<option>Email</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">Message Template</label><select class="pm-form-control">
+<option>Payment Reminder</option>
+<option>Promo Offer</option>
+<option>Thank You</option>
+<option>Custom</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">Message Body</label><textarea class="pm-form-control" rows="4">Hi [Name], this is a reminder that your invoice [Invoice_No] for KES [Amount] is due. Click here to pay: [Pay_Link]</textarea>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_sendReminderModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p32_sendReminderModal', 'Messages sent successfully to 14 customers.', '')" class="pm-btn pm-btn-success" type="button"><i class="bi bi-send"></i> Send Campaign</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_addCustomerModal')" [attr.aria-hidden]="isModalOpen('p32_addCustomerModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_addCustomerModal') ? 'true' : null" [class.show]="isModalOpen('p32_addCustomerModal')" [style.display]="isModalOpen('p32_addCustomerModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_addCustomerModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Add New Customer</h5><button (click)="closeModal('p32_addCustomerModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Full Name</label><input class="pm-form-control" placeholder="Enter name"/></div>
+<div class="mb-3"><label class="pm-form-label">Phone Number</label><input class="pm-form-control" placeholder="07XX XXX XXX"/></div>
+<div class="mb-3"><label class="pm-form-label">Email (Optional)</label><input class="pm-form-control" placeholder="email@domain.com"/></div>
+<div class="mb-3"><label class="pm-form-label">Customer Group</label><select class="pm-form-control">
+<option>Regular</option>
+<option>Wholesale</option>
+<option>Corporate</option>
+</select></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_addCustomerModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p32_addCustomerModal', 'Customer profile created successfully.', '')" class="pm-btn pm-btn-primary" type="button">Save
+                        Customer</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_feeCalculatorModal')" [attr.aria-hidden]="isModalOpen('p32_feeCalculatorModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_feeCalculatorModal') ? 'true' : null" [class.show]="isModalOpen('p32_feeCalculatorModal')" [style.display]="isModalOpen('p32_feeCalculatorModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_feeCalculatorModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-calculator me-2"></i>Transaction Fee Calculator</h5><button (click)="closeModal('p32_feeCalculatorModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Transaction Amount (KES)</label><input (input)="setCalcAmount($event)" class="pm-form-control" id="p32_calcAmt" type="number" value="10000"/></div>
+<div class="table-responsive">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Method</th>
+<th>MDR Rate</th>
+<th>Fee Deduction</th>
+<th>Net Settlement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PayBill</td>
+<td>1.5%</td>
+<td>KES <span class="calc-pb-fee">{{ fee['paybillFee'] }}</span></td>
+<td><strong style="color:var(--pm-primary)">KES <span class="calc-pb-net">{{ fee['paybillNet'] }}</span></strong></td>
+</tr>
+<tr>
+<td>Till</td>
+<td>1.0%</td>
+<td>KES <span class="calc-till-fee">{{ fee['tillFee'] }}</span></td>
+<td><strong style="color:var(--pm-primary)">KES <span class="calc-till-net">{{ fee['tillNet'] }}</span></strong></td>
+</tr>
+<tr>
+<td>Card (Visa/MC)</td>
+<td>2.9%</td>
+<td>KES <span class="calc-card-fee">{{ fee['cardFee'] }}</span></td>
+<td><strong style="color:var(--pm-primary)">KES <span class="calc-card-net">{{ fee['cardNet'] }}</span></strong></td>
+</tr>
+<tr>
+<td>PesaLink</td>
+<td>Fixed</td>
+<td>KES <span class="calc-pesa-fee">{{ fee['pesalinkFee'] }}</span></td>
+<td><strong style="color:var(--pm-primary)">KES <span class="calc-pesa-net">{{ fee['pesalinkNet'] }}</span></strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-surface-2);font-size:12px">All fees are
+                        deducted gross before settlement. No hidden charges.</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_feeCalculatorModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_exportReportModal')" [attr.aria-hidden]="isModalOpen('p32_exportReportModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_exportReportModal') ? 'true' : null" [class.show]="isModalOpen('p32_exportReportModal')" [style.display]="isModalOpen('p32_exportReportModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_exportReportModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-file-earmark-spreadsheet me-2"></i>Export Collections Data
+                    </h5><button (click)="closeModal('p32_exportReportModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Data Set</label><select class="pm-form-control">
+<option>Transaction Ledger</option>
+<option>Settlement History</option>
+<option>Customer Directory</option>
+<option>Disputes &amp; Refunds Log</option>
+</select></div>
+<div class="row g-3 mb-3">
+<div class="col-6"><label class="pm-form-label">From</label><input class="pm-form-control" type="date" value="2025-06-01"/></div>
+<div class="col-6"><label class="pm-form-label">To</label><input class="pm-form-control" type="date" value="2025-06-27"/></div>
+</div>
+<div class="mb-3"><label class="pm-form-label">Format</label><select class="pm-form-control">
+<option>CSV (For Excel/Accounting)</option>
+<option>PDF Summary</option>
+</select></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_exportReportModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p32_exportReportModal', 'Export generated and downloading to your device.', '')" class="pm-btn pm-btn-primary" type="button"><i class="bi bi-download"></i> Generate Export</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_healthCheckModal')" [attr.aria-hidden]="isModalOpen('p32_healthCheckModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_healthCheckModal') ? 'true' : null" [class.show]="isModalOpen('p32_healthCheckModal')" [style.display]="isModalOpen('p32_healthCheckModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_healthCheckModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>System Health &amp; Status
+                    </h5><button (click)="closeModal('p32_healthCheckModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="status-row">
+<div><strong>M-Pesa API (PayBill/Till)</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Latency: 120ms</div>
+</div><span class="pm-badge pm-badge-success">Operational</span>
+</div>
+<div class="status-row">
+<div><strong>Card Gateway</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Latency: 450ms</div>
+</div><span class="pm-badge pm-badge-success">Operational</span>
+</div>
+<div class="status-row">
+<div><strong>PesaLink Switch</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Pending KYC</div>
+</div><span class="pm-badge pm-badge-warning">Inactive</span>
+</div>
+<div class="status-row">
+<div><strong>Settlement Engine</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Next batch at 4:00 PM</div>
+</div><span class="pm-badge pm-badge-success">Operational</span>
+</div>
+<div class="p-3 border rounded mt-3" style="background:var(--pm-surface-2);font-size:12px">All core
+                        payment rails are functioning normally. No major outages reported by PSPs in the last 24 hours.
+                    </div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_healthCheckModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_profileModal')" [attr.aria-hidden]="isModalOpen('p32_profileModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_profileModal') ? 'true' : null" [class.show]="isModalOpen('p32_profileModal')" [style.display]="isModalOpen('p32_profileModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_profileModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Admin Profile</h5><button (click)="closeModal('p32_profileModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body text-center">
+<div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px;background:var(--pm-gradient-slate)">JD</div>
+<h5 style="font-weight:700;margin-bottom:2px">Jane Doe</h5>
+<p style="font-size:13px;color:var(--pm-muted)">Finance Admin · J.K. Enterprises</p>
+<div class="row g-2 text-start mt-3" style="font-size:13px">
+<div class="col-6">
+<div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Role</span><br/><strong>Full Admin</strong></div>
+</div>
+<div class="col-6">
+<div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">Last Login</span><br/><strong>Today, 08:15 AM</strong></div>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_profileModal')" class="pm-btn pm-btn-danger w-100" data-bs-dismiss="modal" type="button">Sign
+                        Out</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_notificationsModal')" [attr.aria-hidden]="isModalOpen('p32_notificationsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_notificationsModal') ? 'true' : null" [class.show]="isModalOpen('p32_notificationsModal')" [style.display]="isModalOpen('p32_notificationsModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_notificationsModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notifications (8)</h5><button (click)="closeModal('p32_notificationsModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body" style="max-height:400px;overflow-y:auto">
+<div class="p-3 rounded mb-2" style="background:var(--pm-danger-soft);font-size:13px">
+<strong>Chargeback Received</strong>
+<div style="font-size:11px;color:#7F1D1D">Visa ***4112 KES 12,500. Respond within 2 days.</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-warning-soft);font-size:13px">
+<strong>Refund Approval Required</strong>
+<div style="font-size:11px;color:#92400E">John Mark requested full refund KES 3,400.</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-info-soft);font-size:13px"><strong>KYC
+                            Document Needed</strong>
+<div style="font-size:11px;color:#1E40AF">Upload CR12 for PayBill 512234 to avoid limits.</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-purple-soft);font-size:13px"><strong>API
+                            Keys Expiring</strong>
+<div style="font-size:11px;color:#4C1D95">Rotate LNMO Production keys in 3 days.</div>
+</div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-surface-2);font-size:13px"><strong>Daily
+                            Settlement Cleared</strong>
+<div style="font-size:11px;color:var(--pm-muted)">KES 206,850 deposited to Equity Bank
+                            yesterday.</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_notificationsModal')" class="pm-btn w-100" data-bs-dismiss="modal" type="button">Mark all as read</button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('p32_attentionDetailModal')" [attr.aria-hidden]="isModalOpen('p32_attentionDetailModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p32_attentionDetailModal') ? 'true' : null" [class.show]="isModalOpen('p32_attentionDetailModal')" [style.display]="isModalOpen('p32_attentionDetailModal') ? 'block' : 'none'" class="modal fade resettable" id="p32_attentionDetailModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>Action Items</h5>
+<button (click)="closeModal('p32_attentionDetailModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="status-row">
+<div><strong>Chargeback CB-01</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Visa ***4112</div>
+</div><button (click)="openModal('p32_disputeModal')" class="pm-btn pm-btn-sm pm-btn-danger" type="button">Defend</button>
+</div>
+<div class="status-row">
+<div><strong>Refund RF-11</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Pending approval</div>
+</div><button (click)="openModal('p32_refundModal')" class="pm-btn pm-btn-sm" type="button">Review</button>
+</div>
+<div class="status-row">
+<div><strong>KYC Update</strong>
+<div style="font-size:11px;color:var(--pm-muted)">CR12 required</div>
+</div><button (click)="openModal('p32_paybillConfigModal')" class="pm-btn pm-btn-sm" type="button">Upload</button>
+</div>
+<div class="status-row">
+<div><strong>API Key Rotation</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Expires in 3 days</div>
+</div><button (click)="openModal('p32_apiConfigModal')" class="pm-btn pm-btn-sm" type="button">Rotate</button>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p32_attentionDetailModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div></section></div>
+
+  <div class="modal-backdrop fade show" [style.display]="hasOpenModal() ? 'block' : 'none'" (click)="closeAllModals()"></div>
+</div>

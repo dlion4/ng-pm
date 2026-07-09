@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paymo V2 — Developer Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paymo-dev: #6366f1; --paymo-dev-dark: #4338ca; --paymo-dev-light: #e0e7ff;
+      --paymo-accent: #10b981; --paymo-danger: #ef4444; --paymo-warning: #f59e0b; --paymo-info: #3b82f6;
+      --bg: #0f172a; --bg-content: #f4f3f9; --surface: #1e293b; --surface-2: #334155;
+      --text: #f1f5f9; --text-secondary: #94a3b8; --muted: #64748b; --border: #334155;
+      --shadow: 0 12px 40px rgba(0,0,0,.3); --shadow-glow: 0 4px 20px rgba(99,102,241,.25);
+      --sidebar-width: 264px; --sidebar-collapsed: 76px; --header-height: 64px; --aside-width: 400px;
+      --radius-xl: 22px; --radius: 16px; --radius-sm: 12px; --radius-xs: 8px;
+      --transition-fast: 150ms cubic-bezier(.4,0,.2,1); --transition-base: 250ms cubic-bezier(.4,0,.2,1); --transition-slow: 350ms cubic-bezier(.4,0,.2,1);
+    }
+    *{scrollbar-width:thin;scrollbar-color:var(--border) transparent;box-sizing:border-box}
+    ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+    html,body{min-height:100vh}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-content);color:#1d1a2e;-webkit-font-smoothing:antialiased;margin:0}
+    .app-shell{display:flex;min-height:100vh}
+
+    /* Sidebar (dark) */
+    .sidebar{position:fixed;top:0;left:0;height:100vh;width:var(--sidebar-collapsed);background:var(--bg);border-right:1px solid var(--border);z-index:1040;display:flex;flex-direction:column;padding:1rem .75rem;transition:width var(--transition-slow),transform var(--transition-slow);overflow-x:hidden;overflow-y:auto}
+    .sidebar.expanded{width:var(--sidebar-width)}.sidebar.mobile-open{transform:translateX(0);width:var(--sidebar-width)}.sidebar.mobile-closed{transform:translateX(-100%)}
+    .sidebar-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:1035;opacity:0;pointer-events:none;transition:opacity var(--transition-base)}.sidebar-backdrop.show{opacity:1;pointer-events:auto}
+    .brand{display:flex;align-items:center;gap:.75rem;padding:.25rem .5rem 1rem;margin-bottom:.5rem}
+    .brand-icon{flex:0 0 auto;width:40px;height:40px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--paymo-dev),var(--paymo-dev-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;box-shadow:0 6px 18px rgba(99,102,241,.3)}
+    .brand-text{font-weight:800;font-size:1.25rem;letter-spacing:-.02em;color:var(--text);opacity:0;white-space:nowrap;transition:opacity var(--transition-base)}
+    .sidebar.expanded .brand-text,.sidebar.mobile-open .brand-text{opacity:1}
+    .brand-tag{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--paymo-dev);background:rgba(99,102,241,.15);padding:.15rem .45rem;border-radius:999px;margin-left:auto;opacity:0;transition:opacity var(--transition-base)}
+    .sidebar.expanded .brand-tag,.sidebar.mobile-open .brand-tag{opacity:1}
+    .sidebar-toggle{width:36px;height:36px;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-fast);font-size:1.05rem}
+    .sidebar-toggle:hover,.sidebar-toggle:focus{background:var(--paymo-dev);border-color:var(--paymo-dev);color:#fff;box-shadow:var(--shadow-glow);transform:scale(1.05)}
+    .nav-group-label{display:block;padding:.75rem .85rem .35rem;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);white-space:nowrap;opacity:0;transition:opacity var(--transition-base)}
+    .sidebar.expanded .nav-group-label,.sidebar.mobile-open .nav-group-label{opacity:1}
+    .nav-link{display:flex;align-items:center;gap:.85rem;padding:.65rem .85rem;margin-bottom:.15rem;border-radius:var(--radius-xs);color:var(--text-secondary);text-decoration:none;font-size:.88rem;font-weight:500;position:relative;overflow:hidden;transition:color var(--transition-fast),background var(--transition-fast),transform var(--transition-fast)}
+    .nav-link::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%) scaleY(0);width:3.5px;height:18px;background:var(--paymo-dev);border-radius:0 4px 4px 0;transition:transform var(--transition-fast)}
+    .nav-link:hover,.nav-link.active{background:rgba(99,102,241,.1);color:var(--paymo-dev)}
+    .nav-link:hover{transform:translateX(2px)}.nav-link.active::before{transform:translateY(-50%) scaleY(1)}
+    .nav-link .nav-icon{flex:0 0 auto;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:1.2rem;transition:transform var(--transition-fast)}
+    .nav-link:hover .nav-icon,.nav-link.active .nav-icon{transform:scale(1.15)}
+    .nav-link .nav-label{flex:1 1 auto;white-space:nowrap;opacity:0;transform:translateX(-8px);transition:opacity var(--transition-base),transform var(--transition-base)}
+    .sidebar.expanded .nav-label,.sidebar.mobile-open .nav-label{opacity:1;transform:translateX(0)}
+    .nav-link .nav-badge{flex:0 0 auto;font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:var(--paymo-dev);color:#fff;opacity:0;transition:opacity var(--transition-base)}
+    .sidebar.expanded .nav-badge,.sidebar.mobile-open .nav-badge{opacity:1}
+    .sidebar-api{margin-top:auto;padding:.65rem;border-radius:var(--radius-xs);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
+    .sidebar-api .dot{width:8px;height:8px;border-radius:50%;background:var(--paymo-accent)}
+    .sidebar-api span{opacity:0;white-space:nowrap;transition:opacity var(--transition-base);font-size:.72rem;color:var(--text-secondary)}
+    .sidebar.expanded .sidebar-api span,.sidebar.mobile-open .sidebar-api span{opacity:1}
+
+    /* Header (dark) */
+    .top-header{position:fixed;top:0;right:0;height:var(--header-height);left:var(--sidebar-collapsed);background:rgba(15,23,42,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);z-index:1020;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;transition:left var(--transition-slow)}
+    .top-header.sidebar-expanded{left:var(--sidebar-width)}
+    .global-search{position:relative;max-width:380px;width:100%}.global-search .search-icon{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1rem;pointer-events:none}
+    .global-search input{width:100%;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--surface);padding:.5rem 1rem .5rem 2.5rem;font-size:.85rem;color:var(--text);transition:all var(--transition-fast)}
+    .global-search input::placeholder{color:var(--muted)}.global-search input:hover{background:var(--surface-2)}.global-search input:focus{background:var(--surface-2);border-color:var(--paymo-dev);box-shadow:0 0 0 3px rgba(99,102,241,.2);outline:none}
+    .header-actions{display:flex;align-items:center;gap:.5rem}
+    .header-action{position:relative;width:38px;height:38px;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-fast)}
+    .header-action:hover,.header-action[aria-expanded='true']{border-color:var(--paymo-dev);color:var(--paymo-dev);box-shadow:var(--shadow-glow);transform:translateY(-2px)}
+    .header-action .action-icon{font-size:1.1rem}
+    .header-badge{position:absolute;top:-3px;right:-3px;min-width:16px;height:16px;padding:0 3px;border-radius:999px;background:var(--paymo-danger);color:#fff;font-size:.55rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
+    .env-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .6rem;border-radius:999px;font-size:.72rem;font-weight:700}
+    .env-sandbox{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.2)}
+    .env-live{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.2)}
+    .env-dot{width:6px;height:6px;border-radius:50%;animation:pulse-dot 1.5s ease-in-out infinite}
+    .env-sandbox .env-dot{background:#f87171}.env-live .env-dot{background:#6ee7b7}
+    @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+    .user-trigger{display:inline-flex;align-items:center;gap:.5rem;padding:.25rem .5rem .25rem .25rem;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:all var(--transition-fast)}
+    .user-trigger:hover{border-color:var(--paymo-dev);box-shadow:var(--shadow-glow)}
+    .user-trigger .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--paymo-dev),var(--paymo-dev-dark));color:#fff;font-weight:700;font-size:.75rem;display:inline-flex;align-items:center;justify-content:center}
+    .user-trigger .user-meta{line-height:1.15;text-align:left}.user-trigger .user-name{font-size:.8rem;font-weight:700;color:var(--text)}.user-trigger .user-role{font-size:.65rem;color:var(--muted)}
+    .user-trigger .chev{color:var(--muted);transition:transform var(--transition-fast)}.user-trigger[aria-expanded='true'] .chev{transform:rotate(180deg)}
+
+    /* Dropdown panels */
+    .dropdown-panel{position:absolute;top:calc(100% + 8px);right:0;width:360px;max-width:calc(100vw - 1rem);background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);opacity:0;transform:translateY(-8px) scale(.98);pointer-events:none;transition:all var(--transition-base);z-index:1080;overflow:hidden}
+    .dropdown-panel.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+    .dropdown-panel .panel-header{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem;border-bottom:1px solid var(--border)}
+    .dropdown-panel .panel-title{font-size:.9rem;font-weight:700;color:var(--text)}.dropdown-panel .panel-body{max-height:340px;overflow-y:auto}.dropdown-panel .panel-footer{padding:.65rem 1rem;border-top:1px solid var(--border);background:rgba(0,0,0,.15)}
+    .notification-item{display:flex;align-items:flex-start;gap:.75rem;padding:.75rem 1rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background var(--transition-fast)}
+    .notification-item:last-child{border-bottom:none}.notification-item:hover{background:rgba(99,102,241,.05)}.notification-item.unread{background:rgba(99,102,241,.08)}
+    .notification-icon{flex:0 0 auto;width:34px;height:34px;border-radius:var(--radius-xs);display:inline-flex;align-items:center;justify-content:center;font-size:1rem}
+    .notification-icon.primary{background:rgba(99,102,241,.15);color:var(--paymo-dev)}.notification-icon.danger{background:rgba(239,68,68,.15);color:#f87171}.notification-icon.warning{background:rgba(245,158,11,.15);color:#fbbf24}.notification-icon.success{background:rgba(16,185,129,.15);color:#6ee7b7}
+    .notification-dot{width:6px;height:6px;border-radius:50%;background:var(--paymo-dev);margin-top:.3rem;flex-shrink:0}
+
+    /* Right aside */
+    .right-aside{position:fixed;top:0;right:0;height:100vh;width:var(--aside-width);max-width:100vw;background:var(--surface);border-left:1px solid var(--border);box-shadow:-12px 0 50px rgba(0,0,0,.3);z-index:1050;transform:translateX(100%);transition:transform var(--transition-slow);display:flex;flex-direction:column}
+    .right-aside.open{transform:translateX(0)}.aside-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border)}
+    .aside-title{font-size:1rem;font-weight:800;color:var(--text);display:inline-flex;align-items:center;gap:.5rem}
+    .aside-close{width:32px;height:32px;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--surface-2);color:var(--text-secondary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-fast)}
+    .aside-close:hover{background:var(--paymo-danger);border-color:var(--paymo-danger);color:#fff}
+    .aside-body{flex:1 1 auto;overflow-y:auto;padding:1.25rem}
+    .aside-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:1045;opacity:0;pointer-events:none;transition:opacity var(--transition-base)}.aside-backdrop.show{opacity:1;pointer-events:auto}
+    .aside-card{padding:1rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:rgba(0,0,0,.2);margin-bottom:1rem;transition:border-color var(--transition-fast)}
+    .aside-card:hover{border-color:var(--paymo-dev)}
+    .aside-card h6{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.6rem}
+    .status-row{display:flex;align-items:center;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid var(--border)}.status-row:last-child{border-bottom:none}
+    .status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:.4rem}.status-dot.active{background:#6ee7b7;box-shadow:0 0 0 3px rgba(110,231,183,.2)}.status-dot.warning{background:#fbbf24;box-shadow:0 0 0 3px rgba(251,191,36,.2)}
+    .aside-panel-content{display:none}.aside-panel-content.active{display:block}
+
+    /* Main */
+    .main-content{margin-left:var(--sidebar-collapsed);margin-top:var(--header-height);min-height:calc(100vh - var(--header-height));padding:1.75rem;transition:margin-left var(--transition-slow)}
+    .main-content.sidebar-expanded{margin-left:var(--sidebar-width)}
+
+    /* Dev specific */
+    .code-block{background:#1e1e2e;border-radius:var(--radius-sm);padding:1rem;font-family:'Fira Code',monospace;font-size:.82rem;color:#d1d5db;overflow-x:auto;position:relative;line-height:1.7}
+    .code-block .lang-tag{position:absolute;top:.5rem;right:.5rem;font-size:.6rem;font-weight:700;text-transform:uppercase;color:#6b7280;background:rgba(255,255,255,.05);padding:.1rem .35rem;border-radius:4px}
+    .ck{color:#c084fc}.cs{color:#86efac}.cn{color:#fbbf24}.ce{color:#f87171}.cm{color:#6b7280}
+
+    .log-row{display:flex;align-items:center;gap:.75rem;padding:.65rem 1rem;border-bottom:1px solid var(--border);font-size:.8rem;font-family:'Fira Code',monospace;transition:background var(--transition-fast);cursor:pointer}
+    .log-row:last-child{border-bottom:none}.log-row:hover{background:rgba(99,102,241,.05)}
+    .log-status{padding:.1rem .4rem;border-radius:4px;font-weight:700;font-size:.72rem}
+    .status-2xx{background:rgba(16,185,129,.15);color:#6ee7b7}.status-4xx{background:rgba(239,68,68,.15);color:#f87171}.status-3xx{background:rgba(245,158,11,.15);color:#fbbf24}
+
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem;color:var(--text);transition:all var(--transition-fast)}
+    .stat-card:hover{border-color:var(--paymo-dev);transform:translateY(-2px)}
+    .hub-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color var(--transition-fast)}
+    .hub-card:hover{border-color:var(--paymo-dev)}
+
+    .quick-btn{display:flex;align-items:center;justify-content:space-between;padding:.65rem .85rem;border-radius:var(--radius-xs);border:1px solid var(--border);background:rgba(0,0,0,.15);color:var(--text-secondary);cursor:pointer;transition:all var(--transition-fast);font-size:.85rem}
+    .quick-btn:hover{border-color:var(--paymo-dev);background:rgba(99,102,241,.1);transform:translateX(3px)}
+
+    /* Toasts */
+    .toast-container-custom{position:fixed;bottom:1.25rem;right:1.25rem;z-index:1090;display:flex;flex-direction:column;gap:.6rem}
+    .paymo-toast{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow);padding:.85rem 1rem;min-width:280px;display:flex;align-items:flex-start;gap:.75rem;animation:toastIn .35s ease forwards}
+    .paymo-toast.leaving{animation:toastOut .3s ease forwards}.paymo-toast .toast-ic{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem}
+    @keyframes toastIn{from{opacity:0;transform:translateX(20px) scale(.96)}to{opacity:1;transform:translateX(0) scale(1)}}
+    @keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateX(20px) scale(.96)}}
+
+    @media(max-width:991.98px){.top-header{left:0!important}.main-content{margin-left:0!important}.global-search{display:none}.user-trigger .user-meta{display:none}}
+    @media(max-width:767.98px){.dropdown-panel{position:fixed;top:var(--header-height);left:.75rem;right:.75rem;width:auto}}
+    .font-mono{font-family:'Fira Code',monospace}
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar mobile-closed" id="sidebar">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <div class="brand"><div class="brand-icon">PM</div><span class="brand-text">Paymo Dev</span><span class="brand-tag">v2025</span></div>
+      <button class="sidebar-toggle d-lg-none" id="sidebarMobileClose"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="flex-grow-1" id="navGroups"></div>
+    <div class="sidebar-api"><div class="dot"></div><span>API v2025.01 — Stable</span></div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- HEADER -->
+  <header class="top-header" id="topHeader">
+    <div class="d-flex align-items-center gap-3">
+      <button class="sidebar-toggle" id="sidebarToggle"><i class="bi bi-list" id="toggleIcon"></i></button>
+      <div class="env-badge env-sandbox"><span class="env-dot"></span>SANDBOX</div>
+      <div class="global-search d-none d-md-block"><i class="bi bi-search search-icon"></i><input type="text" placeholder="Search endpoints, logs, keys…"/></div>
+    </div>
+    <div class="header-actions">
+      <button class="header-action" data-aside-open="apiExplorer"><i class="bi bi-terminal action-icon"></i></button>
+      <div class="position-relative" data-dropdown="notifications">
+        <button class="header-action" data-dropdown-trigger="notifications" aria-expanded="false"><i class="bi bi-bell action-icon"></i><span class="header-badge">3</span></button>
+        <div class="dropdown-panel" data-dropdown-panel="notifications">
+          <div class="panel-header"><span class="panel-title">Dev Alerts</span><button class="btn btn-sm btn-link text-decoration-none" style="font-size:.72rem;color:var(--paymo-dev)">Clear</button></div>
+          <div class="panel-body" id="notificationList"></div>
+          <div class="panel-footer text-center"><button class="btn btn-sm btn-link text-decoration-none fw-semibold" style="color:var(--paymo-dev)">View All</button></div>
+        </div>
+      </div>
+      <button class="header-action" data-aside-open="systemStatus"><i class="bi bi-activity action-icon"></i></button>
+      <div class="position-relative" data-dropdown="user">
+        <button class="user-trigger" data-dropdown-trigger="user" aria-expanded="false">
+          <div class="avatar">JD</div><div class="user-meta"><div class="user-name">John Dev</div><div class="user-role">Tech Lead</div></div><i class="bi bi-chevron-down chev" style="font-size:.7rem"></i>
+        </button>
+        <div class="dropdown-panel" data-dropdown-panel="user" style="width:260px">
+          <div class="p-3 d-flex align-items-center gap-2 border-bottom"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--paymo-dev),var(--paymo-dev-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">JD</div><div><div class="fw-bold" style="font-size:.85rem;color:var(--text)">John Dev</div><div style="font-size:.7rem;color:var(--muted)">john@paymo.dev</div></div></div>
+          <div class="panel-body"><div class="d-flex flex-column"><button class="btn text-start rounded-0 border-0 py-2 px-3" style="background:transparent;color:var(--text-secondary)"><i class="bi bi-person me-2"></i>Profile</button><button class="btn text-start rounded-0 border-0 py-2 px-3" style="background:transparent;color:var(--text-secondary)"><i class="bi bi-gear me-2"></i>Settings</button><button class="btn text-start rounded-0 border-0 py-2 px-3" style="background:transparent;color:var(--text-secondary)" data-aside-open="apiKeys"><i class="bi bi-key me-2"></i>API Keys</button></div></div>
+          <div class="panel-footer"><button class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2" style="font-size:.8rem" id="logoutBtn"><i class="bi bi-box-arrow-right"></i>Log out</button></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main-content" id="mainContent">
+    <h1 class="fw-bold mb-1" style="font-size:1.5rem;letter-spacing:-.02em">Developer Dashboard</h1>
+    <p class="mb-4" style="color:var(--text-secondary);font-size:.9rem">Manage API integrations, webhooks, and developer infrastructure.</p>
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3 col-6"><div class="stat-card"><div class="d-flex align-items-center gap-2 mb-2"><div class="rounded-3 p-2" style="background:rgba(99,102,241,.15);color:var(--paymo-dev)"><i class="bi bi-arrow-left-right"></i></div><span style="font-size:.72rem;color:var(--muted);font-weight:600">API Calls (24h)</span></div><div style="font-size:1.5rem;font-weight:800;color:var(--text)">24,819</div><div style="font-size:.7rem;color:#6ee7b7;font-weight:600"><i class="bi bi-arrow-up"></i> +8% vs yesterday</div></div></div>
+      <div class="col-md-3 col-6"><div class="stat-card"><div class="d-flex align-items-center gap-2 mb-2"><div class="rounded-3 p-2" style="background:rgba(16,185,129,.15);color:#6ee7b7"><i class="bi bi-speedometer2"></i></div><span style="font-size:.72rem;color:var(--muted);font-weight:600">Avg Latency</span></div><div style="font-size:1.5rem;font-weight:800;color:var(--text)">124ms</div><div style="font-size:.7rem;color:#6ee7b7;font-weight:600"><i class="bi bi-arrow-down"></i> -12ms</div></div></div>
+      <div class="col-md-3 col-6"><div class="stat-card"><div class="d-flex align-items-center gap-2 mb-2"><div class="rounded-3 p-2" style="background:rgba(239,68,68,.15);color:#f87171"><i class="bi bi-exclamation-triangle"></i></div><span style="font-size:.72rem;color:var(--muted);font-weight:600">Error Rate</span></div><div style="font-size:1.5rem;font-weight:800;color:var(--text)">0.3%</div><div style="font-size:.7rem;color:#6ee7b7;font-weight:600">Below threshold</div></div></div>
+      <div class="col-md-3 col-6"><div class="stat-card"><div class="d-flex align-items-center gap-2 mb-2"><div class="rounded-3 p-2" style="background:rgba(99,102,241,.15);color:var(--paymo-dev)"><i class="bi bi-broadcast"></i></div><span style="font-size:.72rem;color:var(--muted);font-weight:600">Webhooks</span></div><div style="font-size:1.5rem;font-weight:800;color:var(--text)">8 Active</div><div style="font-size:.7rem;color:#fbbf24;font-weight:600"><i class="bi bi-exclamation-circle"></i> 2 degraded</div></div></div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <!-- API Request/Response -->
+        <div class="hub-card mb-4">
+          <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2"><span class="badge" style="background:rgba(239,68,68,.15);color:#f87171;font-size:.72rem">POST</span><span class="font-mono" style="font-size:.82rem;color:var(--text)">/v1/disbursements</span></div>
+            <span class="fw-bold" style="font-size:.82rem;color:#f87171">400 Bad Request</span>
+          </div>
+          <div class="p-3">
+            <div style="font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:.5rem">REQUEST PAYLOAD</div>
+            <div class="code-block mb-3"><span class="lang-tag">JSON</span><pre class="m-0">{
+  <span class="ck">"amount"</span>: <span class="cn">50000</span>,
+  <span class="ck">"currency"</span>: <span class="cs">"KES"</span>,
+  <span class="ck">"destination"</span>: {
+    <span class="ck">"type"</span>: <span class="cs">"bank_account"</span>,
+    <span class="ck">"account_number"</span>: <span class="cs">"12345678"</span>
+    <span class="cm">// Missing: bank_code</span>
+  }
+}</pre></div>
+            <div style="font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:.5rem">RESPONSE</div>
+            <div class="code-block"><span class="lang-tag">JSON</span><pre class="m-0">{
+  <span class="ck">"error"</span>: {
+    <span class="ck">"type"</span>: <span class="cs">"invalid_request_error"</span>,
+    <span class="ck">"code"</span>: <span class="cs">"parameter_missing"</span>,
+    <span class="ck">"message"</span>: <span class="ce">"The parameter 'destination.bank_code' is required"</span>
+  }
+}</pre></div>
+          </div>
+        </div>
+
+        <!-- Request Logs -->
+        <div class="hub-card">
+          <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+            <h6 class="fw-bold mb-0" style="color:var(--text)">Recent Request Logs</h6>
+            <div class="d-flex gap-2">
+              <select class="form-select form-select-sm" style="width:auto;font-size:.72rem;background:var(--surface-2);border-color:var(--border);color:var(--text);border-radius:var(--radius-xs)"><option>All Methods</option><option>GET</option><option>POST</option><option>PUT</option></select>
+              <button class="btn btn-sm btn-link text-decoration-none fw-semibold" style="color:var(--paymo-dev)">View All</button>
+            </div>
+          </div>
+          <div class="log-row"><span class="log-status status-2xx">200</span><span class="fw-bold" style="color:var(--text)">GET</span><span style="color:var(--text-secondary);flex:1" class="text-truncate">/v1/accounts/acc_8X29</span><span style="color:var(--muted)">124ms</span><span style="color:var(--muted)">10:45:01</span></div>
+          <div class="log-row"><span class="log-status status-4xx">400</span><span class="fw-bold" style="color:var(--text)">POST</span><span style="color:var(--text-secondary);flex:1" class="text-truncate">/v1/disbursements</span><span style="color:#f87171">—</span><span style="color:var(--muted)">10:38:22</span></div>
+          <div class="log-row"><span class="log-status status-2xx">201</span><span class="fw-bold" style="color:var(--text)">POST</span><span style="color:var(--text-secondary);flex:1" class="text-truncate">/v1/webhooks</span><span style="color:var(--muted)">89ms</span><span style="color:var(--muted)">10:12:45</span></div>
+          <div class="log-row"><span class="log-status status-2xx">200</span><span class="fw-bold" style="color:var(--text)">GET</span><span style="color:var(--text-secondary);flex:1" class="text-truncate">/v1/cards/card_4k2m</span><span style="color:var(--muted)">67ms</span><span style="color:var(--muted)">10:05:11</span></div>
+          <div class="log-row"><span class="log-status status-3xx">301</span><span class="fw-bold" style="color:var(--text)">GET</span><span style="color:var(--text-secondary);flex:1" class="text-truncate">/v1/legacy/accounts</span><span style="color:var(--muted)">12ms</span><span style="color:var(--muted)">09:58:33</span></div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <!-- API Keys -->
+        <div class="hub-card mb-4">
+          <div class="p-3">
+            <h6 class="fw-bold mb-3" style="color:var(--text)"><i class="bi bi-key me-2 text-muted"></i>API Keys</h6>
+            <div class="p-2 rounded-3 mb-2" style="background:rgba(0,0,0,.2);border:1px solid var(--border)">
+              <div style="font-size:.65rem;font-weight:700;color:var(--muted);margin-bottom:.3rem">PUBLISHABLE KEY</div>
+              <div class="d-flex align-items-center justify-content-between"><span class="font-mono" style="font-size:.78rem;color:var(--text)">pk_test_...89a2</span><i class="bi bi-copy cursor-pointer" style="color:var(--text-secondary)" onclick="addToast('Key copied','success')"></i></div>
+            </div>
+            <div class="p-2 rounded-3 mb-3" style="background:rgba(0,0,0,.2);border:1px solid var(--border)">
+              <div style="font-size:.65rem;font-weight:700;color:var(--muted);margin-bottom:.3rem">SECRET KEY</div>
+              <div class="d-flex align-items-center justify-content-between"><span class="font-mono" style="font-size:.78rem;color:var(--text)">••••••••••••••</span><i class="bi bi-eye cursor-pointer" style="color:var(--text-secondary)"></i></div>
+            </div>
+            <button class="btn w-100 py-2 rounded-3 fw-semibold" style="background:var(--paymo-dev);color:#fff" onclick="addToast('API keys rotated','success')"><i class="bi bi-arrow-repeat me-2"></i>Rotate Keys</button>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="hub-card mb-4">
+          <div class="p-3">
+            <h6 class="fw-bold mb-3" style="color:var(--text)"><i class="bi bi-lightning me-2 text-muted"></i>Quick Actions</h6>
+            <div class="d-grid gap-2">
+              <div class="quick-btn" data-aside-open="webhookConfig"><span><i class="bi bi-broadcast me-2" style="color:var(--paymo-dev)"></i>Webhook Settings</span><i class="bi bi-chevron-right small"></i></div>
+              <div class="quick-btn"><span><i class="bi bi-journal-code me-2" style="color:var(--paymo-accent)"></i>SDK Docs</span><i class="bi bi-chevron-right small"></i></div>
+              <div class="quick-btn"><span><i class="bi bi-box-arrow-up-right me-2" style="color:var(--paymo-warning)"></i>Postman Collection</span><i class="bi bi-chevron-right small"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SDK Status -->
+        <div class="hub-card">
+          <div class="p-3">
+            <h6 class="fw-bold mb-3" style="color:var(--text)"><i class="bi bi-code-slash me-2 text-muted"></i>SDK Versions</h6>
+            <div class="d-flex align-items-center justify-content-between mb-2"><span style="font-size:.82rem;color:var(--text-secondary)">Node.js</span><span class="badge" style="background:rgba(16,185,129,.15);color:#6ee7b7">v4.2.0</span></div>
+            <div class="d-flex align-items-center justify-content-between mb-2"><span style="font-size:.82rem;color:var(--text-secondary)">Python</span><span class="badge" style="background:rgba(16,185,129,.15);color:#6ee7b7">v2.1.0</span></div>
+            <div class="d-flex align-items-center justify-content-between mb-2"><span style="font-size:.82rem;color:var(--text-secondary)">PHP</span><span class="badge" style="background:rgba(245,158,11,.15);color:#fbbf24">v1.8.3</span></div>
+            <div class="d-flex align-items-center justify-content-between"><span style="font-size:.82rem;color:var(--text-secondary)">Go</span><span class="badge" style="background:rgba(99,102,241,.15);color:var(--paymo-dev)">v3.0.0-beta</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- RIGHT ASIDE -->
+  <div class="aside-backdrop" id="asideBackdrop"></div>
+  <aside class="right-aside" id="rightAside">
+    <!-- System Status -->
+    <div class="aside-panel-content" data-aside-content="systemStatus">
+      <div class="aside-header"><span class="aside-title"><i class="bi bi-activity" style="color:var(--paymo-dev)"></i> System Status</span><button class="aside-close" data-aside-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="aside-body">
+        <div class="aside-card"><h6>Service Health</h6>
+          <div class="status-row"><div class="d-flex align-items-center"><span class="status-dot active"></span><span style="font-size:.82rem;color:var(--text)">Core Payments API</span></div><span style="font-size:.72rem;color:#6ee7b7">Operational</span></div>
+          <div class="status-row"><div class="d-flex align-items-center"><span class="status-dot warning"></span><span style="font-size:.82rem;color:var(--text)">Webhook Delivery</span></div><span style="font-size:.72rem;color:#fbbf24">Degraded</span></div>
+          <div class="status-row"><div class="d-flex align-items-center"><span class="status-dot active"></span><span style="font-size:.82rem;color:var(--text)">Card Issuance</span></div><span style="font-size:.72rem;color:#6ee7b7">Operational</span></div>
+          <div class="status-row"><div class="d-flex align-items-center"><span class="status-dot active"></span><span style="font-size:.82rem;color:var(--text)">KYC Verification</span></div><span style="font-size:.72rem;color:#6ee7b7">Operational</span></div>
+        </div>
+        <div class="aside-card"><h6>API Latency (ms)</h6>
+          <div class="d-flex justify-content-between mb-2"><span style="font-size:.82rem;color:var(--text-secondary)">p50</span><span class="fw-bold" style="font-size:.82rem;color:var(--text)">67ms</span></div>
+          <div class="d-flex justify-content-between mb-2"><span style="font-size:.82rem;color:var(--text-secondary)">p95</span><span class="fw-bold" style="font-size:.82rem;color:var(--text)">189ms</span></div>
+          <div class="d-flex justify-content-between"><span style="font-size:.82rem;color:var(--text-secondary)">p99</span><span class="fw-bold" style="font-size:.82rem;color:var(--text)">342ms</span></div>
+        </div>
+        <button class="btn w-100 py-2 rounded-3 fw-semibold" style="background:var(--paymo-dev);color:#fff" onclick="addToast('Status refreshed','success')">Refresh Services</button>
+      </div>
+    </div>
+    <!-- API Explorer -->
+    <div class="aside-panel-content" data-aside-content="apiExplorer">
+      <div class="aside-header"><span class="aside-title"><i class="bi bi-terminal" style="color:var(--paymo-dev)"></i> API Explorer</span><button class="aside-close" data-aside-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="aside-body">
+        <div class="aside-card"><h6>Test Request</h6>
+          <div class="mb-2"><label class="form-label" style="font-size:.78rem;font-weight:600;color:var(--text-secondary)">Method</label><select class="form-select form-select-sm" style="background:var(--surface-2);border-color:var(--border);color:var(--text)"><option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option></select></div>
+          <div class="mb-2"><label class="form-label" style="font-size:.78rem;font-weight:600;color:var(--text-secondary)">Endpoint</label><input type="text" class="form-control form-control-sm" style="background:var(--surface-2);border-color:var(--border);color:var(--text)" value="/v1/accounts"></div>
+          <div class="mb-2"><label class="form-label" style="font-size:.78rem;font-weight:600;color:var(--text-secondary)">Body (JSON)</label><textarea class="form-control form-control-sm" rows="3" style="background:var(--surface-2);border-color:var(--border);color:var(--text);font-family:'Fira Code',monospace;font-size:.78rem" placeholder='{"key": "value"}'></textarea></div>
+          <button class="btn w-100 py-2 rounded-3 fw-semibold" style="background:var(--paymo-dev);color:#fff" onclick="addToast('Request sent — 200 OK','success')"><i class="bi bi-play me-2"></i>Send Request</button>
+        </div>
+      </div>
+    </div>
+    <!-- Webhook Config -->
+    <div class="aside-panel-content" data-aside-content="webhookConfig">
+      <div class="aside-header"><span class="aside-title"><i class="bi bi-broadcast" style="color:var(--paymo-dev)"></i> Webhook Settings</span><button class="aside-close" data-aside-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="aside-body">
+        <div class="aside-card"><h6>Active Webhooks</h6>
+          <div class="status-row"><div><div style="font-size:.82rem;color:var(--text);font-weight:600">payment.completed</div><div class="font-mono" style="font-size:.7rem;color:var(--muted)">https://api.client.com/hooks</div></div><span class="d-flex align-items-center" style="font-size:.72rem"><span class="status-dot active"></span>Live</span></div>
+          <div class="status-row"><div><div style="font-size:.82rem;color:var(--text);font-weight:600">card.transaction</div><div class="font-mono" style="font-size:.7rem;color:var(--muted)">https://api.client.com/cards</div></div><span class="d-flex align-items-center" style="font-size:.72rem"><span class="status-dot warning"></span>Slow</span></div>
+        </div>
+        <button class="btn w-100 py-2 rounded-3 fw-semibold" style="background:var(--paymo-dev);color:#fff"><i class="bi bi-plus me-2"></i>Add Webhook</button>
+      </div>
+    </div>
+    <!-- API Keys Aside -->
+    <div class="aside-panel-content" data-aside-content="apiKeys">
+      <div class="aside-header"><span class="aside-title"><i class="bi bi-key" style="color:var(--paymo-dev)"></i> Manage API Keys</span><button class="aside-close" data-aside-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="aside-body">
+        <div class="aside-card"><h6>Key Management</h6>
+          <div class="mb-3"><label class="form-label" style="font-size:.78rem;font-weight:600;color:var(--text-secondary)">Key Name</label><input type="text" class="form-control form-control-sm" style="background:var(--surface-2);border-color:var(--border);color:var(--text)" value="Production Key"></div>
+          <div class="mb-3"><label class="form-label" style="font-size:.78rem;font-weight:600;color:var(--text-secondary)">Permissions</label>
+            <div class="form-check mb-1"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:.82rem;color:var(--text-secondary)">Read accounts</label></div>
+            <div class="form-check mb-1"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:.82rem;color:var(--text-secondary)">Create transfers</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label" style="font-size:.82rem;color:var(--text-secondary)">Manage webhooks</label></div>
+          </div>
+        </div>
+        <button class="btn w-100 py-2 rounded-3 fw-semibold" style="background:var(--paymo-dev);color:#fff" onclick="addToast('Key permissions updated','success')">Save Permissions</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="toast-container-custom" id="toastContainer"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+(function(){'use strict';
+const NAV_GROUPS=[{title:'Development',items:[{key:'dashboard',label:'Dashboard',icon:'bi-speedometer2'},{key:'explorer',label:'API Explorer',icon:'bi-terminal',badge:'Beta'},{key:'webhooks',label:'Webhooks',icon:'bi-broadcast'}]},{title:'Integration',items:[{key:'keys',label:'API Keys',icon:'bi-key'},{key:'oauth',label:'OAuth Apps',icon:'bi-shield-check'},{key:'sdks',label:'SDKs & Libraries',icon:'bi-journal-text'}]},{title:'Monitoring',items:[{key:'logs',label:'Request Logs',icon:'bi-activity'},{key:'errors',label:'Error Insights',icon:'bi-exclamation-triangle'},{key:'metrics',label:'Usage Metrics',icon:'bi-bar-chart'}]},{title:'Infrastructure',items:[{key:'servers',label:'Web Servers',icon:'bi-hdd-network'},{key:'storage',label:'Data Storage',icon:'bi-database'},{key:'settings',label:'Dev Settings',icon:'bi-gear'},{key:'logout',label:'Logout',icon:'bi-box-arrow-right'}]}];
+const NOTIFICATIONS=[{id:1,icon:'bi-x-circle',tone:'danger',title:'Webhook Failed',desc:'Endpoint: https://api.client.com/hooks timed out.',time:'5m',unread:true},{id:2,icon:'bi-exclamation-triangle',tone:'warning',title:'API Limit Warning',desc:'Sandbox limit at 80% consumed.',time:'30m',unread:true},{id:3,icon:'bi-check-circle',tone:'success',title:'Deploy Successful',desc:'SDK v4.2.0 published to npm.',time:'2h',unread:false}];
+let isDesktop=window.innerWidth>=992,sbExpanded=isDesktop,mobileOpen=false,activeSection='dashboard',openDD=null,openAP=null;
+const sidebar=document.getElementById('sidebar'),topHeader=document.getElementById('topHeader'),mainContent=document.getElementById('mainContent'),sidebarBackdrop=document.getElementById('sidebarBackdrop'),sidebarToggle=document.getElementById('sidebarToggle'),sidebarMobileClose=document.getElementById('sidebarMobileClose'),toggleIcon=document.getElementById('toggleIcon'),navGroupsEl=document.getElementById('navGroups'),notifEl=document.getElementById('notificationList'),rightAside=document.getElementById('rightAside'),asideBackdrop=document.getElementById('asideBackdrop'),toastContainer=document.getElementById('toastContainer');
+function renderNav(){navGroupsEl.innerHTML=NAV_GROUPS.map(g=>`<div class="mb-2"><span class="nav-group-label">${g.title}</span><nav class="d-flex flex-column">${g.items.map(i=>`<a href="#${i.key}" class="nav-link ${activeSection===i.key?'active':''}" data-nav="${i.key}"><span class="nav-icon"><i class="bi ${i.icon}"></i></span><span class="nav-label">${i.label}</span>${i.badge?`<span class="nav-badge">${i.badge}</span>`:''}</a>`).join('')}</nav></div>`).join('');navGroupsEl.querySelectorAll('[data-nav]').forEach(l=>l.addEventListener('click',e=>{e.preventDefault();const k=l.getAttribute('data-nav');if(k==='logout'){handleLogout();return;}activeSection=k;navGroupsEl.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));l.classList.add('active');if(!isDesktop)closeMobile();}));}
+function renderNotif(){notifEl.innerHTML=NOTIFICATIONS.map(n=>`<div class="notification-item ${n.unread?'unread':''}"><div class="notification-icon ${n.tone}"><i class="bi ${n.icon}"></i></div><div class="flex-grow-1" style="min-width:0"><div class="d-flex justify-content-between align-items-start gap-2"><span class="fw-semibold" style="font-size:.82rem;color:var(--text)">${n.title}</span>${n.unread?'<span class="notification-dot"></span>':''}</div><div class="text-muted text-truncate" style="font-size:.72rem">${n.desc}</div></div><span style="font-size:.65rem;color:var(--muted)" class="flex-shrink-0">${n.time}</span></div>`).join('');}
+function applyLayout(){sidebar.classList.toggle('expanded',isDesktop&&sbExpanded);sidebar.classList.toggle('mobile-open',!isDesktop&&mobileOpen);sidebar.classList.toggle('mobile-closed',!isDesktop&&!mobileOpen);topHeader.classList.toggle('sidebar-expanded',isDesktop&&sbExpanded);mainContent.classList.toggle('sidebar-expanded',isDesktop&&sbExpanded);sidebarBackdrop.classList.toggle('show',!isDesktop&&mobileOpen);toggleIcon.className=(mobileOpen||(isDesktop&&sbExpanded))?'bi bi-x-lg':'bi bi-list';renderNav();}
+function toggleSB(){if(isDesktop)sbExpanded=!sbExpanded;else mobileOpen=!mobileOpen;applyLayout();}function closeMobile(){mobileOpen=false;applyLayout();}
+sidebarToggle.addEventListener('click',toggleSB);sidebarMobileClose.addEventListener('click',closeMobile);sidebarBackdrop.addEventListener('click',closeMobile);
+function closeAllDD(){document.querySelectorAll('[data-dropdown-panel]').forEach(p=>p.classList.remove('show'));document.querySelectorAll('[data-dropdown-trigger]').forEach(t=>t.setAttribute('aria-expanded','false'));openDD=null;}function toggleDD(n){if(openDD===n){closeAllDD();return;}closeAllDD();const p=document.querySelector(`[data-dropdown-panel="${n}"]`);const t=document.querySelector(`[data-dropdown-trigger="${n}"]`);if(p)p.classList.add('show');if(t)t.setAttribute('aria-expanded','true');openDD=n;}
+document.querySelectorAll('[data-dropdown-trigger]').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();toggleDD(t.getAttribute('data-dropdown-trigger'));}));
+document.addEventListener('click',e=>{if(!e.target.closest('[data-dropdown]'))closeAllDD();});
+function openAside(type){openAP=type;document.querySelectorAll('[data-aside-content]').forEach(c=>c.classList.toggle('active',c.getAttribute('data-aside-content')===type));rightAside.classList.add('open');asideBackdrop.classList.add('show');closeAllDD();}function closeAside(){openAP=null;rightAside.classList.remove('open');asideBackdrop.classList.remove('show');}
+document.querySelectorAll('[data-aside-open]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openAside(b.getAttribute('data-aside-open'));}));document.querySelectorAll('[data-aside-close]').forEach(b=>b.addEventListener('click',closeAside));asideBackdrop.addEventListener('click',closeAside);
+window.addToast=function(m,t){t=t||'info';const tones={success:{bg:'rgba(16,185,129,.15)',c:'#6ee7b7',i:'bi-check-lg',s:'Success'},danger:{bg:'rgba(239,68,68,.15)',c:'#f87171',i:'bi-x-lg',s:'Error'},warning:{bg:'rgba(245,158,11,.15)',c:'#fbbf24',i:'bi-exclamation-triangle',s:'Warning'},info:{bg:'rgba(99,102,241,.15)',c:'var(--paymo-dev)',i:'bi-bell',s:'Info'}};const o=tones[t]||tones.info;const el=document.createElement('div');el.className='paymo-toast';el.innerHTML=`<div class="toast-ic" style="background:${o.bg};color:${o.c}"><i class="bi ${o.i}"></i></div><div class="flex-grow-1"><div class="fw-semibold" style="font-size:.82rem;color:var(--text)">${o.s}</div><div style="font-size:.72rem;color:var(--muted)">${m}</div></div><button class="btn btn-link p-0 ms-2" style="font-size:.8rem;color:var(--muted)"><i class="bi bi-x-lg"></i></button>`;const rm=()=>{el.classList.add('leaving');setTimeout(()=>el.remove(),300);};el.querySelector('button').addEventListener('click',rm);toastContainer.appendChild(el);setTimeout(rm,4500);};
+function handleLogout(){addToast('Logged out','success');closeAllDD();}document.getElementById('logoutBtn').addEventListener('click',handleLogout);
+window.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='b'){e.preventDefault();toggleSB();}if(e.key==='Escape'){closeAllDD();closeAside();if(!isDesktop)closeMobile();}});
+window.addEventListener('resize',()=>{const d=window.innerWidth>=992;if(d!==isDesktop){isDesktop=d;if(d)mobileOpen=false;else sbExpanded=false;applyLayout();}});
+renderNotif();applyLayout();
+})();
+</script>
+</body>
+</html>

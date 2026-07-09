@@ -1,0 +1,529 @@
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+declare var bootstrap: any;
+
+// ======================== INTERFACES ========================
+
+export interface StatsData {
+  activePattern: string;
+  patternStatus: string;
+  patternDetail: string;
+  slaHealth: string;
+  slaDetail: string;
+  slaPercent: number;
+  cacheHitRate: string;
+  cacheType: string;
+  cacheDetail: string;
+  meshNodes: string;
+  meshType: string;
+  meshDetail: string;
+}
+
+export interface ArchGuideForm {
+  format: string;
+  apiDataFlow: boolean;
+  security: boolean;
+  failover: boolean;
+}
+
+export interface BoilerForm {
+  stack: string;
+  stackLabel: string;
+  deployment: string;
+  deploymentSplit: string;
+  database: string;
+  hmacAuth: boolean;
+  webhookListener: boolean;
+  embeddedCheckout: boolean;
+  idempotencyCache: boolean;
+}
+
+export interface SimForm {
+  method: string;
+  endpoint: string;
+  payload: string;
+  webhookEvent: string;
+}
+
+export interface DirectApiForm {
+  version: string;
+  authMethod: string;
+  ipWhitelist: boolean;
+}
+
+export interface WebhookForm {
+  url: string;
+  retryStrategy: string;
+  maxRetries: number;
+  events: string[];
+  secret: string;
+}
+
+export interface CheckoutForm {
+  primaryColor: string;
+  borderRadius: string;
+  logoUrl: string;
+  displayMode: string;
+  guestCheckout: boolean;
+  saveCard: boolean;
+}
+
+export interface WhiteLabelForm {
+  domain: string;
+  senderName: string;
+  removeBadge: boolean;
+}
+
+export interface HybridForm {
+  bgSync: boolean;
+  offlineBehavior: string;
+  chunkSize: number;
+}
+
+export interface MeshForm {
+  proxy: string;
+  mtls: string;
+}
+
+export interface GrpcForm {
+  spec: string;
+}
+
+export interface CircuitForm {
+  errorThreshold: number;
+  timeout: number;
+  resetTimeout: number;
+}
+
+export interface SoapForm {
+  wsdlUrl: string;
+  xmlSecurity: boolean;
+  dateTranslate: boolean;
+}
+
+export interface SftpForm {
+  host: string;
+  port: number;
+  protocol: string;
+  fileFormat: string;
+  pollInterval: string;
+  archiveAfter: boolean;
+}
+
+export interface DbSyncForm {
+  sourceType: string;
+  connectionString: string;
+  direction: string;
+  encryptInTransit: boolean;
+  auditLog: boolean;
+}
+
+export interface TenantForm {
+  isolationLevel: string;
+  dataResidency: string;
+  maxKeys: number;
+  crossTenantBlock: boolean;
+}
+
+export interface CertForm {
+  strategy: string;
+  backupPin: string;
+  enforcement: string;
+}
+
+export interface IdempotencyForm {
+  strategy: string;
+  expiry: string;
+  storage: string;
+  safeMethods: boolean;
+}
+
+export interface CacheForm {
+  defaultTtl: number;
+  invalidation: string;
+  swr: string;
+  cacheAuth: boolean;
+}
+
+export interface CdnForm {
+  provider: string;
+  assetTtl: string;
+  originShield: string;
+  compression: boolean;
+}
+
+export interface RateLimitForm {
+  algorithm: string;
+  requestsPerSec: number;
+  burstCapacity: number;
+  onExceeded: string;
+  perEndpoint: boolean;
+}
+
+export interface LbForm {
+  strategy: string;
+  healthCheckPath: string;
+  healthInterval: number;
+}
+
+export interface HaForm {
+  failRegion: string;
+  failureType: string;
+  duration: string;
+}
+
+export interface ProfileForm {
+  email: string;
+  org: string;
+  environment: string;
+}
+
+export interface ToastState {
+  visible: boolean;
+  hiding: boolean;
+  message: string;
+}
+
+// ======================== COMPONENT ========================
+
+@Component({
+  selector: 'app-integration',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl:'./integration.html',
+  styleUrls: ['./integration.css'],
+  encapsulation: ViewEncapsulation.None
+})
+export class IntegrationComponent implements OnInit, OnDestroy {
+
+  // Stats
+  stats: StatsData = {
+    activePattern: 'Hybrid Sync',
+    patternStatus: 'Online',
+    patternDetail: 'API + Webhooks + Offline Queue',
+    slaHealth: '99.99%',
+    slaDetail: 'p95 < 200ms',
+    slaPercent: 99.99,
+    cacheHitRate: '84.2%',
+    cacheType: 'Redis Edge',
+    cacheDetail: 'Saved ~1.2M backend queries today',
+    meshNodes: '12 Active',
+    meshType: 'gRPC Connected',
+    meshDetail: 'Cross-region availability group'
+  };
+
+  // Multi-step states
+  boilerStep: number = 1;
+  soapStep: number = 1;
+
+  // Tab states
+  simTab: string = 'rest';
+  checkTab: string = 'style';
+
+  // Visibility toggles
+  webhookSecretVisible: boolean = false;
+  simResponse: string = '';
+  lastHealthCheck: string = '';
+
+  // Toast
+  toast: ToastState = { visible: false, hiding: false, message: '' };
+  private toastTimer: any = null;
+
+  // ===== Form Models (ready for API binding) =====
+  archGuideForm: ArchGuideForm = {
+    format: 'PDF Document',
+    apiDataFlow: true,
+    security: true,
+    failover: true
+  };
+
+  boilerForm: BoilerForm = {
+    stack: 'python',
+    stackLabel: 'Python',
+    deployment: 'Microservices (Docker / K8s ready)',
+    deploymentSplit: 'Microservice',
+    database: 'PostgreSQL',
+    hmacAuth: true,
+    webhookListener: true,
+    embeddedCheckout: false,
+    idempotencyCache: false
+  };
+
+  simForm: SimForm = {
+    method: 'POST',
+    endpoint: 'https://sandbox.paymo.com/v1/payments',
+    payload: '{"amount": 500, "currency": "KES", "msisdn": "254712345678"}',
+    webhookEvent: 'payment.success'
+  };
+
+  directApiForm: DirectApiForm = {
+    version: 'v2 (Recommended)',
+    authMethod: 'OAuth 2.0 Client Credentials',
+    ipWhitelist: true
+  };
+
+  webhookForm: WebhookForm = {
+    url: 'https://api.yourdomain.com/paymo/webhooks',
+    retryStrategy: 'Exponential Backoff (Recommended)',
+    maxRetries: 5,
+    events: ['payment.success', 'payment.failed', 'payout.completed'],
+    secret: 'whsec_8849201283894'
+  };
+
+  checkoutForm: CheckoutForm = {
+    primaryColor: '#4F46E5',
+    borderRadius: 'Pill (20px)',
+    logoUrl: '',
+    displayMode: 'Overlay Popup Modal',
+    guestCheckout: true,
+    saveCard: true
+  };
+
+  whiteLabelForm: WhiteLabelForm = {
+    domain: '',
+    senderName: 'YourBrand Payments',
+    removeBadge: true
+  };
+
+  hybridForm: HybridForm = {
+    bgSync: true,
+    offlineBehavior: 'Store locally and sync on network connect',
+    chunkSize: 500
+  };
+
+  meshForm: MeshForm = { proxy: 'Istio', mtls: 'Strict (Require client certs)' };
+  grpcForm: GrpcForm = { spec: 'PaymentInitiationService.proto' };
+
+  circuitForm: CircuitForm = { errorThreshold: 50, timeout: 3000, resetTimeout: 60 };
+
+  soapForm: SoapForm = { wsdlUrl: '', xmlSecurity: true, dateTranslate: true };
+
+  sftpForm: SftpForm = {
+    host: 'sftp.paymo.com',
+    port: 22,
+    protocol: 'SFTP',
+    fileFormat: 'CSV',
+    pollInterval: 'Every 5 minutes',
+    archiveAfter: true
+  };
+
+  dbSyncForm: DbSyncForm = {
+    sourceType: 'IBM DB2 / AS400',
+    connectionString: '',
+    direction: 'PayMo → Legacy (Push)',
+    encryptInTransit: true,
+    auditLog: false
+  };
+
+  tenantForm: TenantForm = {
+    isolationLevel: 'Strict (Schema-per-tenant)',
+    dataResidency: 'Same region as master',
+    maxKeys: 10,
+    crossTenantBlock: true
+  };
+
+  certForm: CertForm = {
+    strategy: 'Public Key Pinning (HPKP headers)',
+    backupPin: '',
+    enforcement: 'Report-Only (Log only)'
+  };
+
+  idempotencyForm: IdempotencyForm = {
+    strategy: 'Client-supplied (Header: X-Idempotency-Key)',
+    expiry: '24 hours',
+    storage: 'Redis (Recommended)',
+    safeMethods: true
+  };
+
+  cacheForm: CacheForm = {
+    defaultTtl: 300,
+    invalidation: 'Event-driven (webhook triggers purge)',
+    swr: 'Enabled (Serve stale for 60s while refreshing)',
+    cacheAuth: true
+  };
+
+  cdnForm: CdnForm = {
+    provider: 'Cloudflare (Default)',
+    assetTtl: '24 hours',
+    originShield: 'US-East (Virginia)',
+    compression: true
+  };
+
+  rateLimitForm: RateLimitForm = {
+    algorithm: 'Token Bucket',
+    requestsPerSec: 1000,
+    burstCapacity: 1500,
+    onExceeded: 'Return 429 Too Many Requests',
+    perEndpoint: true
+  };
+
+  lbForm: LbForm = {
+    strategy: 'Geo-routed (Nearest region first)',
+    healthCheckPath: '/v1/health',
+    healthInterval: 10
+  };
+
+  haForm: HaForm = {
+    failRegion: 'US-East-1 (Primary)',
+    failureType: 'Complete outage (simulate AZ failure)',
+    duration: '30 seconds'
+  };
+
+  profileForm: ProfileForm = {
+    email: 'dev.lead@company.com',
+    org: 'Company Inc.',
+    environment: 'Sandbox'
+  };
+
+  // Track modal instances
+  private modalInstances: Map<string, any> = new Map();
+
+  ngOnInit(): void {
+    this.lastHealthCheck = new Date().toLocaleTimeString();
+    this.updateBoilerLabels();
+  }
+
+  ngOnDestroy(): void {
+    this.modalInstances.forEach(m => m?.hide?.());
+    this.modalInstances.clear();
+    if (this.toastTimer) { clearTimeout(this.toastTimer); }
+  }
+
+  // ======================== MODAL MANAGEMENT ========================
+
+  openModal(id: string): void {
+    // Reset multi-step modals on open
+    if (id === 'boilerplateModal') { this.boilerStep = 1; }
+    if (id === 'soapTranslatorModal') { this.soapStep = 1; }
+    if (id === 'testIntegrationModal') { this.simTab = 'rest'; this.simResponse = ''; }
+    if (id === 'embeddedCheckoutModal') { this.checkTab = 'style'; }
+
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    // Dispose existing instance if any
+    if (this.modalInstances.has(id)) {
+      const old = this.modalInstances.get(id);
+      old?.hide?.();
+      old?.dispose?.();
+      this.modalInstances.delete(id);
+    }
+
+    const modal = new bootstrap.Modal(el, { backdrop: 'static', keyboard: true });
+    this.modalInstances.set(id, modal);
+    modal.show();
+
+    // Clean up on hidden
+    el.addEventListener('hidden.bs.modal', () => {
+      this.modalInstances.delete(id);
+    }, { once: true });
+  }
+
+  closeModal(id: string): void {
+    const modal = this.modalInstances.get(id);
+    if (modal) {
+      modal.hide();
+      this.modalInstances.delete(id);
+    }
+  }
+
+  // ======================== ACTIONS ========================
+
+  processAction(modalId: string, message: string): void {
+    this.closeModal(modalId);
+    this.showToast(message);
+  }
+
+  showToast(message: string): void {
+    if (this.toastTimer) { clearTimeout(this.toastTimer); }
+    this.toast = { visible: true, hiding: false, message };
+    this.toastTimer = setTimeout(() => {
+      this.toast.hiding = true;
+      setTimeout(() => {
+        this.toast = { visible: false, hiding: false, message: '' };
+      }, 300);
+    }, 4000);
+  }
+
+  dismissToast(): void {
+    this.toast.hiding = true;
+    setTimeout(() => {
+      this.toast = { visible: false, hiding: false, message: '' };
+    }, 300);
+  }
+
+  // ======================== STEP NAVIGATION ========================
+
+  prevBoilerStep(): void { if (this.boilerStep > 1) this.boilerStep--; }
+
+  nextBoilerStep(): void { if (this.boilerStep < 4) this.boilerStep++; }
+
+  prevSoapStep(): void { if (this.soapStep > 1) this.soapStep--; }
+
+  nextSoapStep(): void { if (this.soapStep < 3) this.soapStep++; }
+
+
+  // ======================== BOILERPLATE STEPPER ========================
+
+  selectCardOption(field: string, value: string): void {
+    if (field === 'stack') {
+      this.boilerForm.stack = value;
+      const labels: Record<string, string> = { node: 'Node.js', python: 'Python', java: 'Java/Spring' };
+      this.boilerForm.stackLabel = labels[value] || value;
+    }
+    this.updateBoilerLabels();
+  }
+
+  updateBoilerLabels(): void {
+    const dep = this.boilerForm.deployment;
+    if (dep.includes('Serverless')) { this.boilerForm.deploymentSplit = 'Serverless'; }
+    else if (dep.includes('Microservices')) { this.boilerForm.deploymentSplit = 'Microservice'; }
+    else { this.boilerForm.deploymentSplit = 'Monolithic'; }
+  }
+
+  // ======================== SIMULATOR ========================
+
+  simSendRequest(): void {
+    this.simResponse = `{
+  "status": "success",
+  "transaction_id": "TXN_SIM_${Math.random().toString(36).substr(2, 8).toUpperCase()}",
+  "message": "Payment initiated"
+}`;
+  }
+
+  // ======================== HEALTH CHECK ========================
+
+  runHealthCheck(): void {
+    this.lastHealthCheck = new Date().toLocaleTimeString();
+    this.processAction('healthCheckModal', 'Health check completed. All systems operational.');
+  }
+
+  // ======================== CODE COPY ========================
+
+  copyCode(event: Event): void {
+    const btn = event.currentTarget as HTMLElement;
+    const codeBlock = btn.closest('.code-block');
+    if (codeBlock) {
+      const text = codeBlock.textContent.replace('Copy', '').trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.textContent || 'Copy';
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = originalText; }, 1500);
+      }).catch(() => {
+        btn.textContent = 'Failed';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+      });
+    }
+  }
+
+  // ======================== NAVIGATION ========================
+
+  grpcProtoExample = "syntax = \"proto3\";\npackage paymo.v1;\n\nservice PaymentInitiation {\n  rpc CreateCharge (ChargeReq) returns (ChargeRes);\n}";
+
+  navigateTo(route: string): void {
+    console.log('Navigate to:', route);
+  }
+
+}

@@ -1,0 +1,1455 @@
+<div class="paymo-angular-page">
+  @if (toastMessage) {
+    <div class="pm-toast" role="status">
+<i class="bi bi-check-circle-fill"></i>
+<span>{{ toastMessage }}</span>
+<button (click)="clearToast()" class="pm-toast-close" type="button">×</button>
+</div>
+
+<!-- ===== Angularized body content from source 3.4.html ===== -->
+<div><section class="paymo-page-source" id="p34_page">
+<!-- HEADER -->
+<div class="pm-page-bar">
+<div>
+<div class="pm-breadcrumb"><a (click)="notify('Link action handled')" role="button" tabindex="0">Business Portal</a> / <a (click)="notify('Link action handled')" role="button" tabindex="0">HR &amp; Operations</a> /
+                        <strong>Payroll Disbursement</strong></div>
+<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE
+                        3.4 — Payroll &amp; Compliance Command Center</h2>
+<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Configure salary components, execute
+                        bulk salary disbursements via M-Pesa B2C/PesaLink, generate payslips, and export statutory
+                        P10/SHIF returns.</p>
+</div>
+<div class="d-flex flex-wrap" style="gap:8px">
+<button (click)="openModal('p34_complianceAlertsModal')" class="pm-btn" type="button"><i class="bi bi-shield-check"></i> Compliance Hub</button>
+<button (click)="openModal('p34_importEmployeesModal')" class="pm-btn" type="button"><i class="bi bi-file-earmark-excel"></i> Import Roster</button>
+<button (click)="openModal('p34_addEmployeeModal')" class="pm-btn pm-btn-accent" type="button"><i class="bi bi-person-plus"></i> Add Employee</button>
+<button (click)="openModal('p34_runPayrollModal')" class="pm-btn pm-btn-primary" type="button"><i class="bi bi-play-circle"></i> Run Payroll</button>
+</div>
+</div>
+<div class="pm-content">
+<!-- HERO STATS ROW -->
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="pm-card pm-card-accent" style="min-height:170px">
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Next payroll cycle is
+                                approaching <span style="color:#86efac">●</span></p>
+<div class="pm-stat-value" style="margin:8px 0;color:#fff">28 Jun 2025</div>
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">June 2025 Regular Salary.
+                                Requires CFO approval for execution over KES 1M.</p>
+<div class="d-flex flex-wrap mt-3" style="gap:8px">
+<button (click)="openModal('p34_runPayrollModal')" class="pm-btn pm-btn-sm" style="background:#fff;color:var(--pm-primary)" type="button">Preview &amp; Run</button>
+<button (click)="openModal('p34_schedulePayrollModal')" class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Schedule</button>
+</div>
+</div>
+</div>
+<div class="col-lg-2 col-md-4 col-6">
+<div class="pm-card" style="min-height:170px">
+<p class="pm-stat-label" style="color:var(--pm-warning)">EST. TOTAL COST</p>
+<div class="pm-stat-value" style="margin:6px 0">KES 4.2M</div>
+<span class="pm-badge pm-badge-warning"><i class="bi bi-exclamation-triangle"></i> Review
+                                budget</span>
+<div class="mt-3" style="font-size:11px;color:var(--pm-muted)">
+<div class="d-flex justify-content-between mb-1"><span>Gross Pay</span><span>3.1M</span>
+</div>
+<div class="d-flex justify-content-between mb-1"><span>Employer
+                                        Tax</span><span>0.6M</span></div>
+<div class="d-flex justify-content-between"><span>Allowances</span><span>0.5M</span>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4 col-6">
+<div class="pm-card" style="min-height:170px">
+<p class="pm-stat-label" style="color:var(--pm-info)">ACTIVE EMPLOYEES</p>
+<div class="pm-stat-value" style="margin:6px 0">142</div>
+<span class="pm-badge pm-badge-success"><i class="bi bi-arrow-up-right"></i> +3 this
+                                month</span>
+<div class="mt-3">
+<div class="avatar-group">
+<div class="pm-avatar" style="background:#EF4444">JS</div>
+<div class="pm-avatar" style="background:#3B82F6">MK</div>
+<div class="pm-avatar" style="background:#10B981">AO</div>
+<div class="pm-avatar" style="background:#8B5CF6">WN</div>
+<div class="pm-avatar" style="background:var(--pm-surface-2);color:var(--pm-ink-soft);font-size:10px">
+                                        +138</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-4">
+<div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-accent)">
+<p class="pm-stat-label" style="color:var(--pm-accent)">COMPLIANCE HEALTH</p>
+<div class="pm-stat-value" style="margin:6px 0">98%</div>
+<span class="pm-badge pm-badge-warning"><i class="bi bi-shield-exclamation"></i> 3 Missing
+                                PINs</span>
+<div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+<div>KRA P10: <strong style="color:var(--pm-accent)">Ready to file</strong></div>
+<div>SHIF/NSSF: <strong style="color:var(--pm-warning)">Updating specs</strong></div>
+</div>
+</div>
+</div>
+</div>
+<!-- ATTENTION / SUGGESTIONS / QUICK ACTIONS -->
+<div class="row g-3">
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h3 class="pm-section-title">Requires Action</h3><button (click)="openModal('p34_employeeRequestsModal')" class="pm-btn pm-btn-sm" type="button">View all</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">LA
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">4 Leave Requests Pending</div>
+<div style="font-size:11px;color:var(--pm-muted)">Approval needed before payroll
+                                    </div>
+</div><button (click)="openModal('p34_leaveApprovalModal')" class="pm-btn pm-btn-sm pm-btn-primary" type="button">Review</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">KP
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">Missing KRA PINs</div>
+<div style="font-size:11px;color:var(--pm-muted)">3 new hires require KRA PIN for
+                                        PAYE</div>
+</div><button (click)="openModal('p34_complianceAlertsModal')" class="pm-btn pm-btn-sm" type="button">Fix</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">EX</div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">Expense Claims to Reimburse</div>
+<div style="font-size:11px;color:var(--pm-muted)">KES 42,500 total · Add to June
+                                        payslip</div>
+</div><button (click)="openModal('p34_expenseApprovalModal')" class="pm-btn pm-btn-sm" type="button">Approve</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple);font-size:12px">BD
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">Invalid Bank Accounts</div>
+<div style="font-size:11px;color:var(--pm-muted)">1 employee bank validation failed
+                                    </div>
+</div><button (click)="openModal('p34_editEmployeeModal')" class="pm-btn pm-btn-sm" type="button">Update</button>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h3 class="pm-section-title">Compliance &amp; Tax Alerts</h3><span class="pm-badge pm-badge-info"><i class="bi bi-bank"></i> KRA</span>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent);font-size:12px">P9
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">Generate P9A Certificates</div>
+<div style="font-size:11px;color:var(--pm-muted)">Annual tax certificates ready for
+                                        2024</div>
+</div><button (click)="openModal('p34_annualP9Modal')" class="pm-btn pm-btn-sm" type="button">Generate</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">SH</div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">SHIF Deduction Active</div>
+<div style="font-size:11px;color:var(--pm-muted)">2.75% applied per new regulations
+                                    </div>
+</div><button (click)="openModal('p34_taxConfigModal')" class="pm-btn pm-btn-sm" type="button">Verify</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">HL
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">Housing Levy Matching</div>
+<div style="font-size:11px;color:var(--pm-muted)">1.5% employee + 1.5% employer
+                                        matched</div>
+</div><button (click)="openModal('p34_taxConfigModal')" class="pm-btn pm-btn-sm" type="button">View</button>
+</div>
+<div class="feed-item">
+<div class="pm-icon-circle" style="background:var(--pm-purple-soft);color:var(--pm-purple);font-size:12px">RT
+                                </div>
+<div style="flex:1">
+<div style="font-weight:600;font-size:13px">File May Statutory Returns</div>
+<div style="font-size:11px;color:var(--pm-muted)">P10, NSSF, and SHIF files are
+                                        ready</div>
+</div><button (click)="openModal('p34_generateReportsModal')" class="pm-btn pm-btn-sm" type="button">Export</button>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="pm-card">
+<div class="mb-3">
+<h3 class="pm-section-title">Quick Actions</h3>
+<p class="pm-section-sub">Payroll, reporting, and team management</p>
+</div>
+<div class="quick-action-grid">
+<button (click)="openModal('p34_runPayrollModal')" class="quick-action-btn" type="button"><i class="bi bi-play-circle text-primary me-1"></i> Run Payroll</button>
+<button (click)="openModal('p34_addEmployeeModal')" class="quick-action-btn" type="button"><i class="bi bi-person-plus text-success me-1"></i> Add Employee</button>
+<button (click)="openModal('p34_approvePayrollModal')" class="quick-action-btn" type="button"><i class="bi bi-check2-circle text-warning me-1"></i> Approve Run</button>
+<button (click)="openModal('p34_payMpesaBulkModal')" class="quick-action-btn" type="button"><i class="bi bi-phone me-1" style="color:var(--pm-accent)"></i> B2C
+                                    Disburse</button>
+<button (click)="openModal('p34_salaryComponentsModal')" class="quick-action-btn" type="button"><i class="bi bi-sliders text-info me-1"></i> Components</button>
+<button (click)="openModal('p34_generateReportsModal')" class="quick-action-btn" type="button"><i class="bi bi-file-earmark-bar-graph text-danger me-1"></i> Tax Reports</button>
+<button (click)="openModal('p34_sendPayslipsModal')" class="quick-action-btn" type="button"><i class="bi bi-envelope me-1" style="color:var(--pm-purple)"></i> Send
+                                    Payslips</button>
+<button (click)="openModal('p34_employeeSelfServiceModal')" class="quick-action-btn" type="button"><i class="bi bi-phone-flip me-1" style="color:var(--pm-muted)"></i> ESS
+                                    Portal</button>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.4.1 — Employee Database & Configuration -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="pm-section-title"><i class="bi bi-people-fill" style="color:var(--pm-info)"></i>
+                                3.4.1 — Employee Database &amp; Configuration</h3>
+<p class="pm-section-sub">Manage personnel profiles, statutory numbers, salary structures,
+                                and import rosters.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('p34_importEmployeesModal')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-upload"></i> Import
+                                CSV</button><button (click)="openModal('p34_addEmployeeModal')" class="pm-btn pm-btn-sm pm-btn-primary" type="button"><i class="bi bi-plus-lg"></i> Add Staff</button>
+</div>
+</div>
+<div class="table-responsive">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Employee Name</th>
+<th>ID/Role</th>
+<th>Basic Pay</th>
+<th>Allowances</th>
+<th>Deductions</th>
+<th>Net Pay (Est)</th>
+<th>Payout Method</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+@for (employee of employees; track employee.id) {
+<tr>
+<td><div class="d-flex align-items-center gap-2"><div class="pm-avatar-sm">{{ employee.initials }}</div><strong>{{ employee.name }}</strong></div></td>
+<td>{{ employee.id }}<br/><span style="font-size:11px;color:var(--pm-muted)">{{ employee.role }}</span></td>
+<td>{{ employee.basicPay }}</td>
+<td>{{ employee.allowances }}</td>
+<td>{{ employee.deductions }}</td>
+<td><strong>{{ employee.netPay }}</strong></td>
+<td>{{ employee.payout }}<br/><span [ngClass]="employee.payoutBadge" class="pm-badge">{{ employee.payoutStatus }}</span></td>
+<td><button (click)="openModal('p34_editEmployeeModal')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-pencil"></i></button></td>
+</tr>
+} @empty {
+<tr><td class="text-center py-4" colspan="8">No employees available.</td></tr>
+}
+</tbody>
+</table>
+</div>
+<div class="text-center mt-2"><button (click)="notify('View All 142
+                            Employees handled')" class="pm-btn pm-btn-outline pm-btn-sm" type="button">View All 142
+                            Employees</button></div>
+</div>
+<!-- SECTION 3.4.2 — Payroll Execution Engine -->
+<div class="pm-card">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+<div>
+<h3 class="pm-section-title"><i class="bi bi-play-circle-fill" style="color:var(--pm-primary)"></i> 3.4.2 — Payroll Execution &amp; Approvals</h3>
+<p class="pm-section-sub">Preview payroll runs, approve multi-tier batches, and disburse via
+                                PesaLink/M-Pesa B2C.</p>
+</div>
+<div class="d-flex" style="gap:8px"><button (click)="openModal('p34_payrollHistoryModal')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-clock-history"></i>
+                                History</button><button (click)="openModal('p34_runPayrollModal')" class="pm-btn pm-btn-sm pm-btn-primary" type="button">Initiate Run</button></div>
+</div>
+<div class="row g-3">
+<div class="col-lg-8">
+<div class="business-block">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Pending Payroll Batches</h4>
+<div class="table-responsive">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Batch Ref</th>
+<th>Period</th>
+<th>Employees</th>
+<th>Total Net</th>
+<th>Status</th>
+<th>Approval</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+@for (batch of payrollBatches; track batch.ref) {
+<tr>
+<td><strong>{{ batch.ref }}</strong></td>
+<td>{{ batch.period }}</td>
+<td>{{ batch.employees }}</td>
+<td>{{ batch.totalNet }}</td>
+<td><span [ngClass]="payrollBatchBadgeClass(batch.status)" class="pm-badge">{{ batch.status }}</span></td>
+<td>{{ batch.approval }}</td>
+<td><button (click)="openModal(batch.modalId)" class="pm-btn pm-btn-sm" type="button">{{ batch.action }}</button></td>
+</tr>
+} @empty {
+<tr><td class="text-center py-4" colspan="7">No payroll batches available.</td></tr>
+}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+<div class="business-block">
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Funding &amp; Limits</h4>
+<div class="status-row">
+<div><strong>PayMo Business Wallet</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Available for payroll</div>
+</div><strong style="color:var(--pm-accent)">KES 12.5M</strong>
+</div>
+<div class="status-row">
+<div><strong>M-Pesa B2C Balance</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Working account</div>
+</div><strong>KES 2.1M</strong>
+</div>
+<div class="status-row">
+<div><strong>Approval Tier</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Threshold > KES 1M</div>
+</div><span class="pm-badge pm-badge-purple">L2 (Director)</span>
+</div>
+<button (click)="openModal('p34_auditTrailModal')" class="pm-btn pm-btn-sm w-100 mt-3" type="button"><i class="bi bi-shield-check"></i> View Audit Trail</button>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3.4.3 & 3.4.4 — Compliance, Reports & Employee Self-Service -->
+<div class="row g-3">
+<div class="col-lg-6">
+<div class="pm-card" style="height:100%">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h3 class="pm-section-title"><i class="bi bi-file-earmark-check-fill" style="color:var(--pm-danger)"></i> 3.4.3 — Payslip &amp; Compliance</h3><button (click)="openModal('p34_generateReportsModal')" class="pm-btn pm-btn-sm" type="button">Export
+                                    All</button>
+</div>
+<p class="pm-section-sub mb-3">Generate automated payslips, file KRA P10, issue P9A
+                                certificates, and export SHIF/NSSF returns.</p>
+<div class="row g-2">
+<div class="col-6">
+<div (click)="openModal('p34_generateReportsModal')" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-bank text-danger d-block mb-1" style="font-size:24px"></i><strong style="font-size:13px">KRA P10 /
+                                            P9A</strong>
+<div style="font-size:11px;color:var(--pm-muted)">iTax Ready ZIP</div>
+</div>
+</div>
+<div class="col-6">
+<div (click)="openModal('p34_generateReportsModal')" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-heart-pulse text-info d-block mb-1" style="font-size:24px"></i><strong style="font-size:13px">SHIF &amp;
+                                            NSSF</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Portal CSV formats</div>
+</div>
+</div>
+<div class="col-6">
+<div (click)="openModal('p34_sendPayslipsModal')" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-envelope text-purple d-block mb-1" style="font-size:24px;color:var(--pm-purple)"></i><strong style="font-size:13px">Send Payslips</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Email &amp; WhatsApp</div>
+</div>
+</div>
+<div class="col-6">
+<div (click)="openModal('p34_taxConfigModal')" class="p-3 border rounded text-center" style="cursor:pointer"><i class="bi bi-sliders text-warning d-block mb-1" style="font-size:24px"></i><strong style="font-size:13px">Tax
+                                            Engine</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Update bands/rates</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-6">
+<div class="pm-card" style="height:100%">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h3 class="pm-section-title"><i class="bi bi-phone-flip" style="color:var(--pm-accent)"></i> 3.4.4 — Employee Self-Service</h3><button (click)="openModal('p34_employeeSelfServiceModal')" class="pm-btn pm-btn-sm" type="button">Simulate
+                                    ESS</button>
+</div>
+<p class="pm-section-sub mb-3">Review leave requests, expense claims, and profile updates
+                                submitted by employees.</p>
+<div class="business-block p-0" style="background:transparent">
+<div class="status-row">
+<div>
+<div class="d-flex align-items-center gap-2"><span class="pm-badge pm-badge-warning">Leave</span> <strong>John
+                                                Smith</strong></div>
+<div style="font-size:11px;color:var(--pm-muted);margin-top:2px">Annual Leave: 5
+                                            days (Jul 1 - Jul 5)</div>
+</div><button (click)="openModal('p34_leaveApprovalModal')" class="pm-btn pm-btn-sm" type="button">Review</button>
+</div>
+<div class="status-row">
+<div>
+<div class="d-flex align-items-center gap-2"><span class="pm-badge pm-badge-info">Expense</span> <strong>Mary
+                                                Kamau</strong></div>
+<div style="font-size:11px;color:var(--pm-muted);margin-top:2px">Client Lunch:
+                                            KES 4,500 (Receipt attached)</div>
+</div><button (click)="openModal('p34_expenseApprovalModal')" class="pm-btn pm-btn-sm" type="button">Review</button>
+</div>
+<div class="status-row">
+<div>
+<div class="d-flex align-items-center gap-2"><span class="pm-badge pm-badge-purple">Profile</span> <strong>Ali
+                                                Omondi</strong></div>
+<div style="font-size:11px;color:var(--pm-muted);margin-top:2px">Updated M-Pesa
+                                            number for salary</div>
+</div><button (click)="openModal('p34_quickActionModal')" class="pm-btn pm-btn-sm" type="button">View</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section class="paymo-page-modals" id="p34_modals"><div (click)="closeModal('p34_runPayrollModal')" [attr.aria-hidden]="isModalOpen('p34_runPayrollModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_runPayrollModal') ? 'true' : null" [class.show]="isModalOpen('p34_runPayrollModal')" [style.display]="isModalOpen('p34_runPayrollModal') ? 'block' : 'none'" class="modal fade" id="p34_runPayrollModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-xl modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-play-circle text-primary me-2"></i>Execute Payroll Run</h5>
+<button (click)="closeModal('p34_runPayrollModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="pm-stepper" id="p34_runPayrollStepper">
+  @for (step of stepperItems('p34_rp'); track step.index) {
+    <div [class.active]="step.index === currentStep('p34_rp')" [class.completed]="step.index < currentStep('p34_rp')" class="pm-step">
+<div class="pm-step-num">@if (step.index < currentStep('p34_rp')) { <i class="bi bi-check"></i> } @else { {{ step.index }} }</div>
+}
+      @if (step.label) { <div class="pm-step-label">{{ step.label }}</div> } {
+    </div>
+    @if (!step.last) { <div class="pm-step-line"></div> } {
+  }
+</div>
+<div [class.active]="isStep('p34_rp', 1)" [style.display]="isStep('p34_rp', 1) ? 'block' : 'none'" class="fade-step active" id="p34_rpStep1">
+<h6 style="font-weight:700;margin-bottom:16px">Step 1: Define Period &amp; Scope</h6>
+<div class="row g-3">
+<div class="col-md-6"><label class="pm-form-label">Payroll Period</label><input class="pm-form-control" type="month" value="2025-06"/></div>
+<div class="col-md-6"><label class="pm-form-label">Run Type</label><select class="pm-form-control">
+<option>Regular Monthly Salary</option>
+<option>Bonus/Commission</option>
+<option>Arrears</option>
+<option>Off-cycle Payment</option>
+</select></div>
+<div class="col-md-6"><label class="pm-form-label">Target Departments</label><select class="pm-form-control">
+<option>All Departments</option>
+<option>Sales Only</option>
+<option>Engineering Only</option>
+</select></div>
+<div class="col-md-6"><label class="pm-form-label">Include Approved Expenses?</label><select class="pm-form-control">
+<option>Yes, add to net pay</option>
+<option>No, process separately</option>
+</select></div>
+</div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-warning-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Ensure all leave and expense approvals are completed
+                            before generating the preview.</div>
+</div>
+<div [class.active]="isStep('p34_rp', 2)" [style.display]="isStep('p34_rp', 2) ? 'block' : 'none'" class="fade-step" id="p34_rpStep2">
+<h6 style="font-weight:700;margin-bottom:16px">Step 2: Preview Gross-to-Net Summary</h6>
+<div class="row g-3 mb-3">
+<div class="col-md-3">
+<div class="p-3 border rounded text-center">
+<div style="font-size:11px;color:var(--pm-muted)">Total Gross</div>
+<h4 style="font-size:18px;font-weight:700;margin:4px 0 0">KES 6,105,000</h4>
+</div>
+</div>
+<div class="col-md-3">
+<div class="p-3 border rounded text-center">
+<div style="font-size:11px;color:var(--pm-muted)">PAYE Tax</div>
+<h4 style="font-size:18px;font-weight:700;margin:4px 0 0;color:var(--pm-danger)">KES
+                                        1,280,000</h4>
+</div>
+</div>
+<div class="col-md-3">
+<div class="p-3 border rounded text-center">
+<div style="font-size:11px;color:var(--pm-muted)">SHIF + NSSF + Levy</div>
+<h4 style="font-size:18px;font-weight:700;margin:4px 0 0;color:var(--pm-danger)">KES
+                                        625,000</h4>
+</div>
+</div>
+<div class="col-md-3">
+<div class="p-3 border rounded text-center" style="background:var(--pm-accent-soft);border-color:var(--pm-accent)!important">
+<div style="font-size:11px;color:#047857">Total Net Payout</div>
+<h4 style="font-size:18px;font-weight:700;margin:4px 0 0;color:var(--pm-accent)">KES
+                                        4,200,000</h4>
+</div>
+</div>
+</div>
+<div class="table-responsive" style="max-height:250px;overflow-y:auto">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Employee</th>
+<th>Gross Pay</th>
+<th>PAYE</th>
+<th>Statutory</th>
+<th>Net Pay</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>John Smith</td>
+<td>KES 135,000</td>
+<td>KES 24,000</td>
+<td>KES 10,250</td>
+<td><strong>KES 100,750</strong></td>
+</tr>
+<tr>
+<td>Mary Kamau</td>
+<td>KES 90,000</td>
+<td>KES 13,000</td>
+<td>KES 8,800</td>
+<td><strong>KES 68,200</strong></td>
+</tr>
+<tr>
+<td>Ali Omondi</td>
+<td>KES 180,000</td>
+<td>KES 42,000</td>
+<td>KES 14,100</td>
+<td><strong>KES 123,900</strong></td>
+</tr>
+<tr>
+<td>Wanjiku Ndungu</td>
+<td>KES 47,000</td>
+<td>KES 3,500</td>
+<td>KES 2,800</td>
+<td><strong>KES 40,700</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div [class.active]="isStep('p34_rp', 3)" [style.display]="isStep('p34_rp', 3) ? 'block' : 'none'" class="fade-step" id="p34_rpStep3">
+<h6 style="font-weight:700;margin-bottom:16px">Step 3: Execution Settings &amp; Submit</h6>
+<div class="mb-3"><label class="pm-form-label">Funding Account</label><select class="pm-form-control">
+<option>PayMo Business Wallet (Available: KES 12.5M)</option>
+<option>Equity Bank Main (Link)</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">Disbursement Methods</label>
+<div class="form-check mb-1"><input checked="" class="form-check-input" disabled="" type="checkbox"/><label class="form-check-label">M-Pesa B2C (For employees with M-Pesa
+                                    preference)</label></div>
+<div class="form-check"><input checked="" class="form-check-input" disabled="" type="checkbox"/><label class="form-check-label">PesaLink/EFT (For employees with Bank
+                                    preference)</label></div>
+</div>
+<div class="mb-3"><label class="pm-form-label">Execution Schedule</label><select class="pm-form-control">
+<option>Immediately upon final approval</option>
+<option>Schedule for 28 Jun 2025, 08:00 AM</option>
+</select></div>
+<div class="p-3 rounded" style="background:var(--pm-purple-soft);font-size:13px"><i class="bi bi-shield-lock me-1"></i> Because total net exceeds KES 1M, this run will
+                            require Level 2 (Director/CFO) approval before funds are released.</div>
+</div>
+<div [class.active]="isStep('p34_rp', 4)" [style.display]="isStep('p34_rp', 4) ? 'block' : 'none'" class="fade-step" id="p34_rpStep4">
+<div class="pm-receipt">
+<div class="receipt-icon"><i class="bi bi-check2-circle"></i></div>
+<h5 style="font-weight:700;color:var(--pm-accent)">Payroll Submitted for Approval</h5>
+<p style="font-size:13px;color:var(--pm-ink-soft)">Batch PRL-2025-06-REG has been routed to
+                                the CFO queue.</p>
+<div class="p-3 rounded text-start mt-3 mx-auto" style="background:#fff;max-width:400px;font-size:13px">
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Total
+                                        Net</span><strong>KES 4,200,000</strong></div>
+<div class="d-flex justify-content-between mb-2"><span class="text-muted">Employees</span><strong>142</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">Status</span><span class="pm-badge pm-badge-warning">Pending L2</span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-footer" id="p34_rpFooter">
+<button (click)="closeModal('p34_runPayrollModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button>
+<button (click)="nextStepFlow('p34_rp', 4, 'p34_runPayrollModal', 'Payroll batch generated and submitted.', '')" class="pm-btn pm-btn-primary" id="p34_rpNextBtn" type="button">Continue <i class="bi bi-arrow-right"></i></button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_addEmployeeModal')" [attr.aria-hidden]="isModalOpen('p34_addEmployeeModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_addEmployeeModal') ? 'true' : null" [class.show]="isModalOpen('p34_addEmployeeModal')" [style.display]="isModalOpen('p34_addEmployeeModal') ? 'block' : 'none'" class="modal fade" id="p34_addEmployeeModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-person-plus text-accent me-2"></i>Onboard New Employee</h5>
+<button (click)="closeModal('p34_addEmployeeModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="pm-stepper" id="p34_empStepper">
+  @for (step of stepperItems('p34_emp'); track step.index) {
+    <div [class.active]="step.index === currentStep('p34_emp')" [class.completed]="step.index < currentStep('p34_emp')" class="pm-step">
+<div class="pm-step-num">@if (step.index < currentStep('p34_emp')) { <i class="bi bi-check"></i> } @else { {{ step.index }} }</div>
+}
+      @if (step.label) { <div class="pm-step-label">{{ step.label }}</div> } {
+    </div>
+    @if (!step.last) { <div class="pm-step-line"></div> } {
+  }
+</div>
+<div [class.active]="isStep('p34_emp', 1)" [style.display]="isStep('p34_emp', 1) ? 'block' : 'none'" class="fade-step active" id="p34_empStep1">
+<div class="row g-3">
+<div class="col-md-6"><label class="pm-form-label">First Name</label><input class="pm-form-control" placeholder="Jane"/></div>
+<div class="col-md-6"><label class="pm-form-label">Last Name</label><input class="pm-form-control" placeholder="Doe"/></div>
+<div class="col-md-6"><label class="pm-form-label">National ID / Passport</label><input class="pm-form-control" placeholder="e.g. 29384711"/></div>
+<div class="col-md-6"><label class="pm-form-label">Email Address</label><input class="pm-form-control" placeholder="jane.doe@acmecorp.co.ke"/></div>
+<div class="col-md-6"><label class="pm-form-label">KRA PIN</label><input class="pm-form-control" placeholder="A000000000X"/></div>
+<div class="col-md-6"><label class="pm-form-label">Phone Number</label><input class="pm-form-control" placeholder="0712 345 678"/></div>
+</div>
+</div>
+<div [class.active]="isStep('p34_emp', 2)" [style.display]="isStep('p34_emp', 2) ? 'block' : 'none'" class="fade-step" id="p34_empStep2">
+<div class="row g-3">
+<div class="col-md-6"><label class="pm-form-label">Job Title</label><input class="pm-form-control" placeholder="Marketing Exec"/></div>
+<div class="col-md-6"><label class="pm-form-label">Department</label><select class="pm-form-control">
+<option>Marketing</option>
+<option>Sales</option>
+<option>Engineering</option>
+<option>HR</option>
+</select></div>
+<div class="col-md-6"><label class="pm-form-label">Employment Type</label><select class="pm-form-control">
+<option>Full-Time Permanent</option>
+<option>Contract</option>
+<option>Probation</option>
+</select></div>
+<div class="col-md-6"><label class="pm-form-label">Join Date</label><input class="pm-form-control" type="date"/></div>
+<div class="col-md-6"><label class="pm-form-label">Basic Salary (Gross KES)</label><input class="pm-form-control" placeholder="80000" type="number"/></div>
+<div class="col-md-6"><label class="pm-form-label">NSSF / SHIF Registration</label><select class="pm-form-control">
+<option>Registered (Deduct standard)</option>
+<option>Not Registered (Alert HR)</option>
+</select></div>
+</div>
+</div>
+<div [class.active]="isStep('p34_emp', 3)" [style.display]="isStep('p34_emp', 3) ? 'block' : 'none'" class="fade-step" id="p34_empStep3">
+<h6 style="font-weight:700;margin-bottom:16px">Disbursement Preference</h6>
+<div class="mb-3">
+<div (click)="selectRadio($event)" class="p-3 border rounded mb-2 d-flex align-items-center gap-3" style="cursor:pointer">
+<input checked="" name="payPref" type="radio"/> <i class="bi bi-phone text-success" style="font-size:24px"></i>
+<div><strong>M-Pesa B2C (Mobile Money)</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Instant delivery to employee phone
+                                    </div>
+</div>
+</div>
+<div (click)="selectRadio($event)" class="p-3 border rounded d-flex align-items-center gap-3" style="cursor:pointer">
+<input name="payPref" type="radio"/> <i class="bi bi-bank text-info" style="font-size:24px"></i>
+<div><strong>Bank Transfer (EFT/PesaLink)</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Standard bank settlement</div>
+</div>
+</div>
+</div>
+<div class="row g-3" id="p34_bankDetails" style="display:none">
+<div class="col-md-6"><label class="pm-form-label">Bank Name</label><select class="pm-form-control">
+<option>Equity Bank</option>
+<option>KCB</option>
+<option>Co-op Bank</option>
+<option>NCBA</option>
+</select></div>
+<div class="col-md-6"><label class="pm-form-label">Account Number</label><input class="pm-form-control" placeholder="Account no"/></div>
+</div>
+<div class="form-check mt-3"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Send ESS Portal Welcome Email to
+                                employee</label></div>
+</div>
+<div [class.active]="isStep('p34_emp', 4)" [style.display]="isStep('p34_emp', 4) ? 'block' : 'none'" class="fade-step" id="p34_empStep4">
+<div class="pm-receipt">
+<div class="receipt-icon"><i class="bi bi-person-check"></i></div>
+<h5 style="font-weight:700;color:var(--pm-accent)">Employee Added</h5>
+<p style="font-size:13px;color:var(--pm-ink-soft)">Jane Doe has been added to the active
+                                payroll roster.</p>
+</div>
+</div>
+</div>
+<div class="modal-footer">
+<button (click)="closeModal('p34_addEmployeeModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button>
+<button (click)="nextStepFlow('p34_emp', 4, 'p34_addEmployeeModal', 'Employee onboarding record completed.', '')" class="pm-btn pm-btn-primary" id="p34_empNextBtn" type="button">Continue <i class="bi bi-arrow-right"></i></button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_editEmployeeModal')" [attr.aria-hidden]="isModalOpen('p34_editEmployeeModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_editEmployeeModal') ? 'true' : null" [class.show]="isModalOpen('p34_editEmployeeModal')" [style.display]="isModalOpen('p34_editEmployeeModal') ? 'block' : 'none'" class="modal fade" id="p34_editEmployeeModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Manage Employee: John Smith</h5><button (click)="closeModal('p34_editEmployeeModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="pm-tab-pills mb-3">
+<button (click)="switchTab('p34_eeTab', 'profile', $event)" class="pm-tab-pill active" type="button">Profile</button>
+<button (click)="switchTab('p34_eeTab', 'salary', $event)" class="pm-tab-pill" type="button">Salary &amp; Tax</button>
+<button (click)="switchTab('p34_eeTab', 'payment', $event)" class="pm-tab-pill" type="button">Payment Info</button>
+<button (click)="switchTab('p34_eeTab', 'docs', $event)" class="pm-tab-pill" type="button">Documents</button>
+</div>
+<div [class.active]="activeTab('p34_eeTab') === 'profile'" class="tab-panel active" id="p34_eeTab-profile">
+<div class="row g-3">
+<div class="col-md-6"><label class="pm-form-label">Full Name</label><input class="pm-form-control" value="John Smith"/></div>
+<div class="col-md-6"><label class="pm-form-label">Email</label><input class="pm-form-control" value="jsmith@acmecorp.co.ke"/></div>
+<div class="col-md-6"><label class="pm-form-label">ID Number</label><input class="pm-form-control" value="11223344"/></div>
+<div class="col-md-6"><label class="pm-form-label">Status</label><select class="pm-form-control">
+<option selected="">Active</option>
+<option>Suspended</option>
+<option>Terminated</option>
+</select></div>
+</div>
+</div>
+<div [class.active]="activeTab('p34_eeTab') === 'salary'" class="tab-panel" id="p34_eeTab-salary">
+<div class="row g-3">
+<div class="col-md-6"><label class="pm-form-label">Basic Salary (KES)</label><input class="pm-form-control" value="120000"/></div>
+<div class="col-md-6"><label class="pm-form-label">KRA PIN</label><input class="pm-form-control" value="A001234567Z"/></div>
+<div class="col-md-6"><label class="pm-form-label">NSSF Number</label><input class="pm-form-control" value="NS-998877"/></div>
+<div class="col-md-6"><label class="pm-form-label">SHIF Number</label><input class="pm-form-control" value="SH-112233"/></div>
+</div>
+<div class="mt-3"><button (click)="openModal('p34_salaryComponentsModal')" class="pm-btn pm-btn-sm" type="button">Manage Allowances/Deductions</button></div>
+</div>
+<div [class.active]="activeTab('p34_eeTab') === 'payment'" class="tab-panel" id="p34_eeTab-payment">
+<div class="mb-3"><label class="pm-form-label">Primary Method</label><select class="pm-form-control">
+<option>Bank Transfer</option>
+<option>M-Pesa</option>
+</select></div>
+<div class="row g-3">
+<div class="col-md-6"><label class="pm-form-label">Bank</label><select class="pm-form-control">
+<option>Equity Bank</option>
+</select></div>
+<div class="col-md-6"><label class="pm-form-label">Account Number</label><input class="pm-form-control" value="001002003004"/></div>
+</div>
+</div>
+<div [class.active]="activeTab('p34_eeTab') === 'docs'" class="tab-panel" id="p34_eeTab-docs">
+<div class="status-row">
+<div><strong>ID Copy (Front/Back)</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Uploaded Jan 2024</div>
+</div><button (click)="notify('Action handled')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-eye"></i></button>
+</div>
+<div class="status-row">
+<div><strong>KRA Certificate</strong>
+<div style="font-size:11px;color:var(--pm-danger)">Missing</div>
+</div><button (click)="notify('Action handled')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-upload"></i></button>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_editEmployeeModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button><button (click)="processAction('p34_editEmployeeModal', 'Employee record updated')" class="pm-btn pm-btn-primary" type="button">Save Changes</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_importEmployeesModal')" [attr.aria-hidden]="isModalOpen('p34_importEmployeesModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_importEmployeesModal') ? 'true' : null" [class.show]="isModalOpen('p34_importEmployeesModal')" [style.display]="isModalOpen('p34_importEmployeesModal') ? 'block' : 'none'" class="modal fade" id="p34_importEmployeesModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-file-earmark-excel me-2"></i>Import Employee Roster</h5>
+<button (click)="closeModal('p34_importEmployeesModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:12px">Upload a CSV or
+                        Excel file containing employee details, statutory numbers, and salary structures. <a (click)="notify('Link action handled')" role="button" tabindex="0">Download Template</a></div>
+<div class="border rounded p-4 text-center mb-3" style="border-style:dashed!important;background:#fafafa">
+<i class="bi bi-cloud-upload text-muted" style="font-size:32px"></i>
+<div class="mt-2" style="font-weight:600">Drag &amp; Drop CSV here</div>
+<div style="font-size:11px;color:var(--pm-muted)">or click to browse files</div>
+<input id="p34_csvUpl" style="display:none" type="file"/>
+<button (click)="triggerFile('p34_csvUpl')" class="pm-btn pm-btn-sm mt-2" type="button">Browse</button>
+</div>
+<div class="form-check"><input class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Update existing records if ID
+                            matches</label></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_importEmployeesModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p34_importEmployeesModal', 'Roster imported successfully. 12 records updated.')" class="pm-btn pm-btn-primary" type="button">Start
+                        Import</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_taxConfigModal')" [attr.aria-hidden]="isModalOpen('p34_taxConfigModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_taxConfigModal') ? 'true' : null" [class.show]="isModalOpen('p34_taxConfigModal')" [style.display]="isModalOpen('p34_taxConfigModal') ? 'block' : 'none'" class="modal fade" id="p34_taxConfigModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-sliders text-warning me-2"></i>Statutory Tax Engine
+                        Configuration</h5><button (click)="closeModal('p34_taxConfigModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="pm-tab-pills mb-3">
+<button (click)="switchTab('p34_taxTab', 'paye', $event)" class="pm-tab-pill active" type="button">PAYE Rates</button>
+<button (click)="switchTab('p34_taxTab', 'shif', $event)" class="pm-tab-pill" type="button">SHIF &amp; NSSF</button>
+<button (click)="switchTab('p34_taxTab', 'levy', $event)" class="pm-tab-pill" type="button">Housing Levy</button>
+</div>
+<div [class.active]="activeTab('p34_taxTab') === 'paye'" class="tab-panel active" id="p34_taxTab-paye">
+<div class="table-responsive">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Income Band (KES)</th>
+<th>Rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Up to 24,000</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>24,001 - 32,333</td>
+<td>25%</td>
+</tr>
+<tr>
+<td>32,334 - 500,000</td>
+<td>30%</td>
+</tr>
+<tr>
+<td>500,001 - 800,000</td>
+<td>32.5%</td>
+</tr>
+<tr>
+<td>Above 800,000</td>
+<td>35%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="font-size:11px;color:var(--pm-muted);margin-top:8px">Rates auto-updated per Finance
+                            Act 2023. <a (click)="notify('Link action handled')" role="button" tabindex="0">Override manually</a></div>
+</div>
+<div [class.active]="activeTab('p34_taxTab') === 'shif'" class="tab-panel" id="p34_taxTab-shif">
+<div class="row g-3">
+<div class="col-md-6"><label class="pm-form-label">SHIF Rate (Gross %)</label><input class="pm-form-control" disabled="" value="2.75"/></div>
+<div class="col-md-6"><label class="pm-form-label">SHIF Minimum (KES)</label><input class="pm-form-control" disabled="" value="300"/></div>
+<div class="col-12">
+<hr class="pm-divider"/>
+</div>
+<div class="col-md-6"><label class="pm-form-label">NSSF Tier 1 Limit</label><input class="pm-form-control" disabled="" value="7000"/></div>
+<div class="col-md-6"><label class="pm-form-label">NSSF Rate (%)</label><input class="pm-form-control" disabled="" value="6"/></div>
+</div>
+</div>
+<div [class.active]="activeTab('p34_taxTab') === 'levy'" class="tab-panel" id="p34_taxTab-levy">
+<div class="row g-3">
+<div class="col-md-6"><label class="pm-form-label">Employee Deduction</label><input class="pm-form-control" disabled="" value="1.5%"/></div>
+<div class="col-md-6"><label class="pm-form-label">Employer Match</label><input class="pm-form-control" disabled="" value="1.5%"/></div>
+</div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-warning-soft);font-size:12px">Housing
+                            levy is mandatory and applied to Gross Pay before PAYE computation.</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_taxConfigModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_viewPayslipModal')" [attr.aria-hidden]="isModalOpen('p34_viewPayslipModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_viewPayslipModal') ? 'true' : null" [class.show]="isModalOpen('p34_viewPayslipModal')" [style.display]="isModalOpen('p34_viewPayslipModal') ? 'block' : 'none'" class="modal fade" id="p34_viewPayslipModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-file-earmark-text me-2"></i>Payslip Preview</h5><button (click)="closeModal('p34_viewPayslipModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body" style="font-size:13px;line-height:1.6">
+<div class="text-center mb-3"><strong>ACME CORP LTD</strong><br/>Payslip for June 2025<br/><span style="color:var(--pm-muted)">John Smith (EMP-001)</span></div>
+<div class="d-flex justify-content-between border-bottom pb-1"><span>Basic Salary</span><span>KES
+                            120,000.00</span></div>
+<div class="d-flex justify-content-between border-bottom py-1"><span>House Allowance</span><span>KES
+                            15,000.00</span></div>
+<div class="d-flex justify-content-between py-1 bg-light fw-bold"><span>Gross Pay</span><span>KES
+                            135,000.00</span></div>
+<div class="mt-2 fw-bold" style="color:var(--pm-danger)">Deductions</div>
+<div class="d-flex justify-content-between border-bottom pb-1"><span>PAYE Tax</span><span>(KES
+                            24,000.00)</span></div>
+<div class="d-flex justify-content-between border-bottom py-1"><span>NSSF (Tier
+                            1+2)</span><span>(KES 1,080.00)</span></div>
+<div class="d-flex justify-content-between border-bottom py-1"><span>SHIF (2.75%)</span><span>(KES
+                            3,712.50)</span></div>
+<div class="d-flex justify-content-between border-bottom py-1"><span>Housing Levy
+                            (1.5%)</span><span>(KES 2,025.00)</span></div>
+<div class="d-flex justify-content-between py-1 mt-2 bg-light fw-bold" style="color:var(--pm-accent)"><span>NET PAY</span><span>KES 104,182.50</span></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_viewPayslipModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button><button (click)="notify('PDF handled')" class="pm-btn pm-btn-outline" type="button"><i class="bi bi-download"></i> PDF</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_approvePayrollModal')" [attr.aria-hidden]="isModalOpen('p34_approvePayrollModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_approvePayrollModal') ? 'true' : null" [class.show]="isModalOpen('p34_approvePayrollModal')" [style.display]="isModalOpen('p34_approvePayrollModal') ? 'block' : 'none'" class="modal fade" id="p34_approvePayrollModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-check2-circle text-warning me-2"></i>Authorize Payroll Batch
+                    </h5><button (click)="closeModal('p34_approvePayrollModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+<div class="d-flex justify-content-between mb-1"><span class="text-muted">Batch</span><strong>PRL-2025-06-REG</strong></div>
+<div class="d-flex justify-content-between mb-1"><span class="text-muted">Creator</span><strong>Mary Kamau (HR)</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">Total Net
+                                Outflow</span><strong style="color:var(--pm-accent)">KES 4,200,000</strong></div>
+</div>
+<div class="mb-3"><label class="pm-form-label">Authorization PIN (L2 Director)</label>
+<div class="pm-pin-input"><input (input)="moveFocus($event)" maxlength="1" type="password"/><input (input)="moveFocus($event)" maxlength="1" type="password"/><input (input)="moveFocus($event)" maxlength="1" type="password"/><input (input)="moveFocus($event)" maxlength="1" type="password"/></div>
+</div>
+<div class="form-check"><input class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:12px">I have verified the gross-to-net report and
+                            authorize funds disbursement.</label></div>
+</div>
+<div class="modal-footer"><button (click)="notify('Reject handled')" class="pm-btn pm-btn-danger" type="button">Reject</button><button (click)="processAction('p34_approvePayrollModal', 'Payroll Approved and sent to Disbursement queue')" class="pm-btn pm-btn-primary" type="button">Authorize
+                        &amp; Execute</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_generateReportsModal')" [attr.aria-hidden]="isModalOpen('p34_generateReportsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_generateReportsModal') ? 'true' : null" [class.show]="isModalOpen('p34_generateReportsModal')" [style.display]="isModalOpen('p34_generateReportsModal') ? 'block' : 'none'" class="modal fade" id="p34_generateReportsModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-file-earmark-bar-graph me-2"></i>Statutory Exports &amp; Returns
+                    </h5><button (click)="closeModal('p34_generateReportsModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Period</label><input class="pm-form-control" type="month" value="2025-05"/></div>
+<div class="mb-3"><label class="pm-form-label">Select Report</label>
+<select class="pm-form-control">
+<option>KRA P10 (PAYE Return) - iTax CSV</option>
+<option>SHIF Monthly Contribution - CSV</option>
+<option>NSSF Monthly Return - Excel</option>
+<option>Housing Levy Return - CSV</option>
+<option>Master Payroll Register - PDF</option>
+</select>
+</div>
+<div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px">The KRA P10 export is
+                        formatted exactly to the iTax upload template schema. Do not modify headers before uploading.
+                    </div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_generateReportsModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p34_generateReportsModal', 'Report downloaded.')" class="pm-btn pm-btn-primary" type="button"><i class="bi bi-download"></i> Generate File</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_leaveApprovalModal')" [attr.aria-hidden]="isModalOpen('p34_leaveApprovalModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_leaveApprovalModal') ? 'true' : null" [class.show]="isModalOpen('p34_leaveApprovalModal')" [style.display]="isModalOpen('p34_leaveApprovalModal') ? 'block' : 'none'" class="modal fade" id="p34_leaveApprovalModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-calendar2-x me-2"></i>Review Leave Request</h5><button (click)="closeModal('p34_leaveApprovalModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="d-flex align-items-center gap-3 mb-3">
+<div class="pm-avatar" style="background:#EF4444">JS</div>
+<div><strong>John Smith</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Sales Manager</div>
+</div>
+</div>
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:13px">
+<div class="d-flex justify-content-between mb-1"><span class="text-muted">Leave
+                                Type</span><strong>Annual Leave</strong></div>
+<div class="d-flex justify-content-between mb-1"><span class="text-muted">Dates</span><strong>01
+                                Jul - 05 Jul 2025</strong></div>
+<div class="d-flex justify-content-between mb-1"><span class="text-muted">Duration</span><strong>5 Days</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">Current
+                                Balance</span><strong>14 Days remaining</strong></div>
+</div>
+<div class="mb-3"><label class="pm-form-label">Manager Notes (Optional)</label><textarea class="pm-form-control" rows="2"></textarea></div>
+</div>
+<div class="modal-footer"><button (click)="processAction('p34_leaveApprovalModal', 'Leave Rejected')" class="pm-btn pm-btn-danger" type="button">Reject</button><button (click)="processAction('p34_leaveApprovalModal', 'Leave Approved')" class="pm-btn pm-btn-accent" type="button">Approve</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_expenseApprovalModal')" [attr.aria-hidden]="isModalOpen('p34_expenseApprovalModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_expenseApprovalModal') ? 'true' : null" [class.show]="isModalOpen('p34_expenseApprovalModal')" [style.display]="isModalOpen('p34_expenseApprovalModal') ? 'block' : 'none'" class="modal fade" id="p34_expenseApprovalModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Review Expense Claim</h5><button (click)="closeModal('p34_expenseApprovalModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="d-flex align-items-center gap-3 mb-3">
+<div class="pm-avatar" style="background:#3B82F6">MK</div>
+<div><strong>Mary Kamau</strong>
+<div style="font-size:11px;color:var(--pm-muted)">HR Specialist</div>
+</div>
+</div>
+<div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:13px">
+<div class="d-flex justify-content-between mb-1"><span class="text-muted">Category</span><strong>Client Entertainment</strong></div>
+<div class="d-flex justify-content-between mb-1"><span class="text-muted">Amount</span><strong style="color:var(--pm-accent)">KES 4,500</strong></div>
+<div class="d-flex justify-content-between mb-1"><span class="text-muted">Date
+                                Incurred</span><strong>12 Jun 2025</strong></div>
+<div class="d-flex justify-content-between"><span class="text-muted">Receipt</span><a (click)="notify('Link action handled')" role="button" tabindex="0">lunch_receipt.pdf</a></div>
+</div>
+<div class="mb-3"><label class="pm-form-label">Action</label><select class="pm-form-control">
+<option>Approve &amp; Add to next Payslip</option>
+<option>Approve &amp; Reimburse immediately (M-Pesa)</option>
+</select></div>
+</div>
+<div class="modal-footer"><button (click)="notify('Reject handled')" class="pm-btn pm-btn-danger" type="button">Reject</button><button (click)="processAction('p34_expenseApprovalModal', 'Expense Approved')" class="pm-btn pm-btn-accent" type="button">Approve Claim</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_salaryComponentsModal')" [attr.aria-hidden]="isModalOpen('p34_salaryComponentsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_salaryComponentsModal') ? 'true' : null" [class.show]="isModalOpen('p34_salaryComponentsModal')" [style.display]="isModalOpen('p34_salaryComponentsModal') ? 'block' : 'none'" class="modal fade" id="p34_salaryComponentsModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-sliders me-2"></i>Salary Components &amp; Allowances</h5><button (click)="closeModal('p34_salaryComponentsModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="pm-tab-pills mb-3"><button (click)="switchTab('p34_compTab', 'allow', $event)" class="pm-tab-pill active" type="button">Allowances</button><button (click)="switchTab('p34_compTab', 'deduct', $event)" class="pm-tab-pill" type="button">Custom Deductions</button></div>
+<div [class.active]="activeTab('p34_compTab') === 'allow'" class="tab-panel active" id="p34_compTab-allow">
+<div class="table-responsive">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Taxable?</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>House Allowance</td>
+<td>Fixed Amount</td>
+<td>Yes</td>
+<td><button (click)="notify('Action handled')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-pencil"></i></button></td>
+</tr>
+<tr>
+<td>Transport Allowance</td>
+<td>Fixed Amount</td>
+<td>Yes</td>
+<td><button (click)="notify('Action handled')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-pencil"></i></button></td>
+</tr>
+<tr>
+<td>Per Diem (Untaxed limit)</td>
+<td>Variable</td>
+<td>No</td>
+<td><button (click)="notify('Action handled')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-pencil"></i></button></td>
+</tr>
+</tbody>
+</table>
+</div>
+<button (click)="notify('New Allowance handled')" class="pm-btn pm-btn-sm mt-2" type="button"><i class="bi bi-plus"></i> New Allowance</button>
+</div>
+<div [class.active]="activeTab('p34_compTab') === 'deduct'" class="tab-panel" id="p34_compTab-deduct">
+<div class="table-responsive">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Pre-Tax?</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HELB Loan</td>
+<td>Fixed Amount</td>
+<td>No</td>
+<td><button (click)="notify('Action handled')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-pencil"></i></button></td>
+</tr>
+<tr>
+<td>SACCO Contribution</td>
+<td>Percentage</td>
+<td>No</td>
+<td><button (click)="notify('Action handled')" class="pm-btn pm-btn-sm" type="button"><i class="bi bi-pencil"></i></button></td>
+</tr>
+</tbody>
+</table>
+</div>
+<button (click)="notify('New Deduction handled')" class="pm-btn pm-btn-sm mt-2" type="button"><i class="bi bi-plus"></i> New Deduction</button>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_salaryComponentsModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_payrollHistoryModal')" [attr.aria-hidden]="isModalOpen('p34_payrollHistoryModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_payrollHistoryModal') ? 'true' : null" [class.show]="isModalOpen('p34_payrollHistoryModal')" [style.display]="isModalOpen('p34_payrollHistoryModal') ? 'block' : 'none'" class="modal fade" id="p34_payrollHistoryModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-xl modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Payroll History &amp; Archives</h5>
+<button (click)="closeModal('p34_payrollHistoryModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="d-flex gap-2 mb-3"><input class="pm-form-control w-auto" type="month" value="2025-05"/><button (click)="notify('Action handled')" class="pm-btn pm-btn-outline" type="button"><i class="bi bi-search"></i></button>
+</div>
+<div class="table-responsive">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Period</th>
+<th>Run Type</th>
+<th>Employees</th>
+<th>Net Total</th>
+<th>Status</th>
+<th>P10 Return</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>May 2025</td>
+<td>Regular</td>
+<td>139</td>
+<td>KES 4.1M</td>
+<td><span class="pm-badge pm-badge-success">Completed</span></td>
+<td><span class="pm-badge pm-badge-success">Filed</span></td>
+<td><button (click)="notify('View details handled')" class="pm-btn pm-btn-sm" type="button">View details</button></td>
+</tr>
+<tr>
+<td>Apr 2025</td>
+<td>Regular</td>
+<td>138</td>
+<td>KES 4.05M</td>
+<td><span class="pm-badge pm-badge-success">Completed</span></td>
+<td><span class="pm-badge pm-badge-success">Filed</span></td>
+<td><button (click)="notify('View details handled')" class="pm-btn pm-btn-sm" type="button">View details</button></td>
+</tr>
+<tr>
+<td>Apr 2025</td>
+<td>Bonus</td>
+<td>15</td>
+<td>KES 0.5M</td>
+<td><span class="pm-badge pm-badge-success">Completed</span></td>
+<td>Merged</td>
+<td><button (click)="notify('View details handled')" class="pm-btn pm-btn-sm" type="button">View details</button></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_payrollHistoryModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_employeeSelfServiceModal')" [attr.aria-hidden]="isModalOpen('p34_employeeSelfServiceModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_employeeSelfServiceModal') ? 'true' : null" [class.show]="isModalOpen('p34_employeeSelfServiceModal')" [style.display]="isModalOpen('p34_employeeSelfServiceModal') ? 'block' : 'none'" class="modal fade" id="p34_employeeSelfServiceModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-phone-flip me-2"></i>ESS Portal Preview (Employee View)</h5>
+<button (click)="closeModal('p34_employeeSelfServiceModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body" style="background:#f9f9f9">
+<div class="p-3 border rounded mb-3" style="background:#fff">
+<div class="d-flex align-items-center gap-3">
+<div class="pm-avatar" style="background:#EF4444">JS</div>
+<div>
+<h5 style="margin:0;font-weight:700">Hi, John!</h5>
+<div style="font-size:12px;color:var(--pm-muted)">Sales Manager · Acct: EMP-001</div>
+</div>
+</div>
+</div>
+<div class="row g-2 text-center">
+<div class="col-4">
+<div class="p-3 border rounded bg-white" style="cursor:pointer"><i class="bi bi-file-earmark-text d-block mb-1" style="font-size:24px;color:var(--pm-primary)"></i><span style="font-size:12px">My
+                                    Payslips</span></div>
+</div>
+<div class="col-4">
+<div class="p-3 border rounded bg-white" style="cursor:pointer"><i class="bi bi-calendar-check d-block mb-1" style="font-size:24px;color:var(--pm-accent)"></i><span style="font-size:12px">Request Leave</span></div>
+</div>
+<div class="col-4">
+<div class="p-3 border rounded bg-white" style="cursor:pointer"><i class="bi bi-receipt d-block mb-1" style="font-size:24px;color:var(--pm-info)"></i><span style="font-size:12px">Submit
+                                    Expense</span></div>
+</div>
+<div class="col-4">
+<div class="p-3 border rounded bg-white" style="cursor:pointer"><i class="bi bi-shield-check d-block mb-1" style="font-size:24px;color:var(--pm-warning)"></i><span style="font-size:12px">P9
+                                    Tax Forms</span></div>
+</div>
+<div class="col-4">
+<div class="p-3 border rounded bg-white" style="cursor:pointer"><i class="bi bi-person-gear d-block mb-1" style="font-size:24px;color:var(--pm-purple)"></i><span style="font-size:12px">Update Profile</span></div>
+</div>
+<div class="col-4">
+<div class="p-3 border rounded bg-white" style="cursor:pointer"><i class="bi bi-heart-pulse d-block mb-1" style="font-size:24px;color:var(--pm-danger)"></i><span style="font-size:12px">My
+                                    Benefits</span></div>
+</div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_employeeSelfServiceModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close Preview</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_complianceAlertsModal')" [attr.aria-hidden]="isModalOpen('p34_complianceAlertsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_complianceAlertsModal') ? 'true' : null" [class.show]="isModalOpen('p34_complianceAlertsModal')" [style.display]="isModalOpen('p34_complianceAlertsModal') ? 'block' : 'none'" class="modal fade" id="p34_complianceAlertsModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-shield-exclamation text-warning me-2"></i>Compliance &amp; Data
+                        Health</h5><button (click)="closeModal('p34_complianceAlertsModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="status-row">
+<div><strong>Missing KRA PIN</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Peter Ochieng (EMP-140)</div>
+</div><button (click)="openModal('p34_editEmployeeModal')" class="pm-btn pm-btn-sm" type="button">Update</button>
+</div>
+<div class="status-row">
+<div><strong>Missing KRA PIN</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Sarah Waithera (EMP-141)</div>
+</div><button (click)="openModal('p34_editEmployeeModal')" class="pm-btn pm-btn-sm" type="button">Update</button>
+</div>
+<div class="status-row">
+<div><strong>Missing KRA PIN</strong>
+<div style="font-size:11px;color:var(--pm-muted)">David Mutua (EMP-142)</div>
+</div><button (click)="openModal('p34_editEmployeeModal')" class="pm-btn pm-btn-sm" type="button">Update</button>
+</div>
+<div class="status-row">
+<div><strong>Invalid Bank Account Format</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Wanjiku Ndungu (EMP-004)</div>
+</div><button (click)="openModal('p34_editEmployeeModal')" class="pm-btn pm-btn-sm" type="button">Update</button>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_complianceAlertsModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button><button (click)="notify('Email reminders to employees handled')" class="pm-btn pm-btn-primary" type="button">Email reminders to employees</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_disbursementTrackingModal')" [attr.aria-hidden]="isModalOpen('p34_disbursementTrackingModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_disbursementTrackingModal') ? 'true' : null" [class.show]="isModalOpen('p34_disbursementTrackingModal')" [style.display]="isModalOpen('p34_disbursementTrackingModal') ? 'block' : 'none'" class="modal fade" id="p34_disbursementTrackingModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-send-check me-2"></i>Tracking: PRL-2025-06-COM</h5><button (click)="closeModal('p34_disbursementTrackingModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-2 d-flex justify-content-between" style="font-size:13px"><span>M-Pesa B2C
+                            Payouts</span><span>12 / 12 (100%)</span></div>
+<div class="pm-progress mb-4">
+<div class="pm-progress-bar bg-success" style="width:100%"></div>
+</div>
+<div class="mb-2 d-flex justify-content-between" style="font-size:13px"><span>PesaLink Bank
+                            Transfers</span><span>4 / 6 (66%)</span></div>
+<div class="pm-progress mb-4">
+<div class="pm-progress-bar bg-info progress-bar-striped progress-bar-animated" style="width:66%"></div>
+</div>
+<div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:12px">
+<div class="d-flex justify-content-between mb-1"><span>Total Value</span><strong>KES
+                                800,000</strong></div>
+<div class="d-flex justify-content-between mb-1"><span>Success Value</span><strong>KES
+                                620,000</strong></div>
+<div class="d-flex justify-content-between"><span>Failed</span><strong style="color:var(--pm-danger)">0</strong></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_disbursementTrackingModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_payMpesaBulkModal')" [attr.aria-hidden]="isModalOpen('p34_payMpesaBulkModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_payMpesaBulkModal') ? 'true' : null" [class.show]="isModalOpen('p34_payMpesaBulkModal')" [style.display]="isModalOpen('p34_payMpesaBulkModal') ? 'block' : 'none'" class="modal fade" id="p34_payMpesaBulkModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-phone me-2" style="color:var(--pm-accent)"></i>Manual Bulk
+                        Disbursement (B2C)</h5><button (click)="closeModal('p34_payMpesaBulkModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Purpose</label><select class="pm-form-control">
+<option>Advance Salary</option>
+<option>Expense Reimbursement</option>
+<option>Per Diem / Transport</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">Upload Beneficiary CSV</label><input class="pm-form-control" type="file"/></div>
+<div style="font-size:11px;color:var(--pm-muted)">CSV Format:
+                        <code>Phone (07XXXXXXXX), Amount, Description</code></div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-warning-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Funds will be drawn directly from the PayMo Business
+                        Wallet and disbursed via Safaricom B2C API.</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_payMpesaBulkModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p34_payMpesaBulkModal', 'Bulk B2C batch queued for processing')" class="pm-btn pm-btn-accent" type="button">Execute
+                        B2C</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_sendPayslipsModal')" [attr.aria-hidden]="isModalOpen('p34_sendPayslipsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_sendPayslipsModal') ? 'true' : null" [class.show]="isModalOpen('p34_sendPayslipsModal')" [style.display]="isModalOpen('p34_sendPayslipsModal') ? 'block' : 'none'" class="modal fade" id="p34_sendPayslipsModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-envelope text-purple me-2"></i>Batch Send Payslips</h5>
+<button (click)="closeModal('p34_sendPayslipsModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Payroll Period</label><input class="pm-form-control" type="month" value="2025-05"/></div>
+<div class="mb-3"><label class="pm-form-label">Delivery Channel</label>
+<div class="form-check"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Email (PDF Attachment)</label></div>
+<div class="form-check"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">ESS Portal (Available immediately)</label></div>
+<div class="form-check"><input class="form-check-input" type="checkbox"/><label class="form-check-label">WhatsApp (Secure link)</label></div>
+</div>
+<div class="form-check"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Password protect PDFs with employee ID
+                            number</label></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_sendPayslipsModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p34_sendPayslipsModal', '139 payslips dispatched successfully')" class="pm-btn pm-btn-primary" type="button"><i class="bi bi-send"></i> Send Batch</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_editCompanyProfileModal')" [attr.aria-hidden]="isModalOpen('p34_editCompanyProfileModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_editCompanyProfileModal') ? 'true' : null" [class.show]="isModalOpen('p34_editCompanyProfileModal')" [style.display]="isModalOpen('p34_editCompanyProfileModal') ? 'block' : 'none'" class="modal fade" id="p34_editCompanyProfileModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-building me-2"></i>Company Payroll Profile</h5><button (click)="closeModal('p34_editCompanyProfileModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="row g-3">
+<div class="col-md-6"><label class="pm-form-label">Company Name</label><input class="pm-form-control" value="Acme Corp Ltd."/></div>
+<div class="col-md-6"><label class="pm-form-label">Business Reg Number</label><input class="pm-form-control" value="PVT-XY1234Z"/></div>
+<div class="col-md-6"><label class="pm-form-label">Employer KRA PIN</label><input class="pm-form-control" value="P000123456B"/></div>
+<div class="col-md-6"><label class="pm-form-label">Employer NSSF No.</label><input class="pm-form-control" value="NS-E-990011"/></div>
+<div class="col-md-6"><label class="pm-form-label">Employer SHIF No.</label><input class="pm-form-control" value="SH-E-445566"/></div>
+<div class="col-md-6"><label class="pm-form-label">M-Pesa B2C Shortcode</label><input class="pm-form-control" disabled="" value="400500"/></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_editCompanyProfileModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button><button (click)="processAction('p34_editCompanyProfileModal', 'Company details updated')" class="pm-btn pm-btn-primary" type="button">Save Profile</button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_auditTrailModal')" [attr.aria-hidden]="isModalOpen('p34_auditTrailModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_auditTrailModal') ? 'true' : null" [class.show]="isModalOpen('p34_auditTrailModal')" [style.display]="isModalOpen('p34_auditTrailModal') ? 'block' : 'none'" class="modal fade" id="p34_auditTrailModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-shield-check me-2"></i>Payroll Audit Trail</h5><button (click)="closeModal('p34_auditTrailModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="table-responsive" style="max-height:400px;overflow-y:auto">
+<table class="pm-table">
+<thead>
+<tr>
+<th>Timestamp</th>
+<th>Action</th>
+<th>User</th>
+<th>IP Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>26 Jun 14:32</td>
+<td>Payroll Batch PRL-2025-06-REG Generated</td>
+<td>Mary K. (HR)</td>
+<td>192.168.1.44</td>
+</tr>
+<tr>
+<td>24 Jun 09:10</td>
+<td>Salary increased for EMP-003 to KES 180k</td>
+<td>Alice M. (Admin)</td>
+<td>10.0.0.12</td>
+</tr>
+<tr>
+<td>20 Jun 11:45</td>
+<td>Expense Claim 4,500 Approved</td>
+<td>James K. (Mgr)</td>
+<td>192.168.1.15</td>
+</tr>
+<tr>
+<td>15 Jun 16:20</td>
+<td>New Employee Jane Doe onboarded</td>
+<td>Mary K. (HR)</td>
+<td>192.168.1.44</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_auditTrailModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button><button (click)="notify('Export Log handled')" class="pm-btn pm-btn-outline" type="button"><i class="bi bi-download"></i> Export Log</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_annualP9Modal')" [attr.aria-hidden]="isModalOpen('p34_annualP9Modal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_annualP9Modal') ? 'true' : null" [class.show]="isModalOpen('p34_annualP9Modal')" [style.display]="isModalOpen('p34_annualP9Modal') ? 'block' : 'none'" class="modal fade" id="p34_annualP9Modal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-file-earmark-pdf me-2"></i>Generate Annual P9A Certificates
+                    </h5><button (click)="closeModal('p34_annualP9Modal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Tax Year</label><select class="pm-form-control">
+<option>2024</option>
+<option>2023</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">Employee Selection</label><select class="pm-form-control">
+<option>All Active &amp; Terminated Employees</option>
+<option>Specific Department...</option>
+</select></div>
+<div class="form-check"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Publish to ESS Portal</label></div>
+<div class="form-check"><input class="form-check-input" type="checkbox"/><label class="form-check-label">Email to employees directly</label></div>
+<div class="p-3 rounded mt-3" style="background:var(--pm-info-soft);font-size:12px">Ensures full
+                        compliance by providing employees with P9A forms required for their individual iTax annual
+                        returns.</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_annualP9Modal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p34_annualP9Modal', 'P9A Certificates generated and published to ESS.')" class="pm-btn pm-btn-primary" type="button">Generate
+                        P9As</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_manageBenefitsModal')" [attr.aria-hidden]="isModalOpen('p34_manageBenefitsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_manageBenefitsModal') ? 'true' : null" [class.show]="isModalOpen('p34_manageBenefitsModal')" [style.display]="isModalOpen('p34_manageBenefitsModal') ? 'block' : 'none'" class="modal fade" id="p34_manageBenefitsModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-heart-pulse me-2"></i>Manage Employee Benefits</h5><button (click)="closeModal('p34_manageBenefitsModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="d-flex align-items-center gap-3 mb-3">
+<div class="pm-avatar" style="background:#EF4444">JS</div>
+<div><strong>John Smith</strong>
+<div style="font-size:11px;color:var(--pm-muted)">EMP-001</div>
+</div>
+</div>
+<div class="status-row">
+<div><strong>Private Medical Insurance</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Jubilee Insurance (M+3)</div>
+</div>
+<div class="form-check form-switch"><input checked="" class="form-check-input" type="checkbox"/>
+</div>
+</div>
+<div class="status-row">
+<div><strong>Gym Membership Allowance</strong>
+<div style="font-size:11px;color:var(--pm-muted)">KES 5,000 untaxed benefit</div>
+</div>
+<div class="form-check form-switch"><input checked="" class="form-check-input" type="checkbox"/>
+</div>
+</div>
+<div class="status-row">
+<div><strong>Car Loan Subsidy</strong>
+<div style="font-size:11px;color:var(--pm-muted)">Company subsidized rate</div>
+</div>
+<div class="form-check form-switch"><input class="form-check-input" type="checkbox"/></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_manageBenefitsModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button><button (click)="processAction('p34_manageBenefitsModal', 'Benefits updated')" class="pm-btn pm-btn-primary" type="button">Save
+                        Benefits</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_schedulePayrollModal')" [attr.aria-hidden]="isModalOpen('p34_schedulePayrollModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_schedulePayrollModal') ? 'true' : null" [class.show]="isModalOpen('p34_schedulePayrollModal')" [style.display]="isModalOpen('p34_schedulePayrollModal') ? 'block' : 'none'" class="modal fade" id="p34_schedulePayrollModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-calendar-event me-2"></i>Schedule Auto-Payroll</h5><button (click)="closeModal('p34_schedulePayrollModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Auto-Run Date</label><select class="pm-form-control">
+<option>25th of every month</option>
+<option>28th of every month</option>
+<option>Last working day of the month</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">Approval Logic</label><select class="pm-form-control">
+<option>Pause for manual approval before disbursing</option>
+<option>Auto-disburse if variance < 5% from last month</option>
+</select></div>
+<div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px">Auto-payroll will
+                        compile timesheets, leaves, and fixed salaries on the designated date and alert the approver.
+                    </div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_schedulePayrollModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p34_schedulePayrollModal', 'Auto-payroll schedule saved')" class="pm-btn pm-btn-primary" type="button">Save Schedule</button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_offboardEmployeeModal')" [attr.aria-hidden]="isModalOpen('p34_offboardEmployeeModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_offboardEmployeeModal') ? 'true' : null" [class.show]="isModalOpen('p34_offboardEmployeeModal')" [style.display]="isModalOpen('p34_offboardEmployeeModal') ? 'block' : 'none'" class="modal fade" id="p34_offboardEmployeeModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-person-x text-danger me-2"></i>Offboard Employee</h5><button (click)="closeModal('p34_offboardEmployeeModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3"><label class="pm-form-label">Employee</label><select class="pm-form-control">
+<option>Wanjiku Ndungu (EMP-004)</option>
+</select></div>
+<div class="mb-3"><label class="pm-form-label">Termination Date</label><input class="pm-form-control" type="date" value="2025-06-30"/></div>
+<div class="mb-3"><label class="pm-form-label">Final Settlement Processing</label>
+<div class="form-check"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Prorate final salary automatically</label></div>
+<div class="form-check"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Pay out untaken leave balance</label></div>
+<div class="form-check"><input class="form-check-input" type="checkbox"/><label class="form-check-label">Deduct outstanding loans/advances</label></div>
+</div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_offboardEmployeeModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Cancel</button><button (click)="processAction('p34_offboardEmployeeModal', 'Employee offboarding sequence initiated')" class="pm-btn pm-btn-danger" type="button">Initiate
+                        Offboarding</button></div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_quickActionModal')" [attr.aria-hidden]="isModalOpen('p34_quickActionModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_quickActionModal') ? 'true' : null" [class.show]="isModalOpen('p34_quickActionModal')" [style.display]="isModalOpen('p34_quickActionModal') ? 'block' : 'none'" class="modal fade" id="p34_quickActionModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-lightning-charge me-2"></i>Quick Update</h5><button (click)="closeModal('p34_quickActionModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body text-center py-4">
+<i class="bi bi-check2-circle text-success" style="font-size:48px"></i>
+<h5 class="mt-3" style="font-weight:700">Ali Omondi - Profile Update</h5>
+<p style="font-size:13px;color:var(--pm-muted)">M-Pesa number verified successfully via Safaricom
+                        API.</p>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_quickActionModal')" class="pm-btn pm-btn-primary" data-bs-dismiss="modal" type="button">Close</button>
+</div>
+</div>
+</div>
+</div><div (click)="closeModal('p34_notificationsModal')" [attr.aria-hidden]="isModalOpen('p34_notificationsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_notificationsModal') ? 'true' : null" [class.show]="isModalOpen('p34_notificationsModal')" [style.display]="isModalOpen('p34_notificationsModal') ? 'block' : 'none'" class="modal fade" id="p34_notificationsModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><i class="bi bi-bell me-2"></i>Payroll Notifications</h5><button (click)="closeModal('p34_notificationsModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body" style="max-height:400px;overflow-y:auto">
+<div class="p-3 rounded mb-2" style="background:var(--pm-warning-soft);font-size:13px">
+<strong>Approve Payroll Run</strong><br/><span style="font-size:11px;color:var(--pm-muted)">PRL-2025-06-REG requires CFO approval before
+                            28th.</span></div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-danger-soft);font-size:13px">
+<strong>Compliance Alert</strong><br/><span style="font-size:11px;color:var(--pm-muted)">3 new
+                            hires lack KRA PINs. Fix before running payroll.</span></div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-info-soft);font-size:13px"><strong>Expense
+                            Claim</strong><br/><span style="font-size:11px;color:var(--pm-muted)">Mary Kamau submitted
+                            KES 4,500 expense.</span></div>
+<div class="p-3 rounded mb-2" style="background:var(--pm-surface-2);font-size:13px"><strong>Bank
+                            Validation</strong><br/><span style="font-size:11px;color:var(--pm-muted)">Wanjiku's account
+                            length is invalid.</span></div>
+</div>
+<div class="modal-footer"><button (click)="notify('Mark All Read handled')" class="pm-btn pm-btn-sm" type="button">Mark All Read</button><button (click)="closeModal('p34_notificationsModal')" class="pm-btn" data-bs-dismiss="modal" type="button">Close</button></div>
+</div>
+</div>
+</div></section></div>
+<div (click)="closeModal('p34_employeeRequestsModal')" [attr.aria-hidden]="isModalOpen('p34_employeeRequestsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('p34_employeeRequestsModal') ? 'true' : null" [class.show]="isModalOpen('p34_employeeRequestsModal')" [style.display]="isModalOpen('p34_employeeRequestsModal') ? 'block' : 'none'" class="modal fade" id="p34_employeeRequestsModal" tabindex="-1">
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header"><h5 class="modal-title"><i class="bi bi-inbox text-primary me-2"></i>Employee Requests</h5><button (click)="closeModal('p34_employeeRequestsModal')" class="btn-close" type="button"></button></div>
+<div class="modal-body">
+<div class="pm-list-item"><div><strong>Leave Requests</strong><div style="font-size:12px;color:var(--pm-muted)">4 pending approval</div></div><button (click)="openModal('p34_leaveApprovalModal');closeModal('p34_employeeRequestsModal')" class="pm-btn pm-btn-sm" type="button">Review</button></div>
+<div class="pm-list-item"><div><strong>Expense Claims</strong><div style="font-size:12px;color:var(--pm-muted)">8 awaiting finance action</div></div><button (click)="openModal('p34_expenseApprovalModal');closeModal('p34_employeeRequestsModal')" class="pm-btn pm-btn-sm" type="button">Review</button></div>
+</div>
+<div class="modal-footer"><button (click)="closeModal('p34_employeeRequestsModal')" class="pm-btn" type="button">Close</button></div>
+</div>
+</div>
+</div>
+
+  @if (hasOpenModal()) {
+    <div (click)="closeAllModals()" class="modal-backdrop fade show"></div>
+  }
+</div>
+}
+}
+}
+}
+}

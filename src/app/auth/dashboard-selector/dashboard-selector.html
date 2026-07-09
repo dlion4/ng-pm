@@ -1,0 +1,303 @@
+<main class="auth-shell" (keydown)="onKeydown($event)">
+    <div class="grid-overlay" style="position:absolute;inset:0;opacity:.55"></div>
+    <div class="blob" style="width:520px;height:520px;background:#22d3ee;top:-180px;right:-120px"></div>
+    <div class="blob" style="width:420px;height:420px;background:#a78bfa;bottom:-150px;left:-120px;animation-delay:-6s">
+    </div>
+
+    <div class="container position-relative" style="z-index:2">
+        <div class="brandbar reveal">
+            <div class="d-flex align-items-center gap-3">
+                <span class="logo-mark">{{ logoMark }}</span>
+                <div>
+                    <div class="fw-bold text-white">{{ brandTitle }} <span class="text-gradient">BAAS</span></div>
+                    <div style="font-size:.76rem;color:var(--ink-3)">{{ brandSubtitle }}</div>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <button *ngFor="let tab of accountTabs; trackBy: trackByIndex" class="quick-tab"
+                    [class.active]="currentAccount === tab.id" (click)="setAccountFilter(tab.id)">
+                    <i class="bi {{ tab.icon }}"></i> {{ tab.label }}
+                </button>
+                <button class="quick-tab" (click)="onLockSession()">
+                    <i class="bi bi-shield-lock"></i> Lock
+                </button>
+            </div>
+        </div>
+
+        <div class="glass-strong layout-frame reveal">
+            <section class="hero-strip mb-4">
+                <img src="https://i.pinimg.com/736x/81/8d/70/818d706bc8e2a226f8a4d0564be6f286.jpg"
+                    alt="Paymo dashboard command center">
+                <div class="hero-content">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-lg-7">
+                            <span class="pill mb-3"><span class="pill-dot"></span> {{ pageIndicator }}</span>
+                            <h1 class="display-5 fw-black mb-3">{{ heroHeading }} <span class="text-gradient">{{
+                                    heroAccent }}</span></h1>
+                            <p style="color:var(--ink-2);max-width:650px;margin:0">{{ heroDescription }}</p>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+                                <div *ngFor="let m of heroMetrics; trackBy: trackByIndex" class="hero-metric">
+                                    <strong>{{ m.value }}</strong><span>{{ m.label }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="row g-4">
+                <div class="col-xl-8">
+                    <section class="glass p-3 p-md-4 mb-4 reveal" aria-label="Command palette">
+                        <div
+                            class="d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between mb-3">
+                            <div>
+                                <div
+                                    style="font-size:.75rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.18em">
+                                    {{ commandSectionLabel }}</div>
+                                <h2 class="h5 mb-0 mt-1">{{ commandTitle }}</h2>
+                            </div>
+                            <div class="d-flex gap-2 align-items-center"><span class="kbd">Cmd</span><span
+                                    class="kbd">K</span></div>
+                        </div>
+                        <div class="search-wrap">
+                            <i class="bi bi-search search-icon"></i>
+                            <input id="commandInput" class="command-input" [(ngModel)]="searchQuery"
+                                (input)="onSearchInput()" autocomplete="off" [placeholder]="searchPlaceholder">
+                        </div>
+                        <div class="filter-row" id="categoryFilters">
+                            <button *ngFor="let f of filterTabs; trackBy: trackByIndex" class="quick-tab"
+                                [class.active]="currentFilter === f.id" (click)="setCategoryFilter(f.id)">
+                                {{ f.label }}
+                            </button>
+                        </div>
+                    </section>
+
+                    <section class="mb-4 reveal" aria-label="Dashboard cards">
+                        <div class="d-flex align-items-center justify-content-between mb-3 gap-3 flex-wrap">
+                            <div>
+                                <div
+                                    style="font-size:.75rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.18em">
+                                    {{ availableSectionLabel }}</div>
+                                <h2 class="h4 mb-0 mt-1">{{ availableTitle }}</h2>
+                            </div>
+                            <button class="btn btn-outline-paymo btn-sm" (click)="openCustomModal()">
+                                <i class="bi bi-plus-square me-1"></i> Create Custom Dashboard
+                            </button>
+                        </div>
+
+                        <div class="row g-3" id="dashboardGrid">
+                            <ng-container *ngIf="filteredDashboards.length > 0; else emptyState">
+                                <div *ngFor="let d of filteredDashboards; trackBy: trackByDashboardId"
+                                    class="col-md-6 col-xxl-4">
+                                    <article class="dashboard-card" [class.active]="d.id === selectedId"
+                                        (click)="selectDashboard(d.id)" [style.--c1]="d.c1" [style.--c2]="d.c2"
+                                        [style.--card-glow]="hexToRgba(d.c1, 0.18)">
+                                        <div class="card-inner">
+                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                <span class="card-icon"><i class="bi {{ d.icon }}"></i></span>
+                                                <span class="badge-mini {{ d.badgeClass }}">{{ d.badge }}</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 mb-1">
+                                                <span class="badge-mini badge-native">{{ d.type }}</span>
+                                                <h3 class="dash-title">{{ d.title }}</h3>
+                                            </div>
+                                            <p class="dash-desc">{{ d.desc }}</p>
+                                            <div class="row g-2 mb-2">
+                                                <div *ngFor="let m of d.metrics; trackBy: trackByIndex" class="col-4">
+                                                    <div class="metric-chip"><strong>{{ m.value }}</strong><span>{{
+                                                            m.label }}</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="feature-list">
+                                                <div *ngFor="let feat of d.features; trackBy: trackByIndex">
+                                                    <i class="bi bi-check2-circle"></i><span>{{ feat }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="quick-actions">
+                                                <button *ngFor="let a of d.actions; trackBy: trackByIndex"
+                                                    class="action-chip" (click)="onActionChipClick(a, d.title, $event)">
+                                                    {{ a }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </ng-container>
+
+                            <ng-template #emptyState>
+                                <div class="col-12">
+                                    <div class="glass p-4 text-center">
+                                        <i class="bi bi-search" style="font-size:2rem;color:var(--accent)"></i>
+                                        <h3 class="h5 mt-3">No dashboard found</h3>
+                                        <p style="color:var(--ink-2)">Try another search term or clear filters.</p>
+                                        <button class="btn btn-outline-paymo btn-sm" (click)="onResetSearch()">Reset
+                                            search</button>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </section>
+                </div>
+
+                <aside class="col-xl-4">
+                    <div class="side-panel">
+                        <section class="selected-panel glass mb-3 reveal" aria-label="Selected dashboard">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div>
+                                    <div
+                                        style="font-size:.72rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.16em">
+                                        {{ selectedSectionLabel }}</div>
+                                    <h2 class="h5 mb-0">{{ selectedTitle }}</h2>
+                                </div>
+                                <span class="badge-mini {{ selectedRiskClass }}" id="riskBadge">{{ selectedRiskText
+                                    }}</span>
+                            </div>
+                            <div class="selected-preview mb-3">
+                                <img id="selectedImage" [src]="selectedDashboard.img" alt="Selected dashboard preview">
+                                <div class="preview-copy">
+                                    <span class="badge-mini badge-native" id="selectedType">{{ selectedDashboard.type
+                                        }}</span>
+                                    <h3 class="h5 mb-1" id="selectedTitle">{{ selectedDashboard.title }}</h3>
+                                    <p class="mb-0" id="selectedDesc" style="font-size:.82rem;color:var(--ink-2)">{{
+                                        selectedDashboard.desc }}</p>
+                                </div>
+                            </div>
+                            <div id="selectedMetrics" class="row g-2 mb-3">
+                                <div *ngFor="let m of selectedDashboard.metrics; trackBy: trackByIndex" class="col-4">
+                                    <div class="metric-chip"><strong>{{ m.value }}</strong><span>{{ m.label }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary-paymo w-100" id="openSelectedBtn" (click)="onOpenSelected()">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Go to {{ selectedDashboard.title }}
+                            </button>
+                            <div class="d-flex gap-2 mt-2">
+                                <button class="btn btn-outline-paymo btn-sm flex-fill" id="rememberBtn"
+                                    (click)="onRemember()">
+                                    <i class="bi bi-pin-angle me-1"></i> Remember
+                                </button>
+                                <button class="btn btn-outline-paymo btn-sm flex-fill" id="tourBtn"
+                                    (click)="onPreviewTour()">
+                                    <i class="bi bi-play-circle me-1"></i> Preview tour
+                                </button>
+                            </div>
+                        </section>
+
+                        <section class="glass p-3 mb-3 reveal" aria-label="Notifications">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <div
+                                        style="font-size:.72rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.16em">
+                                        {{ notificationsSectionLabel }}</div>
+                                    <h2 class="h6 mb-0">{{ notificationsTitle }}</h2>
+                                </div>
+                                <button class="btn btn-outline-paymo btn-sm" id="clearAlertsBtn"
+                                    (click)="onClearAlerts()">Clear</button>
+                            </div>
+                            <div id="notificationsList">
+                                <ng-container *ngIf="!notificationsCleared; else clearedState">
+                                    <div *ngFor="let n of notifications; trackBy: trackByIndex"
+                                        class="notification-item">
+                                        <span class="notification-dot" [style.color]="n.color"
+                                            [style.background]="n.color"></span>
+                                        <div>
+                                            <strong style="color:#fff;font-size:.86rem">{{ n.dash }}</strong>
+                                            <div style="font-size:.8rem;color:var(--ink-2)">{{ n.msg }}</div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-template #clearedState>
+                                    <div class="text-center py-3" style="color:var(--ink-3);font-size:.86rem">
+                                        <i class="bi bi-check2-circle me-1"></i> All notifications marked as read.
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </section>
+
+                        <section class="glass p-3 reveal" aria-label="Session context">
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <i class="bi bi-fingerprint" style="color:var(--accent);font-size:1.2rem"></i>
+                                <h2 class="h6 mb-0">{{ sessionTitle }}</h2>
+                            </div>
+                            <div class="d-grid gap-2" style="font-size:.84rem;color:var(--ink-2)">
+                                <div class="d-flex justify-content-between"><span>Device</span><strong
+                                        class="text-white" id="deviceText">{{ sessionContext.device }}</strong></div>
+                                <div class="d-flex justify-content-between"><span>Location</span><strong
+                                        class="text-white">{{ sessionContext.location }}</strong></div>
+                                <div class="d-flex justify-content-between"><span>Auth</span><strong
+                                        class="text-white">{{ sessionContext.auth }}</strong></div>
+                                <div class="d-flex justify-content-between"><span>Session</span><strong
+                                        class="text-white" id="sessionTimer">{{ sessionTimerDisplay }}</strong></div>
+                            </div>
+                            <div class="loading-bar mt-3"><span></span></div>
+                        </section>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Custom Modal -->
+<div class="modal" [class.show]="customModalOpen" [style.display]="customModalOpen ? 'block' : 'none'" tabindex="-1"
+    style="background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <div>
+                    <div class="text-uppercase" style="font-size:.72rem;color:var(--ink-3);letter-spacing:.18em">Section
+                        56.6 · Enterprise custom dashboard</div>
+                    <h5 class="modal-title mt-1">Create a custom dashboard</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" (click)="closeCustomModal()"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0">
+                <p style="color:var(--ink-2);font-size:.9rem">Build a tailored workspace with widgets, scheduled
+                    exports, team sharing and specific KPIs.</p>
+                <div class="row g-3">
+                    <div class="col-md-5">
+                        <label class="form-label"
+                            style="color:var(--ink-3);font-size:.75rem;text-transform:uppercase;letter-spacing:.14em">Dashboard
+                            name</label>
+                        <input id="customName" class="command-input" style="padding-left:1rem" [(ngModel)]="customName">
+                        <label class="form-label mt-3"
+                            style="color:var(--ink-3);font-size:.75rem;text-transform:uppercase;letter-spacing:.14em">Primary
+                            owner</label>
+                        <select id="ownerSelect" class="command-input" style="padding-left:1rem"
+                            [(ngModel)]="customOwner">
+                            <option *ngFor="let o of ownerOptions; trackBy: trackByIndex">{{ o }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="custom-grid" id="widgetOptions">
+                            <div *ngFor="let w of widgetOptions; let i = index; trackBy: trackByIndex"
+                                class="widget-option" [class.active]="w.active" (click)="toggleWidget(i)">
+                                <i class="bi {{ w.icon }} me-1 text-gradient"></i> {{ w.label }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-outline-paymo" (click)="closeCustomModal()">Cancel</button>
+                <button class="btn btn-primary-paymo" id="createCustomBtn" (click)="onCreateCustom()">
+                    <i class="bi bi-magic me-1"></i> Create dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toastish glass p-3" [class.show]="toastVisible">
+    <div class="d-flex align-items-start gap-2">
+        <i class="bi bi-check-circle-fill" style="color:#86efac;font-size:1.15rem"></i>
+        <div>
+            <strong class="text-white" id="toastTitle">{{ toastTitle }}</strong>
+            <div style="font-size:.82rem;color:var(--ink-2)" id="toastBody">{{ toastBody }}</div>
+        </div>
+    </div>
+</div>

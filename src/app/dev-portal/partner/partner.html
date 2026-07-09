@@ -1,0 +1,559 @@
+<!-- Toast Notification -->
+<div *ngIf="toast.show" class="position-fixed top-0 end-0 p-3" style="z-index:9999">
+  <div class="pm-card d-flex align-items-center gap-2" style="padding:12px 20px;border-left:3px solid var(--pm-accent);box-shadow:var(--pm-shadow-lg);min-width:320px">
+    <i class="bi bi-check-circle-fill text-success" style="font-size:18px"></i>
+    <span style="font-size:13px;font-weight:500">{{toast.message}}</span>
+    <button class="btn-close btn-close-sm ms-auto" (click)="dismissToast()"></button>
+  </div>
+</div>
+
+<div class="pm-main">
+  <header class="pm-header">
+    <div class="pm-header-title" style="flex-shrink:0">
+      <div class="d-flex align-items-center gap-2">
+        <div class="pm-avatar" style="width:36px;height:36px;font-size:13px;background:var(--pm-gradient-slate)">DV</div>
+        <div>
+          <h1>Developer Portal</h1>
+          <p>APIs, Integration & Technical Operations</p>
+        </div>
+      </div>
+    </div>
+    <div class="pm-header-search">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Search API docs, webhooks, partner resources...">
+    </div>
+    <div class="pm-header-actions">
+      <button class="pm-header-btn" (click)="openModal('healthCheckModal')" title="API Status"><i class="bi bi-heart-pulse"></i></button>
+      <button class="pm-header-btn" (click)="openModal('notificationModal')" title="Alerts"><i class="bi bi-bell"></i><span class="counter">4</span></button>
+    </div>
+  </header>
+
+  <div class="pm-page-bar">
+    <div>
+      <div class="pm-breadcrumb"><a href="javascript:void(0)">Developer Home</a> / <a href="javascript:void(0)">Programs</a> / <strong>Partner & Marketplace</strong></div>
+      <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 4.9 — Partner Program & Marketplace</h2>
+      <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Manage partner tiers, marketplace apps, referrals, revenue share, and collaborate with the community.</p>
+    </div>
+    <div class="d-flex flex-wrap" style="gap:8px">
+      <button class="pm-btn" (click)="openModal('referralLinkModal')"><i class="bi bi-link-45deg"></i> Referral Link</button>
+      <button class="pm-btn" (click)="openModal('submitAppModal')"><i class="bi bi-cloud-upload"></i> Publish App</button>
+      <button class="pm-btn-primary pm-btn" (click)="openModal('applyPartnerModal')"><i class="bi bi-stars"></i> Upgrade Tier</button>
+    </div>
+  </div>
+
+  <div class="pm-content">
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card pm-card-accent" style="min-height:170px">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Partner Status <span style="color:#86efac">● Active</span></p>
+              <div class="pm-stat-value" style="margin:8px 0;color:#fff">Certified Partner</div>
+              <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Tier benefits active: 10% Rev Share, App Listing.</p>
+            </div>
+            <div class="pm-icon-circle" style="background:rgba(255,255,255,.2);color:#fff;width:48px;height:48px;font-size:20px"><i class="bi bi-award"></i></div>
+          </div>
+          <div class="d-flex flex-wrap mt-3" style="gap:8px">
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('certExamModal')">Certifications</button>
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal('revenueShareModal')">View Rev Share</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-info)">ACTIVE REFERRALS</p>
+          <div class="pm-stat-value" style="margin:6px 0">42</div>
+          <span class="pm-badge pm-badge-success"><i class="bi bi-arrow-up"></i> +8 this month</span>
+          <div class="mt-3"><div class="d-flex justify-content-between mb-1" style="font-size:11px;color:var(--pm-muted)"><span>Target 50</span><span>84%</span></div><div class="pm-progress"><div class="pm-progress-bar" style="width:84%;background:var(--pm-info)"></div></div></div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-accent)">MONTHLY COMMISSIONS</p>
+          <div class="pm-stat-value" style="margin:6px 0">KES 128,450</div>
+          <span class="pm-badge pm-badge-success"><i class="bi bi-check-circle"></i> Paid automatically</span>
+          <div class="mt-3" style="font-size:12px"><button class="pm-btn pm-btn-sm w-100" (click)="openModal('payoutHistoryModal')">Payout History</button></div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-purple)">
+          <p class="pm-stat-label" style="color:var(--pm-purple)">MARKETPLACE APPS</p>
+          <div class="pm-stat-value" style="margin:6px 0">2 Live</div>
+          <span class="pm-badge pm-badge-purple"><i class="bi bi-star-fill text-warning"></i> 4.8 Avg Rating</span>
+          <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)"><div>Active installs: <strong>314</strong></div><div>Reviews pending reply: <strong>3</strong></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="pm-section-title"><i class="bi bi-diagram-3" style="color:var(--pm-primary)"></i> 4.9.1 Partner Onboarding</h3>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('applyPartnerModal')">Tiers</button>
+          </div>
+          <p class="pm-section-sub mb-3">Manage your partner status, complete certifications, and access tier benefits.</p>
+          <div class="status-row"><div><strong>Technical Certification</strong><div style="font-size:11px;color:var(--pm-muted)">Valid until Dec 2026</div></div><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('certExamModal')">Renew</button></div>
+          <div class="status-row"><div><strong>Security Assessment</strong><div style="font-size:11px;color:var(--pm-muted)">SAQ validation complete</div></div><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('securityAssessmentModal')">Review</button></div>
+          <div class="status-row"><div><strong>Performance Benchmarking</strong><div style="font-size:11px;color:var(--pm-muted)">API limits & load tests</div></div><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('perfBenchmarkModal')">Report</button></div>
+          <div class="status-row"><div><strong>Co-Marketing Hub</strong><div style="font-size:11px;color:var(--pm-muted)">Logos, brand guidelines</div></div><button class="pm-btn pm-btn-sm pm-btn-outline" (click)="openModal('coMarketingModal')">Assets</button></div>
+          <div class="status-row"><div><strong>Lead Sharing Portal</strong><div style="font-size:11px;color:var(--pm-muted)">2 new leads from PayMo</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('leadSharingModal')">View Leads</button></div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="pm-card h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="pm-section-title"><i class="bi bi-shop" style="color:var(--pm-warning)"></i> 4.9.2 Marketplace Integration</h3>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('submitAppModal')">Add App</button>
+          </div>
+          <p class="pm-section-sub mb-3">List your apps, track referrals, and showcase industry solutions.</p>
+          <div class="info-block mb-3 p-2">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:32px;height:32px;background:var(--pm-info-soft);color:var(--pm-primary);font-size:14px"><i class="bi bi-cart"></i></div><strong>WooCommerce Sync</strong></div>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('editAppModal')">Manage</button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center" style="font-size:12px"><span class="pm-badge pm-badge-success">Published</span><span>210 Installs</span></div>
+          </div>
+          <div class="info-block mb-3 p-2">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <div class="d-flex align-items-center gap-2"><div class="pm-icon-circle" style="width:32px;height:32px;background:var(--pm-accent-soft);color:var(--pm-accent);font-size:14px"><i class="bi bi-calculator"></i></div><strong>Payroll Importer</strong></div>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('editAppModal')">Manage</button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center" style="font-size:12px"><span class="pm-badge pm-badge-success">Published</span><span>104 Installs</span></div>
+          </div>
+          <div class="d-flex gap-2 mb-2">
+            <button class="pm-btn pm-btn-sm flex-fill justify-content-center" (click)="openModal('appReviewsModal')"><i class="bi bi-star"></i> App Reviews</button>
+            <button class="pm-btn pm-btn-sm flex-fill justify-content-center" (click)="openModal('roiCalculatorModal')"><i class="bi bi-graph-up-arrow"></i> ROI Calc</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="pm-card h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="pm-section-title"><i class="bi bi-people" style="color:var(--pm-accent)"></i> 4.9.3 Community & Collab</h3>
+            <button class="pm-btn pm-btn-sm" (click)="openModal('forumTopicModal')">Post</button>
+          </div>
+          <p class="pm-section-sub mb-3">Engage with engineers, vote on roadmaps, and join dev events.</p>
+          <div class="quick-action-grid mb-3">
+            <button class="quick-action-btn" (click)="openModal('roadmapVoteModal')"><i class="bi bi-map text-primary d-block mb-1"></i> Roadmap Votes</button>
+            <button class="quick-action-btn" (click)="openModal('betaEnrollModal')"><i class="bi bi-bug text-warning d-block mb-1"></i> Beta Programs</button>
+            <button class="quick-action-btn" (click)="openModal('hackathonModal')"><i class="bi bi-laptop text-success d-block mb-1"></i> Hackathons</button>
+            <button class="quick-action-btn" (click)="openModal('newsletterSubscribeModal')"><i class="bi bi-envelope text-info d-block mb-1"></i> Tech Blog</button>
+          </div>
+          <div class="info-block p-2">
+            <h4 style="font-size:13px;font-weight:700;margin:0 0 8px">Upcoming Events</h4>
+            <div class="d-flex justify-content-between align-items-center mb-2" style="font-size:12px">
+              <span><strong>API Office Hours</strong><br><span class="text-muted">Every Friday, 10 AM</span></span>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('officeHoursModal')">Book</button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2" style="font-size:12px">
+              <span><strong>Auth Workshop</strong><br><span class="text-muted">15 Nov 2026</span></span>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('techWorkshopModal')">Join</button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center" style="font-size:12px">
+              <span><strong>Partner Summit '26</strong><br><span class="text-muted">01 Dec 2026, Nairobi</span></span>
+              <button class="pm-btn pm-btn-sm" (click)="openModal('partnerSummitModal')">RSVP</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 1. Apply Partner Modal -->
+<div *ngIf="modals['applyPartnerModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'applyPartnerModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-stars text-primary me-2"></i>Partner Tier Upgrade</h5><button class="btn-close" (click)="closeModal('applyPartnerModal')"></button></div>
+    <div class="modal-body">
+      <div class="pm-stepper">
+        <div class="pm-step" [class.active]="applyStep===1" [class.completed]="applyStep>1"><div class="pm-step-num">1</div><span class="pm-step-label">Select Tier</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [class.active]="applyStep===2" [class.completed]="applyStep>2"><div class="pm-step-num">2</div><span class="pm-step-label">Business Info</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [class.active]="applyStep===3"><div class="pm-step-num">3</div><span class="pm-step-label">Verify</span></div>
+      </div>
+      <div *ngIf="applyStep===1" class="fade-step active">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 1: Select Partner Tier</h6>
+        <div class="row g-3">
+          <div class="col-md-6"><div class="tier-card" [class.selected]="selectedTier==='registered'" (click)="selectedTier='registered'"><h5 style="color:var(--pm-muted)">Registered Developer</h5><p style="font-size:12px;color:var(--pm-muted)">Sandbox access, forum entry.</p><strong>Free</strong></div></div>
+          <div class="col-md-6"><div class="tier-card" [class.selected]="selectedTier==='certified'" (click)="selectedTier='certified'"><h5 style="color:var(--pm-primary)">Certified Partner (Current)</h5><p style="font-size:12px;color:var(--pm-muted)">Production API, 10% Rev Share.</p><strong>Certified</strong></div></div>
+          <div class="col-md-6"><div class="tier-card" [class.selected]="selectedTier==='premium'" (click)="selectedTier='premium'"><h5 style="color:var(--pm-accent)">Premium Partner</h5><p style="font-size:12px;color:var(--pm-muted)">High volume limits, Dedicated tech support, 15% Rev Share.</p><strong>Min. KES 10M/mo Vol</strong></div></div>
+          <div class="col-md-6"><div class="tier-card" [class.selected]="selectedTier==='strategic'" (click)="selectedTier='strategic'"><h5 style="color:var(--pm-purple)">Strategic Partner</h5><p style="font-size:12px;color:var(--pm-muted)">Co-selling, white-label, enterprise SLA.</p><strong>Custom</strong></div></div>
+        </div>
+      </div>
+      <div *ngIf="applyStep===2" class="fade-step active">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 2: Business Justification</h6>
+        <div class="mb-3"><label class="pm-form-label">Company Name</label><input class="pm-form-control" value="TechCorp Ltd" disabled></div>
+        <div class="mb-3"><label class="pm-form-label">Projected Monthly Volume (KES)</label><select class="pm-form-control" [(ngModel)]="applyForm.volume"><option>10M - 50M</option><option>50M - 100M</option><option>100M+</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Integration Description</label><textarea class="pm-form-control" rows="3" [(ngModel)]="applyForm.description">Scaling our ERP integration to serve 500+ merchants.</textarea></div>
+      </div>
+      <div *ngIf="applyStep===3" class="fade-step active">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 3: Verification & Agreement</h6>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="applyForm.check1" checked><label class="form-check-label" style="font-size:13px">I confirm our technical certification is valid.</label></div>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" [(ngModel)]="applyForm.check2" checked><label class="form-check-label" style="font-size:13px">I have uploaded the latest SAQ security document.</label></div>
+        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" [(ngModel)]="applyForm.check3"><label class="form-check-label" style="font-size:13px">I accept the Premium Partner Terms & Conditions.</label></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="pm-btn" *ngIf="applyStep>1" (click)="prevApplyStep()"><i class="bi bi-arrow-left"></i> Back</button>
+      <button class="pm-btn" (click)="cancelApply()">Cancel</button>
+      <button class="pm-btn pm-btn-primary" *ngIf="applyStep<3" (click)="nextApplyStep()">Continue <i class="bi bi-arrow-right"></i></button>
+      <button class="pm-btn pm-btn-accent" *ngIf="applyStep===3" (click)="submitApply()">Submit Application</button>
+    </div>
+  </div></div>
+</div>
+<div *ngIf="modals['applyPartnerModal']" class="modal-backdrop fade show" (click)="closeModal('applyPartnerModal')"></div>
+
+<!-- 2. Certification Exam Modal -->
+<div *ngIf="modals['certExamModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'certExamModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-award me-2"></i>Technical Certification</h5><button class="btn-close" (click)="closeModal('certExamModal')"></button></div>
+    <div class="modal-body">
+      <div class="p-3 rounded mb-3" style="background:var(--pm-accent-soft);border:1px solid var(--pm-accent)"><div class="d-flex justify-content-between align-items-center"><div><h6 style="margin:0;color:var(--pm-accent)">Current Status: Certified</h6><div style="font-size:11px;color:var(--pm-muted)">Valid until Dec 15, 2026</div></div><i class="bi bi-check-circle-fill text-success" style="font-size:24px"></i></div></div>
+      <p style="font-size:13px;color:var(--pm-ink-soft)">Annual recertification ensures your integration complies with latest OpenAPI specs and security standards.</p>
+      <div class="info-block p-3 mb-3"><h6 style="font-size:13px;font-weight:700">Exam Details</h6><ul style="font-size:12px;margin:0;padding-left:16px;color:var(--pm-muted)"><li>45 Multiple Choice Questions</li><li>Focus on OAuth2, Idempotency, Webhooks</li><li>Time limit: 60 minutes</li><li>Passing score: 80%</li></ul></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('certExamModal')">Close</button><button class="pm-btn pm-btn-primary" (click)="processAction('certExamModal','Redirecting to Exam Portal...','EXM-001')">Start Recertification</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['certExamModal']" class="modal-backdrop fade show" (click)="closeModal('certExamModal')"></div>
+
+<!-- 3. Security Assessment Modal -->
+<div *ngIf="modals['securityAssessmentModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'securityAssessmentModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-lock me-2"></i>Security Assessment</h5><button class="btn-close" (click)="closeModal('securityAssessmentModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Integration Type</label><select class="pm-form-control"><option>Server-to-Server (API)</option><option>Mobile SDK</option><option>E-commerce Plugin</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">PCI DSS SAQ Level</label><select class="pm-form-control"><option>SAQ A</option><option>SAQ A-EP</option><option>SAQ D</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Upload Latest Vulnerability Scan</label><input type="file" class="pm-form-control"></div>
+      <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px"><i class="bi bi-exclamation-triangle text-warning me-1"></i> Security assessments are manually reviewed by PayMo InfoSec team within 3-5 business days.</div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('securityAssessmentModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('securityAssessmentModal','Assessment documents submitted for review.','SEC-2026-881')">Submit Assessment</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['securityAssessmentModal']" class="modal-backdrop fade show" (click)="closeModal('securityAssessmentModal')"></div>
+
+<!-- 4. Performance Benchmark Modal -->
+<div *ngIf="modals['perfBenchmarkModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'perfBenchmarkModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-speedometer2 me-2"></i>Performance Benchmarking</h5><button class="btn-close" (click)="closeModal('perfBenchmarkModal')"></button></div>
+    <div class="modal-body">
+      <div class="row g-3"><div class="col-6"><div class="info-block text-center"><div style="font-size:11px;color:var(--pm-muted)">API RATE LIMIT</div><div style="font-size:20px;font-weight:700;color:var(--pm-primary)">100 req/sec</div></div></div><div class="col-6"><div class="info-block text-center"><div style="font-size:11px;color:var(--pm-muted)">WEBHOOK LATENCY</div><div style="font-size:20px;font-weight:700;color:var(--pm-accent)">< 400ms</div></div></div></div>
+      <div class="mt-4"><label class="pm-form-label">Request Limit Increase</label><div class="input-group mb-2"><input type="number" class="pm-form-control" placeholder="Target req/sec"><button class="pm-btn pm-btn-primary" (click)="processAction('perfBenchmarkModal','Limit increase request submitted.')">Request</button></div><p style="font-size:11px;color:var(--pm-muted)">Requires Premium Partner tier and load testing validation logs.</p></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('perfBenchmarkModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['perfBenchmarkModal']" class="modal-backdrop fade show" (click)="closeModal('perfBenchmarkModal')"></div>
+
+<!-- 5. Revenue Share Modal -->
+<div *ngIf="modals['revenueShareModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'revenueShareModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-cash-coin text-success me-2"></i>Revenue Share Model</h5><button class="btn-close" (click)="closeModal('revenueShareModal')"></button></div>
+    <div class="modal-body">
+      <div class="info-block mb-3 d-flex justify-content-between align-items-center"><div><div style="font-size:12px;color:var(--pm-muted)">Your Tier</div><div style="font-weight:700">Certified Partner</div></div><div style="font-size:24px;font-weight:700;color:var(--pm-accent)">10%</div></div>
+      <div class="table-responsive"><table class="pm-table"><thead><tr><th>Tier</th><th>Rev Share</th><th>Payout Schedule</th></tr></thead><tbody><tr><td>Registered</td><td>0%</td><td>N/A</td></tr><tr style="background:var(--pm-surface-2)"><td><strong>Certified</strong></td><td><strong>10%</strong></td><td><strong>Monthly (Net 15)</strong></td></tr><tr><td>Premium</td><td>15%</td><td>Bi-weekly</td></tr><tr><td>Strategic</td><td>Custom</td><td>Custom</td></tr></tbody></table></div>
+      <p style="font-size:11px;color:var(--pm-muted);margin-top:12px">Revenue share is calculated based on net transaction fees collected from merchants referred through your partner ID.</p>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('revenueShareModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['revenueShareModal']" class="modal-backdrop fade show" (click)="closeModal('revenueShareModal')"></div>
+
+<!-- 6. Co-Marketing Modal -->
+<div *ngIf="modals['coMarketingModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'coMarketingModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-megaphone me-2"></i>Co-Marketing Hub</h5><button class="btn-close" (click)="closeModal('coMarketingModal')"></button></div>
+    <div class="modal-body">
+      <div class="row g-3">
+        <div class="col-md-6"><div class="info-block text-center" style="cursor:pointer" (click)="processAction('coMarketingModal','Downloading Brand Kit...')"><i class="bi bi-file-zip d-block mb-2" style="font-size:24px;color:var(--pm-primary)"></i><strong style="font-size:13px">Brand Kit & Logos</strong></div></div>
+        <div class="col-md-6"><div class="info-block text-center" style="cursor:pointer" (click)="processAction('coMarketingModal','Downloading Email Templates...')"><i class="bi bi-layout-text-window d-block mb-2" style="font-size:24px;color:var(--pm-info)"></i><strong style="font-size:13px">Email Templates</strong></div></div>
+        <div class="col-md-6"><div class="info-block text-center" style="cursor:pointer" (click)="processAction('coMarketingModal','Downloading Social Banners...')"><i class="bi bi-vector-pen d-block mb-2" style="font-size:24px;color:var(--pm-warning)"></i><strong style="font-size:13px">Social Banners</strong></div></div>
+        <div class="col-md-6"><div class="info-block text-center" style="cursor:pointer" (click)="processAction('coMarketingModal','Downloading Boilerplate...')"><i class="bi bi-chat-quote d-block mb-2" style="font-size:24px;color:var(--pm-purple)"></i><strong style="font-size:13px">Press Release Boilerplate</strong></div></div>
+      </div>
+      <div class="mt-4"><h6 style="font-size:13px;font-weight:700">Request Custom Campaign</h6><textarea class="pm-form-control mb-2" rows="2" placeholder="Describe your joint marketing idea..."></textarea><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="processAction('coMarketingModal','Marketing request submitted to partner team.')">Submit Request</button></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('coMarketingModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['coMarketingModal']" class="modal-backdrop fade show" (click)="closeModal('coMarketingModal')"></div>
+
+<!-- 7. Lead Sharing Modal -->
+<div *ngIf="modals['leadSharingModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'leadSharingModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-lines-fill text-primary me-2"></i>Partner Lead Sharing Portal</h5><button class="btn-close" (click)="closeModal('leadSharingModal')"></button></div>
+    <div class="modal-body">
+      <div class="table-responsive"><table class="pm-table"><thead><tr><th>Lead Name</th><th>Industry</th><th>Interest</th><th>Date Shared</th><th>Status</th><th>Action</th></tr></thead><tbody>
+        <tr *ngFor="let l of leads"><td>{{l.name}}</td><td>{{l.industry}}</td><td>{{l.interest}}</td><td>{{l.date}}</td><td><span class="pm-badge" [ngClass]="l.statusClass">{{l.status}}</span></td><td><button class="pm-btn pm-btn-sm" [ngClass]="l.status==='New'?'pm-btn-primary':''" [disabled]="l.status==='Closed Won'" (click)="processAction('leadSharingModal','Lead '+l.name+' status updated.')">{{l.status==='New'?'Accept':l.status==='Closed Won'?'Done':'Update'}}</button></td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('leadSharingModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['leadSharingModal']" class="modal-backdrop fade show" (click)="closeModal('leadSharingModal')"></div>
+
+<!-- 8. Submit App Modal -->
+<div *ngIf="modals['submitAppModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'submitAppModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-cloud-upload text-warning me-2"></i>Submit App to Marketplace</h5><button class="btn-close" (click)="closeModal('submitAppModal')"></button></div>
+    <div class="modal-body">
+      <div class="pm-stepper">
+        <div class="pm-step" [class.active]="appStep===1" [class.completed]="appStep>1"><div class="pm-step-num">1</div><span class="pm-step-label">Details</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [class.active]="appStep===2" [class.completed]="appStep>2"><div class="pm-step-num">2</div><span class="pm-step-label">Media</span></div><div class="pm-step-line"></div>
+        <div class="pm-step" [class.active]="appStep===3"><div class="pm-step-num">3</div><span class="pm-step-label">Pricing</span></div>
+      </div>
+      <div *ngIf="appStep===1" class="fade-step active">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 1: App Details</h6>
+        <div class="mb-3"><label class="pm-form-label">App Name</label><input class="pm-form-control" placeholder="e.g. Magento 2 Sync" [(ngModel)]="appForm.name"></div>
+        <div class="mb-3"><label class="pm-form-label">Short Description</label><input class="pm-form-control" placeholder="1-sentence summary" [(ngModel)]="appForm.desc"></div>
+        <div class="mb-3"><label class="pm-form-label">Category</label><select class="pm-form-control" [(ngModel)]="appForm.category"><option>E-commerce Plugin</option><option>Accounting Sync</option><option>POS Integration</option><option>Payroll</option></select></div>
+      </div>
+      <div *ngIf="appStep===2" class="fade-step active">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 2: Media & Support</h6>
+        <div class="mb-3"><label class="pm-form-label">App Logo (URL)</label><input class="pm-form-control" placeholder="https://..." [(ngModel)]="appForm.logo"></div>
+        <div class="mb-3"><label class="pm-form-label">Demo Video Link</label><input class="pm-form-control" placeholder="YouTube/Vimeo URL" [(ngModel)]="appForm.video"></div>
+        <div class="mb-3"><label class="pm-form-label">Support Email</label><input class="pm-form-control" placeholder="support@yourdomain.com" [(ngModel)]="appForm.email"></div>
+      </div>
+      <div *ngIf="appStep===3" class="fade-step active">
+        <h6 style="font-weight:700;margin-bottom:16px">Step 3: Pricing & Review</h6>
+        <div class="mb-3"><label class="pm-form-label">Billing Model</label><select class="pm-form-control" [(ngModel)]="appForm.billing"><option>Free</option><option>One-time Purchase</option><option>Monthly Subscription</option></select></div>
+        <div class="mb-3"><label class="pm-form-label">Price (KES)</label><input type="number" class="pm-form-control" value="0" [(ngModel)]="appForm.price"></div>
+        <div class="p-3 rounded" style="background:var(--pm-warning-soft);font-size:12px">All marketplace apps require a security and functionality review by PayMo engineering (SLA: 5 business days).</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="pm-btn" *ngIf="appStep>1" (click)="prevAppStep()"><i class="bi bi-arrow-left"></i> Back</button>
+      <button class="pm-btn" (click)="cancelApp()">Cancel</button>
+      <button class="pm-btn pm-btn-primary" *ngIf="appStep<3" (click)="nextAppStep()">Continue <i class="bi bi-arrow-right"></i></button>
+      <button class="pm-btn pm-btn-accent" *ngIf="appStep===3" (click)="submitApp()">Submit App</button>
+    </div>
+  </div></div>
+</div>
+<div *ngIf="modals['submitAppModal']" class="modal-backdrop fade show" (click)="closeModal('submitAppModal')"></div>
+
+<!-- 9. Edit App Modal -->
+<div *ngIf="modals['editAppModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'editAppModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Manage App Listing</h5><button class="btn-close" (click)="closeModal('editAppModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Select App</label><select class="pm-form-control"><option>WooCommerce Sync</option><option>Payroll Importer</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Status</label><select class="pm-form-control"><option>Published</option><option>Hidden</option><option>Deprecated</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Update Version Note</label><textarea class="pm-form-control" rows="2" placeholder="v2.1.0 - Added refund webhook support"></textarea></div>
+      <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="processAction('editAppModal','App listing updated successfully.')">Save Changes</button>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('editAppModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['editAppModal']" class="modal-backdrop fade show" (click)="closeModal('editAppModal')"></div>
+
+<!-- 10. App Reviews Modal -->
+<div *ngIf="modals['appReviewsModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'appReviewsModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-star-fill text-warning me-2"></i>App Reviews & Ratings</h5><button class="btn-close" (click)="closeModal('appReviewsModal')"></button></div>
+    <div class="modal-body">
+      <div class="d-flex align-items-center gap-4 mb-4"><div class="text-center"><h2 style="font-family:var(--pm-font-display);font-weight:700;margin:0">4.8</h2><div style="color:var(--pm-warning)"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div><div style="font-size:11px;color:var(--pm-muted)">Based on 86 reviews</div></div><div style="flex:1"><div class="d-flex align-items-center gap-2 mb-1" style="font-size:11px"><span>5</span><div class="pm-progress flex-fill"><div class="pm-progress-bar" style="width:85%;background:var(--pm-warning)"></div></div></div><div class="d-flex align-items-center gap-2 mb-1" style="font-size:11px"><span>4</span><div class="pm-progress flex-fill"><div class="pm-progress-bar" style="width:10%;background:var(--pm-warning)"></div></div></div><div class="d-flex align-items-center gap-2" style="font-size:11px"><span>3</span><div class="pm-progress flex-fill"><div class="pm-progress-bar" style="width:5%;background:var(--pm-warning)"></div></div></div></div></div>
+      <div class="status-row flex-column align-items-start"><div class="d-flex justify-content-between w-100 mb-1"><strong>Nairobi Merchants</strong><span style="color:var(--pm-warning)"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></span></div><p style="font-size:12px;margin:0">Great integration, but the refund sync takes a few minutes.</p><div class="mt-2 w-100"><textarea class="pm-form-control mb-1" rows="1" placeholder="Reply to review..."></textarea><button class="pm-btn pm-btn-sm" (click)="processAction('appReviewsModal','Reply posted.')">Reply</button></div></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('appReviewsModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['appReviewsModal']" class="modal-backdrop fade show" (click)="closeModal('appReviewsModal')"></div>
+
+<!-- 11. ROI Calculator Modal -->
+<div *ngIf="modals['roiCalculatorModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'roiCalculatorModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-graph-up-arrow text-success me-2"></i>Partner ROI Calculator</h5><button class="btn-close" (click)="closeModal('roiCalculatorModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Avg Merchant Monthly Volume (KES)</label><input class="pm-form-control" type="number" value="1000000"></div>
+      <div class="mb-3"><label class="pm-form-label">Number of Referred Merchants</label><input type="number" class="pm-form-control" value="50"></div>
+      <div class="mb-3"><label class="pm-form-label">Your Partner Tier</label><select class="pm-form-control"><option>Certified (10%)</option><option>Premium (15%)</option></select></div>
+      <hr class="pm-divider"><div class="p-3 rounded text-center" style="background:var(--pm-surface-2)"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">ESTIMATED MONTHLY COMMISSION</div><div style="font-size:28px;font-weight:700;color:var(--pm-accent)">KES 50,000</div><div style="font-size:12px;color:var(--pm-muted)">Based on average MDR of 1%</div></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('roiCalculatorModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['roiCalculatorModal']" class="modal-backdrop fade show" (click)="closeModal('roiCalculatorModal')"></div>
+
+<!-- 12. Referral Link Modal -->
+<div *ngIf="modals['referralLinkModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'referralLinkModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-link-45deg me-2"></i>Partner Referral Links</h5><button class="btn-close" (click)="closeModal('referralLinkModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Your Default Referral Link</label><div class="input-group"><input type="text" class="pm-form-control" value="https://paymo.co.ke/join?ref=TECHCORP" readonly><button class="pm-btn pm-btn-primary" (click)="copyToClipboard('https://paymo.co.ke/join?ref=TECHCORP')"><i class="bi bi-clipboard"></i></button></div></div>
+      <hr class="pm-divider"><h6 style="font-size:13px;font-weight:700">Generate Custom Campaign Link</h6>
+      <div class="mb-2"><input type="text" class="pm-form-control" placeholder="Campaign Name (e.g. black-friday-26)" [(ngModel)]="campaignName"></div>
+      <button class="pm-btn pm-btn-sm" (click)="processAction('referralLinkModal','Custom tracking link generated for: '+campaignName)">Generate</button>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('referralLinkModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['referralLinkModal']" class="modal-backdrop fade show" (click)="closeModal('referralLinkModal')"></div>
+
+<!-- 13. Payout History Modal -->
+<div *ngIf="modals['payoutHistoryModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'payoutHistoryModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-cash-stack text-success me-2"></i>Commission Payout History</h5><button class="btn-close" (click)="closeModal('payoutHistoryModal')"></button></div>
+    <div class="modal-body">
+      <div class="table-responsive"><table class="pm-table"><thead><tr><th>Month</th><th>Active Merchants</th><th>Total Volume</th><th>Commission</th><th>Status</th></tr></thead><tbody>
+        <tr *ngFor="let p of payouts"><td>{{p.month}}</td><td>{{p.merchants}}</td><td>{{p.volume}}</td><td><strong>{{p.commission}}</strong></td><td><span class="pm-badge" [ngClass]="p.statusClass">{{p.status}}</span></td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn pm-btn-outline" (click)="exportPayouts()"><i class="bi bi-download"></i> Export CSV</button><button class="pm-btn" (click)="closeModal('payoutHistoryModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['payoutHistoryModal']" class="modal-backdrop fade show" (click)="closeModal('payoutHistoryModal')"></div>
+
+<!-- 14. Forum Topic Modal -->
+<div *ngIf="modals['forumTopicModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'forumTopicModal')">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-chat-left-text me-2"></i>Create Forum Post</h5><button class="btn-close" (click)="closeModal('forumTopicModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Topic Category</label><select class="pm-form-control"><option>API Integration Help</option><option>SDK & Plugins</option><option>Best Practices</option><option>Feature Requests</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Title</label><input class="pm-form-control" placeholder="e.g. Handling webhook idempotency in Node.js"></div>
+      <div class="mb-3"><label class="pm-form-label">Content (Markdown supported)</label><textarea class="pm-form-control" rows="5" placeholder="Describe your question or share your snippet..."></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('forumTopicModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('forumTopicModal','Forum topic posted successfully!')">Post Topic</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['forumTopicModal']" class="modal-backdrop fade show" (click)="closeModal('forumTopicModal')"></div>
+
+<!-- 15. Roadmap Vote Modal -->
+<div *ngIf="modals['roadmapVoteModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'roadmapVoteModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-map me-2 text-primary"></i>Roadmap Voting</h5><button class="btn-close" (click)="closeModal('roadmapVoteModal')"></button></div>
+    <div class="modal-body">
+      <div class="d-flex justify-content-between align-items-center p-3 border rounded mb-2" *ngFor="let r of roadmapItems"><div><strong style="font-size:13px">{{r.title}}</strong><div style="font-size:11px;color:var(--pm-muted)">{{r.status}}</div></div><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="voteRoadmap(r)"><i class="bi bi-arrow-up"></i> {{r.votes}}</button></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('roadmapVoteModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['roadmapVoteModal']" class="modal-backdrop fade show" (click)="closeModal('roadmapVoteModal')"></div>
+
+<!-- 16. Beta Enroll Modal -->
+<div *ngIf="modals['betaEnrollModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'betaEnrollModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bug text-warning me-2"></i>Beta Programs</h5><button class="btn-close" (click)="closeModal('betaEnrollModal')"></button></div>
+    <div class="modal-body">
+      <div class="d-flex justify-content-between align-items-center p-3 border rounded mb-2"><div><strong style="font-size:13px">v2 API Endpoints</strong><div style="font-size:11px;color:var(--pm-muted)">New batch payout structure</div></div><button class="pm-btn pm-btn-sm pm-btn-accent" (click)="processAction('betaEnrollModal','Enrolled in v2 Beta!')">Enroll</button></div>
+      <div class="d-flex justify-content-between align-items-center p-3 border rounded"><div><strong style="font-size:13px">WebSocket Webhooks</strong><div style="font-size:11px;color:var(--pm-muted)">Real-time event streaming</div></div><button class="pm-btn pm-btn-sm pm-btn-accent" (click)="processAction('betaEnrollModal','Enrolled in WS Beta!')">Enroll</button></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('betaEnrollModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['betaEnrollModal']" class="modal-backdrop fade show" (click)="closeModal('betaEnrollModal')"></div>
+
+<!-- 17. Hackathon Modal -->
+<div *ngIf="modals['hackathonModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'hackathonModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-laptop text-success me-2"></i>PayMo Hackathon 2026</h5><button class="btn-close" (click)="closeModal('hackathonModal')"></button></div>
+    <div class="modal-body text-center">
+      <i class="bi bi-trophy" style="font-size:48px;color:var(--pm-warning)"></i>
+      <h5 class="mt-3 fw-bold">Build the Future of Payments</h5>
+      <p style="font-size:13px;color:var(--pm-ink-soft)">48-hour virtual hackathon. KES 500,000 in prizes. Opens Dec 10, 2026.</p>
+      <button class="pm-btn pm-btn-primary" (click)="processAction('hackathonModal','Registered for Hackathon 2026!')">Register Team</button>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('hackathonModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['hackathonModal']" class="modal-backdrop fade show" (click)="closeModal('hackathonModal')"></div>
+
+<!-- 18. Newsletter Subscribe Modal -->
+<div *ngIf="modals['newsletterSubscribeModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'newsletterSubscribeModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-envelope text-info me-2"></i>Tech Blog & Newsletter</h5><button class="btn-close" (click)="closeModal('newsletterSubscribeModal')"></button></div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--pm-ink-soft)">Get weekly engineering deep-dives, API changelogs, and community highlights.</p>
+      <div class="mb-3"><label class="pm-form-label">Email Address</label><input type="email" class="pm-form-control" placeholder="dev@company.com"></div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Also notify me of new beta programs</label></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('newsletterSubscribeModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('newsletterSubscribeModal','Subscribed to Tech Blog!')">Subscribe</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['newsletterSubscribeModal']" class="modal-backdrop fade show" (click)="closeModal('newsletterSubscribeModal')"></div>
+
+<!-- 19. Office Hours Modal -->
+<div *ngIf="modals['officeHoursModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'officeHoursModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-calendar-event me-2"></i>Book API Office Hours</h5><button class="btn-close" (click)="closeModal('officeHoursModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Select Date</label><input type="date" class="pm-form-control"></div>
+      <div class="mb-3"><label class="pm-form-label">Topic / Question</label><textarea class="pm-form-control" rows="3" placeholder="Briefly describe what you want to discuss..."></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('officeHoursModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('officeHoursModal','Office hours slot booked!')">Book Slot</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['officeHoursModal']" class="modal-backdrop fade show" (click)="closeModal('officeHoursModal')"></div>
+
+<!-- 20. Tech Workshop Modal -->
+<div *ngIf="modals['techWorkshopModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'techWorkshopModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-laptop me-2"></i>Auth & Security Workshop</h5><button class="btn-close" (click)="closeModal('techWorkshopModal')"></button></div>
+    <div class="modal-body">
+      <div class="info-block p-3 mb-3"><h6 style="font-size:13px;font-weight:700;margin-bottom:8px">Workshop Details</h6><ul style="font-size:12px;margin:0;padding-left:16px;color:var(--pm-muted)"><li>Date: 15 Nov 2026, 2:00 PM EAT</li><li>Duration: 90 minutes</li><li>Topics: OAuth2 PKCE flow, mTLS setup, API key rotation</li><li>Prerequisites: Active sandbox account</li></ul></div>
+      <div class="mb-3"><label class="pm-form-label">Questions for the Speaker</label><textarea class="pm-form-control" rows="2" placeholder="Any specific topics you'd like covered..."></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('techWorkshopModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('techWorkshopModal','Registered for Auth Workshop!')">Register</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['techWorkshopModal']" class="modal-backdrop fade show" (click)="closeModal('techWorkshopModal')"></div>
+
+<!-- 21. Partner Summit Modal -->
+<div *ngIf="modals['partnerSummitModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'partnerSummitModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-building me-2"></i>Partner Summit 2026</h5><button class="btn-close" (click)="closeModal('partnerSummitModal')"></button></div>
+    <div class="modal-body">
+      <div class="text-center mb-3"><i class="bi bi-geo-alt-fill" style="font-size:32px;color:var(--pm-primary)"></i><h5 class="mt-2 fw-bold">01 December 2026 · Nairobi, Kenya</h5><p style="font-size:13px;color:var(--pm-ink-soft)">Full-day event with product roadmap reveals, partner awards, and networking.</p></div>
+      <div class="mb-3"><label class="pm-form-label">Dietary Requirements</label><select class="pm-form-control"><option>None</option><option>Vegetarian</option><option>Vegan</option><option>Halal</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Special Accommodations</label><textarea class="pm-form-control" rows="2" placeholder="Any accessibility or travel needs..."></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('partnerSummitModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('partnerSummitModal','RSVP confirmed for Partner Summit 2026!')">Confirm RSVP</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['partnerSummitModal']" class="modal-backdrop fade show" (click)="closeModal('partnerSummitModal')"></div>
+
+<!-- 22. Health Check Modal -->
+<div *ngIf="modals['healthCheckModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'healthCheckModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-heart-pulse me-2"></i>API Health Status</h5><button class="btn-close" (click)="closeModal('healthCheckModal')"></button></div>
+    <div class="modal-body">
+      <div class="d-flex align-items-center gap-2 mb-3"><span class="pm-badge pm-badge-success"><i class="bi bi-circle-fill"></i> All Systems Operational</span><span style="font-size:11px;color:var(--pm-muted)">Last checked: 30 sec ago</span></div>
+      <div class="info-block p-3 mb-2"><div class="d-flex justify-content-between"><strong style="font-size:13px">Auth API</strong><span style="font-size:12px;color:var(--pm-success)">99.99% uptime</span></div><div class="pm-progress mt-2"><div class="pm-progress-bar" style="width:99%;background:var(--pm-success)"></div></div></div>
+      <div class="info-block p-3 mb-2"><div class="d-flex justify-content-between"><strong style="font-size:13px">Payments API</strong><span style="font-size:12px;color:var(--pm-success)">99.97% uptime</span></div><div class="pm-progress mt-2"><div class="pm-progress-bar" style="width:99%;background:var(--pm-success)"></div></div></div>
+      <div class="info-block p-3 mb-2"><div class="d-flex justify-content-between"><strong style="font-size:13px">Webhooks</strong><span style="font-size:12px;color:var(--pm-success)">99.95% uptime</span></div><div class="pm-progress mt-2"><div class="pm-progress-bar" style="width:99%;background:var(--pm-success)"></div></div></div>
+      <div class="info-block p-3"><div class="d-flex justify-content-between"><strong style="font-size:13px">Sandbox</strong><span style="font-size:12px;color:var(--pm-warning)">99.80% uptime</span></div><div class="pm-progress mt-2"><div class="pm-progress-bar" style="width:99%;background:var(--pm-warning)"></div></div></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('healthCheckModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['healthCheckModal']" class="modal-backdrop fade show" (click)="closeModal('healthCheckModal')"></div>
+
+<!-- 23. Notification Modal -->
+<div *ngIf="modals['notificationModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'notificationModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notifications</h5><button class="btn-close" (click)="closeModal('notificationModal')"></button></div>
+    <div class="modal-body">
+      <div class="d-flex align-items-start gap-3 p-2 border-bottom" *ngFor="let n of notifications">
+        <div style="width:8px;height:8px;border-radius:50%;background:{{n.color}};margin-top:6px;flex-shrink:0"></div>
+        <div class="flex-fill"><div style="font-size:13px;font-weight:500">{{n.title}}</div><div style="font-size:11px;color:var(--pm-muted)">{{n.time}}</div></div>
+        <button class="pm-btn pm-btn-sm pm-btn-outline" (click)="processAction('notificationModal',n.action+' — '+n.title)">{{n.action}}</button>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('notificationModal')">Close</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['notificationModal']" class="modal-backdrop fade show" (click)="closeModal('notificationModal')"></div>
+
+<!-- 24. Export Report Modal -->
+<div *ngIf="modals['exportReportModal']" class="modal fade show d-block" tabindex="-1" (click)="onBackdropClick($event,'exportReportModal')">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title"><i class="bi bi-download me-2"></i>Export Report</h5><button class="btn-close" (click)="closeModal('exportReportModal')"></button></div>
+    <div class="modal-body">
+      <div class="mb-3"><label class="pm-form-label">Report Type</label><select class="pm-form-control"><option>Commission Payouts (CSV)</option><option>Lead Summary (CSV)</option><option>App Analytics (CSV)</option></select></div>
+      <div class="mb-3"><label class="pm-form-label">Date Range</label><div class="row g-2"><div class="col-6"><input type="date" class="pm-form-control" value="2026-07-01"></div><div class="col-6"><input type="date" class="pm-form-control" value="2026-10-31"></div></div></div>
+      <div class="form-check mb-3"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Include merchant breakdown</label></div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal('exportReportModal')">Cancel</button><button class="pm-btn pm-btn-primary" (click)="processAction('exportReportModal','Report exported successfully!')">Download</button></div>
+  </div></div>
+</div>
+<div *ngIf="modals['exportReportModal']" class="modal-backdrop fade show" (click)="closeModal('exportReportModal')"></div>

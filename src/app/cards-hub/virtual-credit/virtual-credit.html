@@ -1,0 +1,756 @@
+<!-- HERO STATS ROW -->
+<div class="row g-3">
+  @for (stat of heroStats; track $index) {
+  <div [class]="stat.colClass">
+    <div class="pm-card" [class.pm-card-accent]="stat.isAccent" style="min-height:170px" [style.border-left]="stat.borderLeftColor ? '3px solid ' + stat.borderLeftColor : ''">
+      @if (stat.isAccent) {
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">{{ stat.label }} @if (stat.indicatorDotColor) { <span [style.color]="stat.indicatorDotColor">&#9679;</span> }</p>
+        <div class="pm-stat-value" style="margin:8px 0" [style.color]="stat.valueColor">{{ stat.value }}</div>
+        @if (stat.subtitle) { <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">{{ stat.subtitle }}</p> }
+      } @else {
+        <p class="pm-stat-label" [style.color]="stat.labelColor">{{ stat.label }}</p>
+        <div class="pm-stat-value" style="margin:6px 0">{{ stat.value }}@if (stat.valueSuffix) { <span style="font-size:14px;color:var(--pm-muted)">{{ stat.valueSuffix }}</span> }</div>
+      }
+      @if (stat.buttons && stat.buttons.length) {
+        <div class="d-flex flex-wrap mt-3" style="gap:8px">
+          @for (btn of stat.buttons; track $index) {
+            <button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" (click)="openModal(btn.modalId)">{{ btn.label }}</button>
+          }
+        </div>
+      }
+      @if (stat.badgeText) {
+        <span [class]="'pm-badge pm-badge-' + stat.badgeClass"><i [class]="'bi bi-' + stat.badgeIcon"></i> {{ stat.badgeText }}</span>
+      }
+      @if (stat.miniBars && stat.miniBars.length) {
+        <div class="pm-mini-bars mt-3">
+          @for (bar of stat.miniBars; track $index) {
+            <div class="pm-mini-bar" [style.height.%]="bar.height" [style.background]="bar.color"></div>
+          }
+        </div>
+      }
+      @if (stat.progressPct != null) {
+        <div class="mt-2">
+          <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>{{ stat.progressLabel }}</span><span>{{ stat.progressValue }}</span></div>
+          <div class="pm-progress mt-1"><div class="pm-progress-bar" [style.width.%]="stat.progressPct" [style.background]="stat.progressColor"></div></div>
+        </div>
+      }
+      @if (stat.extraInfo && stat.extraInfo.length) {
+        <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+          @for (info of stat.extraInfo; track $index) {
+            <div>{{ info.label }}: <strong>{{ info.text }}</strong></div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+  }
+</div>
+
+<!-- ATTENTION & QUICK ACTIONS -->
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Attention Required</h3><button class="pm-btn pm-btn-sm" (click)="openModal('attentionModal')">View all</button></div>
+      @for (item of attentionItems; track $index) {
+      <div class="feed-item"><div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor" style="font-size:12px">{{ item.iconText }}</div><div style="flex:1"><div style="font-weight:600;font-size:13px">{{ item.title }}</div><div style="font-size:11px;color:var(--pm-muted)">{{ item.description }}</div></div><button class="pm-btn pm-btn-sm" [class.pm-btn-danger]="item.btnClass === 'pm-btn-danger'" (click)="openModal(item.btnModal)">{{ item.btnLabel }}</button></div>
+      }
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3"><h3 class="pm-section-title">Smart Suggestions</h3><span class="pm-badge pm-badge-purple"><i class="bi bi-stars"></i> AI</span></div>
+      @for (item of suggestionItems; track $index) {
+      <div class="feed-item"><div class="pm-icon-circle" [style.background]="item.iconBg" [style.color]="item.iconColor" style="font-size:12px">{{ item.iconText }}</div><div style="flex:1"><div style="font-weight:600;font-size:13px">{{ item.title }}</div><div style="font-size:11px;color:var(--pm-muted)">{{ item.description }}</div></div><button class="pm-btn pm-btn-sm" (click)="openModal(item.btnModal)">{{ item.btnLabel }}</button></div>
+      }
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="pm-card">
+      <div class="mb-3"><h3 class="pm-section-title">Quick Actions</h3><p class="pm-section-sub">Frequent card and credit operations</p></div>
+      <div class="quick-action-grid">
+        @for (action of quickActions; track $index) {
+        <button class="quick-action-btn" (click)="openModal(action.modalId)"><i [class]="action.iconFull" [style.color]="action.iconColorStyle"></i> {{ action.label }}</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5.4.1 - Virtual Card Portfolio -->
+<div class="pm-card">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-credit-card-2-front" style="color:var(--pm-primary)"></i> 5.4.1 &mdash; Virtual Card Issuance &amp; Lifecycle</h3><p class="pm-section-sub">Manage your active virtual cards, reveal details, rotate CVVs, or generate single-use cards for secure checkouts.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('deletedCardsModal')"><i class="bi bi-trash"></i> Trash</button><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('createCardModal')"><i class="bi bi-plus-lg"></i> Create Card</button></div></div>
+  <div class="vcard-grid">
+    @for (c of vcards; track c.alias) {
+    <div class="vcard-wrapper">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div style="font-weight:700">{{ c.alias }} <span class="pm-badge pm-badge-info ms-2">{{ c.type }}</span></div>
+        <button class="pm-btn pm-btn-sm" (click)="openModal('manageCardModal')"><i class="bi bi-gear"></i></button>
+      </div>
+      <div class="vcard-visual mb-3" [style.background]="c.bg">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="vcard-brand">PayMo</div>
+          @if (c.brand === 'VISA') { <div class="vcard-visa">VISA</div> } @else { <div class="vcard-mastercard"><div class="circle1"></div><div class="circle2"></div></div> }
+        </div>
+        <div class="vcard-chip mt-2 mb-3"></div>
+        <div class="vcard-number mb-2">{{ c.number }}</div>
+        <div class="vcard-bottom">
+          <div><div class="vcard-label">Valid Thru</div><div class="vcard-value">{{ c.exp }}</div></div>
+          <div><button class="pm-btn pm-btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:none" (click)="openModal('revealCardModal')"><i class="bi bi-eye"></i> Show</button></div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between mb-1" style="font-size:12px;color:var(--pm-muted)"><span>Spend</span><span>Limit: KES {{ c.limit }}</span></div>
+      <div class="pm-progress mb-2"><div class="pm-progress-bar" [style.width.%]="c.utilPct" style="background:var(--pm-primary)"></div></div>
+      <div class="d-flex justify-content-between" style="gap:4px">
+        <button class="pm-btn pm-btn-sm w-100 justify-content-center" (click)="openModal('freezeCardModal')"><i class="bi bi-snow"></i> Freeze</button>
+        <button class="pm-btn pm-btn-sm w-100 justify-content-center" (click)="openModal('generateCVVModal')"><i class="bi bi-arrow-clockwise"></i> CVV</button>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+
+<!-- SECTION 5.4.2 - Credit Limits & Repayment -->
+<div class="pm-card">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-graph-up-arrow" style="color:var(--pm-accent)"></i> 5.4.2 &mdash; Credit Limit &amp; Repayment Desk</h3><p class="pm-section-sub">Monitor your credit line utilization, distribute limits among cards, and execute repayments.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('autoPayModal')"><i class="bi bi-arrow-repeat"></i> Auto-Pay</button><button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('payCreditBillModal')"><i class="bi bi-cash-stack"></i> Repay Balance</button></div></div>
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <div class="utility-block">
+        <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Limit Allocation by Card</h4>
+        <div class="table-responsive"><table class="pm-table"><thead><tr><th>Card Alias</th><th>Limit Assigned</th><th>Utilized</th><th>Available</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            @for (c of vcards; track c.alias) {
+            <tr><td><strong>{{ c.alias }}</strong></td><td>KES {{ c.limit }}</td><td>KES {{ c.spent }}</td><td>KES {{ c.available }}</td><td><span class="pm-badge pm-badge-success">Active</span></td><td><button class="pm-btn pm-btn-sm" (click)="openModal('limitAllocationModal')">Edit Limit</button></td></tr>
+            }
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="utility-block mb-3">
+        <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Current Statement</h4>
+        @for (row of statementRows; track $index) {
+        <div class="status-row"><div><strong>{{ row.label }}</strong></div><strong [style]="row.valueStyle || null">{{ row.value }}</strong></div>
+        }
+        <div class="d-flex mt-3" style="gap:8px"><button class="pm-btn pm-btn-sm pm-btn-primary w-100" (click)="openModal('payCreditBillModal')">Pay Now</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5.4.3 - Subscriptions & Merchant Management -->
+<div class="pm-card">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px"><div><h3 class="pm-section-title"><i class="bi bi-shop" style="color:var(--pm-purple)"></i> 5.4.3 &mdash; Subscription &amp; Merchant Management</h3><p class="pm-section-sub">Identify recurring charges, monitor merchant locks, and cancel unwanted subscriptions with one click.</p></div><div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm" (click)="openModal('merchantAnalyticsModal')"><i class="bi bi-pie-chart"></i> Analytics</button><button class="pm-btn pm-btn-sm" (click)="openModal('subscriptionManageModal')"><i class="bi bi-list-check"></i> Manage All</button></div></div>
+  <div class="row g-3">
+    <div class="col-lg-6">
+      <div class="utility-block">
+        <h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Subscriptions Detected</h4>
+        @for (s of subscriptions; track s.merchant) {
+        <div class="status-row"><div><strong>{{ s.merchant }}</strong><div style="font-size:11px;color:var(--pm-muted)">Card: {{ s.card }}</div></div><div class="text-end"><strong>{{ s.amount }}</strong><div style="font-size:11px;color:var(--pm-muted)">Due: {{ s.date }}</div></div></div>
+        }
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="utility-block">
+        <div class="d-flex justify-content-between align-items-center mb-3"><h4 style="font-size:14px;font-weight:700;margin:0">Recent Card Transactions</h4><button class="pm-btn pm-btn-sm" (click)="openModal('transactionHistoryModal')">View All</button></div>
+        <div class="table-responsive"><table class="pm-table"><thead><tr><th>Date</th><th>Merchant</th><th>Card Used</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            @for (t of transactions; track t.merchant) {
+            <tr><td>{{ t.date }}</td><td>{{ t.merchant }}</td><td><span style="font-size:12px;color:var(--pm-muted)">{{ t.card }}</span></td><td><strong>{{ t.amount }}</strong></td><td><span [class]="'pm-badge pm-badge-' + t.statusClass">{{ t.status }}</span></td></tr>
+            }
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- MODALS (22 total)                          -->
+<!-- ════════════════════════════════════════════ -->
+
+<!-- 1. Create Virtual Card (Multi-step: 4 steps) -->
+@if (activeModal === 'createCardModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-credit-card text-primary me-2"></i>Create Virtual Card</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (cardStep <= 3) {
+        <div class="modal-body">
+          <div class="pm-stepper">
+            @for (label of cardStepperLabels; track $index) {
+              @if ($index > 0) { <div class="pm-step-line"></div> }
+              <div class="pm-step" [class.active]="cardStep === $index + 1" [class.completed]="cardStep > $index + 1">
+                <div class="pm-step-num">@if (cardStep > $index + 1) { <i class="bi bi-check"></i> } @else { {{ $index + 1 }} }</div>
+                <div class="pm-step-label">{{ label }}</div>
+              </div>
+            }
+          </div>
+          @if (cardStep === 1) {
+            <div>
+              <h6 style="font-weight:700;margin-bottom:16px">Step 1: Select Card Purpose</h6>
+              <div class="row g-3">
+                <div class="col-md-4"><div class="p-3 border rounded text-center" style="cursor:pointer;height:100%" [style.borderColor]="selectedPurpose==='single'?'var(--pm-primary)':''" [style.background]="selectedPurpose==='single'?'rgba(79,70,229,.04)':''" (click)="selectedPurpose='single'"><i class="bi bi-shield-lock d-block mb-2" style="font-size:28px;color:var(--pm-primary)"></i><strong style="font-size:13px">Single-Use Card</strong><div style="font-size:11px;color:var(--pm-muted);margin-top:4px">Destroys itself after one successful transaction. High security.</div></div></div>
+                <div class="col-md-4"><div class="p-3 border rounded text-center" style="cursor:pointer;height:100%" [style.borderColor]="selectedPurpose==='subscription'?'var(--pm-primary)':''" [style.background]="selectedPurpose==='subscription'?'rgba(79,70,229,.04)':''" (click)="selectedPurpose='subscription'"><i class="bi bi-arrow-repeat d-block mb-2" style="font-size:28px;color:var(--pm-purple)"></i><strong style="font-size:13px">Subscription Card</strong><div style="font-size:11px;color:var(--pm-muted);margin-top:4px">Locks to the first merchant it transacts with. Great for Netflix, AWS.</div></div></div>
+                <div class="col-md-4"><div class="p-3 border rounded text-center" style="cursor:pointer;height:100%" [style.borderColor]="selectedPurpose==='multi'?'var(--pm-primary)':''" [style.background]="selectedPurpose==='multi'?'rgba(79,70,229,.04)':''" (click)="selectedPurpose='multi'"><i class="bi bi-wallet2 d-block mb-2" style="font-size:28px;color:var(--pm-info)"></i><strong style="font-size:13px">Multi-Use Card</strong><div style="font-size:11px;color:var(--pm-muted);margin-top:4px">Standard virtual card for general online spending.</div></div></div>
+              </div>
+            </div>
+          }
+          @if (cardStep === 2) {
+            <div>
+              <h6 style="font-weight:700;margin-bottom:16px">Step 2: Customization &amp; Limits</h6>
+              <div class="row g-3">
+                <div class="col-md-6"><label class="pm-form-label">Card Nickname (Alias)</label><input class="pm-form-control" placeholder="e.g. AWS Cloud, Marketing Ads"></div>
+                <div class="col-md-6"><label class="pm-form-label">Color Theme</label><select class="pm-form-control"><option>Midnight Blue</option><option>Emerald Green</option><option>Sunset Orange</option><option>Amethyst Purple</option></select></div>
+                <div class="col-md-6"><label class="pm-form-label">Funding Source</label><select class="pm-form-control"><option>PayMo Credit Line (KES 150,000)</option><option>PayMo Wallet Balance</option></select></div>
+                <div class="col-md-6"><label class="pm-form-label">Monthly Spending Limit (KES)</label><input type="number" class="pm-form-control" value="10000"></div>
+                <div class="col-md-6"><label class="pm-form-label">Expiry / Valid Thru</label><select class="pm-form-control"><option>1 Year</option><option>2 Years</option><option>3 Years</option><option>Custom Date</option></select></div>
+              </div>
+            </div>
+          }
+          @if (cardStep === 3) {
+            <div>
+              <h6 style="font-weight:700;margin-bottom:16px">Step 3: Security &amp; Confirmation</h6>
+              <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2);font-size:13px"><div class="d-flex justify-content-between mb-1"><span class="text-muted">Card Type</span><strong>Multi-Use Card</strong></div><div class="d-flex justify-content-between mb-1"><span class="text-muted">Nickname</span><strong>Marketing Ads</strong></div><div class="d-flex justify-content-between"><span class="text-muted">Limit</span><strong>KES 10,000 / month</strong></div></div>
+              <label class="pm-form-label">Enter PIN to issue card</label>
+              <div class="pm-pin-input"><input type="password" maxlength="1" #cp1 (input)="moveFocus(cp1,cp2)"><input type="password" maxlength="1" #cp2 (input)="moveFocus(cp2,cp3)"><input type="password" maxlength="1" #cp3 (input)="moveFocus(cp3,cp4)"><input type="password" maxlength="1" #cp4></div>
+              <p style="font-size:11px;color:var(--pm-muted);text-align:center;margin-top:8px">Your card will be instantly generated and ready for use.</p>
+            </div>
+          }
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="nextCardStep()">@if (cardStep < 3) { Continue <i class="bi bi-arrow-right"></i> } @else { Issue Card <i class="bi bi-lock"></i> }</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 2. Pay Credit Balance (Multi-step: 3 steps) -->
+@if (activeModal === 'payCreditBillModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-cash-stack text-success me-2"></i>Repay Credit Balance</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (payCredStep <= 2) {
+        <div class="modal-body">
+          <div class="pm-stepper">
+            @for (label of payCredStepperLabels; track $index) {
+              @if ($index > 0) { <div class="pm-step-line"></div> }
+              <div class="pm-step" [class.active]="payCredStep === $index + 1" [class.completed]="payCredStep > $index + 1">
+                <div class="pm-step-num">@if (payCredStep > $index + 1) { <i class="bi bi-check"></i> } @else { {{ $index + 1 }} }</div>
+                <div class="pm-step-label">{{ label }}</div>
+              </div>
+            }
+          </div>
+          @if (payCredStep === 1) {
+            <div>
+              <div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft);text-align:center"><div style="font-size:11px;font-weight:700;color:#B45309">OUTSTANDING BALANCE</div><div style="font-size:28px;font-weight:700;color:var(--pm-warning)">KES 42,300</div><div style="font-size:12px;color:#92400E">Payment due by 12 Jul 2025</div></div>
+              <label class="pm-form-label">Payment Amount</label>
+              <div class="mb-3">
+                <div class="p-3 border rounded mb-2 d-flex align-items-center gap-3" (click)="payAmount='min'"><input type="radio" name="payamt" [checked]="payAmount==='min'"><div><strong>Minimum Payment</strong><div style="font-size:11px;color:var(--pm-muted)">KES 4,230</div></div></div>
+                <div class="p-3 border rounded mb-2 d-flex align-items-center gap-3" [style.borderColor]="'var(--pm-primary)'" [style.background]="'rgba(79,70,229,.04)'" (click)="payAmount='full'"><input type="radio" name="payamt" [checked]="payAmount==='full'"><div><strong>Statement Balance</strong><div style="font-size:11px;color:var(--pm-muted)">KES 42,300 (Avoids interest)</div></div></div>
+                <div class="p-3 border rounded d-flex align-items-center gap-3" (click)="payAmount='custom'"><input type="radio" name="payamt" [checked]="payAmount==='custom'"><div><strong>Custom Amount</strong><div style="font-size:11px;color:var(--pm-muted)">Enter specific amount</div></div></div>
+              </div>
+            </div>
+          }
+          @if (payCredStep === 2) {
+            <div>
+              <h6 style="font-weight:700;margin-bottom:16px">Payment Method</h6>
+              <div class="mb-3">
+                <div class="p-3 border rounded mb-2 d-flex align-items-center gap-3" [style.borderColor]="'var(--pm-primary)'" [style.background]="'rgba(79,70,229,.04)'" (click)="paySource='wallet'"><input type="radio" name="paysrc" [checked]="paySource==='wallet'"> <i class="bi bi-wallet2" style="font-size:20px;color:var(--pm-primary)"></i><div><strong>PayMo Wallet</strong><div style="font-size:11px;color:var(--pm-muted)">Available: KES 85,000</div></div></div>
+                <div class="p-3 border rounded mb-2 d-flex align-items-center gap-3" (click)="paySource='mpesa'"><input type="radio" name="paysrc" [checked]="paySource==='mpesa'"> <i class="bi bi-phone" style="font-size:20px;color:var(--pm-accent)"></i><div><strong>M-Pesa STK Push</strong><div style="font-size:11px;color:var(--pm-muted)">0712***890</div></div></div>
+              </div>
+              <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)"><div class="d-flex justify-content-between mb-1"><span>Payment</span><strong>KES 42,300</strong></div><hr class="pm-divider"><div class="d-flex justify-content-between"><span style="font-weight:700">Total</span><strong style="font-size:18px;color:var(--pm-primary)">KES 42,300</strong></div></div>
+            </div>
+          }
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="nextPayCredStep()">@if (payCredStep === 1) { Continue <i class="bi bi-arrow-right"></i> } @else { Pay Balance <i class="bi bi-arrow-right"></i> }</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 3. Reveal Card Details -->
+@if (activeModal === 'revealCardModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-eye text-primary me-2"></i>Reveal Card Details</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!cardRevealed) {
+        <div class="modal-body text-center">
+          <p style="font-size:13px;color:var(--pm-ink-soft)">For your security, please enter your PIN to view full card details and CVV.</p>
+          <div class="pm-pin-input mb-3"><input type="password" maxlength="1" #rv1 (input)="moveFocus(rv1,rv2)"><input type="password" maxlength="1" #rv2 (input)="moveFocus(rv2,rv3)"><input type="password" maxlength="1" #rv3 (input)="moveFocus(rv3,rv4)"><input type="password" maxlength="1" #rv4 (input)="cardRevealed = true"></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary" (click)="cardRevealed = true">Unlock Details</button></div>
+      } @else {
+        <div class="modal-body text-center">
+          <div class="vcard-visual mx-auto mb-3" style="background:var(--pm-gradient-slate);max-width:320px;text-align:left">
+            <div class="d-flex justify-content-between align-items-start"><div class="vcard-brand">PayMo</div><div class="vcard-mastercard"><div class="circle1"></div><div class="circle2"></div></div></div>
+            <div class="vcard-chip mt-2 mb-3"></div>
+            <div class="vcard-number mb-2" style="font-size:18px">5521 8802 4419 7720</div>
+            <div class="vcard-bottom"><div><div class="vcard-label">Cardholder</div><div class="vcard-value">JAMES KAMAU</div></div><div><div class="vcard-label">Valid Thru</div><div class="vcard-value">11/26</div></div><div><div class="vcard-label">CVV</div><div class="vcard-value" style="color:var(--pm-warning)">842</div></div></div>
+          </div>
+          <div class="d-flex justify-content-center gap-2" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-clipboard"></i> Copy Number</button><button class="pm-btn pm-btn-sm"><i class="bi bi-clipboard"></i> Copy CVV</button></div>
+          <p style="font-size:11px;color:var(--pm-danger);margin-top:12px">Details will auto-hide in 30 seconds.</p>
+        </div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 4. Limit Allocation -->
+@if (activeModal === 'limitAllocationModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-sliders text-warning me-2"></i>Allocate Credit Limits</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!limitSaved) {
+        <div class="modal-body">
+          <div class="row mb-4">
+            <div class="col-6"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">TOTAL CREDIT LINE</div><div style="font-size:20px;font-weight:700">KES 150,000</div></div>
+            <div class="col-6 text-end"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">UNALLOCATED / AVAILABLE</div><div style="font-size:20px;font-weight:700;color:var(--pm-accent)">KES 42,000</div></div>
+            <div class="col-12 mt-2"><div class="pm-progress"><div class="pm-progress-bar" style="width:72%;background:var(--pm-info)"></div></div></div>
+          </div>
+          <div class="table-responsive"><table class="pm-table"><thead><tr><th>Card Alias</th><th>Current Limit</th><th>New Limit (KES)</th></tr></thead>
+            <tbody>
+              <tr><td>AWS Hosting</td><td>KES 20,000</td><td><input type="number" class="pm-form-control" value="20000" style="padding:4px 8px;height:auto"></td></tr>
+              <tr><td>Marketing Ads</td><td>KES 50,000</td><td><input type="number" class="pm-form-control" value="60000" style="padding:4px 8px;height:auto"></td></tr>
+              <tr><td>Software Subs</td><td>KES 15,000</td><td><input type="number" class="pm-form-control" value="15000" style="padding:4px 8px;height:auto"></td></tr>
+              <tr><td>Travel Expenses</td><td>KES 23,000</td><td><input type="number" class="pm-form-control" value="13000" style="padding:4px 8px;height:auto"></td></tr>
+            </tbody>
+          </table></div>
+          <p style="font-size:11px;color:var(--pm-muted);margin-top:12px">Total allocated cannot exceed KES 150,000. Changes apply instantly.</p>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="limitSaved = true">Save Allocations</button></div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Card limits updated and synchronized!</h5></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 5. Freeze Card -->
+@if (activeModal === 'freezeCardModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-snow text-info me-2"></i>Freeze Virtual Card</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!freezeSaved) {
+        <div class="modal-body">
+          <div class="mb-3"><label class="pm-form-label">Select Card to Freeze</label><select class="pm-form-control"><option>AWS Hosting (ends in 9173)</option><option>Marketing Ads (ends in 7720)</option><option>Software Subs (ends in 1104)</option></select></div>
+          <div class="mb-3"><label class="pm-form-label">Reason</label><select class="pm-form-control"><option>Temporarily disable spending</option><option>Suspected unauthorized use</option><option>Stop a specific subscription</option><option>Card details compromised</option></select></div>
+          <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Freezing a card blocks all new transactions immediately. Pre-authorized payments may still process. You can unfreeze at any time.</div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-info text-white" (click)="freezeSaved = true">Freeze Card</button></div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Card frozen successfully. All transactions are blocked.</h5></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 6. Rotate CVV -->
+@if (activeModal === 'generateCVVModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-clockwise text-danger me-2"></i>Rotate Security Code (CVV)</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!cvvSaved) {
+        <div class="modal-body">
+          <div class="mb-3"><label class="pm-form-label">Select Card</label><select class="pm-form-control"><option>Marketing Ads (ends in 7720)</option><option>AWS Hosting (ends in 9173)</option></select></div>
+          <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft);font-size:12px;color:var(--pm-danger)"><i class="bi bi-exclamation-triangle me-1"></i> Warning: Rotating the CVV will immediately invalidate the current 3-digit code. Any saved checkouts using the old CVV will fail until updated.</div>
+          <label class="pm-form-label">Confirm PIN</label>
+          <div class="pm-pin-input mb-2"><input type="password" maxlength="1"><input type="password" maxlength="1"><input type="password" maxlength="1"><input type="password" maxlength="1"></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-danger" (click)="cvvSaved = true">Rotate Now</button></div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">CVV rotated. Your new CVV is 491.</h5><p style="font-size:12px;color:var(--pm-muted)">Ref: ROT-20250627</p></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 7. Subscription Manager -->
+@if (activeModal === 'subscriptionManageModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-repeat me-2" style="color:var(--pm-purple)"></i>Subscription Manager</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="table-responsive"><table class="pm-table"><thead><tr><th>Merchant</th><th>Card Used</th><th>Avg. Monthly</th><th>Last Charged</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><div class="d-flex align-items-center gap-2"><div class="pm-avatar" style="width:24px;height:24px;background:#ff9900">A</div> AWS</div></td><td>AWS Hosting</td><td>KES 2,400</td><td>15 Jun 2025</td><td><button class="pm-btn pm-btn-sm" (click)="switchModal('merchantAnalyticsModal')">Details</button></td></tr>
+            <tr><td><div class="d-flex align-items-center gap-2"><div class="pm-avatar" style="width:24px;height:24px;background:#e50914">N</div> Netflix</div></td><td>Software Subs</td><td>KES 1,200</td><td>20 Jun 2025</td><td><button class="pm-btn pm-btn-sm" (click)="switchModal('merchantAnalyticsModal')">Details</button></td></tr>
+            <tr><td><div class="d-flex align-items-center gap-2"><div class="pm-avatar" style="width:24px;height:24px;background:#1db954">S</div> Spotify</div></td><td>Software Subs</td><td>KES 300</td><td>01 Jun 2025</td><td><button class="pm-btn pm-btn-sm" (click)="switchModal('merchantAnalyticsModal')">Details</button></td></tr>
+            <tr><td><div class="d-flex align-items-center gap-2"><div class="pm-avatar" style="width:24px;height:24px;background:#1473E6">F</div> Facebook Ads</div></td><td>Marketing Ads</td><td>KES 15,400</td><td>25 Jun 2025</td><td><button class="pm-btn pm-btn-sm" (click)="switchModal('merchantAnalyticsModal')">Details</button></td></tr>
+            <tr><td><div class="d-flex align-items-center gap-2"><div class="pm-avatar" style="width:24px;height:24px;background:#FF0000">A</div> Adobe CC</div></td><td>Software Subs</td><td>KES 5,800</td><td><span style="color:var(--pm-warning)">02 Mar 2025</span></td><td><button class="pm-btn pm-btn-sm pm-btn-danger" (click)="subBlocked = true">Block</button></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 8. Merchant Analytics -->
+@if (activeModal === 'merchantAnalyticsModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-pie-chart text-info me-2"></i>Merchant Spending Insights</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6"><div class="p-3 border rounded"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">TOP MERCHANT</div><div class="d-flex align-items-center gap-3 mt-2"><div class="pm-avatar" style="background:#1473E6;color:#fff">F</div><div><div style="font-weight:700;font-size:18px">Facebook Ads</div><div style="font-size:12px;color:var(--pm-muted)">KES 45,200 this year</div></div></div></div></div>
+          <div class="col-md-6"><div class="p-3 border rounded"><div style="font-size:11px;color:var(--pm-muted);font-weight:700">MOST FREQUENT</div><div class="d-flex align-items-center gap-3 mt-2"><div class="pm-avatar" style="background:#000;color:#fff">U</div><div><div style="font-weight:700;font-size:18px">Uber Trips</div><div style="font-size:12px;color:var(--pm-muted)">24 transactions</div></div></div></div></div>
+        </div>
+        <h6 style="font-weight:700;margin-top:24px;margin-bottom:12px">Spending by Category</h6>
+        <div class="pm-progress" style="height:12px;border-radius:6px;margin-bottom:8px"><div class="pm-progress-bar" style="width:45%;background:var(--pm-primary)"></div><div class="pm-progress-bar" style="width:30%;background:var(--pm-info)"></div><div class="pm-progress-bar" style="width:15%;background:var(--pm-warning)"></div><div class="pm-progress-bar" style="width:10%;background:var(--pm-accent)"></div></div>
+        <div class="d-flex flex-wrap gap-3" style="font-size:12px"><span><span style="display:inline-block;width:10px;height:10px;background:var(--pm-primary);border-radius:2px"></span> Digital Ads (45%)</span><span><span style="display:inline-block;width:10px;height:10px;background:var(--pm-info);border-radius:2px"></span> Software (30%)</span><span><span style="display:inline-block;width:10px;height:10px;background:var(--pm-warning);border-radius:2px"></span> Travel (15%)</span><span><span style="display:inline-block;width:10px;height:10px;background:var(--pm-accent);border-radius:2px"></span> Entertainment (10%)</span></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 9. Auto-Pay -->
+@if (activeModal === 'autoPayModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-arrow-repeat text-success me-2"></i>Auto-Pay Credit Balance</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!autoPaySaved) {
+        <div class="modal-body">
+          <div class="form-check form-switch mb-4"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Enable Auto-Pay</label></div>
+          <div class="mb-3"><label class="pm-form-label">Payment Amount</label><select class="pm-form-control"><option>Full Statement Balance</option><option>Minimum Payment Due</option><option>Custom Fixed Amount</option></select></div>
+          <div class="mb-3"><label class="pm-form-label">Deduction Date</label><select class="pm-form-control"><option>On Due Date</option><option>3 Days Before Due Date</option><option>5 Days Before Due Date</option></select></div>
+          <div class="mb-3"><label class="pm-form-label">Pay From</label><select class="pm-form-control"><option>PayMo Wallet Balance</option><option>Linked Equity Bank (***4521)</option></select></div>
+          <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:12px">Auto-pay ensures you never miss a payment and avoids late fees. If your balance is lower than the amount you owe, we will notify you 24 hours prior.</div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="autoPaySaved = true">Save Settings</button></div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Auto-pay successfully configured.</h5></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 10. Fraud Alert -->
+@if (activeModal === 'fraudAlertModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-x text-danger me-2"></i>Fraud Alert Review</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!fraudResolved) {
+        <div class="modal-body">
+          <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft)"><div class="d-flex align-items-center gap-3"><div style="font-size:24px;color:var(--pm-danger)"><i class="bi bi-exclamation-triangle-fill"></i></div><div><div style="font-weight:700;color:#991B1B">Suspicious Transaction Blocked</div><div style="font-size:12px;color:#7F1D1D">A single-use card was attempted multiple times.</div></div></div></div>
+          <div class="table-responsive"><table class="pm-table"><tbody><tr><td><strong>Merchant</strong></td><td>Unknown Crypto Exchange</td></tr><tr><td><strong>Amount</strong></td><td>USD 450.00 (KES 58,500)</td></tr><tr><td><strong>Card</strong></td><td>Single-Use (ends 3302)</td></tr><tr><td><strong>Location</strong></td><td>Kyiv, Ukraine (IP based)</td></tr><tr><td><strong>Time</strong></td><td>Today, 03:14 AM EAT</td></tr></tbody></table></div>
+          <p style="font-size:13px;margin-top:16px">Was this you?</p>
+          <div class="d-flex flex-column gap-2"><button class="pm-btn w-100 justify-content-center" (click)="fraudResolved = true">No, destroy card and reissue</button><button class="pm-btn pm-btn-outline w-100 justify-content-center" (click)="fraudResolved = true">Yes, it was me (Unblock)</button></div>
+        </div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Card has been permanently destroyed and new single-use card issued.</h5><p style="font-size:12px;color:var(--pm-muted)">Ref: FRAUD-9912</p></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 11. Card Expiry -->
+@if (activeModal === 'cardExpiryModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-calendar-x me-2" style="color:var(--pm-purple)"></i>Card Expiring Soon</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!expirySaved) {
+        <div class="modal-body">
+          <div class="text-center mb-4"><div class="pm-icon-circle mx-auto mb-2" style="width:56px;height:56px;background:var(--pm-purple-soft);color:var(--pm-purple)"><i class="bi bi-credit-card" style="font-size:24px"></i></div><h5 style="font-weight:700">AWS Hosting</h5><p style="font-size:13px;color:var(--pm-muted)">Ends in 9173 &middot; Expires 06/25</p></div>
+          <p style="font-size:13px">This virtual card is expiring in 5 days. Subscriptions tied to this card (like AWS) will fail if not updated.</p>
+          <div class="p-3 border rounded mb-3"><div class="form-check"><input class="form-check-input" type="radio" name="renew" checked><label class="form-check-label" style="font-weight:600;font-size:13px">Renew Automatically</label><div style="font-size:11px;color:var(--pm-muted)">Generates a new expiry date. PAN remains same, CVV changes.</div></div></div>
+          <div class="p-3 border rounded mb-3"><div class="form-check"><input class="form-check-input" type="radio" name="renew"><label class="form-check-label" style="font-weight:600;font-size:13px">Close Card on Expiry</label><div style="font-size:11px;color:var(--pm-muted)">Let it expire. Future charges will be declined.</div></div></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="expirySaved = true">Confirm Action</button></div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Card successfully renewed. Valid Thru is now 06/28.</h5></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 12. Transaction History -->
+@if (activeModal === 'transactionHistoryModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-list-columns text-primary me-2"></i>Virtual Card Statements</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="d-flex gap-2 mb-3 flex-wrap">
+          <select class="pm-form-control" style="width:auto"><option>All Virtual Cards</option><option>AWS Hosting</option><option>Marketing Ads</option></select>
+          <select class="pm-form-control" style="width:auto"><option>Last 30 Days</option><option>Last 3 Months</option><option>This Year</option></select>
+          <input type="text" class="pm-form-control" placeholder="Search merchant..." style="width:200px">
+        </div>
+        <div class="table-responsive" style="max-height:350px;overflow-y:auto"><table class="pm-table"><thead><tr><th>Date</th><th>Merchant</th><th>Card</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>27 Jun</td><td>Facebook Ads</td><td>Marketing Ads</td><td>KES 12,400</td><td><span class="pm-badge pm-badge-success">Cleared</span></td></tr>
+            <tr><td>25 Jun</td><td>Google Workspace</td><td>Software Subs</td><td>KES 2,100</td><td><span class="pm-badge pm-badge-success">Cleared</span></td></tr>
+            <tr><td>22 Jun</td><td>AWS EMEA</td><td>AWS Hosting</td><td>KES 2,400</td><td><span class="pm-badge pm-badge-success">Cleared</span></td></tr>
+            <tr><td>18 Jun</td><td>Uber *Trip</td><td>Travel Exp</td><td>KES 850</td><td><span class="pm-badge pm-badge-warning">Pending</span></td></tr>
+            <tr><td>15 Jun</td><td>Netflix</td><td>Software Subs</td><td>KES 1,200</td><td><span class="pm-badge pm-badge-success">Cleared</span></td></tr>
+            <tr><td>10 Jun</td><td>LinkedIn Ads</td><td>Marketing Ads</td><td>KES 3,000</td><td><span class="pm-badge pm-badge-danger">Declined</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary" (click)="switchModal('statementsModal')">Export PDF</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 13. Dispute Transaction -->
+@if (activeModal === 'disputeTransactionModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-exclamation me-2" style="color:var(--pm-accent)"></i>Dispute a Transaction</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!disputeSaved) {
+        <div class="modal-body">
+          <div class="mb-3"><label class="pm-form-label">Select Transaction</label><select class="pm-form-control"><option>27 Jun - Facebook Ads - KES 12,400</option><option>25 Jun - Google Workspace - KES 2,100</option><option>18 Jun - Uber *Trip - KES 850</option></select></div>
+          <div class="mb-3"><label class="pm-form-label">Reason for Dispute</label><select class="pm-form-control"><option>I do not recognize this transaction</option><option>I was overcharged</option><option>Duplicate charge</option><option>Subscription was already cancelled</option><option>Goods/services not received</option></select></div>
+          <div class="mb-3"><label class="pm-form-label">Additional Details</label><textarea class="pm-form-control" rows="3">I cancelled this subscription on the merchant's website on June 20th, but I was still charged.</textarea></div>
+          <div class="p-3 rounded" style="background:var(--pm-info-soft);font-size:12px"><i class="bi bi-info-circle me-1"></i> Disputes may take up to 14 days to resolve. A temporary credit may be issued while we investigate with Visa/Mastercard.</div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="disputeSaved = true">Submit Chargeback</button></div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Dispute submitted.</h5><p style="font-size:12px;color:var(--pm-muted)">Tracking ID: CHB-92014</p></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 14. Statements Download -->
+@if (activeModal === 'statementsModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-file-earmark-pdf me-2"></i>Download Statements</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!stmtSaved) {
+        <div class="modal-body">
+          <div class="mb-3"><label class="pm-form-label">Billing Cycle</label><select class="pm-form-control"><option>June 2025 (Current)</option><option>May 2025</option><option>April 2025</option><option>Q2 2025 Summary</option></select></div>
+          <div class="mb-3"><label class="pm-form-label">Scope</label><select class="pm-form-control"><option>All Virtual Cards</option><option>Specific Card</option></select></div>
+          <div class="mb-3"><label class="pm-form-label">Format</label><select class="pm-form-control"><option>PDF</option><option>Excel CSV</option><option>OFX (Accounting)</option></select></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label" style="font-size:13px">Include merchant category codes (MCC)</label></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="stmtSaved = true"><i class="bi bi-download"></i> Download</button></div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Statement generated and downloaded to your device.</h5></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 15. Limit Increase -->
+@if (activeModal === 'limitIncreaseModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-graph-up me-2" style="color:var(--pm-accent)"></i>Request Limit Increase</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!limitIncSaved) {
+        <div class="modal-body">
+          <div class="p-3 rounded mb-4" style="background:var(--pm-surface-2);text-align:center"><div style="font-size:11px;font-weight:700;color:var(--pm-muted)">CURRENT CREDIT LIMIT</div><div style="font-size:24px;font-weight:700;color:var(--pm-primary)">KES 150,000</div></div>
+          <div class="mb-3"><label class="pm-form-label">Requested Limit (KES)</label><input type="number" class="pm-form-control" value="250000"></div>
+          <div class="mb-3"><label class="pm-form-label">Reason for Increase</label><select class="pm-form-control"><option>Higher ad spend requirements</option><option>Upcoming travel</option><option>Software licensing expansion</option><option>Other</option></select></div>
+          <div class="mb-3"><label class="pm-form-label">Average Monthly Income (KES)</label><input type="number" class="pm-form-control" value="450000"></div>
+          <p style="font-size:11px;color:var(--pm-muted)">Approval is subject to an instant soft credit check. This will not affect your credit score.</p>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button class="pm-btn pm-btn-primary" (click)="limitIncSaved = true">Submit Application</button></div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Limit increase application submitted! You will receive a decision within 5 minutes.</h5></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 16. Delete Card -->
+@if (activeModal === 'deleteCardModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-trash text-danger me-2"></i>Cancel Virtual Card</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!deleteSaved) {
+        <div class="modal-body">
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Are you sure you want to permanently cancel <strong>AWS Hosting (ends in 9173)</strong>?</p>
+          <div class="p-3 rounded mb-3" style="background:var(--pm-warning-soft);font-size:12px;color:#92400E"><i class="bi bi-exclamation-triangle me-1"></i> Any pending transactions or future subscriptions tied to this card will fail. You cannot undo this action.</div>
+          <div class="mb-3"><label class="pm-form-label">Reason</label><select class="pm-form-control"><option>No longer needed</option><option>Compromised details</option><option>Switching to a different card</option></select></div>
+          <label class="pm-form-label">Confirm PIN</label>
+          <div class="pm-pin-input"><input type="password" maxlength="1"><input type="password" maxlength="1"><input type="password" maxlength="1"><input type="password" maxlength="1"></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Keep Card</button><button class="pm-btn pm-btn-danger" (click)="deleteSaved = true">Cancel Card</button></div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Card permanently deleted. Limit returned to pool.</h5></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 17. Deleted Cards / Trash -->
+@if (activeModal === 'deletedCardsModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-archive me-2"></i>Inactive &amp; Deleted Cards</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="table-responsive"><table class="pm-table"><thead><tr><th>Card Alias</th><th>Status</th><th>Closed On</th></tr></thead>
+          <tbody>
+            <tr><td>Holiday Trip 2024</td><td><span class="pm-badge pm-badge-danger">Deleted</span></td><td>15 Jan 2025</td></tr>
+            <tr><td>One-time Purchase</td><td><span class="pm-badge pm-badge-warning">Used</span></td><td>02 May 2025</td></tr>
+            <tr><td>Adobe CC</td><td><span class="pm-badge pm-badge-danger">Deleted</span></td><td>22 Mar 2025</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:11px;color:var(--pm-muted);margin-top:12px">Historical statements for deleted cards are still available in the Statements section.</p>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 18. Health Check -->
+@if (activeModal === 'healthCheckModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-check text-success me-2"></i>Security Health Check</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="d-flex align-items-center justify-content-center mb-4"><div class="pm-icon-circle" style="width:80px;height:80px;background:var(--pm-accent-soft);color:var(--pm-accent);font-size:32px"><i class="bi bi-shield-check"></i></div></div>
+        <div class="status-row"><div><strong>3D Secure Verification</strong><div style="font-size:11px;color:var(--pm-muted)">Active on all multi-use cards</div></div><span class="pm-badge pm-badge-success">Pass</span></div>
+        <div class="status-row"><div><strong>Device Binding</strong><div style="font-size:11px;color:var(--pm-muted)">Approvals restricted to this iPhone 14</div></div><span class="pm-badge pm-badge-success">Pass</span></div>
+        <div class="status-row"><div><strong>CVV Rotation</strong><div style="font-size:11px;color:var(--pm-muted)">AWS Hosting CVV hasn't changed in 6 months</div></div><span class="pm-badge pm-badge-warning">Action</span></div>
+        <div class="status-row"><div><strong>Dark Web Scan</strong><div style="font-size:11px;color:var(--pm-muted)">Checking card numbers against breaches</div></div><span class="pm-badge pm-badge-success">Clear</span></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary" (click)="switchModal('generateCVVModal')">Rotate Old CVVs</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 19. Notifications -->
+@if (activeModal === 'notificationsModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell me-2"></i>Card Notifications</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body" style="max-height:400px;overflow-y:auto">
+        <div class="p-3 rounded mb-2" style="background:var(--pm-surface-2);font-size:13px"><i class="bi bi-check-circle text-success me-1"></i> <strong>Payment Cleared</strong> &mdash; KES 12,400 to Facebook Ads via Marketing Ads card.</div>
+        <div class="p-3 rounded mb-2" style="background:var(--pm-danger-soft);font-size:13px"><i class="bi bi-shield-x text-danger me-1"></i> <strong>Declined Transaction</strong> &mdash; KES 3,000 to LinkedIn Ads. Insufficient allocated limit.</div>
+        <div class="p-3 rounded mb-2" style="background:var(--pm-warning-soft);font-size:13px"><i class="bi bi-exclamation-triangle text-warning me-1"></i> <strong>Limit Warning</strong> &mdash; Software Subs card is at 90% of its monthly limit.</div>
+        <div class="p-3 rounded mb-2" style="background:var(--pm-purple-soft);font-size:13px"><i class="bi bi-stars me-1" style="color:var(--pm-purple)"></i> <strong>Statement Ready</strong> &mdash; Your May 2025 virtual card statement is available.</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn pm-btn-sm">Mark All Read</button><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 20. Profile -->
+@if (activeModal === 'profileModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile &amp; Card Settings</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!profileSaved) {
+        <div class="modal-body text-center">
+          <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">JK</div>
+          <h5 style="font-weight:700;margin-bottom:2px">James Kamau</h5>
+          <p style="font-size:13px;color:var(--pm-muted)">Card Account ID: PM-991204</p>
+          <div class="text-start mt-4">
+            <h6 style="font-weight:700;font-size:13px">Global Controls</h6>
+            <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Allow international transactions</label></div>
+            <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox"><label class="form-check-label" style="font-size:13px">Strict IP Geofencing (Kenya only)</label></div>
+            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked><label class="form-check-label" style="font-size:13px">Push notifications for all spends</label></div>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary" (click)="profileSaved = true">Save Settings</button></div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Settings updated successfully.</h5></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 21. Manage Card (Tabbed) -->
+@if (activeModal === 'manageCardModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-gear me-2"></i>Manage Virtual Card</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      @if (!manageSaved) {
+        <div class="modal-body">
+          <div class="pm-tab-pills mb-3">
+            <button class="pm-tab-pill" [class.active]="manageTab === 'settings'" (click)="manageTab = 'settings'">Settings</button>
+            <button class="pm-tab-pill" [class.active]="manageTab === 'limits'" (click)="manageTab = 'limits'">Limits</button>
+            <button class="pm-tab-pill" [class.active]="manageTab === 'danger'" (click)="manageTab = 'danger'">Danger Zone</button>
+          </div>
+          @if (manageTab === 'settings') {
+            <div><div class="mb-3"><label class="pm-form-label">Alias</label><input class="pm-form-control" value="Marketing Ads"></div><div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Card Active</label></div><div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" checked><label class="form-check-label">Lock to single merchant (Facebook Ads)</label></div></div>
+          }
+          @if (manageTab === 'limits') {
+            <div><div class="mb-3"><label class="pm-form-label">Monthly Limit (KES)</label><input type="number" class="pm-form-control" value="50000"></div><div class="mb-3"><label class="pm-form-label">Per-Transaction Limit (KES)</label><input type="number" class="pm-form-control" value="15000"></div></div>
+          }
+          @if (manageTab === 'danger') {
+            <div>
+              <p style="font-size:13px;color:var(--pm-ink-soft)">These actions cannot be undone.</p>
+              <button class="pm-btn pm-btn-danger w-100 justify-content-center mb-2" (click)="switchModal('deleteCardModal')">Permanently Delete Card</button>
+              <button class="pm-btn pm-btn-outline w-100 justify-content-center" (click)="switchModal('generateCVVModal')">Force CVV Rotation</button>
+            </div>
+          }
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button class="pm-btn pm-btn-primary" (click)="manageSaved = true">Save Changes</button></div>
+      } @else {
+        <div class="modal-body"><div class="pm-receipt"><div class="receipt-icon"><i class="bi bi-check-lg"></i></div><h5 style="font-weight:700;color:var(--pm-accent)">Card settings saved!</h5></div></div>
+        <div class="modal-footer"><button class="pm-btn pm-btn-primary" (click)="closeModal()">Close</button></div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!-- 22. Attention Center -->
+@if (activeModal === 'attentionModal') {
+<div class="pm-modal-backdrop" (click)="closeModal()">
+  <div class="pm-modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>Attention Center</h5><button class="btn-close" (click)="closeModal()"></button></div>
+      <div class="modal-body">
+        <div class="status-row"><div><strong>Single-use card compromised</strong><div style="font-size:11px;color:var(--pm-muted)">Unauthorized merchant blocked</div></div><button class="pm-btn pm-btn-sm pm-btn-danger" (click)="switchModal('fraudAlertModal')">Review</button></div>
+        <div class="status-row"><div><strong>Approaching limit</strong><div style="font-size:11px;color:var(--pm-muted)">Marketing Ads at 92% of limit</div></div><button class="pm-btn pm-btn-sm" (click)="switchModal('limitAllocationModal')">Adjust</button></div>
+        <div class="status-row"><div><strong>AWS Hosting expiring</strong><div style="font-size:11px;color:var(--pm-muted)">Expires in 5 days</div></div><button class="pm-btn pm-btn-sm" (click)="switchModal('cardExpiryModal')">Renew</button></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+}

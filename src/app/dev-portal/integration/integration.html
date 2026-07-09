@@ -1,0 +1,1226 @@
+<div class="pm-page-bar">
+  <div>
+    <div class="pm-breadcrumb"><a (click)="navigateTo('portal')">Developer Portal</a> / <a
+        (click)="navigateTo('guides')">Guides</a> / <strong>Architecture</strong></div>
+    <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px;color:#fff">PAGE 4.7 —
+      INTEGRATION ARCHITECTURE & PATTERNS</h2>
+    <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Define how your systems connect to PayMo via direct
+      APIs, embedded checkouts, microservices, or legacy translators.</p>
+  </div>
+  <div class="d-flex flex-wrap" style="gap:8px">
+    <button class="pm-btn" (click)="openModal('archGuideModal')"><i class="bi bi-download text-primary"></i> Arch
+      Guide</button>
+    <button class="pm-btn" (click)="openModal('testIntegrationModal')"><i class="bi bi-bug text-warning"></i> Test
+      Simulator</button>
+    <button class="pm-btn pm-btn-primary" (click)="openModal('boilerplateModal')"><i class="bi bi-code-slash"></i> Gen
+      Boilerplate</button>
+  </div>
+</div>
+
+<div class="pm-content">
+
+  <!-- Top Stats -->
+  <div class="row g-3">
+    <div class="col-lg-3 col-6">
+      <div class="pm-card pm-card-accent" style="min-height:140px">
+        <p class="pm-stat-label" style="color:var(--pm-primary-light)">ACTIVE PATTERN</p>
+        <div class="pm-stat-value" style="margin:6px 0;font-size:22px">{{stats.activePattern}}</div>
+        <span class="pm-badge pm-badge-success"><i class="bi bi-check-circle"></i> {{stats.patternStatus}}</span>
+        <div style="font-size:11px;color:var(--pm-ink-soft);margin-top:8px">{{stats.patternDetail}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-6">
+      <div class="pm-card" style="min-height:140px">
+        <p class="pm-stat-label" style="color:var(--pm-accent)">API SLA HEALTH</p>
+        <div class="pm-stat-value" style="margin:6px 0">{{stats.slaHealth}}</div>
+        <span class="pm-badge pm-badge-info"><i class="bi bi-activity"></i> {{stats.slaDetail}}</span>
+        <div class="progress mt-2" style="height:4px;background:var(--pm-bg)">
+          <div class="progress-bar bg-success" [style.width.%]="stats.slaPercent"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-6">
+      <div class="pm-card" style="min-height:140px">
+        <p class="pm-stat-label" style="color:var(--pm-warning)">CACHE HIT RATE</p>
+        <div class="pm-stat-value" style="margin:6px 0">{{stats.cacheHitRate}}</div>
+        <span class="pm-badge pm-badge-warning"><i class="bi bi-lightning"></i> {{stats.cacheType}}</span>
+        <div style="font-size:11px;color:var(--pm-muted);margin-top:8px">{{stats.cacheDetail}}</div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-6">
+      <div class="pm-card" style="min-height:140px">
+        <p class="pm-stat-label" style="color:var(--pm-purple)">MESH NODES</p>
+        <div class="pm-stat-value" style="margin:6px 0">{{stats.meshNodes}}</div>
+        <span class="pm-badge pm-badge-purple"><i class="bi bi-diagram-2"></i> {{stats.meshType}}</span>
+        <div style="font-size:11px;color:var(--pm-muted);margin-top:8px">{{stats.meshDetail}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4.7.1 -->
+  <div class="pm-card mt-2">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h3 class="pm-section-title"><i class="bi bi-puzzle text-primary"></i> 4.7.1 — Integration Patterns</h3>
+        <p class="pm-section-sub">Select and configure how your application frontend and backend interface with PayMo.
+        </p>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-3">
+        <div class="integration-card d-flex flex-column">
+          <div class="pm-icon-circle mb-3" style="background:var(--pm-primary);color:#fff"><i
+              class="bi bi-hdd-network"></i></div>
+          <h6 style="font-weight:700">Direct API</h6>
+          <p style="font-size:12px;color:var(--pm-ink-soft);flex:1">RESTful server-to-server calls. Includes webhook
+            listeners, idempotency, and fallback polling.</p>
+          <div class="d-flex gap-2"><button class="pm-btn pm-btn-sm flex-1 w-100"
+              (click)="openModal('directApiModal')">Configure</button><button class="pm-btn pm-btn-sm w-100"
+              (click)="openModal('webhookConfigModal')">Webhooks</button></div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="integration-card d-flex flex-column">
+          <div class="pm-icon-circle mb-3" style="background:var(--pm-info);color:#fff"><i
+              class="bi bi-window-sidebar"></i></div>
+          <h6 style="font-weight:700">Embedded Checkout</h6>
+          <p style="font-size:12px;color:var(--pm-ink-soft);flex:1">iFrame, Popups, or Redirects. Reduces PCI scope
+            while maintaining UX.</p>
+          <button class="pm-btn pm-btn-sm mt-auto" (click)="openModal('embeddedCheckoutModal')">Customize
+            Checkout</button>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="integration-card d-flex flex-column">
+          <div class="pm-icon-circle mb-3" style="background:var(--pm-purple);color:#fff"><i class="bi bi-palette"></i>
+          </div>
+          <h6 style="font-weight:700">White-Label</h6>
+          <p style="font-size:12px;color:var(--pm-ink-soft);flex:1">Fully branded payment pages, emails, SMS, and custom
+            domains mapping.</p>
+          <button class="pm-btn pm-btn-sm mt-auto" (click)="openModal('whiteLabelModal')">Theme & Domain</button>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="integration-card d-flex flex-column">
+          <div class="pm-icon-circle mb-3" style="background:var(--pm-accent);color:#fff"><i class="bi bi-shuffle"></i>
+          </div>
+          <h6 style="font-weight:700">Hybrid Setup</h6>
+          <p style="font-size:12px;color:var(--pm-ink-soft);flex:1">Mix API + SDK. Offline queueing, bulk background
+            processing.</p>
+          <button class="pm-btn pm-btn-sm mt-auto" (click)="openModal('hybridSyncModal')">Sync Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4.7.2 -->
+  <div class="pm-card mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h3 class="pm-section-title"><i class="bi bi-building text-warning"></i> 4.7.2 — Enterprise Architecture</h3>
+        <p class="pm-section-sub">Topology mapping for complex infrastructures including legacy cores and multi-tenant
+          SaaS.</p>
+      </div>
+      <button class="pm-btn pm-btn-sm" (click)="openModal('idempotencyModal')"><i class="bi bi-key text-warning"></i>
+        Idempotency Keys</button>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div
+          style="background:var(--pm-bg);border:1px solid var(--pm-border);border-radius:var(--pm-r-md);padding:16px;height:100%">
+          <h6 style="font-weight:700;color:var(--pm-primary-light)"><i class="bi bi-boxes"></i> Microservices Mesh</h6>
+          <p style="font-size:12px;color:var(--pm-ink-soft);margin-bottom:12px">Integrate PayMo via sidecar proxies.
+            gRPC support enabled.</p>
+          <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-2 mb-2">
+            <span style="font-size:12px">Istio/Envoy Proxy</span><span class="pm-badge pm-badge-success">Active</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span style="font-size:12px">Event-driven triggers</span><span class="pm-badge pm-badge-info">Kafka</span>
+          </div>
+          <div class="d-flex gap-2"><button class="pm-btn pm-btn-sm w-100" (click)="openModal('meshConfigModal')">Mesh
+              Config</button><button class="pm-btn pm-btn-sm w-100" (click)="openModal('grpcSetupModal')">gRPC
+              Specs</button></div>
+          <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('circuitBreakerModal')">Circuit
+            Breakers</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div
+          style="background:var(--pm-bg);border:1px solid var(--pm-border);border-radius:var(--pm-r-md);padding:16px;height:100%">
+          <h6 style="font-weight:700;color:#F87171"><i class="bi bi-device-hdd"></i> Legacy Integrations</h6>
+          <p style="font-size:12px;color:var(--pm-ink-soft);margin-bottom:12px">Bridges for older systems (SOAP,
+            File-drop, AS400).</p>
+          <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-2 mb-2">
+            <span style="font-size:12px">SOAP to REST Bridge</span><span
+              class="pm-badge pm-badge-warning">Configured</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span style="font-size:12px">SFTP Batch Drops</span><span class="pm-badge pm-badge-purple">CSV/XML</span>
+          </div>
+          <div class="d-flex gap-2"><button class="pm-btn pm-btn-sm w-100"
+              (click)="openModal('soapTranslatorModal')">SOAP Translator</button><button class="pm-btn pm-btn-sm w-100"
+              (click)="openModal('fileIntegrationModal')">SFTP Config</button></div>
+          <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('legacyDbSyncModal')">Database Sync
+            Rules</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div
+          style="background:var(--pm-bg);border:1px solid var(--pm-border);border-radius:var(--pm-r-md);padding:16px;height:100%">
+          <h6 style="font-weight:700;color:var(--pm-accent)"><i class="bi bi-diagram-3-fill"></i> Multi-Tenant SaaS</h6>
+          <p style="font-size:12px;color:var(--pm-ink-soft);margin-bottom:12px">Manage multiple distinct businesses
+            under a single master API token.</p>
+          <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-2 mb-2">
+            <span style="font-size:12px">Tenant Isolation</span><span class="pm-badge pm-badge-success">Strict</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span style="font-size:12px">Active Tenants</span><strong style="font-size:14px">142</strong>
+          </div>
+          <button class="pm-btn pm-btn-sm w-100" (click)="openModal('tenantIsolationModal')">Tenant Data
+            Policies</button>
+          <button class="pm-btn pm-btn-sm w-100 mt-2" (click)="openModal('certPinningModal')">Cert Pinning
+            Security</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4.7.3 -->
+  <div class="pm-card mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h3 class="pm-section-title"><i class="bi bi-speedometer" style="color:var(--pm-accent)"></i> 4.7.3 —
+          Performance & Scalability</h3>
+        <p class="pm-section-sub">Manage rate limits, setup edge caching, and configure failovers for high-traffic
+          environments.</p>
+      </div>
+      <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('haFailoverModal')"><i
+          class="bi bi-activity"></i> HA Tester</button>
+    </div>
+    <div class="table-responsive">
+      <table class="pm-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Strategy / Tool</th>
+            <th>Status</th>
+            <th>Throughput / Rule</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><i class="bi bi-memory me-2 text-info"></i> Caching</td>
+            <td>Edge response caching (Redis)</td>
+            <td><span class="pm-badge pm-badge-success">Active</span></td>
+            <td>TTL 300s · Assets 24h</td>
+            <td>
+              <div class="d-flex gap-2"><button class="pm-btn pm-btn-sm"
+                  (click)="openModal('cacheStrategyModal')">Rules</button><button class="pm-btn pm-btn-sm"
+                  (click)="openModal('cdnSetupModal')">CDN</button></div>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-sign-stop me-2 text-warning"></i> Throttling</td>
+            <td>Token-bucket client rate limit</td>
+            <td><span class="pm-badge pm-badge-warning">Monitoring</span></td>
+            <td>1000 req/sec per token</td>
+            <td><button class="pm-btn pm-btn-sm" (click)="openModal('rateLimitModal')">Limit Params</button></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-router me-2" style="color:var(--pm-purple)"></i> Load Balancing</td>
+            <td>Geo-routed active-active</td>
+            <td><span class="pm-badge pm-badge-success">Healthy</span></td>
+            <td>3 Availability Zones</td>
+            <td><button class="pm-btn pm-btn-sm" (click)="openModal('lbIntegrationModal')">Routes</button></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-life-preserver me-2 text-danger"></i> Disaster Recovery</td>
+            <td>Cross-region failover</td>
+            <td><span class="pm-badge pm-badge-info">Ready</span></td>
+            <td>RTO < 5m · RPO < 1s</td>
+            <td><button class="pm-btn pm-btn-sm" (click)="openModal('drMonitorModal')">Test DR</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== MODALS ===================== -->
+
+<!-- 1. Architecture Guide -->
+<div class="modal fade" id="archGuideModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-download text-primary me-2"></i>Download Architecture Guide</h5><button
+          type="button" class="btn-close" (click)="closeModal('archGuideModal')"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft)">Select the architecture topology document tailored for your
+          enterprise.</p>
+        <div class="mb-3"><label class="pm-form-label">Format</label><select class="pm-form-control"
+            [(ngModel)]="archGuideForm.format">
+            <option>PDF Document</option>
+            <option>Draw.io Diagram</option>
+            <option>Lucidchart XML</option>
+            <option>AWS/Azure Architecture Maps</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Include Sections</label>
+          <div class="form-check"><input type="checkbox" class="form-check-input"
+              [(ngModel)]="archGuideForm.apiDataFlow" checked><label class="form-check-label">API Data Flow</label>
+          </div>
+          <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="archGuideForm.security"
+              checked><label class="form-check-label">Security & Authentication</label></div>
+          <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="archGuideForm.failover"
+              checked><label class="form-check-label">Failover Strategies</label></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('archGuideModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('archGuideModal','Guide generated successfully! Downloading...')">Download
+          Package</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Generate Boilerplate (Multi-step 4) -->
+<div class="modal fade" id="boilerplateModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-code-slash text-info me-2"></i>Generate Boilerplate Code</h5><button
+          type="button" class="btn-close" (click)="closeModal('boilerplateModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="boilerStep===1" [class.completed]="boilerStep>1">
+            <div class="pm-step-num"><span>{{ boilerStep > 1 ? '✓' : '1' }}</span></div>
+            <span class="pm-step-label">Stack</span>
+          </div>
+          <div class="pm-step-line" [style.background]="boilerStep>1?'var(--pm-accent)':'var(--pm-border)'"></div>
+          <div class="pm-step" [class.active]="boilerStep===2" [class.completed]="boilerStep>2">
+            <div class="pm-step-num"><span>{{ boilerStep > 2 ? '✓' : '2' }}</span></div>
+            <span class="pm-step-label">Architecture</span>
+          </div>
+          <div class="pm-step-line" [style.background]="boilerStep>2?'var(--pm-accent)':'var(--pm-border)'"></div>
+          <div class="pm-step" [class.active]="boilerStep===3" [class.completed]="boilerStep>3">
+            <div class="pm-step-num"><span>{{ boilerStep > 3 ? '✓' : '3' }}</span></div>
+            <span class="pm-step-label">Features</span>
+          </div>
+          <div class="pm-step-line" [style.background]="boilerStep>3?'var(--pm-accent)':'var(--pm-border)'"></div>
+          <div class="pm-step" [class.active]="boilerStep===4">
+            <div class="pm-step-num">4</div><span class="pm-step-label">Generate</span>
+          </div>
+        </div>
+        <div [class.active]="boilerStep===1" class="fade-step">
+          <h6 style="font-weight:700">Step 1: Core Stack</h6>
+          <div class="row g-2 mt-2">
+            <div class="col-4">
+              <div class="p-3 border rounded text-center border-secondary" style="cursor:pointer"
+                [style.borderColor]="boilerForm.stack==='node'?'var(--pm-primary)':''"
+                (click)="selectCardOption('stack','node')"><i
+                  class="bi bi-filetype-node d-block mb-1 fs-3 text-success"></i><strong>Node.js</strong></div>
+            </div>
+            <div class="col-4">
+              <div class="p-3 border rounded text-center border-secondary" style="cursor:pointer"
+                [style.borderColor]="boilerForm.stack==='python'?'var(--pm-primary)':''"
+                (click)="selectCardOption('stack','python')"><i
+                  class="bi bi-filetype-py d-block mb-1 fs-3 text-warning"></i><strong>Python</strong></div>
+            </div>
+            <div class="col-4">
+              <div class="p-3 border rounded text-center border-secondary" style="cursor:pointer"
+                [style.borderColor]="boilerForm.stack==='java'?'var(--pm-primary)':''"
+                (click)="selectCardOption('stack','java')"><i
+                  class="bi bi-filetype-java d-block mb-1 fs-3 text-danger"></i><strong>Java/Spring</strong></div>
+            </div>
+          </div>
+        </div>
+        <div [class.active]="boilerStep===2" class="fade-step">
+          <h6 style="font-weight:700">Step 2: Architecture Type</h6>
+          <div class="mb-3 mt-2"><label class="pm-form-label">Deployment Style</label><select class="pm-form-control"
+              [(ngModel)]="boilerForm.deployment">
+              <option>Serverless (AWS Lambda / Cloud Functions)</option>
+              <option>Microservices (Docker / K8s ready)</option>
+              <option>Monolithic Backend</option>
+            </select></div>
+          <div class="mb-3"><label class="pm-form-label">Database Connector</label><select class="pm-form-control"
+              [(ngModel)]="boilerForm.database">
+              <option>PostgreSQL</option>
+              <option>MongoDB</option>
+              <option>None (Stateless proxy)</option>
+            </select></div>
+        </div>
+        <div [class.active]="boilerStep===3" class="fade-step">
+          <h6 style="font-weight:700">Step 3: Features & Auth</h6>
+          <div class="form-check mb-2"><input type="checkbox" class="form-check-input" [(ngModel)]="boilerForm.hmacAuth"
+              checked><label class="form-check-label">Include Direct API Auth (HMAC)</label></div>
+          <div class="form-check mb-2"><input type="checkbox" class="form-check-input"
+              [(ngModel)]="boilerForm.webhookListener" checked><label class="form-check-label">Include Webhook Listener
+              with signature validation</label></div>
+          <div class="form-check mb-2"><input type="checkbox" class="form-check-input"
+              [(ngModel)]="boilerForm.embeddedCheckout"><label class="form-check-label">Include Embedded Checkout HTML
+              snippet</label></div>
+          <div class="form-check"><input type="checkbox" class="form-check-input"
+              [(ngModel)]="boilerForm.idempotencyCache"><label class="form-check-label">Include Idempotency caching
+              middleware (Redis)</label></div>
+        </div>
+        <div [class.active]="boilerStep===4" class="fade-step">
+          <div class="text-center py-4"><i class="bi bi-box-seam text-primary" style="font-size:48px"></i>
+            <h5 class="mt-3 font-weight-bold">Ready to Generate!</h5>
+            <p class="text-muted">Your {{boilerForm.stackLabel}} {{boilerForm.deploymentSplit}} boilerplate with
+              Webhooks and HMAC auth is ready.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal('boilerplateModal')">Cancel</button>
+        @if (boilerStep > 1) {
+        <button class="pm-btn" (click)="prevBoilerStep()"><i class="bi bi-arrow-left"></i> Back</button>
+        }
+        @if (boilerStep < 4) {
+        <button class="pm-btn pm-btn-primary" (click)="nextBoilerStep()">Next Step <i
+            class="bi bi-arrow-right"></i></button>
+          }
+          @if (boilerStep === 4) {
+          <button class="pm-btn pm-btn-accent"
+            (click)="processAction('boilerplateModal','Boilerplate generated! Downloading ZIP...')"><i
+              class="bi bi-download"></i> Generate & Download</button>
+          }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Test Simulator -->
+<div class="modal fade" id="testIntegrationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-bug text-warning me-2"></i>Integration Simulator</h5><button
+          type="button" class="btn-close" (click)="closeModal('testIntegrationModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-tab-pills mb-3">
+          <button class="pm-tab-pill" [class.active]="simTab==='rest'" (click)="simTab='rest'">REST API</button>
+          <button class="pm-tab-pill" [class.active]="simTab==='hook'" (click)="simTab='hook'">Webhooks</button>
+          <button class="pm-tab-pill" [class.active]="simTab==='sdk'" (click)="simTab='sdk'">SDK Event</button>
+        </div>
+        <div [class.active]="simTab==='rest'" class="tab-panel">
+          <div class="mb-3"><label class="pm-form-label">Endpoint</label>
+            <div class="d-flex"><select class="pm-form-control"
+                style="width:100px;border-radius:8px 0 0 8px;border-right:0" [(ngModel)]="simForm.method">
+                <option>POST</option>
+                <option>GET</option>
+              </select><input type="text" class="pm-form-control" style="border-radius:0 8px 8px 0"
+                [(ngModel)]="simForm.endpoint"></div>
+          </div>
+          <div class="mb-3"><label class="pm-form-label">Payload</label><textarea class="pm-form-control font-monospace"
+              rows="4" [(ngModel)]="simForm.payload"></textarea></div>
+          <button class="pm-btn pm-btn-primary pm-btn-sm" (click)="simSendRequest()">Send Request</button>
+          @if (simResponse) {
+          <div class="code-block mt-3">{{simResponse}}</div>
+          }
+        </div>
+        <div [class.active]="simTab==='hook'" class="tab-panel">
+          <p class="text-muted" style="font-size:13px">Trigger a test webhook payload to your registered endpoint.</p>
+          <div class="mb-3"><label class="pm-form-label">Event Type</label><select class="pm-form-control"
+              [(ngModel)]="simForm.webhookEvent">
+              <option>payment.success</option>
+              <option>payment.failed</option>
+              <option>disbursement.completed</option>
+            </select></div>
+          <button class="pm-btn pm-btn-primary"
+            (click)="processAction('testIntegrationModal','Webhook fired. Check your server logs.')">Fire
+            Webhook</button>
+        </div>
+        <div [class.active]="simTab==='sdk'" class="tab-panel">
+          <p class="text-muted" style="font-size:13px">Simulate frontend SDK callbacks (e.g. onCheckoutClose).</p>
+          <button class="pm-btn"
+            (click)="processAction('testIntegrationModal','SDK event simulated: onCheckoutSuccess')">Simulate Checkout
+            Success</button>
+          <button class="pm-btn mt-2"
+            (click)="processAction('testIntegrationModal','SDK event simulated: onCheckoutClose')">Simulate Checkout
+            Close</button>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('testIntegrationModal')">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Direct API -->
+<div class="modal fade" id="directApiModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-hdd-network text-primary me-2"></i>Direct API Configuration</h5><button
+          type="button" class="btn-close" (click)="closeModal('directApiModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">API Version</label><select class="pm-form-control"
+            [(ngModel)]="directApiForm.version">
+            <option>v2 (Recommended)</option>
+            <option>v1 (Legacy)</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Authentication Method</label><select class="pm-form-control"
+            [(ngModel)]="directApiForm.authMethod">
+            <option>OAuth 2.0 Client Credentials</option>
+            <option>HMAC-SHA256 Signatures</option>
+            <option>Static API Key (Sandbox only)</option>
+          </select></div>
+        <div class="form-check mb-3"><input type="checkbox" class="form-check-input"
+            [(ngModel)]="directApiForm.ipWhitelist" checked><label class="form-check-label">Enforce IP
+            Whitelisting</label></div>
+        <div class="code-block">
+          <div class="code-copy" (click)="copyCode($event)">Copy</div>Authorization: Bearer
+          pm_live_xxxxxx...<br>X-PayMo-Signature: a3f8...
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('directApiModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary" (click)="processAction('directApiModal','API configurations updated')">Save
+          Settings</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. Webhook Config -->
+<div class="modal fade" id="webhookConfigModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-broadcast text-info me-2"></i>Webhook Listener Settings</h5><button
+          type="button" class="btn-close" (click)="closeModal('webhookConfigModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12"><label class="pm-form-label">Endpoint URL</label><input type="url" class="pm-form-control"
+              [(ngModel)]="webhookForm.url"></div>
+          <div class="col-md-6"><label class="pm-form-label">Retry Strategy</label><select class="pm-form-control"
+              [(ngModel)]="webhookForm.retryStrategy">
+              <option>Exponential Backoff (Recommended)</option>
+              <option>Linear (Every 5 mins)</option>
+              <option>No Retries</option>
+            </select></div>
+          <div class="col-md-6"><label class="pm-form-label">Max Retries</label><input type="number"
+              class="pm-form-control" [(ngModel)]="webhookForm.maxRetries"></div>
+          <div class="col-12"><label class="pm-form-label">Subscribed Events</label>
+            <div class="d-flex flex-wrap gap-2">
+              @for (e of webhookForm.events; track e) {
+              <span class="pm-badge pm-badge-success">{{e}}</span>
+              }
+            </div>
+          </div>
+          <div class="col-12"><label class="pm-form-label">Webhook Secret (for HMAC)</label>
+            <div class="d-flex gap-2"><input [type]="webhookSecretVisible?'text':'password'" class="pm-form-control"
+                [value]="webhookForm.secret" readonly><button class="pm-btn"
+                (click)="webhookSecretVisible=!webhookSecretVisible"><i class="bi"
+                  [class.bi-eye]="!webhookSecretVisible" [class.bi-eye-slash]="webhookSecretVisible"></i></button></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('webhookConfigModal')">Close</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('webhookConfigModal','Webhook endpoint activated!')">Update Endpoint</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. Embedded Checkout -->
+<div class="modal fade" id="embeddedCheckoutModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-window-sidebar me-2" style="color:var(--pm-accent)"></i>Embedded
+          Checkout Setup</h5><button type="button" class="btn-close"
+          (click)="closeModal('embeddedCheckoutModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-tab-pills mb-3">
+          <button class="pm-tab-pill" [class.active]="checkTab==='style'" (click)="checkTab='style'">UI Theme</button>
+          <button class="pm-tab-pill" [class.active]="checkTab==='behavior'"
+            (click)="checkTab='behavior'">Behavior</button>
+          <button class="pm-tab-pill" [class.active]="checkTab==='code'" (click)="checkTab='code'">Embed Code</button>
+        </div>
+        <div [class.active]="checkTab==='style'" class="tab-panel">
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Primary Color</label><input type="color"
+                class="pm-form-control p-1" value="#4F46E5" style="height:40px" [(ngModel)]="checkoutForm.primaryColor">
+            </div>
+            <div class="col-md-6"><label class="pm-form-label">Border Radius</label><select class="pm-form-control"
+                [(ngModel)]="checkoutForm.borderRadius">
+                <option>Sharp (0px)</option>
+                <option>Rounded (8px)</option>
+                <option selected>Pill (20px)</option>
+              </select></div>
+            <div class="col-12"><label class="pm-form-label">Logo URL</label><input type="url" class="pm-form-control"
+                placeholder="https://yourdomain.com/logo.png" [(ngModel)]="checkoutForm.logoUrl"></div>
+          </div>
+        </div>
+        <div [class.active]="checkTab==='behavior'" class="tab-panel">
+          <div class="mb-3"><label class="pm-form-label">Display Mode</label><select class="pm-form-control"
+              [(ngModel)]="checkoutForm.displayMode">
+              <option>Overlay Popup Modal</option>
+              <option>Inline iFrame</option>
+              <option>Full Page Redirect</option>
+            </select></div>
+          <div class="form-check mb-2"><input type="checkbox" class="form-check-input"
+              [(ngModel)]="checkoutForm.guestCheckout" checked><label class="form-check-label">Enable Guest
+              Checkout</label></div>
+          <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="checkoutForm.saveCard"
+              checked><label class="form-check-label">Save card for future payments</label></div>
+        </div>
+        <div [class.active]="checkTab==='code'" class="tab-panel">
+          <p class="text-muted" style="font-size:13px">Place this snippet before the closing <code>&lt;/body&gt;</code>
+            tag.</p>
+          <div class="code-block">
+            <div class="code-copy" (click)="copyCode($event)">Copy</div>&lt;script
+            src="https://js.paymo.com/v2/checkout.js"&gt;&lt;/script&gt;<br>&lt;script&gt;<br> const paymo = new
+            PayMo('pk_live_xxxx');<br> paymo.mount('#payment-element');<br>&lt;/script&gt;
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn"
+          (click)="closeModal('embeddedCheckoutModal')">Close</button><button class="pm-btn pm-btn-primary"
+          (click)="processAction('embeddedCheckoutModal','Checkout settings saved globally.')">Save Checkout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 7. White Label -->
+<div class="modal fade" id="whiteLabelModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-palette me-2" style="color:var(--pm-purple)"></i>White-Label
+          Configuration</h5><button type="button" class="btn-close" (click)="closeModal('whiteLabelModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Custom Payment Domain</label>
+          <div class="input-group"><span class="input-group-text">https://</span><input type="text"
+              class="pm-form-control" placeholder="pay.yourbrand.com" [(ngModel)]="whiteLabelForm.domain"></div>
+        </div>
+        <div class="p-3 border border-secondary rounded mb-3">
+          <h6 class="font-weight-bold mb-2" style="color:#fff">DNS Instructions</h6>
+          <p class="mb-0" style="font-size:12px;color:var(--pm-muted)">Create a CNAME record pointing
+            <code>pay.yourbrand.com</code> to <code>wl.paymo.com</code>. We automatically provision SSL.
+          </p>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">Email Sender Name</label><input type="text"
+            class="pm-form-control" [(ngModel)]="whiteLabelForm.senderName"></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="whiteLabelForm.removeBadge"
+            checked><label class="form-check-label">Remove 'Powered by PayMo' badge (Enterprise only)</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('whiteLabelModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('whiteLabelModal','Domain verification initiated. Please check DNS.')">Verify
+          Domain</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 8. Hybrid Sync -->
+<div class="modal fade" id="hybridSyncModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shuffle text-success me-2"></i>Hybrid Sync & Offline Queues</h5><button
+          type="button" class="btn-close" (click)="closeModal('hybridSyncModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-check form-switch mb-3"><input type="checkbox" class="form-check-input"
+            [(ngModel)]="hybridForm.bgSync" checked><label class="form-check-label">Enable Background Sync API</label>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">Offline Queue Behavior</label><select class="pm-form-control"
+            [(ngModel)]="hybridForm.offlineBehavior">
+            <option>Store locally and sync on network connect</option>
+            <option>Reject transactions when offline</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Bulk Operation Chunk Size</label><input type="number"
+            class="pm-form-control" [(ngModel)]="hybridForm.chunkSize"></div>
+        <p class="text-muted" style="font-size:12px">Ideal for POS devices in low-connectivity areas. SDK handles
+          indexing and state reconciliation automatically.</p>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('hybridSyncModal')">Close</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('hybridSyncModal','Hybrid sync parameters deployed to SDK clients.')">Deploy
+          Strategy</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. Mesh Config -->
+<div class="modal fade" id="meshConfigModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-boxes me-2" style="color:var(--pm-purple)"></i>Service Mesh Proxy</h5>
+        <button type="button" class="btn-close" (click)="closeModal('meshConfigModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Proxy Environment</label><select class="pm-form-control"
+            [(ngModel)]="meshForm.proxy">
+            <option>Istio</option>
+            <option>Envoy Native</option>
+            <option>Linkerd</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">mTLS Mode</label><select class="pm-form-control"
+            [(ngModel)]="meshForm.mtls">
+            <option>Strict (Require client certs)</option>
+            <option>Permissive</option>
+          </select></div>
+        <p class="text-muted" style="font-size:12px">Download the sidecar injection templates for your Kubernetes
+          cluster to map PayMo endpoints internally.</p>
+        <div class="code-block">
+          <div class="code-copy" (click)="copyCode($event)">Copy</div>apiVersion: networking.istio.io/v1alpha3<br>kind:
+          ServiceEntry<br>metadata:<br> name: paymo-external...
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('meshConfigModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('meshConfigModal','Service mesh manifest downloaded.')">Download Manifest</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10. gRPC Setup -->
+<div class="modal fade" id="grpcSetupModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-cpu text-info me-2"></i>gRPC Protocols</h5><button type="button"
+          class="btn-close" (click)="closeModal('grpcSetupModal')"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-3">For ultra-low latency internal microservice communication, use our Protobuf specs
+          instead of JSON REST.</p>
+        <div class="mb-3"><label class="pm-form-label">Service Spec</label><select class="pm-form-control"
+            [(ngModel)]="grpcForm.spec">
+            <option>PaymentInitiationService.proto</option>
+            <option>DisbursementStream.proto</option>
+            <option>LedgerSync.proto</option>
+          </select></div>
+        <div class="code-block" style="height:150px">
+          <div class="code-copy" (click)="copyCode($event)">Copy</div>{{ grpcProtoExample }}</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('grpcSetupModal')">Close</button><button
+          class="pm-btn pm-btn-primary" (click)="processAction('grpcSetupModal','.proto files downloaded.')">Download
+          .proto Files</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 11. Circuit Breaker -->
+<div class="modal fade" id="circuitBreakerModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-sign-stop-lights text-danger me-2"></i>Circuit Breaker Rules</h5><button
+          type="button" class="btn-close" (click)="closeModal('circuitBreakerModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Error Threshold (%)</label><input type="number"
+            class="pm-form-control" [(ngModel)]="circuitForm.errorThreshold"></div>
+        <div class="mb-3"><label class="pm-form-label">Timeout (ms)</label><input type="number" class="pm-form-control"
+            [(ngModel)]="circuitForm.timeout"></div>
+        <div class="mb-3"><label class="pm-form-label">Reset Timeout (seconds)</label><input type="number"
+            class="pm-form-control" [(ngModel)]="circuitForm.resetTimeout"></div>
+        <p class="text-muted" style="font-size:12px">If failures to downstream banks exceed threshold, requests will
+          fail fast for the reset timeout to prevent cascading failures.</p>
+      </div>
+      <div class="modal-footer"><button class="pm-btn"
+          (click)="closeModal('circuitBreakerModal')">Cancel</button><button class="pm-btn pm-btn-primary"
+          (click)="processAction('circuitBreakerModal','Circuit breaker thresholds updated.')">Save Thresholds</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12. SOAP Translator (Multi-step 3) -->
+<div class="modal fade" id="soapTranslatorModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-code text-warning me-2"></i>SOAP to REST Bridge</h5><button
+          type="button" class="btn-close" (click)="closeModal('soapTranslatorModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="soapStep===1" [class.completed]="soapStep>1">
+            <div class="pm-step-num"><span>{{ soapStep > 1 ? '✓' : '1' }}</span></div>
+            <span class="pm-step-label">WSDL</span>
+          </div>
+          <div class="pm-step-line" [style.background]="soapStep>1?'var(--pm-accent)':'var(--pm-border)'"></div>
+          <div class="pm-step" [class.active]="soapStep===2" [class.completed]="soapStep>2">
+            <div class="pm-step-num"><span>{{ soapStep > 2 ? '✓' : '2' }}</span></div>
+            <span class="pm-step-label">Mapping</span>
+          </div>
+          <div class="pm-step-line" [style.background]="soapStep>2?'var(--pm-accent)':'var(--pm-border)'"></div>
+          <div class="pm-step" [class.active]="soapStep===3">
+            <div class="pm-step-num">3</div><span class="pm-step-label">Deploy</span>
+          </div>
+        </div>
+        <div [class.active]="soapStep===1" class="fade-step">
+          <h6 style="font-weight:700">Step 1: Upload WSDL</h6>
+          <div class="mb-3 mt-3"><label class="pm-form-label">Target Core Banking WSDL URL</label><input type="url"
+              class="pm-form-control" placeholder="http://legacy.bank.internal/Service?wsdl"
+              [(ngModel)]="soapForm.wsdlUrl"></div>
+          <p class="text-center my-3 text-muted">OR</p>
+          <div class="border border-secondary border-dashed p-4 text-center rounded" style="cursor:pointer"
+            (click)="processAction('soapTranslatorModal','File upload dialog would open here.')"><i
+              class="bi bi-upload fs-3 text-muted"></i>
+            <p class="mb-0 mt-2">Drag and drop .wsdl file here</p>
+          </div>
+        </div>
+        <div [class.active]="soapStep===2" class="fade-step">
+          <h6 style="font-weight:700">Step 2: Method Mapping</h6>
+          <div class="table-responsive mt-3">
+            <table class="pm-table">
+              <thead>
+                <tr>
+                  <th>SOAP Operation</th>
+                  <th>REST Endpoint (PayMo)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>doFundTransfer</code></td>
+                  <td><select class="pm-form-control p-1">
+                      <option>POST /v1/disbursements</option>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td><code>checkAccountBal</code></td>
+                  <td><select class="pm-form-control p-1">
+                      <option>GET /v1/wallet/balance</option>
+                    </select></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div [class.active]="soapStep===3" class="fade-step">
+          <h6 style="font-weight:700">Step 3: Deploy Middleware</h6>
+          <div class="form-check mb-3 mt-3"><input type="checkbox" class="form-check-input"
+              [(ngModel)]="soapForm.xmlSecurity" checked><label class="form-check-label">Wrap with basic XML Security
+              signatures</label></div>
+          <div class="form-check mb-3"><input type="checkbox" class="form-check-input"
+              [(ngModel)]="soapForm.dateTranslate" checked><label class="form-check-label">Translate ISO-8601 to legacy
+              YYYYMMDD</label></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pm-btn" (click)="closeModal('soapTranslatorModal')">Cancel</button>
+        @if (soapStep > 1) {
+        <button class="pm-btn" (click)="prevSoapStep()"><i class="bi bi-arrow-left"></i> Back</button>
+        }
+        @if (soapStep < 3) {
+        <button class="pm-btn pm-btn-primary" (click)="nextSoapStep()">Next Step <i
+            class="bi bi-arrow-right"></i></button>
+          }
+          @if (soapStep === 3) {
+          <button class="pm-btn pm-btn-accent"
+            (click)="processAction('soapTranslatorModal','SOAP-to-REST bridge deployed successfully.')"><i
+              class="bi bi-rocket-takeoff"></i> Deploy Bridge</button>
+          }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 13. SFTP File Integration -->
+<div class="modal fade" id="fileIntegrationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-folder-symlink text-primary me-2"></i>SFTP Batch Drops</h5><button
+          type="button" class="btn-close" (click)="closeModal('fileIntegrationModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">SFTP Host</label><input type="text" class="pm-form-control"
+            [(ngModel)]="sftpForm.host" placeholder="sftp.paymo.com"></div>
+        <div class="row g-3 mb-3">
+          <div class="col-6"><label class="pm-form-label">Port</label><input type="number" class="pm-form-control"
+              [(ngModel)]="sftpForm.port"></div>
+          <div class="col-6"><label class="pm-form-label">Protocol</label><select class="pm-form-control"
+              [(ngModel)]="sftpForm.protocol">
+              <option>SFTP</option>
+              <option>FTPS</option>
+              <option>SCP</option>
+            </select></div>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">File Format</label><select class="pm-form-control"
+            [(ngModel)]="sftpForm.fileFormat">
+            <option>CSV</option>
+            <option>XML</option>
+            <option>JSON Lines</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Polling Interval</label><select class="pm-form-control"
+            [(ngModel)]="sftpForm.pollInterval">
+            <option>Every 5 minutes</option>
+            <option>Every 15 minutes</option>
+            <option>Every hour</option>
+          </select></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="sftpForm.archiveAfter"
+            checked><label class="form-check-label">Archive processed files to /archive/</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn"
+          (click)="closeModal('fileIntegrationModal')">Cancel</button><button class="pm-btn pm-btn-primary"
+          (click)="processAction('fileIntegrationModal','SFTP integration configured and connected.')">Save & Test
+          Connection</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 14. Legacy DB Sync -->
+<div class="modal fade" id="legacyDbSyncModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-database text-warning me-2"></i>Database Sync Rules</h5><button
+          type="button" class="btn-close" (click)="closeModal('legacyDbSyncModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Source Database Type</label><select class="pm-form-control"
+            [(ngModel)]="dbSyncForm.sourceType">
+            <option>IBM DB2 / AS400</option>
+            <option>Oracle 11g+</option>
+            <option>MySQL 5.x</option>
+            <option>SQL Server</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Connection String</label><input type="text"
+            class="pm-form-control" placeholder="jdbc:as400://host:port/database"
+            [(ngModel)]="dbSyncForm.connectionString"></div>
+        <div class="mb-3"><label class="pm-form-label">Sync Direction</label><select class="pm-form-control"
+            [(ngModel)]="dbSyncForm.direction">
+            <option>PayMo → Legacy (Push)</option>
+            <option>Legacy → PayMo (Pull)</option>
+            <option>Bidirectional</option>
+          </select></div>
+        <div class="form-check mb-2"><input type="checkbox" class="form-check-input"
+            [(ngModel)]="dbSyncForm.encryptInTransit" checked><label class="form-check-label">Encrypt data in transit
+            (TLS 1.3)</label></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="dbSyncForm.auditLog"><label
+            class="form-check-label">Enable full audit logging</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('legacyDbSyncModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('legacyDbSyncModal','Database sync rules saved. Testing connection...')">Save &
+          Test</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 15. Tenant Isolation -->
+<div class="modal fade" id="tenantIsolationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-diagram-3-fill text-success me-2"></i>Tenant Data Policies</h5><button
+          type="button" class="btn-close" (click)="closeModal('tenantIsolationModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Isolation Level</label><select class="pm-form-control"
+            [(ngModel)]="tenantForm.isolationLevel">
+            <option>Strict (Schema-per-tenant)</option>
+            <option>Shared Schema, Row-Level Security</option>
+            <option>Shared Schema, App-Level Filtering</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Data Residency</label><select class="pm-form-control"
+            [(ngModel)]="tenantForm.dataResidency">
+            <option>Same region as master</option>
+            <option>EU-only (GDPR)</option>
+            <option>Custom per-tenant</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Max API Keys Per Tenant</label><input type="number"
+            class="pm-form-control" [(ngModel)]="tenantForm.maxKeys"></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input"
+            [(ngModel)]="tenantForm.crossTenantBlock" checked><label class="form-check-label">Block cross-tenant data
+            access at DB level</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn"
+          (click)="closeModal('tenantIsolationModal')">Cancel</button><button class="pm-btn pm-btn-primary"
+          (click)="processAction('tenantIsolationModal','Tenant isolation policies applied to all 142 tenants.')">Apply
+          Policies</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 16. Cert Pinning -->
+<div class="modal fade" id="certPinningModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-lock text-info me-2"></i>Cert Pinning Security</h5><button
+          type="button" class="btn-close" (click)="closeModal('certPinningModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Pin Strategy</label><select class="pm-form-control"
+            [(ngModel)]="certForm.strategy">
+            <option>Public Key Pinning (HPKP headers)</option>
+            <option>Certificate Subject Pinning</option>
+            <option>Custom CA Bundle</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Backup Pin (SHA-256)</label><input type="text"
+            class="pm-form-control font-monospace" placeholder="sha256/AAAAAAA..." [(ngModel)]="certForm.backupPin">
+        </div>
+        <div class="mb-3"><label class="pm-form-label">Enforcement Mode</label><select class="pm-form-control"
+            [(ngModel)]="certForm.enforcement">
+            <option>Enforce (Block mismatched certs)</option>
+            <option>Report-Only (Log only)</option>
+          </select></div>
+        <div class="p-3 border border-secondary rounded">
+          <p class="mb-0" style="font-size:12px;color:var(--pm-muted)"><i
+              class="bi bi-exclamation-triangle text-warning me-1"></i> Ensure you have a backup pin configured before
+            enforcing. A misconfigured pin can permanently block API access.</p>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('certPinningModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('certPinningModal','Certificate pinning rules updated.')">Save Rules</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 17. Idempotency -->
+<div class="modal fade" id="idempotencyModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-key text-warning me-2"></i>Idempotency Key Config</h5><button
+          type="button" class="btn-close" (click)="closeModal('idempotencyModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Strategy</label><select class="pm-form-control"
+            [(ngModel)]="idempotencyForm.strategy">
+            <option>Client-supplied (Header: X-Idempotency-Key)</option>
+            <option>Server-generated (Hash of payload)</option>
+          </select></div>
+        <div class="row g-3 mb-3">
+          <div class="col-6"><label class="pm-form-label">Key Expiry</label><select class="pm-form-control"
+              [(ngModel)]="idempotencyForm.expiry">
+              <option>24 hours</option>
+              <option>1 hour</option>
+              <option>10 minutes</option>
+            </select></div>
+          <div class="col-6"><label class="pm-form-label">Storage</label><select class="pm-form-control"
+              [(ngModel)]="idempotencyForm.storage">
+              <option>Redis (Recommended)</option>
+              <option>In-Memory</option>
+            </select></div>
+        </div>
+        <div class="form-check"><input type="checkbox" class="form-check-input"
+            [(ngModel)]="idempotencyForm.safeMethods" checked><label class="form-check-label">Apply to safe methods
+            (GET, HEAD) for strict caching</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('idempotencyModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary" (click)="processAction('idempotencyModal','Idempotency rules saved.')">Save
+          Config</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 18. Cache Strategy -->
+<div class="modal fade" id="cacheStrategyModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-memory me-2 text-info"></i>Cache Invalidation Rules</h5><button
+          type="button" class="btn-close" (click)="closeModal('cacheStrategyModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Default TTL (seconds)</label><input type="number"
+            class="pm-form-control" [(ngModel)]="cacheForm.defaultTtl"></div>
+        <div class="mb-3"><label class="pm-form-label">Invalidation Trigger</label><select class="pm-form-control"
+            [(ngModel)]="cacheForm.invalidation">
+            <option>Event-driven (webhook triggers purge)</option>
+            <option>Time-based only</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Stale-While-Revalidate (SWR)</label><select
+            class="pm-form-control" [(ngModel)]="cacheForm.swr">
+            <option>Enabled (Serve stale for 60s while refreshing)</option>
+            <option>Disabled</option>
+          </select></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="cacheForm.cacheAuth"
+            checked><label class="form-check-label">Cache authenticated user responses safely</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('cacheStrategyModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary" (click)="processAction('cacheStrategyModal','Cache rules updated.')">Save
+          Rules</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 19. CDN Setup -->
+<div class="modal fade" id="cdnSetupModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-globe me-2" style="color:var(--pm-accent)"></i>CDN Configuration</h5>
+        <button type="button" class="btn-close" (click)="closeModal('cdnSetupModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Provider</label><select class="pm-form-control"
+            [(ngModel)]="cdnForm.provider">
+            <option>Cloudflare (Default)</option>
+            <option>AWS CloudFront</option>
+            <option>Fastly</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Static Asset TTL</label><select class="pm-form-control"
+            [(ngModel)]="cdnForm.assetTtl">
+            <option>24 hours</option>
+            <option>1 week</option>
+            <option>1 month</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Origin Shield Region</label><select class="pm-form-control"
+            [(ngModel)]="cdnForm.originShield">
+            <option>US-East (Virginia)</option>
+            <option>EU-West (Ireland)</option>
+          </select></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="cdnForm.compression"
+            checked><label class="form-check-label">Enable Brotli/Gzip compression</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('cdnSetupModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary" (click)="processAction('cdnSetupModal','CDN settings deployed.')">Save
+          CDN</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 20. Rate Limit -->
+<div class="modal fade" id="rateLimitModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-sign-stop me-2 text-warning"></i>Rate Limiter</h5><button type="button"
+          class="btn-close" (click)="closeModal('rateLimitModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Algorithm</label><select class="pm-form-control"
+            [(ngModel)]="rateLimitForm.algorithm">
+            <option>Token Bucket</option>
+            <option>Leaky Bucket</option>
+            <option>Fixed Window</option>
+          </select></div>
+        <div class="row g-3 mb-3">
+          <div class="col-6"><label class="pm-form-label">Requests / Sec</label><input type="number"
+              class="pm-form-control" [(ngModel)]="rateLimitForm.requestsPerSec"></div>
+          <div class="col-6"><label class="pm-form-label">Burst Capacity</label><input type="number"
+              class="pm-form-control" [(ngModel)]="rateLimitForm.burstCapacity"></div>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">On Limit Exceeded</label><select class="pm-form-control"
+            [(ngModel)]="rateLimitForm.onExceeded">
+            <option>Return 429 Too Many Requests</option>
+            <option>Queue request</option>
+          </select></div>
+        <div class="form-check"><input type="checkbox" class="form-check-input" [(ngModel)]="rateLimitForm.perEndpoint"
+            checked><label class="form-check-label">Apply limits per endpoint path</label></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('rateLimitModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary" (click)="processAction('rateLimitModal','Rate limits updated.')">Save
+          Limits</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 21. Load Balancer -->
+<div class="modal fade" id="lbIntegrationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-router me-2" style="color:var(--pm-purple)"></i>Load Balancer Routes
+        </h5><button type="button" class="btn-close" (click)="closeModal('lbIntegrationModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Routing Strategy</label><select class="pm-form-control"
+            [(ngModel)]="lbForm.strategy">
+            <option>Geo-routed (Nearest region first)</option>
+            <option>Round Robin</option>
+            <option>Least Connections</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Health Check Path</label><input type="text"
+            class="pm-form-control" [(ngModel)]="lbForm.healthCheckPath"></div>
+        <div class="mb-3"><label class="pm-form-label">Health Check Interval (s)</label><input type="number"
+            class="pm-form-control" [(ngModel)]="lbForm.healthInterval"></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('lbIntegrationModal')">Cancel</button><button
+          class="pm-btn pm-btn-primary" (click)="processAction('lbIntegrationModal','Load balancer updated.')">Save
+          Routes</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 22. HA Failover -->
+<div class="modal fade" id="haFailoverModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-activity me-2 text-danger"></i>High Availability Tester</h5><button
+          type="button" class="btn-close" (click)="closeModal('haFailoverModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="pm-form-label">Failover Region</label><select class="pm-form-control"
+            [(ngModel)]="haForm.failRegion">
+            <option>US-East-1 (Primary)</option>
+            <option>EU-West-1 (Secondary)</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Simulate Failure Type</label><select class="pm-form-control"
+            [(ngModel)]="haForm.failureType">
+            <option>Complete outage (simulate AZ failure)</option>
+            <option>Latency spike (>1000ms)</option>
+            <option>Error rate spike (503s)</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Duration</label><select class="pm-form-control"
+            [(ngModel)]="haForm.duration">
+            <option>30 seconds</option>
+            <option>1 minute</option>
+            <option>5 minutes</option>
+          </select></div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('haFailoverModal')">Cancel</button><button
+          class="pm-btn pm-btn-accent"
+          (click)="processAction('haFailoverModal','HA Failover test initiated. Monitoring traffic shift...')"><i
+            class="bi bi-lightning"></i> Start Test</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 23. DR Monitor -->
+<div class="modal fade" id="drMonitorModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-life-preserver me-2 text-danger"></i>Disaster Recovery</h5><button
+          type="button" class="btn-close" (click)="closeModal('drMonitorModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center p-4 border rounded mb-3" style="background:var(--pm-accent-soft)">
+          <i class="bi bi-check-circle fs-1 text-success"></i>
+          <h5 class="mt-2">DR Status: Ready</h5>
+          <p class="text-muted">RPO: < 1s | RTO: < 5m</p>
+        </div>
+        <p class="text-muted" style="font-size:13px">Last sync to secondary region completed 12 seconds ago. All
+          replicas are healthy.</p>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal('drMonitorModal')">Close</button><button
+          class="pm-btn pm-btn-primary"
+          (click)="processAction('drMonitorModal','Full DR drill report downloaded.')">Download DR Report</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+@if (toast.visible) {
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999" [class.fade-out]="toast.hiding">
+  <div class="pm-card d-flex align-items-center gap-2"
+    style="padding:12px 20px;border-left:3px solid var(--pm-accent);box-shadow:var(--pm-shadow-lg);min-width:320px">
+    <i class="bi bi-check-circle-fill text-success" style="font-size:18px"></i>
+    <span style="font-size:13px;font-weight:500">{{toast.message}}</span>
+    <button class="btn-close btn-close-sm ms-auto" (click)="dismissToast()"></button>
+  </div>
+</div>
+}

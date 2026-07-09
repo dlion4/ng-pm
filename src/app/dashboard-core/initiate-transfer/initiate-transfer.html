@@ -1,0 +1,1058 @@
+<div class="pm-content">
+
+    <!-- HERO STATS -->
+    <div class="row g-3">
+        <div class="col-lg-4">
+            <div class="C C-accent" style="min-height:170px">
+                <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Transfer engine live <span
+                        style="color:#86efac">●</span></p>
+                <div class="SV" style="margin:8px 0;color:#fff">{{ engineStats.totalProcessed }}</div>
+                <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Processed today across {{
+                    engineStats.rails }} rails • {{ engineStats.successRate }} success rate • {{
+                    engineStats.avgSettlement }} avg settlement</p>
+                <div class="d-flex flex-wrap mt-3" style="gap:8px">
+                    <button class="btn-pm btn-sm"
+                        style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+                        (click)="openModal(railHealthTpl)">Rails</button>
+                    <button class="btn-pm btn-sm"
+                        style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+                        (click)="openModal(feeCalcTpl)">Fees</button>
+                    <button class="btn-pm btn-sm"
+                        style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+                        (click)="openModal(newTransferTpl)">New</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6">
+            <div class="C" style="min-height:170px">
+                <p class="SL" style="color:var(--pm-accent)">TODAY'S TRANSFERS</p>
+                <div class="SV" style="margin:6px 0">{{ todayStats.count }}</div>
+                <span class="B B-s"><i class="bi bi-check-circle"></i> {{ todayStats.completed }} completed</span>
+                <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">{{ todayStats.inProgress }} in
+                    progress • {{ todayStats.failed }} failed</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6">
+            <div class="C" style="min-height:170px">
+                <p class="SL" style="color:var(--pm-info)">AVG SETTLEMENT</p>
+                <div class="SV" style="margin:6px 0">{{ settlementStats.avgTime }}</div>
+                <span class="B B-i"><i class="bi bi-lightning"></i> {{ settlementStats.vsYesterday }} vs
+                    yesterday</span>
+                <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">M-Pesa: {{ settlementStats.mpesaTime
+                    }} • PesaLink: {{ settlementStats.pesalinkTime }} • RTGS: {{ settlementStats.rtgsTime }}</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4">
+            <div class="C" style="min-height:170px;border-left:3px solid var(--pm-warning)">
+                <p class="SL" style="color:var(--pm-warning)">PENDING APPROVAL</p>
+                <div class="SV" style="margin:6px 0">{{ pendingApproval.count }}</div>
+                <span class="B B-w"><i class="bi bi-clock"></i> {{ pendingApproval.highValue }} high-value</span>
+                <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">KES {{ pendingApproval.amount }}
+                    awaiting maker-checker</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TYPE SELECTOR / SENDER / RECEIVER / AMOUNT / RAIL -->
+    <div class="row g-3">
+        <div class="col-lg-4">
+            <div class="C">
+                <ng-template #templateTpl>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Select a Transfer Template</h4>
+                        <button type="button" class="btn-close" (click)="closeModal()"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </ng-template>
+                <div class="pills mb-3">
+                    <button class="pill" [class.active]="transferType === 'single'"
+                        (click)="switchTransferType('single')">Single</button>
+                    <button class="pill" [class.active]="transferType === 'bulk'"
+                        (click)="switchTransferType('bulk')">Bulk</button>
+                    <button class="pill" [class.active]="transferType === 'recurring'"
+                        (click)="switchTransferType('recurring')">Recurring</button>
+                </div>
+                <div *ngIf="transferType === 'single'" class="tpanel active">
+                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="transferMode"
+                            [(ngModel)]="transferMode" value="standard" checked><label class="form-check-label">Standard
+                            (T+0 / T+1)</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="transferMode"
+                            [(ngModel)]="transferMode" value="instant"><label class="form-check-label">Instant
+                            (Real-time)</label></div>
+                </div>
+                <div *ngIf="transferType === 'bulk'" class="tpanel active">
+                    <div class="quick-grid">
+                        <button class="quick-btn" (click)="openModal(bulkUploadTpl)"><i class="bi bi-upload me-1"></i>
+                            CSV / Excel</button>
+                        <button class="quick-btn" (click)="openModal(bulkUploadTpl)"><i
+                                class="bi bi-file-earmark-spreadsheet me-1"></i> ISO 20022</button>
+                    </div>
+                    <div class="mt-2" style="font-size:12px;color:var(--pm-muted)">Supports 500+ rows • Mixed rails
+                    </div>
+                </div>
+                <div *ngIf="transferType === 'recurring'" class="tpanel active">
+                    <div class="row g-2">
+                        <div class="col-6"><label class="FL" style="font-size:10px">Frequency</label><select class="FC"
+                                [(ngModel)]="recurringFrequency">
+                                <option>Weekly</option>
+                                <option>Monthly</option>
+                                <option>Quarterly</option>
+                            </select></div>
+                        <div class="col-6"><label class="FL" style="font-size:10px">End Date</label><input type="date"
+                                class="FC" [(ngModel)]="recurringEndDate"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="C">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="st">Sender</h3>
+                    <button class="btn-pm btn-sm" (click)="openModal(addAccountTpl)">+ Account</button>
+                </div>
+                <div class="mb-3"><label class="FL">Source Account</label><select class="FC"
+                        [(ngModel)]="selectedSourceAccount">
+                        <option *ngFor="let acc of sourceAccounts" [value]="acc.value">{{ acc.label }}</option>
+                    </select></div>
+                <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                    <div class="d-flex justify-content-between mb-1"><span class="text-muted">Available</span><strong>{{
+                            senderStats.available }}</strong></div>
+                    <div class="d-flex justify-content-between mb-1"><span class="text-muted">Daily
+                            Limit</span><strong>{{ senderStats.dailyLimit }}</strong></div>
+                    <div class="d-flex justify-content-between"><span class="text-muted">Verification</span><span
+                            class="B B-s">Verified</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="C">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="st">Receiver</h3>
+                    <button class="btn-pm btn-sm" (click)="openModal(beneficiaryTpl)">Address Book</button>
+                </div>
+                <div class="mb-3"><label class="FL">Beneficiary Type</label>
+                    <div class="pills">
+                        <button class="pill" [class.active]="beneficiaryType === 'bank'"
+                            (click)="switchBeneficiaryType('bank')">Bank</button>
+                        <button class="pill" [class.active]="beneficiaryType === 'mobile'"
+                            (click)="switchBeneficiaryType('mobile')">Mobile Money</button>
+                        <button class="pill" [class.active]="beneficiaryType === 'wallet'"
+                            (click)="switchBeneficiaryType('wallet')">Wallet</button>
+                    </div>
+                </div>
+                <div *ngIf="beneficiaryType === 'bank'" class="tpanel active">
+                    <div class="mb-2"><label class="FL">Bank</label><select class="FC" [(ngModel)]="selectedBank">
+                            <option *ngFor="let bank of banks" [value]="bank">{{ bank }}</option>
+                        </select></div>
+                    <div class="row g-2">
+                        <div class="col-7"><label class="FL">Account Number</label><input class="FC"
+                                [(ngModel)]="accountNumber" (input)="validateAccount()"></div>
+                        <div class="col-5"><label class="FL">Verify</label><button class="btn-pm btn-sm w-100"
+                                (click)="verifyAccount()">Check Name</button></div>
+                    </div>
+                    <div *ngIf="accountVerified" class="mt-2"><span class="B B-s"><i class="bi bi-check-circle"></i> {{
+                            verifiedAccountName }} — Verified</span></div>
+                </div>
+                <div *ngIf="beneficiaryType === 'mobile'" class="tpanel active">
+                    <div class="mb-2"><label class="FL">Network</label><select class="FC" [(ngModel)]="selectedNetwork">
+                            <option *ngFor="let net of mobileNetworks" [value]="net">{{ net }}</option>
+                        </select></div>
+                    <div class="mb-2"><label class="FL">Phone Number</label><input class="FC" [(ngModel)]="phoneNumber"
+                            placeholder="2547XXXXXXXX"></div>
+                </div>
+                <div *ngIf="beneficiaryType === 'wallet'" class="tpanel active">
+                    <div class="mb-2"><label class="FL">PayMo Wallet / PayPal</label><input class="FC"
+                            [(ngModel)]="walletId" placeholder="wallet ID or email"></div>
+                </div>
+                <div class="form-check mt-2"><input class="form-check-input" type="checkbox"
+                        [(ngModel)]="saveToAddressBook" checked><label class="form-check-label"
+                        style="font-size:13px">Save to address book</label></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AMOUNT + RAIL + PURPOSE + AUTH + SUMMARY -->
+    <div class="row g-3">
+        <div class="col-lg-4">
+            <div class="C">
+                <h3 class="st mb-3">Amount & Currency</h3>
+                <div class="row g-2 mb-3">
+                    <div class="col-7"><label class="FL">Amount</label><input class="FC" [(ngModel)]="transferAmount"
+                            (input)="calcTotal()"></div>
+                    <div class="col-5"><label class="FL">Currency</label><select class="FC"
+                            [(ngModel)]="selectedCurrency" (change)="calcTotal()">
+                            <option *ngFor="let cur of currencies" [value]="cur">{{ cur }}</option>
+                        </select></div>
+                </div>
+                <div class="p-3 rounded" style="background:var(--pm-surface-2);font-size:13px">
+                    <div class="d-flex justify-content-between mb-1"><span>Platform Fee</span><strong>{{
+                            feeBreakdown.platformFee }}</strong></div>
+                    <div class="d-flex justify-content-between mb-1"><span>Rail Fee</span><strong>{{
+                            feeBreakdown.railFee }}</strong></div>
+                    <div class="d-flex justify-content-between mb-1"><span>FX Spread</span><strong>{{
+                            feeBreakdown.fxSpread }}</strong></div>
+                    <hr class="divider">
+                    <div class="d-flex justify-content-between"><span style="font-weight:700">Total Debit</span><strong
+                            style="color:var(--pm-primary)">{{ feeBreakdown.totalDebit }}</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="C">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="st">Payment Rail</h3>
+                    <button class="btn-pm btn-sm" (click)="openModal(railCompareTpl)">Compare</button>
+                </div>
+                <div class="pills mb-3">
+                    <button class="pill" [class.active]="railMode === 'smart'"
+                        (click)="switchRailMode('smart')">Smart</button>
+                    <button class="pill" [class.active]="railMode === 'manual'"
+                        (click)="switchRailMode('manual')">Manual</button>
+                </div>
+                <div *ngIf="railMode === 'smart'" class="tpanel active">
+                    <div class="p-3 rounded mb-2" style="background:var(--pm-accent-soft)">
+                        <div class="d-flex justify-content-between">
+                            <div><strong>{{ smartRail.name }}</strong>
+                                <div style="font-size:11px;color:#047857">{{ smartRail.recommendation }} • {{
+                                    smartRail.time }} • {{ smartRail.fee }}</div>
+                            </div><span class="B B-s">Best</span>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-4" *ngFor="let rail of railOptions">
+                            <div class="p-2 border rounded text-center"
+                                [style.border-color]="rail.selected ? 'var(--pm-primary)' : ''">
+                                <strong>{{ rail.name }}</strong>
+                                <div style="font-size:10px;color:var(--pm-muted)">{{ rail.time }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="railMode === 'manual'" class="tpanel active">
+                    <select class="FC" [(ngModel)]="selectedManualRail">
+                        <option *ngFor="let rail of manualRails" [value]="rail.value">{{ rail.label }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="C">
+                <h3 class="st mb-3">Purpose & Compliance</h3>
+                <div class="mb-3"><label class="FL">Purpose Code</label><select class="FC"
+                        [(ngModel)]="selectedPurpose">
+                        <option *ngFor="let p of purposeCodes" [value]="p">{{ p }}</option>
+                    </select></div>
+                <div class="mb-3"><label class="FL">Reference / Narration</label><input class="FC"
+                        [(ngModel)]="transferNarration"></div>
+                <div class="mb-3"><label class="FL">Supporting Documents</label>
+                    <div class="d-flex gap-2">
+                        <button class="btn-pm btn-sm" (click)="openModal(uploadDocTpl)"><i class="bi bi-upload"></i>
+                            Upload</button>
+                        <span class="B B-s" *ngIf="docCount > 0">{{ docCount }} files</span>
+                    </div>
+                </div>
+                <div class="form-check"><input class="form-check-input" type="checkbox"
+                        [(ngModel)]="urgentPriority"><label class="form-check-label" style="font-size:13px">Urgent /
+                        Critical priority</label></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH + SUMMARY -->
+    <div class="row g-3">
+        <div class="col-lg-5">
+            <div class="C">
+                <h3 class="st mb-3">Authorization</h3>
+                <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
+                    <div class="d-flex justify-content-between mb-1"><span>Maker</span><strong>{{ authChain.maker
+                            }}</strong></div>
+                    <div class="d-flex justify-content-between mb-1"><span>Checker</span><strong>{{ authChain.checker
+                            }}</strong></div>
+                    <div class="d-flex justify-content-between"><span>Approver</span><strong>{{ authChain.approver
+                            }}</strong></div>
+                </div>
+                <div class="mb-3"><label class="FL">Schedule Execution</label><input type="datetime-local" class="FC"
+                        [(ngModel)]="scheduleExecution"></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="require2FA"
+                        checked><label class="form-check-label" style="font-size:13px">Require 2FA on submit</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="C">
+                <h3 class="st mb-3">Transfer Summary</h3>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                            <div class="d-flex justify-content-between mb-2"><span
+                                    class="text-muted">From</span><strong>{{ summary.from }}</strong></div>
+                            <div class="d-flex justify-content-between mb-2"><span
+                                    class="text-muted">To</span><strong>{{ summary.to }}</strong></div>
+                            <div class="d-flex justify-content-between mb-2"><span
+                                    class="text-muted">Amount</span><strong>{{ summary.amount }}</strong></div>
+                            <div class="d-flex justify-content-between"><span class="text-muted">Total
+                                    Debit</span><strong>{{ summary.totalDebit }}</strong></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 rounded" style="background:var(--pm-accent-soft)">
+                            <div class="d-flex justify-content-between mb-2"><span
+                                    class="text-muted">Rail</span><strong>{{ summary.rail }}</strong></div>
+                            <div class="d-flex justify-content-between mb-2"><span
+                                    class="text-muted">ETA</span><strong>{{ summary.eta }}</strong></div>
+                            <div class="d-flex justify-content-between mb-2"><span
+                                    class="text-muted">Ref</span><strong>{{ summary.ref }}</strong></div>
+                            <div class="d-flex justify-content-between"><span class="text-muted">Risk Score</span><span
+                                    class="B B-s">{{ summary.riskScore }}</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-check mt-3"><input class="form-check-input" type="checkbox" [(ngModel)]="termsAccepted"
+                        checked><label class="form-check-label" style="font-size:13px">I accept the <a href="#"
+                            (click)="openModal(termsTpl); $event.preventDefault()">terms and conditions</a></label>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn-pm btn-pm-a flex-fill" (click)="submitTransfer()"><i class="bi bi-check-lg"></i>
+                        Submit Transfer</button>
+                    <button class="btn-pm flex-fill" (click)="saveDraft()"><i class="bi bi-save"></i> Save
+                        Draft</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- MODAL TEMPLATES (ngx-bootstrap) -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<!-- M1: New Transfer Quick -->
+<ng-template #newTransferTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Quick Transfer</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row g-3">
+                <div class="col-md-6"><label class="FL">From</label><select class="FC" [(ngModel)]="quickTransfer.from">
+                        <option *ngFor="let acc of sourceAccounts" [value]="acc.value">{{ acc.label }}</option>
+                    </select></div>
+                <div class="col-md-6"><label class="FL">To (Beneficiary)</label><select class="FC"
+                        [(ngModel)]="quickTransfer.to">
+                        <option *ngFor="let ben of quickBeneficiaries" [value]="ben.value">{{ ben.label }}</option>
+                    </select></div>
+                <div class="col-md-6"><label class="FL">Amount</label><input class="FC"
+                        [(ngModel)]="quickTransfer.amount"></div>
+                <div class="col-md-6"><label class="FL">Rail</label><select class="FC" [(ngModel)]="quickTransfer.rail">
+                        <option *ngFor="let rail of quickRails" [value]="rail">{{ rail }}</option>
+                    </select></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p"
+                (click)="doAction('Transfer of KES ' + quickTransfer.amount + ' submitted! Ref PAY-20250627-9912')">Send
+                Now</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M2: Bulk Upload -->
+<ng-template #bulkUploadTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-upload text-primary me-2"></i>Bulk Transfer Upload</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3"><label class="FL">Upload File (CSV / Excel / ISO 20022)</label><input type="file"
+                    class="FC" (change)="onFileSelected($event)"></div>
+            <div class="p-3 rounded mb-3" style="background:var(--pm-info-soft)">
+                <div style="font-size:12px;font-weight:700">Template columns required:</div>
+                <div style="font-size:12px;color:#1E40AF">beneficiary_name, account_number, bank_code, amount, currency,
+                    purpose_code, reference</div>
+            </div>
+            <div class="mb-3"><label class="FL">Source Account</label><select class="FC"
+                    [(ngModel)]="bulkSourceAccount">
+                    <option *ngFor="let acc of sourceAccounts" [value]="acc.value">{{ acc.label }}</option>
+                </select></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="validateBeforeSubmit"
+                    checked><label class="form-check-label" style="font-size:13px">Validate account names before
+                    submission</label></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p"
+                (click)="doAction('Bulk file validated. 487 transfers ready for approval. Ref BULK-20250627-4421')">Validate
+                & Submit</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M3: Rail Compare -->
+<ng-template #railCompareTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-bar-chart-line me-2"></i>Rail Comparison</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+                <table class="T">
+                    <thead>
+                        <tr>
+                            <th>Rail</th>
+                            <th>Time</th>
+                            <th>Fee</th>
+                            <th>Success</th>
+                            <th>Limit</th>
+                            <th>Recommendation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let rail of railComparison">
+                            <td><strong>{{ rail.name }}</strong></td>
+                            <td>{{ rail.time }}</td>
+                            <td>{{ rail.fee }}</td>
+                            <td>{{ rail.success }}</td>
+                            <td>{{ rail.limit }}</td>
+                            <td><span class="B {{ rail.badgeClass }}">{{ rail.recommendation }}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer"><button class="btn-pm" (click)="closeModal()">Close</button></div>
+    </div>
+</ng-template>
+
+<!-- M4: Upload Document -->
+<ng-template #uploadDocTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-upload me-2"></i>Upload Supporting Documents</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3"><label class="FL">Document Type</label><select class="FC" [(ngModel)]="docType">
+                    <option *ngFor="let t of docTypes" [value]="t">{{ t }}</option>
+                </select></div>
+            <div class="mb-3"><label class="FL">File</label><input type="file" class="FC"
+                    (change)="onDocSelected($event)"></div>
+            <div class="mb-3"><label class="FL">Description</label><textarea class="FC" rows="2"
+                    [(ngModel)]="docDescription"></textarea></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="uploadDoc()">Upload</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M5: Terms -->
+<ng-template #termsTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-file-text me-2"></i>Terms & Conditions</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body" style="max-height:400px;overflow-y:auto">
+            <p style="font-size:13px;color:var(--pm-ink-soft)">{{ termsText }}</p>
+        </div>
+        <div class="modal-footer"><button class="btn-pm" (click)="closeModal()">Close</button></div>
+    </div>
+</ng-template>
+
+<!-- M6: Profile -->
+<ng-template #profileTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body text-center">
+            <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">{{ profile.initials }}
+            </div>
+            <h5 style="font-weight:700;margin-bottom:2px">{{ profile.name }}</h5>
+            <p style="font-size:13px;color:var(--pm-muted)">{{ profile.email }} · {{ profile.phone }}</p>
+            <div class="row g-2 text-start mt-3" style="font-size:13px">
+                <div class="col-6" *ngFor="let stat of profileStats">
+                    <div class="p-2 rounded" style="background:var(--pm-surface-2)"><span class="text-muted">{{
+                            stat.label }}</span><br><strong [style.color]="stat.color ? stat.color : ''">{{ stat.value
+                            }}</strong></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer"><button class="btn-pm" (click)="closeModal()">Close</button></div>
+    </div>
+</ng-template>
+
+<!-- M7: Rail Health -->
+<ng-template #railHealthTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-heart-pulse me-2"></i>Payment Rail Health</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+                <table class="T">
+                    <thead>
+                        <tr>
+                            <th>Rail</th>
+                            <th>Status</th>
+                            <th>Latency</th>
+                            <th>Success</th>
+                            <th>Queue</th>
+                            <th>Last Sync</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let rail of railHealth">
+                            <td><strong>{{ rail.name }}</strong></td>
+                            <td><span class="B {{ rail.badgeClass }}">{{ rail.status }}</span></td>
+                            <td>{{ rail.latency }}</td>
+                            <td>{{ rail.success }}</td>
+                            <td>{{ rail.queue }}</td>
+                            <td>{{ rail.lastSync }}</td>
+                            <td><button class="btn-pm btn-sm" (click)="openModal(railDetailTpl)">Details</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer"><button class="btn-pm" (click)="closeModal()">Close</button></div>
+    </div>
+</ng-template>
+
+<!-- M8: Rail Detail -->
+<ng-template #railDetailTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-info-circle me-2"></i>Rail Details — {{ selectedRailDetail?.name ||
+                'PesaLink' }}</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 rounded" style="background:var(--pm-surface-2)">
+                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Connected
+                                Banks</span><strong>{{ railDetailStats.connectedBanks }}</strong></div>
+                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">API Health</span><span
+                                class="B B-s">{{ railDetailStats.apiHealth }}</span></div>
+                        <div class="d-flex justify-content-between"><span class="text-muted">Cut-off</span><strong>{{
+                                railDetailStats.cutoff }}</strong></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 rounded" style="background:var(--pm-accent-soft)">
+                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Today's
+                                Volume</span><strong>{{ railDetailStats.volume }}</strong></div>
+                        <div class="d-flex justify-content-between mb-2"><span class="text-muted">Avg
+                                Time</span><strong>{{ railDetailStats.avgTime }}</strong></div>
+                        <div class="d-flex justify-content-between"><span class="text-muted">Fee</span><strong>{{
+                                railDetailStats.fee }}</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+            <button class="btn-pm btn-pm-p" (click)="doAction('Rail configuration updated.')">Update Config</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M9: Beneficiary Modal -->
+<ng-template #beneficiaryTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-people me-2"></i>Address Book</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3"><input class="FC" placeholder="Search beneficiaries..." [(ngModel)]="beneficiarySearch">
+            </div>
+            <div class="table-responsive">
+                <table class="T">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Account / Phone</th>
+                            <th>Bank / Network</th>
+                            <th>Last Used</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ben of filteredBeneficiaries">
+                            <td><strong>{{ ben.name }}</strong></td>
+                            <td>{{ ben.account }}</td>
+                            <td>{{ ben.bank }}</td>
+                            <td>{{ ben.lastUsed }}</td>
+                            <td><button class="btn-pm btn-sm" (click)="selectBeneficiary(ben)">Select</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+            <button class="btn-pm btn-pm-p" (click)="openModal(addBeneficiaryTpl)">Add New</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M10: Add Beneficiary -->
+<ng-template #addBeneficiaryTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Add Beneficiary</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row g-3">
+                <div class="col-md-6"><label class="FL">Full Name</label><input class="FC"
+                        [(ngModel)]="newBeneficiary.name"></div>
+                <div class="col-md-6"><label class="FL">Nickname</label><input class="FC"
+                        [(ngModel)]="newBeneficiary.nickname"></div>
+                <div class="col-md-6"><label class="FL">Bank / Network</label><select class="FC"
+                        [(ngModel)]="newBeneficiary.bank">
+                        <option *ngFor="let b of banks" [value]="b">{{ b }}</option>
+                    </select></div>
+                <div class="col-md-6"><label class="FL">Account / Phone</label><input class="FC"
+                        [(ngModel)]="newBeneficiary.account"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="doAction('Beneficiary added to address book.')">Save
+                Beneficiary</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M11: Add Account -->
+<ng-template #addAccountTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-bank2 me-2"></i>Add Funding Account</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row g-3">
+                <div class="col-md-6"><label class="FL">Account Type</label><select class="FC"
+                        [(ngModel)]="newAccount.type">
+                        <option *ngFor="let t of accountTypes" [value]="t">{{ t }}</option>
+                    </select></div>
+                <div class="col-md-6"><label class="FL">Bank / Provider</label><select class="FC"
+                        [(ngModel)]="newAccount.provider">
+                        <option *ngFor="let p of accountProviders" [value]="p">{{ p }}</option>
+                    </select></div>
+                <div class="col-md-6"><label class="FL">Account Number / Till</label><input class="FC"
+                        [(ngModel)]="newAccount.number"></div>
+                <div class="col-md-6"><label class="FL">Currency</label><select class="FC"
+                        [(ngModel)]="newAccount.currency">
+                        <option *ngFor="let c of currencies" [value]="c">{{ c }}</option>
+                    </select></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="doAction('New funding account linked successfully.')">Link
+                Account</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M12: Fee Calculator -->
+<ng-template #feeCalcTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-calculator me-2"></i>Fee Calculator</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row g-3">
+                <div class="col-md-6"><label class="FL">Rail</label><select class="FC" [(ngModel)]="feeCalc.rail">
+                        <option *ngFor="let r of feeCalcRails" [value]="r">{{ r }}</option>
+                    </select></div>
+                <div class="col-md-6"><label class="FL">Amount (KES)</label><input class="FC"
+                        [(ngModel)]="feeCalc.amount" (input)="updateFeePreview()"></div>
+            </div>
+            <div class="p-3 rounded mt-3" style="background:var(--pm-surface-2)">
+                <div class="d-flex justify-content-between mb-1"><span>Platform Fee</span><strong>{{
+                        feePreview.platformFee }}</strong></div>
+                <div class="d-flex justify-content-between mb-1"><span>Rail Fee</span><strong>{{ feePreview.railFee
+                        }}</strong></div>
+                <div class="d-flex justify-content-between"><span style="font-weight:700">Total Fees</span><strong>{{
+                        feePreview.totalFees }}</strong></div>
+            </div>
+        </div>
+        <div class="modal-footer"><button class="btn-pm" (click)="closeModal()">Close</button></div>
+    </div>
+</ng-template>
+
+<!-- M13: Draft Modal -->
+<ng-template #draftTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-file-earmark me-2"></i>Saved Drafts ({{ drafts.length }})</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+                <table class="T">
+                    <thead>
+                        <tr>
+                            <th>Ref</th>
+                            <th>Beneficiary</th>
+                            <th>Amount</th>
+                            <th>Created</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let d of drafts">
+                            <td><strong>{{ d.ref }}</strong></td>
+                            <td>{{ d.beneficiary }}</td>
+                            <td>{{ d.amount }}</td>
+                            <td>{{ d.created }}</td>
+                            <td><button class="btn-pm btn-sm" (click)="loadDraft(d)">Load</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer"><button class="btn-pm" (click)="closeModal()">Close</button></div>
+    </div>
+</ng-template>
+
+<!-- M14: Notif Modal -->
+<ng-template #notifTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notifications ({{ notifications.length }})</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body" style="max-height:400px;overflow-y:auto">
+            <div class="p-3 rounded mb-2" *ngFor="let n of notifications" [style.background]="n.bgColor"
+                style="font-size:13px">
+                <strong>{{ n.title }}</strong>
+                <div style="font-size:11px" [style.color]="n.textColor">{{ n.subtitle }}</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="openModal(notifSettingsTpl)">Settings</button>
+            <button class="btn-pm" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M15: Notif Settings -->
+<ng-template #notifSettingsTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-gear me-2"></i>Notification Preferences</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+                <table class="T">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Push</th>
+                            <th>SMS</th>
+                            <th>Email</th>
+                            <th>Webhook</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pref of notifPrefs">
+                            <td>{{ pref.event }}</td>
+                            <td><input type="checkbox" [(ngModel)]="pref.push"></td>
+                            <td><input type="checkbox" [(ngModel)]="pref.sms"></td>
+                            <td><input type="checkbox" [(ngModel)]="pref.email"></td>
+                            <td><input type="checkbox" [(ngModel)]="pref.webhook"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="doAction('Notification preferences saved.')">Save</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M16: Verify Account Loading -->
+<ng-template #verifyAccountLoadingTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Account Verification</h5><button type="button" class="btn-close"
+                (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="text-center">
+                <div class="spinner-border text-primary mb-3"></div>
+                <p style="font-size:13px;color:var(--pm-ink-soft)">Verifying account name with {{ selectedBank }}...</p>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M17: Account Verified Success -->
+<ng-template #accountVerifiedTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-check-circle text-success me-2"></i>Account Verified</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="p-3 rounded text-center" style="background:var(--pm-accent-soft)">
+                <div style="font-size:18px;font-weight:700;color:var(--pm-accent)">{{ verifiedAccountName }}</div>
+                <div style="font-size:13px;color:#065F46">{{ selectedBank }} • {{ accountNumber }} • Verified</div>
+            </div>
+        </div>
+        <div class="modal-footer"><button class="btn-pm btn-pm-p" (click)="closeModal()">Use This Account</button></div>
+    </div>
+</ng-template>
+
+<!-- M18: Terms Accepted -->
+<ng-template #termsAcceptedTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-check-circle text-success me-2"></i>Terms Accepted</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body text-center">
+            <p style="font-size:13px;color:var(--pm-ink-soft)">You have accepted the terms. Transfer is ready for
+                submission.</p>
+        </div>
+        <div class="modal-footer"><button class="btn-pm btn-pm-p" (click)="closeModal()">Continue</button></div>
+    </div>
+</ng-template>
+
+<!-- M19: Submit Transfer Success -->
+<ng-template #submitSuccessTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-check-circle text-success me-2"></i>Transfer Submitted</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="receipt">
+                <div class="ri"><i class="bi bi-send-check"></i></div>
+                <h5 style="font-weight:700;color:var(--pm-accent)">Transfer Submitted Successfully!</h5>
+                <p style="font-size:13px;color:var(--pm-ink-soft)">Ref: <strong>{{ submitRef }}</strong></p>
+                <div class="p-3 rounded text-start mt-3" style="background:#fff;font-size:13px">
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Amount</span><strong>{{
+                            summary.totalDebit }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Rail</span><strong>{{
+                            summary.rail }}</strong></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">ETA</span><strong>{{
+                            summary.eta }}</strong></div>
+                    <div class="d-flex justify-content-between"><span class="text-muted">Status</span><span
+                            class="B B-i">Processing</span></div>
+                </div>
+                <div class="d-flex justify-content-center mt-3" style="gap:8px">
+                    <button class="btn-pm btn-sm" (click)="downloadReceipt()"><i class="bi bi-download"></i>
+                        Receipt</button>
+                    <button class="btn-pm btn-sm" (click)="shareTransfer()"><i class="bi bi-share"></i> Share</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer"><button class="btn-pm btn-pm-p" (click)="closeModal()">Done</button></div>
+    </div>
+</ng-template>
+
+<!-- M20: Save Draft Success -->
+<ng-template #draftSavedTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-save text-success me-2"></i>Draft Saved</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body text-center">
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Transfer saved as <strong>{{ draftRef }}</strong>. You
+                can resume later from the Drafts section.</p>
+        </div>
+        <div class="modal-footer"><button class="btn-pm btn-pm-p" (click)="closeModal()">Done</button></div>
+    </div>
+</ng-template>
+
+<!-- M21: Load Draft -->
+<ng-template #loadDraftTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-file-earmark-arrow-up me-2"></i>Load Draft</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Loading draft {{ selectedDraft?.ref }} will restore all
+                previously entered details. Continue?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="doAction('Draft loaded successfully. All fields restored.')">Load
+                Draft</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M22: Mini Verified -->
+<ng-template #miniVerifiedTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-check-circle text-success me-2"></i>Verified</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body text-center">
+            <p style="font-size:13px;color:var(--pm-accent)">Account name matches: <strong>{{ verifiedAccountName
+                    }}</strong></p>
+        </div>
+        <div class="modal-footer"><button class="btn-pm btn-pm-p" (click)="closeModal()">Use</button></div>
+    </div>
+</ng-template>
+
+<!-- M23: Add Account Success -->
+<ng-template #addAccountSuccessTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-bank2 text-success me-2"></i>Account Linked</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body text-center">
+            <p style="font-size:13px;color:var(--pm-ink-soft)">New funding account <strong>{{ newAccount.provider }} •
+                    {{ newAccount.number }}</strong> has been linked and is ready for use.</p>
+        </div>
+        <div class="modal-footer"><button class="btn-pm btn-pm-p" (click)="closeModal()">Done</button></div>
+    </div>
+</ng-template>
+
+<!-- M24: Beneficiary Added Success -->
+<ng-template #beneficiaryAddedTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-person-check text-success me-2"></i>Beneficiary Added</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body text-center">
+            <p style="font-size:13px;color:var(--pm-ink-soft)">{{ newBeneficiary.name }} has been added to your address
+                book and is ready for transfers.</p>
+        </div>
+        <div class="modal-footer"><button class="btn-pm btn-pm-p" (click)="closeModal()">Done</button></div>
+    </div>
+</ng-template>
+
+<!-- M25: Beneficiary Selected -->
+<ng-template #beneficiarySelectedTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-check-circle text-success me-2"></i>Beneficiary Selected</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body text-center">
+            <p style="font-size:13px;color:var(--pm-ink-soft)">{{ selectedBeneficiaryData?.name }} ({{
+                selectedBeneficiaryData?.bank }} • {{ selectedBeneficiaryData?.account }}) has been selected as the
+                recipient.</p>
+        </div>
+        <div class="modal-footer"><button class="btn-pm btn-pm-p" (click)="closeModal()">Continue</button></div>
+    </div>
+</ng-template>
+
+<!-- M26: Verify Account Loading (alt) -->
+<ng-template #verifyAccountLoadingAltTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Verifying...</h5>
+        </div>
+        <div class="modal-body text-center">
+            <div class="spinner-border text-primary mb-3"></div>
+            <p style="font-size:13px;color:var(--pm-ink-soft)">Checking account name with bank...</p>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M27: Bulk Validated -->
+<ng-template #bulkValidatedTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-check-circle text-success me-2"></i>Bulk Validated</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="p-3 rounded" style="background:var(--pm-accent-soft)">
+                <div style="font-size:18px;font-weight:700;color:var(--pm-accent)">{{ bulkStats.ready }} transfers ready
+                </div>
+                <div style="font-size:13px;color:#065F46">{{ bulkStats.warnings }} validation warnings • {{
+                    bulkStats.errors }} errors</div>
+            </div>
+        </div>
+        <div class="modal-footer"><button class="btn-pm btn-pm-p" (click)="closeModal()">Proceed to Approval</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M28: Rail Degraded Alert -->
+<ng-template #railDegradedTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>Rail Degraded</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:13px;color:var(--pm-ink-soft)">{{ degradedRail.message }}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="closeModal()">Acknowledge</button>
+            <button class="btn-pm btn-pm-p" (click)="doAction('Fallback rail selected: PesaLink')">Use PesaLink</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M29: High Value Alert -->
+<ng-template #highValueAlertTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger me-2"></i>High-Value Transfer Alert
+            </h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:13px;color:var(--pm-ink-soft)">This transfer exceeds KES 10,000,000. Additional approval
+                from Treasury Director is required.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-pm" (click)="closeModal()">Cancel</button>
+            <button class="btn-pm btn-pm-p" (click)="doAction('High-value transfer escalated for approval.')">Request
+                Approval</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- M30: Document Uploaded -->
+<ng-template #docUploadedTpl>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-file-earmark-check text-success me-2"></i>Document Uploaded</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body text-center">
+            <p style="font-size:13px;color:var(--pm-ink-soft)">{{ docUploadMessage }}</p>
+        </div>
+        <div class="modal-footer"><button class="btn-pm btn-pm-p" (click)="closeModal()">Done</button></div>
+    </div>
+</ng-template>

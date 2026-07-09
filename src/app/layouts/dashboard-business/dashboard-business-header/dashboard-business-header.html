@@ -1,0 +1,41 @@
+<header [class]="headerClasses">
+    <div class="d-flex align-items-center gap-3">
+        <button class="sidebar-toggle" (click)="onToggleSidebar()"><i [class]="toggleIconClass"></i></button>
+        <div class="global-search d-none d-md-block"><i class="bi bi-search search-icon"></i><input type="text" placeholder="Search invoices, vendors, accounts…" /></div>
+    </div>
+    <div class="header-actions">
+        <div class="position-relative" data-dropdown="accountId">
+            <button class="account-id-chip" (click)="toggleDropdown('accountId', $event)" [attr.aria-expanded]="isDropdownOpen('accountId')">
+                <i class="bi bi-layers"></i><span class="account-id-text">ACC-3942-019</span><i class="bi bi-chevron-down chev" style="font-size:0.7rem"></i>
+            </button>
+            <div class="dropdown-panel" [class.show]="isDropdownOpen('accountId')">
+                <div class="panel-header"><span class="panel-title">Business Entity</span><span class="badge" style="background:rgba(16,185,129,0.1);color:var(--paymo-accent)">Active</span></div>
+                <div class="panel-body"><div class="p-3"><div class="d-flex align-items-center justify-content-between p-2 rounded-3 mb-2" style="background:var(--surface-2);border:1px solid var(--border)"><code class="fw-bold" style="color:var(--paymo-accent)">ACC-3942-019</code><button class="btn btn-sm btn-link text-decoration-none p-1"><i class="bi bi-clipboard"></i></button></div></div></div>
+                <div class="panel-footer d-flex justify-content-between"><button class="btn btn-sm btn-link text-decoration-none text-muted" (click)="onOpenAside('compliance', $event)"><i class="bi bi-shield-check me-1"></i>KYB Status</button><button class="btn btn-sm btn-link text-decoration-none text-muted" (click)="onOpenAside('entity', $event)"><i class="bi bi-building me-1"></i>Entity</button></div>
+            </div>
+        </div>
+        <div class="vr d-none d-lg-block mx-1" style="height:28px;opacity:0.15"></div>
+        <button class="header-action" (click)="onOpenAside('compliance')"><i class="bi bi-shield-check action-icon"></i></button>
+        <div class="position-relative" data-dropdown="notifications">
+            <button class="header-action" (click)="toggleDropdown('notifications', $event)" [attr.aria-expanded]="isDropdownOpen('notifications')"><i class="bi bi-bell action-icon"></i><span class="header-badge">4</span></button>
+            <div class="dropdown-panel" [class.show]="isDropdownOpen('notifications')">
+                <div class="panel-header"><span class="panel-title">Business Alerts</span><button class="btn btn-sm btn-link text-decoration-none" style="font-size:0.75rem">Mark all read</button></div>
+                <div class="panel-body"><div class="notification-item unread"><div class="notification-icon success"><i class="bi bi-check2-circle"></i></div><div class="flex-grow-1"><div class="fw-semibold" style="font-size:0.82rem">Payroll settled</div><div class="text-muted" style="font-size:0.75rem">42 employees — KES 3.2M</div></div><span class="text-muted" style="font-size:0.7rem">2h</span></div></div>
+                <div class="panel-footer text-center"><button class="btn btn-sm btn-link text-decoration-none fw-semibold" style="color:var(--paymo-accent)">View all</button></div>
+            </div>
+        </div>
+        <div class="position-relative" data-dropdown="user">
+            <button class="user-trigger" (click)="toggleDropdown('user', $event)" [attr.aria-expanded]="isDropdownOpen('user')">
+                <div class="avatar" style="background:linear-gradient(135deg,#10b981,#059669)">MK</div>
+                <div class="user-meta"><div class="user-name">Martha K.</div><div class="user-role">Business Admin</div></div>
+                <i class="bi bi-chevron-down chev" style="font-size:0.8rem"></i>
+            </button>
+            <div class="dropdown-panel" [class.show]="isDropdownOpen('user')" style="width:280px">
+                <div class="p-3 d-flex align-items-center gap-3 border-bottom"><div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem">MK</div><div><div class="fw-bold" style="font-size:0.9rem">Martha K.</div><div class="text-muted" style="font-size:0.75rem">admin@modernretail.co.ke</div></div></div>
+                <div class="panel-body"><div class="d-flex flex-column"><button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i class="bi bi-person"></i> Profile</button><button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i class="bi bi-gear"></i> Settings</button><button class="btn btn-light text-start rounded-0 border-0 py-2 px-3"><i class="bi bi-people"></i> Team</button></div></div>
+                <div class="panel-footer"><button class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2" style="font-size:0.82rem" (click)="onLogout()"><i class="bi bi-box-arrow-right"></i> Log out</button></div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="toast-container-custom"><div class="paymo-toast" *ngFor="let t of toasts" [class.leaving]="t.isLeaving"><div class="toast-ic" [style.background]="t.bg" [style.color]="t.color"><i class="bi {{ t.icon }}"></i></div><div class="flex-grow-1"><div class="fw-semibold" style="font-size:0.82rem">{{ t.title }}</div><div class="text-muted" style="font-size:0.75rem">{{ t.message }}</div></div><button class="btn btn-link text-muted p-0 ms-2" style="font-size:0.8rem" (click)="removeToast(t.id)"><i class="bi bi-x-lg"></i></button></div></div>

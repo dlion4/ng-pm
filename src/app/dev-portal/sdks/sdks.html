@@ -1,0 +1,1232 @@
+<div class="pm-main">
+  <div class="pm-page-bar">
+    <div>
+      <div class="pm-breadcrumb"><span style="color:var(--pm-primary);cursor:pointer"
+          (click)="navigateTo('dev-portal')">Developer Portal</span> / <span
+          style="color:var(--pm-primary);cursor:pointer" (click)="navigateTo('integration')">Integration</span> /
+        <strong>SDKs & Plugins</strong></div>
+      <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE 4.4 — SDKs,
+        Plugins & Code Resources</h2>
+      <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Official libraries, e-commerce extensions, sample
+        applications, and interactive tools for integrating PayMo into your stack.</p>
+    </div>
+    <div class="d-flex flex-wrap" style="gap:8px">
+      <button class="pm-btn" (click)="openModal('apiPlaygroundModal')"><i class="bi bi-code-slash"></i> API
+        Sandbox</button>
+      <button class="pm-btn" (click)="openModal('githubAccessModal')"><i class="bi bi-github"></i> GitHub Repos</button>
+      <button class="pm-btn pm-btn-primary" (click)="openModal('installJsSdkModal')"><i class="bi bi-download"></i> Get
+        Node SDK</button>
+    </div>
+  </div>
+
+  <div class="pm-content">
+
+    <!-- HERO STATS ROW -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card pm-card-accent" style="min-height:170px">
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">SDK distribution is live <span
+              style="color:#86efac">●</span></p>
+          <div class="pm-stat-value" style="margin:8px 0;color:#fff">2.4M+ Downloads</div>
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Join thousands of developers building fast,
+            compliant African payments with our official SDKs.</p>
+          <div class="d-flex flex-wrap mt-3" style="gap:8px">
+            <button class="pm-btn pm-btn-sm"
+              style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+              (click)="openModal('installJsSdkModal')"><i class="bi bi-filetype-js"></i> Node.js</button>
+            <button class="pm-btn pm-btn-sm"
+              style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff"
+              (click)="openModal('installPythonSdkModal')"><i class="bi bi-filetype-py"></i> Python</button>
+            <button class="pm-btn pm-btn-sm"
+              style="background:rgba(255,255,255,12);border-color:rgba(255,255,255,.22);color:#fff"
+              (click)="openModal('installPhpSdkModal')"><i class="bi bi-filetype-php"></i> PHP</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-primary)">ACTIVE PLUGINS</p>
+          <div class="pm-stat-value" style="margin:6px 0">12</div>
+          <span class="pm-badge pm-badge-info"><i class="bi bi-plugin"></i> CMS & E-comm</span>
+          <div class="mt-3" style="font-size:11px;color:var(--pm-muted)">Supported: WooCommerce, Shopify, Magento,
+            OpenCart, and more.</div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px">
+          <p class="pm-stat-label" style="color:var(--pm-accent)">COMMUNITY RATING</p>
+          <div class="pm-stat-value" style="margin:6px 0">4.9/5</div>
+          <span class="pm-badge pm-badge-success"><i class="bi bi-github"></i> 18k Stars</span>
+          <div class="mt-2">
+            <div class="d-flex justify-content-between" style="font-size:11px;color:var(--pm-muted)"><span>Uptime
+                SLA</span><span>99.99%</span></div>
+            <div class="pm-progress mt-1">
+              <div class="pm-progress-bar" style="width:99.9%;background:var(--pm-accent)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="pm-card" style="min-height:170px;border-left:3px solid var(--pm-warning)">
+          <p class="pm-stat-label" style="color:var(--pm-warning)">STARTER TEMPLATES</p>
+          <div class="pm-stat-value" style="margin:6px 0">25+</div>
+          <span class="pm-badge pm-badge-warning"><i class="bi bi-code"></i> Ready-to-deploy</span>
+          <div class="mt-2" style="font-size:12px;color:var(--pm-ink-soft)">
+            <div>Full-stack repos for <strong>Payroll</strong>, <strong>SaaS</strong>, <strong>E-Comm</strong>, and
+              <strong>M-Pesa Collections</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATTENTION & QUICK ACTIONS ROW -->
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="pm-section-title">Developer Updates</h3><button class="pm-btn pm-btn-sm"
+              (click)="openModal('sdkReleaseNotesModal')">View all</button>
+          </div>
+          <div class="feed-item">
+            <div class="pm-icon-circle"
+              style="background:var(--pm-primary-soft);color:var(--pm-primary);font-size:12px">V3</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">Node.js SDK v3.2.0 released</div>
+              <div style="font-size:11px;color:var(--pm-muted)">Added enhanced error handling & retries</div>
+            </div><button class="pm-btn pm-btn-sm" (click)="openModal('npmChangelogModal')">Notes</button>
+          </div>
+          <div class="feed-item">
+            <div class="pm-icon-circle" style="background:var(--pm-info-soft);color:var(--pm-info);font-size:12px">FL
+            </div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">Flutter Plugin Beta 2</div>
+              <div style="font-size:11px;color:var(--pm-muted)">Now supports seamless STK Push overlays</div>
+            </div><button class="pm-btn pm-btn-sm" (click)="openModal('installFlutterSdkModal')">Get SDK</button>
+          </div>
+          <div class="feed-item">
+            <div class="pm-icon-circle"
+              style="background:var(--pm-warning-soft);color:var(--pm-warning);font-size:12px">WH</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">Webhook Signature Update</div>
+              <div style="font-size:11px;color:var(--pm-muted)">Action required before August 1st</div>
+            </div><button class="pm-btn pm-btn-sm" (click)="openModal('webhookSnippetModal')">Guide</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="pm-section-title">Community & Support</h3><span class="pm-badge pm-badge-purple"><i
+                class="bi bi-people"></i> Live</span>
+          </div>
+          <div class="feed-item">
+            <div class="pm-icon-circle" style="background:var(--pm-danger-soft);color:var(--pm-danger);font-size:12px">
+              BG</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">Found an issue in an SDK?</div>
+              <div style="font-size:11px;color:var(--pm-muted)">Report bugs directly to our engineering team</div>
+            </div><button class="pm-btn pm-btn-sm pm-btn-danger" (click)="openModal('reportBugModal')">Report</button>
+          </div>
+          <div class="feed-item">
+            <div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent);font-size:12px">
+              FR</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">Need a specific feature?</div>
+              <div style="font-size:11px;color:var(--pm-muted)">Vote on roadmap or request a new endpoint</div>
+            </div><button class="pm-btn pm-btn-sm" (click)="openModal('requestSdkFeatureModal')">Request</button>
+          </div>
+          <div class="feed-item">
+            <div class="pm-icon-circle"
+              style="background:var(--pm-surface-2);color:var(--pm-ink);border:1px solid var(--pm-border);font-size:12px">
+              <i class="bi bi-github"></i></div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">Contribute to PayMo Open Source</div>
+              <div style="font-size:11px;color:var(--pm-muted)">Read our PR guidelines and earn bounties</div>
+            </div><button class="pm-btn pm-btn-sm" (click)="openModal('githubAccessModal')">View</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="pm-card">
+          <div class="mb-3">
+            <h3 class="pm-section-title">Quick Toolkit</h3>
+            <p class="pm-section-sub">Direct access to tools and libraries</p>
+          </div>
+          <div class="quick-action-grid">
+            <button class="quick-action-btn" (click)="openModal('installJsSdkModal')"><i
+                class="bi bi-filetype-js text-warning me-1"></i> Node SDK</button>
+            <button class="quick-action-btn" (click)="openModal('installPythonSdkModal')"><i
+                class="bi bi-filetype-py text-info me-1"></i> Python SDK</button>
+            <button class="quick-action-btn" (click)="openModal('installPhpSdkModal')"><i
+                class="bi bi-filetype-php text-primary me-1"></i> PHP SDK</button>
+            <button class="quick-action-btn" (click)="openModal('installJavaSdkModal')"><i
+                class="bi bi-filetype-java text-danger me-1"></i> Java SDK</button>
+            <button class="quick-action-btn" (click)="openModal('installAndroidSdkModal')"><i
+                class="bi bi-android2 text-success me-1"></i> Android SDK</button>
+            <button class="quick-action-btn" (click)="openModal('installIosSdkModal')"><i class="bi bi-apple me-1"></i>
+              iOS SDK</button>
+            <button class="quick-action-btn" (click)="openModal('checkoutWidgetModal')"><i
+                class="bi bi-window-sidebar me-1" style="color:var(--pm-purple)"></i> Drop-in Widget</button>
+            <button class="quick-action-btn" (click)="openModal('apiPlaygroundModal')"><i class="bi bi-braces me-1"
+                style="color:var(--pm-accent)"></i> Interactive API</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.4.1 OFFICIAL SDKs -->
+    <div class="pm-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+        <div>
+          <h3 class="pm-section-title"><i class="bi bi-box" style="color:var(--pm-primary)"></i> 4.4.1 — Official SDKs
+          </h3>
+          <p class="pm-section-sub">Language-specific libraries for fast, type-safe API integration.</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="pm-btn pm-btn-sm" (click)="openModal('checkoutWidgetModal')"><i class="bi bi-code-square"></i>
+            CDN Links</button>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('githubAccessModal')"><i
+              class="bi bi-github"></i> Browse GitHub</button>
+        </div>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-3 col-md-4">
+          <div class="pm-tab-pills" style="flex-direction:column;margin-bottom:0">
+            <button class="pm-tab-pill active text-start" [class.active]="sdkType==='node'" (click)="sdkType='node'"><i
+                class="bi bi-filetype-js me-2 text-warning"></i> Node.js / TypeScript</button>
+            <button class="pm-tab-pill text-start" [class.active]="sdkType==='python'" (click)="sdkType='python'"><i
+                class="bi bi-filetype-py me-2 text-info"></i> Python</button>
+            <button class="pm-tab-pill text-start" [class.active]="sdkType==='php'" (click)="sdkType='php'"><i
+                class="bi bi-filetype-php me-2 text-primary"></i> PHP</button>
+            <button class="pm-tab-pill text-start" [class.active]="sdkType==='flutter'" (click)="sdkType='flutter'"><i
+                class="bi bi-phone me-2" style="color:var(--pm-info)"></i> Flutter / Dart</button>
+            <button class="pm-tab-pill text-start" [class.active]="sdkType==='java'" (click)="sdkType='java'"><i
+                class="bi bi-filetype-java me-2" style="color:var(--pm-danger)"></i> Java / Spring</button>
+          </div>
+          <div class="col-lg-9 col-md-8">
+            <!-- Node.js -->
+            <div [class]="'tab-panel active'" [class.active]="sdkType==='node'">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <h5 style="font-weight:700;margin:0">PayMo Node.js SDK</h5>
+                  <p style="font-size:12px;color:var(--pm-muted);margin:4px 0 0">Fully typed with TypeScript,
+                    Promise-based, Browser & Node environments supported.</p>
+                </div>
+                <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('installJsSdkModal')">Install
+                  Guide</button>
+              </div>
+              <div class="pm-code-block mb-3"><button class="copy-btn" (click)="copyCode($event)">Copy</button>npm install
+                @paymo/paymo-node</div>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>
+                <pre>{{ nodeCode1 }}</pre>
+              </div>
+            </div>
+            <!-- Python -->
+            <div [class]="'tab-panel active'" [class.active]="sdkType==='python'">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <h5 style="font-weight:700;margin:0">PayMo Python SDK</h5>
+                  <p style="font-size:12px;color:var(--pm-muted);margin:4px 0 0">Python 3.7+ support, synchronous and
+                    async variations included.</p>
+                </div>
+                <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('installPythonSdkModal')">Install
+                  Guide</button>
+              </div>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>pip install
+                paymo-python</div>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>from paymo
+                import PayMoClient;<br><br>paymo = PayMoClient(api_key="sk_test_12345");<br><br>transfer =
+                paymo.disbursements.create(amount=50000, currency="KES",
+                destination=paymo.Destination.bank_account(bank_code="068", account_number="01234567890"),
+                purpose="Salary payment");<br>print(transfer.status);</div>
+            </div>
+            <!-- PHP -->
+            <div [class]="'tab-panel active'" [class.active]="sdkType==='php'">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <h5 style="font-weight:700;margin:0">PayMo PHP SDK</h5>
+                  <p style="font-size:12px;color:var(--pm-muted);margin:4px 0 0">PHP 7.4+ and 8.x compatible. Laravel
+                    package also available.</p>
+                </div>
+                <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('installPhpSdkModal')">Install
+                  Guide</button>
+              </div>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>composer require
+                paymo/paymo-php</div>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>$paymo = new
+                \PayMo\PayMoClient('sk_test_12345');<br><br>$invoice = $paymo->invoices->create([<br> 'customer' =>
+                ['name' => 'John Doe', 'email' => 'john@example.com'],<br> 'items' => [['name' => 'Consulting', 'amount'
+                => 10000]],<br> 'due_date' => '2025-07-01'<br>]);<br>echo $invoice->payment_url;</div>
+            </div>
+            <!-- Flutter -->
+            <div [class]="'tab-panel active'" [class.active]="sdkType==='flutter'">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <h5 style="font-weight:700;margin:0">PayMo Flutter Plugin</h5>
+                  <p style="font-size:12px;color:var(--pm-muted);margin:4px 0 0">Drop-in payment UI for iOS and Android
+                    apps.</p>
+                </div>
+                <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('installFlutterSdkModal')">Install
+                  Guide</button>
+              </div>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>flutter pub add
+                paymo_flutter</div>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>import
+                'package:paymo_flutter/paymo_flutter.dart';<br><br>await PayMoCheckout.start(<br> context,<br> config:
+                PayMoConfig(publicKey: 'pk_test_12345', amount: 1500, currency: 'KES', customerEmail:
+                'user@app.com'),<br> onSuccess: (result) => print('Success: ' + result.reference),<br> onError: (error)
+                => print('Error: ' + error.message),<br>);</div>
+            </div>
+            <!-- Java -->
+            <div [class]="'tab-panel active'" [class.active]="sdkType==='java'">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <h5 style="font-weight:700;margin:0">PayMo Java SDK</h5>
+                  <p style="font-size:12px;color:var(--pm-muted);margin:4px 0 0">Java 11+ compatible, Maven/Gradle
+                    support.</p>
+                </div>
+                <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('installJavaSdkModal')">Install
+                  Guide</button>
+              </div>
+              <div [class]="'tab-panel active'" id="javains-maven" [class.active]="jsInsTab==='maven'">
+                <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>
+                  <pre>{{ javaMavenDep }}</pre>
+                </div>
+              </div>
+              <div [class]="'tab-panel active'" id="javains-gradle" [class.active]="jsInsTab==='gradle'">
+                <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>implementation
+                  'com.paymo:paymo-java:2.1.0'</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.4.2 E-COMMERCE PLUGINS -->
+      <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+          <div>
+            <h3 class="pm-section-title"><i class="bi bi-shop" style="color:var(--pm-accent)"></i> 4.4.2 — E-Commerce &
+              CMS Plugins</h3>
+            <p class="pm-section-sub">No-code integrations for popular platforms to accept M-Pesa, Cards, and PesaLink.
+            </p>
+          </div>
+          <button class="pm-btn pm-btn-sm" (click)="openModal('posIntegrationModal')"><i class="bi bi-printer"></i> POS
+            Integrations</button>
+        </div>
+        <div class="row g-3">
+          <div class="col-lg-2 col-md-3 col-6">
+            <div class="plugin-card" (click)="openModal('woocommercePluginModal')">
+              <div style="font-size:36px;color:#7F54B3;margin-bottom:8px"><i class="bi bi-wordpress"></i></div>
+              <h6 style="font-weight:700;font-size:13px;margin:0 0 4px">WooCommerce</h6>
+              <div style="font-size:11px;color:var(--pm-muted);margin-bottom:12px">v4.1.2 · 50k+ installs</div><button
+                class="pm-btn pm-btn-sm w-100 mt-auto">Configure</button>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3 col-6">
+            <div class="plugin-card" (click)="openModal('shopifyPluginModal')">
+              <div style="font-size:36px;color:#95BF47;margin-bottom:8px"><i class="bi bi-bag-fill"></i></div>
+              <h6 style="font-weight:700;font-size:13px;margin:0 0 4px">Shopify</h6>
+              <div style="font-size:11px;color:var(--pm-muted);margin-bottom:12px">Official App Store</div><button
+                class="pm-btn pm-btn-sm w-100 mt-auto">Install App</button>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3 col-6">
+            <div class="plugin-card" (click)="openModal('magentoPluginModal')">
+              <div style="font-size:36px;color:#F26322;margin-bottom:8px"><i class="bi bi-box-fill"></i></div>
+              <h6 style="font-weight:700;font-size:13px;margin:0 0 4px">Magento 2</h6>
+              <div style="font-size:11px;color:var(--pm-muted);margin-bottom:12px">v2.3 & v2.4 support</div><button
+                class="pm-btn pm-btn-sm w-100 mt-auto">Download</button>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3 col-6">
+            <div class="plugin-card" (click)="openModal('posIntegrationModal')">
+              <div style="font-size:36px;color:#3B82F6;margin-bottom:8px"><i class="bi bi-cart"></i></div>
+              <h6 style="font-weight:700;font-size:13px;margin:0 0 4px">PrestaShop</h6>
+              <div style="font-size:11px;color:var(--pm-muted);margin-bottom:12px">v1.7 module</div><button
+                class="pm-btn pm-btn-sm w-100 mt-auto">Download</button>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3 col-6">
+            <div class="plugin-card" (click)="openModal('checkoutWidgetModal')">
+              <div style="font-size:36px;color:var(--pm-primary);margin-bottom:8px"><i class="bi bi-code-slash"></i>
+              </div>
+              <h6 style="font-weight:700;font-size:13px;margin:0 0 4px">Custom Widget</h6>
+              <div style="font-size:11px;color:var(--pm-muted);margin-bottom:12px">Drop-in HTML/JS UI</div><button
+                class="pm-btn pm-btn-sm pm-btn-outline w-100 mt-auto">Get Code</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.4.3 CODE SAMPLES & STARTER PROJECTS -->
+      <div class="pm-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
+          <div>
+            <h3 class="pm-section-title"><i class="bi bi-folder-symlink" style="color:var(--pm-info)"></i> 4.4.3 — Code
+              Samples & Starter Projects</h3>
+            <p class="pm-section-sub">Clone production-ready repositories to jumpstart your integration.</p>
+          </div>
+          <button class="pm-btn pm-btn-sm pm-btn-primary" (click)="openModal('githubAccessModal')"><i
+              class="bi bi-github"></i> Visit PayMo GitHub</button>
+        </div>
+        <div class="row g-3">
+          <div class="col-lg-4">
+            <div class="utility-block" style="border:1px solid var(--pm-border);background:#fff">
+              <div class="d-flex align-items-start justify-content-between mb-2">
+                <div class="pm-icon-circle" style="background:var(--pm-primary-soft);color:var(--pm-primary)"><i
+                    class="bi bi-shop-window"></i></div>
+                <span class="pm-badge pm-badge-success">Next.js + Tailwind</span>
+              </div>
+              <h5 style="font-size:15px;font-weight:700;margin:0 0 6px">Full-Stack E-Commerce</h5>
+              <p style="font-size:12px;color:var(--pm-ink-soft);margin-bottom:16px">Complete storefront with cart,
+                checkout, M-Pesa STK push handling, and webhook reconciliation.</p>
+              <button class="pm-btn pm-btn-sm w-100" (click)="openModal('ecommerceStarterModal')">Clone Repo</button>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="utility-block" style="border:1px solid var(--pm-border);background:#fff">
+              <div class="d-flex align-items-start justify-content-between mb-2">
+                <div class="pm-icon-circle" style="background:var(--pm-warning-soft);color:var(--pm-warning)"><i
+                    class="bi bi-arrow-repeat"></i></div>
+                <span class="pm-badge pm-badge-info">Python + Django</span>
+              </div>
+              <h5 style="font-size:15px;font-weight:700;margin:0 0 6px">SaaS Subscription Billing</h5>
+              <p style="font-size:12px;color:var(--pm-ink-soft);margin-bottom:16px">Tiered subscription plans, automated
+                retry dunning logic, and card tokenization examples.</p>
+              <button class="pm-btn pm-btn-sm w-100" (click)="openModal('saasBillingStarterModal')">Clone Repo</button>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="utility-block" style="border:1px solid var(--pm-border);background:#fff">
+              <div class="d-flex align-items-start justify-content-between mb-2">
+                <div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent)"><i
+                    class="bi bi-people"></i></div>
+                <span class="pm-badge pm-badge-purple">PHP + Laravel</span>
+              </div>
+              <h5 style="font-size:15px;font-weight:700;margin:0 0 6px">Payroll & Bulk Disbursement</h5>
+              <p style="font-size:12px;color:var(--pm-ink-soft);margin-bottom:16px">Handle Excel parsing, B2C bulk
+                payments to mobile numbers, and comprehensive tracking.</p>
+              <button class="pm-btn pm-btn-sm w-100" (click)="openModal('payrollStarterModal')">Clone Repo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 border rounded mt-4" style="background:var(--pm-gradient-slate);color:#fff;text-align:center">
+          <h4 style="font-family:var(--pm-font-display);font-weight:700;margin-bottom:8px">Test APIs in the Browser</h4>
+          <p style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:20px">Use our interactive API playground to
+            build payloads, inject test keys, and view live JSON responses without writing any code.</p>
+          <button class="pm-btn pm-btn-lg pm-btn-primary border-0" (click)="openModal('apiPlaygroundModal')"><i
+              class="bi bi-braces"></i> Launch Interactive Sandbox</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALL MODALS -->
+    <!-- 1. Install JS SDK (3-tab) -->
+    <div *ngIf="$any(activeModalId)==='installJsSdkModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+      (click)="closeModal()">
+      <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-filetype-js text-warning me-2"></i>Install Node.js / Browser SDK
+            </h5><button class="btn-close" (click)="closeModal()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="pm-tab-pills mb-3"><button class="pm-tab-pill" [class.active]="jsInsTab==='npm'"
+                (click)="jsInsTab='npm'"><i class="bi bi-filetype-js me-2 text-warning"></i> NPM / Yarn</button><button
+                class="pm-tab-pill" [class.active]="jsInsTab==='cdn'" (click)="jsInsTab='cdn'"><i
+                  class="bi bi-globe me-2 text-info"></i> CDN (Browser)</button><button class="pm-tab-pill"
+                [class.active]="jsInsTab==='react'" (click)="jsInsTab='react'"><i class="bi bi-code-slash me-2"
+                  style="color:var(--pm-info)"></i> React/Vue wrapper</button></div>
+            <div [class]="'tab-panel active'" [class.active]="jsInsTab==='npm'" id="jsIns-npm">
+              <p style="font-size:13px">Install via package manager:</p>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>npm install
+                @paymo/paymo-node<br># or<br>yarn add @paymo/paymo-node</div>
+              <p style="font-size:13px">Initialize client:</p>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>
+                <pre>{{ nodeCode2 }}</pre>
+              </div>
+            </div>
+            <div [class]="'tab-panel active'" [class.active]="jsInsTab==='cdn'" id="jsIns-cdn">
+              <p style="font-size:13px">Include via unpkg CDN in your HTML:</p>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>&lt;script
+                src="https://unpkg.com/@paymo/paymo-js@3.2.0/dist/paymo.min.js"&gt;&lt;/script&gt;</div>
+              <p style="font-size:13px">Initialize global object:</p>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>const paymo =
+                PayMo('your_public_key');<br>paymo.elements.create('checkout').mount('#payment-form');</div>
+            </div>
+            <div [class]="'tab-panel active'" [class.active]="jsInsTab==='react'" id="jsIns-react">
+              <p style="font-size:13px">Install the React library:</p>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>npm install
+                @paymo/paymo-react</div>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>
+                <pre>{{ reactCode }}</pre>
+              </div>
+            </div>
+            <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><a href="#"
+                class="pm-btn pm-btn-primary"
+                (click)="preventDefault();closeModal();processAction('Redirecting to docs.paymo.dev...')">View Full Docs
+                <i class="bi bi-arrow-right"></i></a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Install Python SDK -->
+    <div *ngIf="$any(activeModalId)==='installPythonSdkModal'" class="modal fade show d-block" tabindex="-1"
+      style="z-index:1055" (click)="closeModal()">
+      <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-filetype-py text-info me-2"></i>Install Python SDK</h5><button
+              class="btn-close" (click)="closeModal()"></button>
+          </div>
+          <div class="modal-body">
+            <p style="font-size:13px">Install via pip:</p>
+            <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>pip install
+              paymo-python</div>
+            <p style="font-size:13px">Async support via <code>paymo.async_client</code> (requires aiohttp):</p>
+            <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>import
+              asyncio<br>from paymo.async_client import AsyncPayMo<br><br>async def make_payment():<br> client =
+              AsyncPayMo(api_key="sk_test_123")<br> res = await client.collections.mpesa_push(phone="254712345678",
+              amount=500);<br> print(res.status);</div>
+          </div>
+          <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Install PHP SDK -->
+  <div *ngIf="$any(activeModalId)==='installPhpSdkModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+    (click)="closeModal()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-filetype-php text-primary me-2"></i>Install PHP SDK</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>composer require
+            paymo/paymo-php</div>
+          <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>&lt;?php<br>require
+            'vendor/autoload.php';<br><br>$paymo = new \PayMo\PayMo('sk_test_123');<br><br>$balance =
+            $paymo->wallet->getBalance();<br>echo $balance->available_kes;</div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Install Java SDK -->
+<div *ngIf="$any(activeModalId)==='installJavaSdkModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-filetype-java text-danger me-2"></i>Install Java SDK</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-tab-pills mb-3"><button class="pm-tab-pill" [class.active]="javaInsTab==='maven'"
+            (click)="javaInsTab='maven'"><i class="bi bi-box me-2"></i> Maven</button><button class="pm-tab-pill"
+            [class.active]="javaInsTab==='gradle'" (click)="javaInsTab='gradle'"><i class="bi bi-box me-2"></i>
+            Gradle</button></div>
+        <div [class]="'tab-panel active'" [class.active]="javaInsTab==='maven'" id="javaIns-maven">
+          <div class="pm-code-block"><button class="copy-btn"
+              (click)="copyCode($event)">Copy</button>&lt;dependency&gt;<br> &lt;groupId&gt;com.paymo&lt;/groupId&gt;<br>
+            &lt;artifactId&gt;paymo-java&lt;/artifactId&gt;<br>
+            &lt;version&gt;2.1.0&lt;/version&gt;<br>&lt;/dependency&gt;</div>
+        </div>
+        <div [class]="'tab-panel active'" [class.active]="javaInsTab==='gradle'" id="javaIns-gradle">
+          <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>implementation
+            'com.paymo:paymo-java:2.1.0'</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Install Flutter SDK -->
+  <div *ngIf="$any(activeModalId)==='installFlutterSdkModal'" class="modal fade show d-block" tabindex="-1"
+    style="z-index:1055" (click)="closeModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-phone text-info me-2"></i>Install Flutter Plugin</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>flutter pub add
+            paymo_flutter</div>
+          <p style="font-size:13px">Note: Ensure your <code>minSdkVersion</code> is 21 or higher in
+            <code>android/app/build.gradle</code>.</p>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. Install Android SDK -->
+<div *ngIf="$any(activeModalId)==='installAndroidSdkModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-android2 text-success me-2"></i>Android SDK (Kotlin/Java)</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px">Add to your app-level <code>build.gradle</code>:</p>
+        <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>
+          <pre>{{ androidCode }}</pre>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+  </div>
+</div>
+
+
+<!-- 7. iOS SDK -->
+<div *ngIf="$any(activeModalId)==='installIosSdkModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-apple me-2"></i>iOS SDK (Swift)</h5><button class="btn-close"
+          (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px">Via CocoaPods (<code>Podfile</code>):</p>
+        <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>pod 'PayMoSDK', '~>
+          2.0'</div>
+        <p style="font-size:13px">Via Swift Package Manager:</p>
+        <div class="pm-code-block"><button class="copy-btn"
+            (click)="copyCode($event)">Copy</button>https://github.com/paymo/paymo-ios.git</div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+  </div>
+</div>
+
+
+<!-- 8. WooCommerce Plugin -->
+<div *ngIf="$any(activeModalId)==='woocommercePluginModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-wordpress me-2" style="color:#7F54B3"></i>WooCommerce Integration</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-stepper">
+          <div class="pm-step" [class.active]="wooStep===1" [class.completed]="wooStep>1">
+            <div class="pm-step-num">1</div>
+            <div class="pm-step-label">Download</div>
+          </div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="wooStep===2" [class.completed]="wooStep>1">
+            <div class="pm-step-num">2</div>
+            <div class="pm-step-label">Upload</div>
+          </div>
+          <div class="pm-step-line"></div>
+          <div class="pm-step" [class.active]="wooStep===3" [class.completed]="wooStep>2">
+            <div class="pm-step-num">3</div>
+            <div class="pm-step-label">Keys</div>
+          </div>
+        </div>
+        <div id="wooStep1" class="fade-step active">
+          <div class="text-center p-4 border rounded" style="cursor:pointer;transition:all .2s"
+            (mouseover)="$any($event.target).style.borderColor = 'var(--pm-primary)'" (mouseout)="$any($event.target).style.borderColor = ''"
+            (click)="wooStep=2"><i class="bi bi-file-zip d-block mb-2"
+              style="font-size:32px;color:var(--pm-primary)"></i>
+            <h6 style="font-weight:700">paymo-woocommerce-v4.1.2.zip</h6><button class="pm-btn pm-btn-sm mt-2"
+              (click)="wooStep=2">Download Plugin</button>
+          </div>
+        </div>
+        <div id="wooStep2" class="fade-step">
+          <ol style="font-size:13px;color:var(--pm-ink-soft);line-height:1.8" [innerHTML]="wooInstallSteps"></ol><button class="pm-btn pm-btn-sm" (click)="wooStep=3">Next Step</button>
+        </div>
+        <div id="wooStep3" class="fade-step">
+          <p style="font-size:13px;color:var(--pm-ink-soft)">Go to <strong>WooCommerce > Settings > Payments >
+              PayMo</strong> and enter your API keys from the portal.</p>
+          <div class="mb-3"><label class="pm-form-label">Public Key</label><input class="pm-form-control"
+              value="pk_test_a8b9c0..." readonly></div>
+          <div class="mb-3"><label class="pm-form-label">Secret Key</label><input class="pm-form-control"
+              type="password" value="sk_test_12345"></div>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. Shopify Plugin -->
+<div *ngIf="$any(activeModalId)==='shopifyPluginModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-bag-fill me-2" style="color:#95BF47"></i>Shopify App</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="bi bi-shop d-block mb-3" style="font-size:48px;color:#95BF47"></i>
+        <p style="font-size:13px;color:var(--pm-ink-soft)">The PayMo Shopify app is officially listed in the Shopify App
+          Store. Clicking below will redirect you to Shopify to authorize and install the payment gateway.</p>
+        <div class="modal-footer justify-content-center"><button class="pm-btn pm-btn-primary"
+            (click)="simulateAction('shopifyPluginModal','Redirecting to Shopify App Store...')">Go to Shopify App Store
+            <i class="bi bi-box-arrow-up-right"></i></button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10. Magento Plugin -->
+<div *ngIf="$any(activeModalId)==='magentoPluginModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-box-fill me-2" style="color:#F26322"></i>Magento 2 Extension</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px">Install via Composer:</p>
+        <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>composer require
+          paymo/paymo-php</div>
+        <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>&lt;?php<br>require
+          'vendor/autoload.php';<br><br>$paymo = new \PayMo\PayMo('sk_test_12345');<br><br>$balance =
+          $paymo->wallet->getBalance();<br>echo $balance->available_kes;</div>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 11. POS Integration Modal -->
+<div *ngIf="$any(activeModalId)==='posIntegrationModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-printer me-2" style="color:var(--pm-info)"></i>POS Integration</h5>
+        <button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Configure how PayMo appears in your POS
+          system for seamless payment processing.</p>
+        <div class="mb-3"><label class="pm-form-label">POS System</label><select class="pm-form-control">
+            <option>PayMo</option>
+            <option>Elsewhere style="font-size:12px;color:var(--pm-muted)">Select your POS...</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Integration Method</label><select class="pm-form-control">
+            <option>PayMo PayMo Plugin (Recommended)</option>
+            <option>Manual API Call</option>
+            <option>Custom Webhook</option>
+          </select></div>
+        <div class="mb-3"><label class="pm-form-label">Payment Channels</label>
+          <div class="d-flex flex-wrap gap-2"><label class="d-flex align-items-center gap-2"><input type="checkbox"
+                class="form-check-input" checked><label class="form-check-label" style="font-size:13px">M-Pesa STK
+                Push</label></label><label class="d-flex align-items-center gap-2"><input type="checkbox"
+                class="form-check-input"><label class="form-check-label" style="font-size:13px">PesaLink
+                Disbursement</label></label><label class="d-flex align-items-center gap-2"><input type="checkbox"
+                class="form-check-input"><label class="form-check-label" style="font-size:13px">Card
+                Tokenization</label></label></div>
+        </div>
+        <div class="mb-3"><label class="pm-form-label">Default Amount</label><input type="number"
+            class="pm-form-control" value="1000" placeholder="0 for manual triggers"></div>
+        <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" checked><label
+            class="form-check-label">Auto-detect bill amount and pay exact due</label></div>
+        <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox"><label
+            class="form-check-label">Enable receipt generation on successful payments</label></div>
+        <button class="pm-btn pm-btn-primary w-100"
+          (click)="processAction('POS integration configured successfully.')">Save Configuration</button>
+      </div>
+      <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 12. Checkout Widget -->
+<div *ngIf="$any(activeModalId)==='checkoutWidgetModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-window-sidebar me-2" style="color:var(--pm-purple)"></i>Checkout Drop-in
+          Widget</h5><button class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="pm-tab-pills mb-3"><button class="pm-tab-pill" [class.active]="cwTab==='npm'"
+            (click)="cwTab='npm'">NPM Package</button><button class="pm-tab-pill" [class.active]="cwTab==='cdn'"
+            (click)="cwTab='cdn'">CDN Link</button><button class="pm-tab-pill" [class.active]="cwTab==='code'"
+            (click)="cwTab='code'">Copy Code</button></div>
+        <div [class]="'tab-panel active'" [class.active]="cwTab==='npm'" id="cwIns-npm">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-circle-fill"></i></div>
+            <h5 style="font-weight:700">Package Installed!</h5>
+            <p style="font-size:12px;color:var(--pm-ink-soft);margin:0">npm install @paymo/paymo-node --save</p>
+          </div>
+        </div>
+        <div [class]="'tab-panel active'" [class.active]="cwTab==='cdn'" id="cwIns-cdn">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi-check-circle-fill"></i></div>
+            <h5 style="font-weight:700">CDN Script Added</h5>
+            <p style="font-size:12px;color:var(--pm-ink-soft);margin:0">Add this snippet to your HTML file before
+              closing &lt;/body&gt;.
+          </div>
+        </div>
+        <div [class]="'tab-panel active'" [class.active]="cwTab==='code'" id="cwIns-code">
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi-check-circle-fill"></i></div>
+            <h5 style="font-weight:700">Code Copied!</h5>
+            <p style="font-size:12px;color:var(--pm-ink-soft);margin:0">Add this to your HTML file before closing
+              &lt;/body&gt;.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13. GitHub Access -->
+  <div *ngIf="$any(activeModalId)==='githubAccessModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+    (click)="closeModal()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-github me-2"></i>PayMo GitHub Organization</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Access our official repositories, report
+            issues, contribute code, and explore examples.</p>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 border rounded" style="cursor:pointer;transition:all .2s"
+                (mouseover)="$any($event.target).style.borderColor = 'var(--pm-primary)'" (mouseout)="$any($event.target).style.borderColor = ''"
+                (click)="openModal('editGithubRepoModal')">
+                <div style="height:80px;display:flex;align-items:center;justify-content:center"><i class="bi bi-branch"
+                    style="font-size:24px;color:var(--pm-ink)"></i></div>
+              </div>
+              <div style="flex:1;margin-left:12px"><strong style="font-size:14px">paymo/paymo-node</strong>
+                <div style="font-size:11px;color:var(--pm-muted)">paymo/paymo-node · 1.2k stars · MIT License</div>
+                <button class="pm-btn pm-btn-sm mt-2" (click)="processAction('Redirecting to GitHub...')">View Repo <i
+                    class="bi bi-arrow-right"></i></button>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded" style="cursor:pointer;transition:all .2s"
+                (mouseover)="$any($event.target).style.borderColor = 'var(--pm-primary)'" (mouseout)="$any($event.target).style.borderColor = ''"
+                (click)="openModal('editGithubRepoModal')">
+                <div style="height:80px;display:flex;align-items:center;justify-content:center"><i class="bi bi-github"
+                    style="font-size:24px;color:var(--pm-ink)"></i></div>
+              </div>
+              <div style="flex:1;margin-left:12px"><strong style="font-size:14px">paymo/paymo-flutter</strong>
+                <div style="font-size:11px;color:var(--pm-muted)">paymo/paymo-flutter · 856 stars · MIT License</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded" style="cursor:pointer;transition:all .2s"
+                (mouseover)="$any($event.target).style.borderColor = 'var(--pm-primary)'" (mouseout)="$any($event.target).style.borderColor = ''"
+                (click)="openModal('editGithubRepoModal')">
+                <div style="height:80px;display:flex;align-items:center;justify-content:center"><i
+                    class="bi bi-code-branch" style="font-size:24px;color:var(--pm-ink)"></i></div>
+              </div>
+              <div style="flex:1;margin-left:12px"><strong style="font-size:14px">paymo/paymo-php</strong>
+                <div style="font-size:11px;color:var(--pm-muted)">paymo/paymo-php · 3.1.2 · 1.8k stars</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="p-3 border rounded" style="cursor:pointer;transition:all .2s"
+              (mouseover)="$any($event.target).style.borderColor = 'var(--pm-primary)'" (mouseout)="$any($event.target).style.borderColor = ''"
+              (click)="openModal('editGithubRepoModal')">
+              <div style="height:80px;display:flex;align-items:center;justify-content:center"><i class="bi bi-globe"
+                  style="font-size:24px;color:var(--pm-ink)"></i></div>
+            </div>
+            <div style="flex:1;margin-left:12px"><strong style="font-size:14px">paymo/webhook</strong>
+              <div style="font-size:11px;color:var(--pm-muted)">paymo/webhook · Official repo · 856 stars</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="p-3 border rounded" style="cursor:pointer;transition:all .2s"
+            (mouseover)="$any($event.target).style.borderColor = 'var(--pm-primary)'" (mouseout)="$any($event.target).style.borderColor = ''"
+            (click)="openModal('editGithubRepoModal')">
+            <div style="height:80px;display:flex;align-items:center;justify-content:center"><i
+                class="bi bi-file-earmark" style="font-size:24px;color:var(--pm-ink)"></i></div>
+          </div>
+          <div style="flex:1;margin-left:12px"><strong style="font-size:14px">paymo/sdk</strong>
+            <div style="font-size:11px;color:var(--pm-muted)">paymo/sdk · Official repo · 52 stars</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 14. API Playground -->
+<div *ngIf="$any(activeModalId)==='apiPlaygroundModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-xl modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-braces me-2"></i>Interactive API Playground</h5><button
+          class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-5">
+            <div class="mb-3"><label class="pm-form-label">Select Endpoint</label><select class="pm-form-control"
+                [(ngModel)]="playEndpoint">
+                <option>Charges (M-Pesa STK)</option>
+                <option>Disbursements</option>
+                <option>Customers</option>
+                <option>Transfers</option>
+                <option>Webhooks</option>
+                <option>Balances</option>
+              </select></div>
+            <div class="mb-3"><label class="pm-form-label">HTTP Method</label><select class="pm-form-control"
+                [(ngModel)]="playMethod">
+                <option>POST</option>
+                <option>GET</option>
+                <option>PUT</option>
+                <option>DELETE</option>
+              </select></div>
+            <div class="mb-3"><label class="pm-form-label">Request Body (JSON)</label><textarea class="pm-form-control"
+                rows="10" [(ngModel)]="playBody" style="font-family:monospace;font-size:12px"></textarea></div>
+          </div>
+          <div class="col-md-7">
+            <div class="pm-card" style="min-height:100%">
+              <h6 style="font-size:14px;font-weight:700;margin:0 0 8px">Response</h6>
+              <div class="pm-code-block"><button class="copy-btn" (click)="copyCode($event)">Copy</button>
+                <pre>{{ simResponse }}</pre>
+              </div>
+              <div class="row g-2">
+                <div class="p-2 rounded text-center" style="background:var(--pm-surface-2)">
+                  <div class="pm-icon-circle" style="background:var(--pm-accent-soft);color:var(--pm-accent)"><i
+                      class="bi bi-check-circle-fill"></i></div>
+                  <h5 style="font-weight:700;margin:0">Success!</h5>
+                  <p style="font-size:12px;color:var(--pm-ink-soft)">Transaction initiated in 89ms</p>
+                </div>
+              </div>
+              <div class="p-2 rounded text-center" style="background:var(--pm-surface-2)">
+                <div class="pm-icon-circle" style="background:var(--pm-primary-soft);color:var(--pm-primary)"><i
+                    class="bi bi-qr-code"></i></div>
+                <h5 style="font-weight:700;margin:0">Receipt</h5>
+                <div class="pm-receipt">
+                  <div class="receipt-icon"><i class="bi-check-circle-fill"></i></div>
+                  <h5 style="font-weight:700;margin:0">Payment Receipt Generated</h5>
+                  <p style="font-size:12px;color:var(--pm-ink-soft);margin:0">Ref: CH_T729384 | Amount: KES 1,500 |
+                    Method: POST | Time: Today 10:42 AM</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 15. NPM Changelog -->
+  <div *ngIf="$any(activeModalId)==='npmChangelogModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+    (click)="closeModal()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-file-earmark me-2"></i>Node.js SDK Changelog</h5><button
+            class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex justify-content-between mb-3 flex-wrap" style="gap:8px">
+            <div class="d-flex gap-2"><label class="pm-form-label"
+                style="font-size:11px;font-weight:600;color:var(--pm-ink-soft)">Version</label><select
+                class="pm-form-control" style="font-size:12px" [(ngModel)]="npmVersion">
+                <option>v3.2.0 (Latest)</option>
+                <option>v3.1.0</option>
+                <option>v3.0.0-beta</option>
+                <option>v2.2.0</option>
+                <option>v2.1.0</option>
+                <option>v2.0.0</option>
+                <option>v1.0.0</option>
+              </select></div>
+            <div class="table-responsive" style="max-height:350px;overflow-y:auto">
+              <table class="pm-table">
+                <thead>
+                  <tr>
+                    <th style="width:60px">Version</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-family:var(--pm-font-display);font-size:20px;font-weight:700">v3.2.0 <span
+                        class="pm-badge pm-badge-success">Latest</span></td>
+                    <td style="font-size:12px;color:var(--pm-ink-soft)">Added enhanced error handling and automatic
+                      retries for failed webhooks</td>
+                    <td style="font-size:11px;color:var(--pm-muted)">Patch</td>
+                  </tr>
+                  <tr>
+                    <td style="font-family:var(--pm-font-display);font-size:20px;font-weight:700">v3.1.0 <span
+                        class="pm-badge" style="background:var(--pm-info-soft);color:#1D4ED8">Stable</span></td>
+                    <td style="font-size:12px;color:var(--pm-soft)">Priority Fix</td>
+                  </tr>
+                  <tr>
+                    <td style="font-family:var(--pm-font-display);font-size:20px;font-weight:700">v3.0.0 <span
+                        class="pm-badge" style="background:var(--pm-warning-soft);color:#B45309">Patch</span></td>
+                    <td style="font-size:12px;color:var(--pm-soft)">Bug fix for invalid payload schemas</td>
+                  </tr>
+                  <tr>
+                    <td style="font-family:var(--pm-font-display);font-size:20px;font-weight:700">v2.2.0 <span
+                        class="pm-badge" style="background:var(--pm-bg-2);color:var(--pm-ink)">Stable</span></td>
+                    <td style="font-size:12px;color:var(--pm-soft)">Minor fix for SDK deprecation warnings</td>
+                  </tr>
+                  <tr>
+                    <td style="font-family:var(--pm-font-display);font-size:20px;font-weight:700">v2.1.0 <span
+                        class="pm-badge" style="background:var(--pm-bg-2);color:var(--pm-ink)">Stable</span></td>
+                    <td style="font-size:12px;color:var(--pm-soft)">Security patch for CVE-2024-0039 in http parser</td>
+                  </tr>
+                  <tr>
+                    <td style="font-family:var(--pm-font-display);font-size:20px;font-weight:700">v2.0.0 <span
+                        class="pm-badge" style="background:var(--pm-bg-2);color:var(--pm-ink)">Stable</span></td>
+                    <td style="font-size:12px;color:var(--pm-soft)">LTS 1.8+ support</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 16. SDK Release Notes -->
+      <div *ngIf="$any(activeModalId)==='sdkReleaseNotesModal'" class="modal fade show d-block" tabindex="-1"
+        style="z-index:1055" (click)="closeModal()">
+        <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"><i class="bi bi-file-earmark me-2"></i>SDK Release Notes</h5><button
+                class="btn-close" (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body">
+              <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">View all release notes, breaking
+                changes, and migration guides for every SDK version.</p>
+              <div class="d-flex justify-content-between mb-3 flex-wrap" style="gap:8px">
+                <div class="d-flex gap-2"><label class="pm-form-label"
+                    style="font-size:11px;font-weight:600;color:var(--pm-ink-soft)">Version</label><select
+                    class="pm-form-control" style="font-size:12px" [(ngModel)]="sdkVersion">
+                    <option>v3.2.0 (Latest)</option>
+                    <option>v3.1.0 (Current)</option>
+                    <option>v3.0.0 (Stable)</option>
+                    <option>v2.2.0 (Stable)</option>
+                    <option>v2.1.0 (Stable)</option>
+                    <option>v2.0.0 (Legacy)</option>
+                    <option>v1.0.0 (Legacy)</option>
+                  </select></div>
+                <div class="table-responsive" style="max-height:350px;overflow-y:auto">
+                  <table class="pm-table">
+                    <thead>
+                      <tr>
+                        <th style="width:60px">Version</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="font-family:var(--pm-font-display);font-size:20px;font-weight:700">v3.2.0</td>
+                        <td style="font-size:12px;color:var(--pm-ink-soft)">Added enhanced error handling and automatic
+                          retries for failed webhooks</td>
+                        <td style="font-size:11px;color:var(--pm-muted)">Patch</td>
+                      </tr>
+                      <tr>
+                        <td style="font-family:var(--pm-font-display);font-size:20px;font-weight:700">v3.1.0</td>
+                        <td style="font-size:12px;color:var(--pm-soft)">Priority Fix</td>
+                      </tr>
+                      <tr>
+                        <td style="font-family:var(--pm-font-display);font-size:20px;font-weight:700">v3.0.0 <span
+                            class="pm-badge" style="background:var(--pm-bg-2);color:var(--pm-ink)">Stable</span></td>
+                        <td style="font-size:12px;color:var(--pm-soft)">Minor fix for SDK deprecation warnings</td>
+                      </tr>
+                      <tr>
+                        <td style="font-family:var(--pm-font-display);font-size:20px;font-weight:700">v2.0.0 <span
+                            class="pm-badge" style="background:var(--pm-bg-2);color:var(--pm-ink)">Stable</span></td>
+                        <td style="font-size:12px;color:var(--pm-soft)">LTS 1.8+ support</td>
+                      </tr>
+                      <tr>
+                        <td style="font-family:var(--pm-font-display);font-size:20px;font-weight:700">v1.0.0 <span
+                            class="pm-badge" style="background:var(--pm-bg-2);color:var(--pm-ink)">Legacy</span></td>
+                        <td style="font-size:12px;color:var(--pm-soft)">No longer receives security patches</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 17. Report Bug -->
+          <div *ngIf="$any(activeModalId)==='reportBugModal'" class="modal fade show d-block" tabindex="-1"
+            style="z-index:1055" (click)="closeModal()">
+            <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"><i class="bi bi-bug me-2" style="color:var(--pm-danger)"></i>Report a Bug</h5>
+                  <button class="btn-close" (click)="closeModal()"></button>
+                </div>
+                <div class="modal-body text-center">
+                  <div class="pm-icon-circle mx-auto mb-3"
+                    style="width:56px;height:56px;background:var(--pm-danger-soft);color:var(--pm-danger);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px">
+                    <i class="bi bi-exclamation-triangle"></i></div>
+                  <h5 style="font-weight:700;margin:0">Report an Issue</h5>
+                  <p style="font-size:13px;color:var(--pm-ink-soft)">Report bugs directly to our engineering team.
+                    Include steps to reproduce, expected vs actual behavior, and environment details.</p>
+                  <div class="mb-3"><label class="pm-form-label">Issue Title</label><input class="pm-form-control"
+                      placeholder="e.g. Disbursement fails with timeout" placeholder="Describe the issue..."
+                      style="font-size:13px"></div>
+                  <div class="mb-3"><label class="pm-form-label">Severity</label><select class="pm-form-control"
+                      style="font-size:13px">
+                      <option>Critical (Breaks production)</option>
+                      <option>High (Annoyance)</option>
+                      <option>Low (Cosmetic)</option>
+                      <option>Info (Question)</option>
+                      <option>Suggestion (I have a fix)</option>
+                    </select></div>
+                  <div class="mb-3"><label class="pm-form-label">Description</label><textarea class="pm-form-control"
+                      rows="6"
+                      placeholder="Describe the bug in detail, including steps to reproduce, expected vs actual behavior..."
+                      style="font-size:13px"></textarea></div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox"
+                      [(ngModel)]="bugAllowContact"><label class="form-check-label" style="font-size:13px">Allow PayMo
+                      team to contact me about this report</label></div>
+                  <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button
+                      class="pm-btn pm-btn-primary" [disabled]="!bugAllowContact"
+                      (click)="processAction('Bug report submitted. Our team will review and respond within 48 hours.')">Submit
+                      Report</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 18. Request SDK Feature -->
+        <div *ngIf="$any(activeModalId)==='requestSdkFeatureModal'" class="modal fade show d-block" tabindex="-1"
+          style="z-index:1055" (click)="closeModal()">
+          <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-lightbulb me-2"></i>Request SDK Feature</h5><button
+                  class="btn-close" (click)="closeModal()"></button>
+              </div>
+              <div class="modal-body">
+                <p style="font-size:13px;color:font-family:var(--pm-ink-soft)">Describe the feature you'd like PayMo to
+                  build, including technical context for our engineering team to evaluate.</p>
+                <div class="mb-3"><label class="pm-form-label">Feature Category</label><select class="pm-form-control">
+                    <option>API Endpoint</option>
+                    <option>Webhook Event</option>
+                    <option>Disbursement</option>
+                    <option>Payment</option>
+                    <option>Webhook + Disbursement</option>
+                    <option>Billing &amp; Invoicing</option>
+                    <option>SDK Enhancement</option>
+                    <option>Other</option>
+                  </select></div>
+                <div class="mb-3"><label class="pm-form-label">Description</label><textarea class="pm-form-control"
+                    rows="5" placeholder="Describe the feature in detail..." style="font-size:13px"></textarea></div>
+                <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Cancel</button><button
+                    class="pm-btn pm-btn-primary" [disabled]="!bugDescription"
+                    (click)="processAction('Feature request submitted to our engineering team for review.')">Submit
+                    Request</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 19. Health Check -->
+    <div *ngIf="$any(activeModalId)==='healthCheckModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+      (click)="closeModal()">
+      <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-shield-check me-2"></i>System Health Check</h5><button
+              class="btn-close" (click)="closeModal()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex flex-wrap gap-3">
+              <div class="p-3 border rounded" style="flex:1;min-width:140px">
+                <div class="pm-icon-circle flex-shrink-0"><i class="bi-check-circle-fill"></i></div>
+                <div style="flex:1"><strong style="font-size:13px">Core API</strong>
+                  <div style="font-size:11px;color:var(--pm-muted)">Operational — 99.99% uptime</div>
+                </div>
+                <div class="p-2 rounded text-center" style="background:var(--pm-accent-soft);font-size:12px"><i
+                    class="bi-check-circle-fill"></i>
+                  <h5 style="font-weight:700;margin:0">Healthy</h5>
+                  <p style="font-size:11px;color:var(--pm-ink-soft)">P95 Latency: 45ms
+                </div>
+              </div>
+            </div>
+            <div class="p-3 rounded text-center" style="background:var(--pm-surface-2);font-size:13px"><i
+                class="bi bi-check-circle-fill"></i> <strong>Overall: 2 of 3 endpoints healthy</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 20. Activity History -->
+<div *ngIf="$any(activeModalId)==='activityHistoryModal'" class="modal fade show d-block" tabindex="-1" style="z-index:1055"
+  (click)="closeModal()">
+  <div class="modal-dialog modal-xl modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Activity History</h5><button class="btn-close"
+          (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between mb-3 flex-wrap" style="gap:8px"><input class="pm-form-control"
+            placeholder="Search events by ID, type, or content..." style="max-width:250px;font-size:12px"
+            [(ngModel)]="activitySearch"><button class="pm-btn pm-btn-sm pm-btn-primary"><i
+              class="bi bi-search"></i></button></div>
+        <div class="table-responsive" style="max-height:400px;overflow-y:auto">
+          <table class="pm-table">
+            <thead>
+              <tr>
+                <th style="width:120px">Time</th>
+                <th style="width:180px">Type</th>
+                <th>Details</th>
+                <th style="width:80px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let a of activityItems">
+                <td style="font-size:12px;color:var(--pm-muted)">{{ a.time }}</td>
+                <td style="font-size:12px"><span class="pm-badge pm-badge-success">API Call</span></td>
+                <td style="font-size:12px;color:var(--pm-soft)">{{ a.details }}</td>
+                <td><button class="pm-btn pm-btn-sm" (click)="openModal('viewHistoryDetailModal')">Inspect</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer"><button class="pm-btn" (click)="closeModal()">Close</button><button
+            class="pm-btn pm-btn-sm" (click)="processAction('History exported.')"><i class="bi bi-download"></i> Export
+            CSV</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div *ngIf="toastMessage" class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div class="alert alert-success d-flex align-items-center shadow-sm"
+    style="border:none;border-radius:var(--pm-r-md);background:var(--pm-bg);padding:12px 20px;border-radius:var(--pm-r-md);box-shadow:var(--pm-shadow-md);font-size:13px;font-family:var(--pm-font-sans)">
+    <i class="bi bi-check-circle-fill me-2"></i> {{ toastMessage }}</div>
+</div>
