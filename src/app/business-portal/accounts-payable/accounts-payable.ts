@@ -131,6 +131,17 @@ interface ApprovalQueueItem {
   encapsulation: ViewEncapsulation.None
 })
 export class AccountsPayableComponent {
+  toastMessage = '';
+  loadingModal: string | null = null;
+  savedModals: Record<string, { message: string; ref: string }> = {};
+  stepState: Record<string, number> = { supp: 1, apBulk: 1 };
+  stepperLabels: Record<string, string[]> = {
+    supp: ['Identity', 'Banking', 'KYB', 'Done'],
+    apBulk: ['Select', 'Review', 'Pay'],
+  };
+  flowButtonDefaults: Record<string, string> = { supp: 'Continue', apBulk: 'Continue' };
+  modalTableHeaders: string[] = ['Item', 'Detail', 'Amount', 'Status'];
+
   activeModal: string | null = null;
   suppStep: number = 1;
   apBulkStep: number = 1;
@@ -498,125 +509,108 @@ export class AccountsPayableComponent {
     this.openModal(action.modalId || 'genericActionModal');
   }
 
-  openExpenseClaim(claim: ExpenseClaim): void {
-    this.openModal(claim.actionModal || 'expenseClaimModal');
-  }
-
   // ─── MODAL OPEN / CLOSE ──────────────────────────────────────────
 
   openModal(id: string): void {
     this.activeModal = id;
+    this.loadingModal = null;
+    if (id === 'addSupplierModal') { this.stepState['supp'] = 1; this.suppStep = 1; }
+    if (id === 'bulkPaySuppliersModal') { this.stepState['apBulk'] = 1; this.apBulkStep = 1; }
   }
 
-  closeModal(): void {
-    this.activeModal = null;
-  }
+  closeModal(): void { this.activeModal = null; this.loadingModal = null; }
 
   @HostListener('document:keydown.escape')
-  onEsc(): void {
-    this.closeModal();
+  onEsc(): void { this.closeModal(); }
+
+  isStepActive(flow: string, index: number): boolean { return (this.stepState[flow] ?? 1) === index + 1; }
+  isStepCompleted(flow: string, index: number): boolean { return (this.stepState[flow] ?? 1) > index + 1; }
+  getFlowButtonLabel(flow: string, total: number): string {
+    const cur = this.stepState[flow] ?? 1;
+    if (cur >= total) return 'Done';
+    if (cur === total - 1) return 'Confirm';
+    return this.flowButtonDefaults[flow] || 'Continue';
   }
 
-  // ─── MULTI-STEP: ADD SUPPLIER ────────────────────────────────────
-
-  nextSuppStep(): void {
-    if (this.suppStep === 3) {
-      this.suppStep = 4;
+  nextFlow(flow: string, total: number, modalId: string, message: string, ref: string): void {
+    const cur = this.stepState[flow] ?? 1;
+    if (cur >= total) { this.processAction(modalId, message, ref); return; }
+    if (cur === total - 1) {
+      this.loadingModal = modalId;
+      setTimeout(() => {
+        this.stepState[flow] = total;
+        if (flow === 'supp') this.suppStep = total;
+        if (flow === 'apBulk') this.apBulkStep = total;
+        this.loadingModal = null;
+        this.processAction(modalId, message, ref);
+      }, 900);
       return;
     }
-    if (this.suppStep >= 4) {
-      this.closeModal();
-      this.resetSuppFlow();
-      return;
-    }
-    this.suppStep++;
+    this.stepState[flow] = cur + 1;
+    if (flow === 'supp') this.suppStep = this.stepState[flow];
+    if (flow === 'apBulk') this.apBulkStep = this.stepState[flow];
   }
 
-  prevSuppStep(): void {
-    if (this.suppStep > 1) {
-      this.suppStep--;
-    }
-  }
-
-  resetSuppFlow(): void {
-    this.suppStep = 1;
-  }
-
-  // ─── MULTI-STEP: BULK PAY SUPPLIERS ──────────────────────────────
-
-  nextApBulkStep(): void {
-    if (this.apBulkStep === 2) {
-      this.apBulkStep = 3;
-      return;
-    }
-    if (this.apBulkStep >= 3) {
-      this.closeModal();
-      this.resetApBulkFlow();
-      return;
-    }
-    this.apBulkStep++;
-  }
-
-  resetApBulkFlow(): void {
-    this.apBulkStep = 1;
-  }
-
-  // ─── TAB SWITCHING ───────────────────────────────────────────────
+  nextSuppStep(): void { this.nextFlow('supp', 4, 'addSupplierModal', 'Supplier onboarded.', 'SUP-1'); }
+  prevSuppStep(): void { if (this.stepState['supp'] > 1) { this.stepState['supp']--; this.suppStep = this.stepState['supp']; } }
+  resetSuppFlow(): void { this.stepState['supp'] = 1; this.suppStep = 1; }
+  nextApBulkStep(): void { this.nextFlow('apBulk', 3, 'bulkPaySuppliersModal', 'Supplier batch submitted for approval.', 'PAY-B'); }
+  resetApBulkFlow(): void { this.stepState['apBulk'] = 1; this.apBulkStep = 1; }
 
   switchTab(prefix: string, key: string, event: Event): void {
     this.activeTabs[prefix] = key;
     const btn = event.target as HTMLElement;
-    if (btn && btn.parentElement) {
-      btn.parentElement.querySelectorAll('.pm-tab-pill').forEach((b: Element) => b.classList.remove('active'));
-      btn.classList.add('active');
-    }
+    btn?.parentElement?.querySelectorAll('.pm-tab-pill').forEach((b) => b.classList.remove('active'));
+    btn?.classList.add('active');
   }
-
-  // ─── RADIO CARD SELECTION ────────────────────────────────────────
 
   selectRadioCard(event: Event): void {
     const card = (event.target as HTMLElement).closest('.border');
-    if (!card || !card.parentElement) return;
-    card.parentElement.querySelectorAll('.border').forEach((b: Element) => {
+    if (!card?.parentElement) return;
+    card.parentElement.querySelectorAll('.border').forEach((b) => {
       (b as HTMLElement).style.borderColor = '';
       (b as HTMLElement).style.background = '';
-      const r = b.querySelector('input[type=radio]') as HTMLInputElement;
+      const r = b.querySelector('input[type=radio]') as HTMLInputElement | null;
       if (r) r.checked = false;
     });
     (card as HTMLElement).style.borderColor = 'var(--pm-primary)';
     (card as HTMLElement).style.background = 'rgba(79,70,229,.04)';
-    const radio = card.querySelector('input[type=radio]') as HTMLInputElement;
+    const radio = card.querySelector('input[type=radio]') as HTMLInputElement | null;
     if (radio) radio.checked = true;
   }
 
-  // ─── PROCESS ACTION (sets saved state) ───────────────────────────
-
   processAction(modalId: string, msg: string, ref: string): void {
-    const savedVar = modalId.replace('Modal', 'Saved') as keyof this;
-    (this as any)[savedVar] = true;
+    this.loadingModal = modalId;
+    setTimeout(() => {
+      this.savedModals[modalId] = { message: msg, ref };
+      const savedVar = modalId.replace('Modal', 'Saved');
+      if (savedVar in this) (this as any)[savedVar] = true;
+      this.loadingModal = null;
+      this.notify(ref ? `${msg} Ref: ${ref}` : msg);
+    }, 700);
   }
 
-  // ─── RESET ALL ───────────────────────────────────────────────────
+  getModalRows(modalId: string): string[][] {
+    const map: Record<string, string[][]> = {
+      approvalQueueModal: this.invoices?.filter(i => i.authStatus?.toLowerCase().includes('pending') || i.status?.toLowerCase().includes('pending')).slice(0,5).map(i => [i.invNum, i.supplier, i.amount, i.status]) ?? [],
+      payableAgingModal: this.agingRows?.map(r => [r.label, r.value, `${r.pct}%`, r.color]) ?? [],
+      attentionActionModal: this.attentionItems?.map(a => [a.title, a.subtitle, a.buttonLabel, 'Open']) ?? [],
+      approvalQueueDetail: this.approvalQueueItems?.map(a => [a.invoice, a.supplier, a.amount, a.requestedBy]) ?? [],
+    };
+    return map[modalId] ?? [['Item', 'Detail', '—', 'Ready']];
+  }
+
+  openExpenseClaim(claim: ExpenseClaim | { actionModal?: string }): void {
+    this.openModal((claim as ExpenseClaim)?.actionModal || 'expenseClaimModal');
+  }
+
+  notify(message: string): void { this.toastMessage = message; setTimeout(() => this.clearToast(), 3200); }
+  clearToast(): void { this.toastMessage = ''; }
 
   resetAllModals(): void {
-    this.activeModal = null;
-    this.suppStep = 1;
-    this.apBulkStep = 1;
-    this.activeTabs = { suppProf: 'info' };
-    this.uploadInvoiceSaved = false;
-    this.paySupplierSaved = false;
-    this.schedulePaymentSaved = false;
-    this.createPoSaved = false;
-    this.expenseClaimSaved = false;
-    this.approveExpenseSaved = false;
-    this.supplierStatementSaved = false;
-    this.disputeInvoiceSaved = false;
-    this.earlyPaymentDiscountSaved = false;
-    this.kybVerificationSaved = false;
-    this.departmentApprovalSaved = false;
-    this.exportApReportSaved = false;
-    this.reconciliationSaved = false;
-    this.onboardSupplierInviteSaved = false;
-    this.approvalQueueSaved = false;
+    this.closeModal();
+    this.savedModals = {};
+    this.stepState = { supp: 1, apBulk: 1 };
+    this.suppStep = 1; this.apBulkStep = 1;
   }
 }
