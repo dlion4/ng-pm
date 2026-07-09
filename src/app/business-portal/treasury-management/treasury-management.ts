@@ -66,6 +66,9 @@ interface SavedModal {
 })
 export class TreasuryManagementComponent {
   activeModal: string | null = null;
+  toastMessage = '';
+  modalTableHeaders: string[] = ['Item', 'Detail', 'Amount', 'Status'];
+
   loadingModal: string | null = null;
 
   stepState: Record<string, number> = {
@@ -140,58 +143,49 @@ export class TreasuryManagementComponent {
     { month: 'April', principal: 'KES 15.0M', interest: 'KES 135,000', yield: '10.8%' },
   ];
 
+
   openModal(id: string): void {
-    // treasuryReportModal redirects to exportTreasuryModal
-    if (id === 'treasuryReportModal') {
-      id = 'exportTreasuryModal';
-    }
+    if (id === 'treasuryReportModal') id = 'exportTreasuryModal';
     this.activeModal = id;
     this.loadingModal = null;
+    Object.keys(this.stepState).forEach((k) => (this.stepState[k] = 1));
   }
 
   closeModal(): void {
     this.activeModal = null;
     this.loadingModal = null;
-    // Reset step states
-    Object.keys(this.stepState).forEach((key) => {
-      this.stepState[key] = 1;
-    });
-    // Reset saved states
-    this.savedModals = {};
+    Object.keys(this.stepState).forEach((k) => (this.stepState[k] = 1));
   }
 
   @HostListener('document:keydown.escape')
-  onEsc(): void {
-    this.closeModal();
-  }
+  onEsc(): void { this.closeModal(); }
 
-  nextFlow(type: string, total: number): void {
-    const current = this.stepState[type];
+  nextFlow(type: string, total: number, modalId?: string, message?: string, ref?: string): void {
+    const current = this.stepState[type] ?? 1;
+    const mid = modalId || this.getFlowModalId(type);
+    if (current >= total) {
+      this.processAction(mid, message || 'Flow completed.', ref || 'OK');
+      return;
+    }
     if (current === total - 1) {
-      // Show loading, then advance to final step
-      this.loadingModal = this.getFlowModalId(type);
+      this.loadingModal = mid;
       setTimeout(() => {
         this.stepState[type] = total;
         this.loadingModal = null;
-      }, 1500);
+        this.processAction(mid, message || 'Executed successfully.', ref || 'OK');
+      }, 1200);
       return;
     }
-    if (current >= total) {
-      this.closeModal();
-      return;
-    }
-    this.stepState[type]++;
+    this.stepState[type] = current + 1;
   }
 
   selectBox(event: Event): void {
     const el = event.currentTarget as HTMLElement;
     const row = el.closest('.row');
-    if (row) {
-      row.querySelectorAll('.acct-card').forEach((b: Element) => {
-        (b as HTMLElement).style.borderColor = '';
-        (b as HTMLElement).style.background = '';
-      });
-    }
+    row?.querySelectorAll('.acct-card').forEach((b) => {
+      (b as HTMLElement).style.borderColor = '';
+      (b as HTMLElement).style.background = '';
+    });
     el.style.borderColor = 'var(--pm-primary)';
     el.style.background = 'rgba(79,70,229,.04)';
   }
@@ -199,66 +193,65 @@ export class TreasuryManagementComponent {
   selectRadioCard(event: Event): void {
     const el = event.currentTarget as HTMLElement;
     const row = el.closest('.row');
-    if (row) {
-      row.querySelectorAll('.acct-card').forEach((b: Element) => {
-        (b as HTMLElement).style.borderColor = '';
-        (b as HTMLElement).style.background = '';
-        const r = b.querySelector('input[type=radio]');
-        if (r) (r as HTMLInputElement).checked = false;
-      });
-    }
+    row?.querySelectorAll('.acct-card, .border').forEach((b) => {
+      (b as HTMLElement).style.borderColor = '';
+      (b as HTMLElement).style.background = '';
+      const r = b.querySelector('input[type=radio]') as HTMLInputElement | null;
+      if (r) r.checked = false;
+    });
     el.style.borderColor = 'var(--pm-primary)';
     el.style.background = 'rgba(79,70,229,.04)';
-    const radio = el.querySelector('input[type=radio]');
-    if (radio) (radio as HTMLInputElement).checked = true;
+    const radio = el.querySelector('input[type=radio]') as HTMLInputElement | null;
+    if (radio) radio.checked = true;
   }
 
   moveFocus(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.value.length === 1 && input.nextElementSibling) {
-      (input.nextElementSibling as HTMLInputElement).focus();
-    }
+    if (input.value.length === 1 && input.nextElementSibling) (input.nextElementSibling as HTMLInputElement).focus();
   }
 
   processAction(modalId: string, msg: string, ref: string): void {
     this.loadingModal = modalId;
     setTimeout(() => {
-      this.savedModals[modalId] = { message: msg, ref: ref };
+      this.savedModals[modalId] = { message: msg, ref };
       this.loadingModal = null;
-    }, 1500);
+      this.notify(ref ? `${msg} Ref: ${ref}` : msg);
+    }, 900);
   }
 
-  resetAllModals(): void {
-    this.closeModal();
-  }
+  resetAllModals(): void { this.closeModal(); this.savedModals = {}; }
 
   getFlowModalId(type: string): string {
     const map: Record<string, string> = {
-      addBank: 'addAccountModal',
-      transfer: 'transferFundsModal',
-      fx: 'bookFXModal',
-      crossBorder: 'crossBorderModal',
-      invest: 'investCashModal',
+      addBank: 'addAccountModal', transfer: 'transferFundsModal', fx: 'bookFXModal',
+      crossBorder: 'crossBorderModal', invest: 'investCashModal',
     };
     return map[type] || '';
   }
 
-  isStepActive(type: string, index: number): boolean {
-    return this.stepState[type] === index + 1;
-  }
-
-  isStepCompleted(type: string, index: number): boolean {
-    return this.stepState[type] > index + 1;
-  }
-
+  isStepActive(type: string, index: number): boolean { return this.stepState[type] === index + 1; }
+  isStepCompleted(type: string, index: number): boolean { return this.stepState[type] > index + 1; }
   getFlowButtonLabel(type: string, total: number): string {
     const current = this.stepState[type];
-    if (current >= total) {
-      return 'Done';
-    }
-    if (current === total - 1) {
-      return 'Execute';
-    }
+    if (current >= total) return 'Done';
+    if (current === total - 1) return 'Execute';
     return this.flowButtonDefaults[type] || 'Continue';
   }
+
+  getModalRows(modalId: string): string[][] {
+    const map: Record<string, string[][]> = {
+      multiAccountModal: this.accounts.map(a => [a.bank, a.accountNo, a.balance, a.lastSync]),
+      sweepHistoryModal: this.sweepLogs.map(s => [s.date, s.rule, s.amount, s.status]),
+      fxRatesModal: this.fxRates.map(r => [r.pair, r.bid, r.ask, r.trendPct]),
+      approvalQueueModal: this.approvalItems.map(a => [a.request, a.amount, a.initiator, 'Pending']),
+      bankStatementsModal: this.bankStatements.map(b => [b.date, b.description, b.inflow, b.balance]),
+      yieldAnalyticsModal: this.yieldData.map(y => [y.month, y.principal, y.interest, y.yield]),
+      investmentPortfolioModal: [['MMF Core', 'KES 12.0M', '12.1%', 'Active'], ['Term 90d', 'KES 6.0M', '13.4%', 'Active']],
+      attentionModal: [['Low till float', 'Top-up recommended', 'KES 1.4M', 'Open'], ['FX hedge expiry', 'USD forward rolls in 3d', '$45k', 'Open']],
+    };
+    return map[modalId] ?? [['Item', 'Detail', '—', 'Ready']];
+  }
+
+  notify(message: string): void { this.toastMessage = message; setTimeout(() => this.clearToast(), 3200); }
+  clearToast(): void { this.toastMessage = ''; }
 }

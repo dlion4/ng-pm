@@ -26,6 +26,48 @@ interface FeeBreakdown {
   encapsulation: ViewEncapsulation.None,
 })
 export class PayrollComplianceComponent {
+  readonly pageTitle = 'PAGE 3.4 — Payroll & Compliance Command Center';
+  readonly pageSubtitle = 'Configure salary components, execute bulk salary disbursements via M-Pesa B2C/PesaLink, generate payslips, and export statutory P10/SHIF returns.';
+  readonly breadcrumbs = [
+    { label: 'Business Portal' },
+    { label: 'HR & Operations' },
+    { label: 'Payroll Disbursement', active: true },
+  ];
+  readonly heroStats = {
+    nextCycleDate: '28 Jun 2025',
+    nextCycleNote: 'June 2025 Regular Salary. Requires CFO approval for execution over KES 1M.',
+    totalCost: 'KES 4.2M',
+    grossPay: '3.1M',
+    employerTax: '0.6M',
+    allowances: '0.5M',
+    activeEmployees: '142',
+    employeeDelta: '+3 this month',
+    complianceHealth: '98%',
+    complianceNote: '3 Missing PINs',
+    kraStatus: 'Ready to file',
+    shifStatus: 'Updating specs',
+  };
+  readonly actionFeed = [
+    { initials: 'LA', title: 'Leave approval needed', subtitle: '4 pending requests', modalId: 'p34_leaveApprovalModal', button: 'Review', tone: 'warning' },
+    { initials: 'TX', title: 'Compliance alert', subtitle: '3 employees missing PIN', modalId: 'p34_complianceAlertsModal', button: 'Fix', tone: 'danger' },
+    { initials: 'EX', title: 'Expense claims', subtitle: '8 awaiting finance', modalId: 'p34_expenseApprovalModal', button: 'Approve', tone: 'info' },
+    { initials: 'EM', title: 'Bank details update', subtitle: 'Ali Omondi payout pending', modalId: 'p34_editEmployeeModal', button: 'Update', tone: 'purple' },
+  ];
+  readonly intelligenceFeed = [
+    { initials: 'P9', title: 'Annual P9 ready', subtitle: 'Generate employee tax certificates', modalId: 'p34_annualP9Modal', button: 'Generate' },
+    { initials: 'TX', title: 'PAYE bands updated', subtitle: 'Verify July tax configuration', modalId: 'p34_taxConfigModal', button: 'Verify' },
+    { initials: 'RP', title: 'Statutory pack', subtitle: 'Export P10 / SHIF / NSSF', modalId: 'p34_generateReportsModal', button: 'Export' },
+  ];
+  readonly quickActions = [
+    { icon: 'bi bi-play-circle text-primary me-1', label: 'Run Payroll', modalId: 'p34_runPayrollModal' },
+    { icon: 'bi bi-person-plus text-success me-1', label: 'Add Employee', modalId: 'p34_addEmployeeModal' },
+    { icon: 'bi bi-check2-circle text-warning me-1', label: 'Approve Run', modalId: 'p34_approvePayrollModal' },
+    { icon: 'bi bi-phone me-1', label: 'B2C Payout', modalId: 'p34_payMpesaBulkModal', iconStyle: 'color:var(--pm-accent)' },
+    { icon: 'bi bi-sliders text-info me-1', label: 'Components', modalId: 'p34_salaryComponentsModal' },
+    { icon: 'bi bi-file-earmark-bar-graph text-danger me-1', label: 'Tax Reports', modalId: 'p34_generateReportsModal' },
+    { icon: 'bi bi-envelope me-1', label: 'Send Payslips', modalId: 'p34_sendPayslipsModal', iconStyle: 'color:var(--pm-purple)' },
+    { icon: 'bi bi-phone-flip me-1', label: 'ESS Portal', modalId: 'p34_employeeSelfServiceModal', iconStyle: 'color:var(--pm-muted)' },
+  ];
   readonly employees: EmployeeRow[] = [
     { initials: 'JS', name: 'John Smith', id: 'EMP-001', role: 'Sales Manager', basicPay: 'KES 120,000', allowances: 'KES 15,000', deductions: 'KES 34,250', netPay: 'KES 100,750', payout: 'Equity Bank', payoutStatus: 'Verified', payoutBadge: 'pm-badge-success' },
     { initials: 'MK', name: 'Mary Kamau', id: 'EMP-002', role: 'HR Specialist', basicPay: 'KES 85,000', allowances: 'KES 5,000', deductions: 'KES 21,800', netPay: 'KES 68,200', payout: 'M-Pesa B2C', payoutStatus: 'Verified', payoutBadge: 'pm-badge-success' },
@@ -143,7 +185,7 @@ export class PayrollComplianceComponent {
     };
   }
 
-  notify(message: string): void { this.toastMessage = message || 'Action completed.'; }
+  notify(message: string): void { this.toastMessage = message || 'Action completed.'; window.setTimeout(() => this.clearToast(), 3200); }
   clearToast(): void { this.toastMessage = ''; }
 
   private resetFlowsForModal(id: string): void {
