@@ -1,7 +1,45 @@
 
-/* ===== Dependency-free Bootstrap utility fallback for this standalone component =====
-   The uploaded monolith loaded Bootstrap and Bootstrap Icons from CDN. This fallback keeps
-   the component working without package/CDN dependency while leaving all original custom CSS below intact. */
+/* ===== Comprehensive Theme + Animations + Modal + Spinner CSS for 3.9 Virtual Accounts ===== */
+:host{display:block}
+*,*::before,*::after{box-sizing:border-box}
+
+/* Enhanced modal animations */
+.modal.fade .modal-dialog {
+  transition: transform .3s ease-out, opacity .2s ease-out;
+  transform: translateY(-50px) scale(0.98);
+}
+.modal.show .modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+/* Spinner enhancements */
+.spinner-border {
+  animation: spin 0.75s linear infinite;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Toast animation */
+.pm-toast {
+  animation: slideInRight 0.3s ease-out;
+}
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .quick-grid { grid-template-columns: 1fr 1fr; }
+  .modal-dialog { margin: 1rem; }
+}
+
+/* Icon and button polish */
+.btn-pm i { transition: transform 0.2s ease; }
+.btn-pm:hover i { transform: scale(1.1); }
+
+/* Original fallback below */
 :host{display:block}
 *,*::before,*::after{box-sizing:border-box}
 .row{display:flex;flex-wrap:wrap;margin-right:-.5rem;margin-left:-.5rem}.row>*{padding-right:.5rem;padding-left:.5rem;max-width:100%;width:100%}.g-2{gap:.5rem}.g-3{gap:1rem}.g-4{gap:1.5rem}@media(min-width:768px){.col-md-3{flex:0 0 auto;width:25%}.col-md-4{flex:0 0 auto;width:33.333333%}.col-md-5{flex:0 0 auto;width:41.666667%}.col-md-6{flex:0 0 auto;width:50%}.col-md-7{flex:0 0 auto;width:58.333333%}.col-md-8{flex:0 0 auto;width:66.666667%}.col-md-9{flex:0 0 auto;width:75%}}@media(min-width:992px){.col-lg-2{flex:0 0 auto;width:16.666667%}.col-lg-3{flex:0 0 auto;width:25%}.col-lg-4{flex:0 0 auto;width:33.333333%}.col-lg-5{flex:0 0 auto;width:41.666667%}.col-lg-6{flex:0 0 auto;width:50%}.col-lg-7{flex:0 0 auto;width:58.333333%}.col-lg-8{flex:0 0 auto;width:66.666667%}.col-lg-9{flex:0 0 auto;width:75%}.col-lg-10{flex:0 0 auto;width:83.333333%}}

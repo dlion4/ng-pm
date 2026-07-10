@@ -33,6 +33,146 @@ interface VirtualAccountsMockData {
   encapsulation: ViewEncapsulation.None,
 })
 export class VirtualAccountsComponent {
+  // === PAGE METADATA (data-driven) ===
+  readonly pageTitle = 'PAGE 3.9 — Virtual Accounts & Sub-Accounts';
+  readonly pageSubtitle = 'Create, manage and reconcile business virtual accounts and sub-accounts with full funding controls, hierarchy, automation rules and audit trails.';
+  readonly breadcrumbStrong = 'Virtual Accounts';
+
+  readonly hero = {
+    liveLabel: 'Virtual accounts live',
+    count: '18 virtual accounts',
+    stats: '12 main VAs + 47 sub-accounts • KES 124.8M total balance • 6 automated rules active',
+  };
+
+  readonly stats = [
+    { label: 'TOTAL BALANCE', value: 'KES 124.8M', change: '+12.4% MoM', detail: 'Main VAs: KES 89.4M<br/>Sub-accounts: KES 35.4M', color: 'accent' },
+    { label: 'THIS MONTH ACTIVITY', value: 'KES 312.6M', change: '4,812 txns', detail: 'Collections: KES 198.2M<br/>Disbursements: KES 114.4M', color: 'info' },
+    { label: 'RECONCILIATION STATUS', value: '4 issues', change: 'Review needed', detail: '2 unmatched credits<br/>1 timing difference<br/>1 bank error', color: 'warning', border: true },
+  ];
+
+  readonly attentionItems = [
+    { icon: 'exclamation-triangle', title: 'Unmatched credit KES 1.2M', sub: 'VA-003 • 26 Jun', action: 'Resolve', modal: 'reconModal' },
+    { icon: 'clock', title: 'Sub-account limit breach', sub: 'Payroll Sub • KES 450K over', action: 'Adjust', modal: 'subLimitModal' },
+    { icon: 'arrow-left-right', title: 'Auto-sweep rule paused', sub: 'Collections VA • 3 days', action: 'Resume', modal: 'autoSweepModal' },
+  ];
+
+  readonly suggestionItems = [
+    { icon: 'diagram-3', title: 'Create 4 new project sub-accounts', sub: 'Based on upcoming contracts', action: 'Create', modal: 'createSub' },
+    { icon: 'shield-check', title: 'Enable dual approval on large subs', sub: 'Reduce fraud risk on 3 accounts', action: 'Enable', modal: 'approvalRulesModal' },
+    { icon: 'graph-up', title: 'Consolidate 5 low-activity VAs', sub: 'Save KES 12,500/month in fees', action: 'Review', modal: 'consolidateModal' },
+  ];
+
+  readonly quickActions = [
+    { icon: 'plus-circle', label: 'New VA', modal: 'createVA', color: 'primary' },
+    { icon: 'diagram-3', label: 'New Sub', modal: 'createSub', color: 'success' },
+    { icon: 'cash-stack', label: 'Fund Account', modal: 'fundVA', color: 'accent' },
+    { icon: 'arrow-left-right', label: 'Internal Transfer', modal: 'transferModal', color: 'info' },
+    { icon: 'collection', label: 'Bulk Fund', modal: 'bulkFundModal', color: 'purple' },
+    { icon: 'list-check', label: 'Reconcile', modal: 'reconModal', color: 'warning' },
+    { icon: 'arrow-repeat', label: 'Auto Rules', modal: 'autoSweepModal', color: 'primary' },
+    { icon: 'download', label: 'Export', modal: 'exportReportModal', color: 'muted' },
+  ];
+
+  readonly approvalMatrix = [
+    { range: 'Up to KES 100K', approver1: 'Auto-approve', approver2: '—', approver3: '—' },
+    { range: 'KES 100K – 500K', approver1: 'Department Head', approver2: '—', approver3: '—' },
+    { range: 'KES 500K – 2M', approver1: 'Finance Manager', approver2: 'Director', approver3: '—' },
+    { range: 'Above KES 2M', approver1: 'CFO', approver2: 'CEO', approver3: 'Board' },
+  ];
+
+  readonly notificationSettings = [
+    { label: 'Low balance alerts', checked: true },
+    { label: 'Transaction notifications', checked: true },
+    { label: 'Limit breach alerts', checked: true },
+  ];
+
+  readonly quickReports = [
+    { label: 'Daily Summary', modal: 'exportReportModal' },
+    { label: 'Monthly Statement', modal: 'exportReportModal' },
+    { label: 'Sub-Account Report', modal: 'exportReportModal' },
+    { label: 'Audit Trail', modal: 'exportReportModal' },
+  ];
+
+  // Section headers (data-driven)
+  readonly sections = [
+    { id: '3.9.1', icon: 'wallet2', title: 'Virtual Account Creation & Management', desc: 'Create, view, edit and manage all virtual accounts with full details, balances, rules and status.' },
+    { id: '3.9.2', icon: 'diagram-3', title: 'Sub-Account Hierarchy & Structure', desc: 'Manage hierarchical sub-accounts under each virtual account with limits, approvals and visibility controls.' },
+    { id: '3.9.3', icon: 'cash-stack', title: 'Virtual Account Funding & Transfers', desc: 'Fund accounts, perform internal transfers, set up bulk funding and manage liquidity across the portfolio.' },
+    { id: '3.9.4', icon: 'sliders', title: 'Virtual Account Controls & Limits', desc: 'Set spending limits, approval workflows, transaction rules and velocity controls per account and sub-account.' },
+    { id: '3.9.5', icon: 'list-check', title: 'Reconciliation & Reporting', desc: 'Reconcile bank statements, match transactions, resolve discrepancies and generate comprehensive reports.' },
+    { id: '3.9.6', icon: 'cpu', title: 'Virtual Account Settings & Automation', desc: 'Configure auto-sweep rules, notification preferences, access controls and integration settings.' },
+  ];
+
+  readonly fundingOptions = ['M-Pesa', 'Bank Transfer', 'PayMo Wallet', 'Bulk Upload'];
+
+  // === COMPREHENSIVE UI CONFIG (data-driven shell) ===
+  readonly uiConfig = {
+    headerButtons: { health: 'Health', reconcile: 'Reconcile', newVA: 'New VA', newSub: 'New Sub-Account' },
+    heroActions: ['New VA', 'New Sub', 'Bulk Fund'],
+    attention: { title: 'Attention Required', viewAll: 'View all' },
+    suggestions: { title: 'Smart Suggestions', aiLabel: 'AI' },
+    quickActions: { title: 'Quick Actions', subtitle: 'Frequent virtual account workflows' },
+    recentActivity: { title: 'Recent Virtual Account Activity', viewAll: 'View All' },
+    sectionActions: {
+      '3.9.1': ['New VA', 'Health Check'],
+      '3.9.2': ['New Sub', 'View Hierarchy'],
+      '3.9.3': ['Fund VA', 'Transfer', 'Bulk Fund'],
+      '3.9.4': ['Approval Rules', 'Velocity Controls'],
+      '3.9.5': ['Reconcile Now', 'Export Reports'],
+      '3.9.6': ['Auto-Sweep', 'Integrations']
+    },
+    // Modal titles and labels (comprehensive)
+    modals: {
+      createVA: 'Create Virtual Account',
+      createSub: 'Create Sub-Account',
+      fundVA: 'Fund Virtual Account',
+      transfer: 'Internal Transfer',
+      bulkFund: 'Bulk Fund Virtual Accounts',
+      recon: 'Reconciliation Center',
+      match: 'Match Transaction',
+      approvalRules: 'Approval Rules & Workflows',
+      autoSweep: 'Auto-Sweep Configuration',
+      hierarchy: 'Virtual Account Hierarchy',
+      txnDetail: 'Transaction Details',
+      exportReport: 'Export Virtual Account Report',
+      vaHealth: 'Virtual Account Health Check',
+      bankError: 'Bank Error Ticket',
+      attention: 'All Items Requiring Attention',
+      subLimit: 'Adjust Sub-Account Limit',
+      velocity: 'Velocity & Transaction Controls',
+      integration: 'Integrations & Webhooks',
+      activity: 'Full Activity Log',
+      profile: 'Profile',
+      notif: 'Notifications (9)',
+      healthCheck: 'Virtual Account Portfolio Health',
+      consolidate: 'Consolidate Virtual Accounts',
+      notifSettings: 'Notification Settings'
+    },
+    // Form labels and stepper
+    formLabels: {
+      accountName: 'Account Name',
+      accountType: 'Account Type',
+      currency: 'Currency',
+      initialBalance: 'Initial Balance',
+      dailyLimit: 'Daily Limit',
+      monthlyLimit: 'Monthly Limit',
+      approvalAbove: 'Approval Required Above',
+      autoSweepThreshold: 'Auto-Sweep Threshold'
+    },
+    stepperLabels: {
+      va: ['Details', 'Controls', 'Done'],
+      sub: ['Details', 'Limits', 'Done'],
+      bulk: ['Upload', 'Review', 'Done']
+    },
+    tableHeaders: {
+      va: ['VA Number', 'Name', 'Type', 'Balance', 'Sub-Accounts', 'Status', 'Rules', 'Actions'],
+      sub: ['Sub-Account', 'Parent VA', 'Balance', 'Limit', 'Status', 'Actions'],
+      funding: ['Date', 'VA / Sub', 'Amount', 'Source', 'Status'],
+      recon: ['VA / Sub', 'Book Balance', 'Bank Balance', 'Difference', 'Status', 'Action'],
+      activity: ['Date', 'VA / Sub', 'Description', 'Amount', 'Status', 'Ref', 'Action']
+    }
+  };
+
   readonly mockData: VirtualAccountsMockData = {
     virtualAccounts: [
       { id: 'VA-003', name: 'Client Collections', type: 'Collections', balance: '12.4M', subAccounts: 8, status: 'active', statusLabel: 'Active', rules: 2 },
@@ -97,7 +237,7 @@ export class VirtualAccountsComponent {
   private readonly flowModalMap: Record<string, string> = { va: 'createVA', sub: 'createSub', bulk: 'bulkFundModal' };
   private readonly defaultTabs: Record<string, string> = { recon: 'unmatched', apr: 'matrix', swp: 'rules', int: 'api' };
   readonly tabs: Record<string, string> = { ...this.defaultTabs };
-  readonly openModals = new Set<string>();
+  openModals = new Set<string>();
   toastMessage = '';
 
   openModal(id: string): void {

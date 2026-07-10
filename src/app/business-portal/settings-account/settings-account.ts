@@ -14,6 +14,18 @@ interface SettingsMockData { teamMembers: TeamMember[]; apiKeys: ApiKey[]; bankA
 
 @Component({ selector:'app-settings-account', standalone:true, imports:[NgClass], templateUrl:'./settings-account.html', styleUrl:'./settings-account.css', changeDetection:ChangeDetectionStrategy.OnPush, encapsulation: ViewEncapsulation.None })
 export class SettingsAccountComponent {
+  // === PAGE METADATA (data-driven) ===
+  readonly pageTitle = 'PAGE 3.14 — Settings, Account Details & Administration';
+  readonly pageSubtitle = 'Manage team, API keys, compliance, roles, branches and security settings for the business.';
+  readonly breadcrumbStrong = 'Settings & Administration';
+
+  readonly quickActions = [
+    { icon: 'person-plus', label: 'Invite User', modal: 'userInviteModal', color: 'primary' },
+    { icon: 'key', label: 'New API Key', modal: 'apiKeyModal', color: 'accent' },
+    { icon: 'shield-check', label: 'KYC Upload', modal: 'kycModal', color: 'warning' },
+    { icon: 'building', label: 'Add Branch', modal: 'branchModal', color: 'info' },
+  ];
+
   readonly mockData: SettingsMockData = {
     teamMembers: [
       { name:'James Kamau', email:'james.k@company.co.ke', role:'Owner', department:'—', limit:'Unlimited', mfa:'On', mfaStatus:'success', lastLogin:'Today 09:12' },
@@ -63,7 +75,7 @@ export class SettingsAccountComponent {
   readonly flows: Record<string, FlowConfig> = { kyc:{labels:['Type','Upload','Done'],closeOnDone:true,doneMessage:'KYC/KYB document submitted successfully.'}, invite:{labels:['Details','Permissions','Done'],closeOnDone:true,doneMessage:'Team invitation sent successfully.'} };
   readonly steps: Record<string, number> = { kyc:1, invite:1 };
   readonly tabs: Record<string,string> = { sec:'policy', api:'keys', comp:'calendar' };
-  readonly openModals=new Set<string>(); toastMessage='';
+  openModals=new Set<string>(); toastMessage='';
   openModal(id:string):void{ this.openModals.clear(); this.openModals.add(id); this.resetFlowsForModal(id); }
   closeModal(id:string):void{ this.openModals.delete(id); this.resetFlowsForModal(id); }
   closeAllModals():void{ this.openModals.clear(); }

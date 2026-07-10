@@ -107,6 +107,18 @@ interface SupportMockData {
   encapsulation: ViewEncapsulation.None,
 })
 export class SupportDisputesRefundsComponent {
+  // === PAGE METADATA (data-driven) ===
+  readonly pageTitle = 'PAGE 3.13 — Support, Disputes & Refunds Center';
+  readonly pageSubtitle = 'Manage customer tickets, chargebacks, refunds and SLA compliance from a single operations hub.';
+  readonly breadcrumbStrong = 'Support, Disputes & Refunds';
+
+  readonly quickActions = [
+    { icon: 'ticket-detailed', label: 'New Ticket', modal: 'ticketDetailModal', color: 'primary' },
+    { icon: 'exclamation-triangle', label: 'Chargeback', modal: 'chargebackModal', color: 'danger' },
+    { icon: 'cash-stack', label: 'Refund', modal: 'refundModal', color: 'accent' },
+    { icon: 'cloud-upload', label: 'Bulk Refund', modal: 'bulkRefundModal', color: 'info' },
+  ];
+
   readonly mockData: SupportMockData = {
     tickets: [
       {
@@ -414,7 +426,7 @@ export class SupportDisputesRefundsComponent {
   };
   readonly steps: Record<string, number> = { cb: 1, rf: 1, brf: 1 };
   readonly tabs: Record<string, string> = { tkt: 'details' };
-  readonly openModals = new Set<string>();
+  openModals = new Set<string>();
   toastMessage = '';
   get filteredTickets(): SupportTicket[] {
     if (this.ticketFilter === 'all') return this.mockData.tickets;
