@@ -120,6 +120,33 @@ export class VirtualAccountsComponent {
       '3.9.4': ['Approval Rules', 'Velocity Controls'],
       '3.9.5': ['Reconcile Now', 'Export Reports'],
       '3.9.6': ['Auto-Sweep', 'Integrations']
+    },
+    // Modal titles and labels (comprehensive)
+    modals: {
+      createVA: 'Create Virtual Account',
+      createSub: 'Create Sub-Account',
+      fundVA: 'Fund Virtual Account',
+      transfer: 'Internal Transfer',
+      bulkFund: 'Bulk Fund Virtual Accounts',
+      recon: 'Reconciliation Center',
+      match: 'Match Transaction',
+      approvalRules: 'Approval Rules & Workflows',
+      autoSweep: 'Auto-Sweep Configuration',
+      hierarchy: 'Virtual Account Hierarchy',
+      txnDetail: 'Transaction Details',
+      exportReport: 'Export Virtual Account Report',
+      vaHealth: 'Virtual Account Health Check',
+      bankError: 'Bank Error Ticket',
+      attention: 'All Items Requiring Attention',
+      subLimit: 'Adjust Sub-Account Limit',
+      velocity: 'Velocity & Transaction Controls',
+      integration: 'Integrations & Webhooks',
+      activity: 'Full Activity Log',
+      profile: 'Profile',
+      notif: 'Notifications (9)',
+      healthCheck: 'Virtual Account Portfolio Health',
+      consolidate: 'Consolidate Virtual Accounts',
+      notifSettings: 'Notification Settings'
     }
   };
 
