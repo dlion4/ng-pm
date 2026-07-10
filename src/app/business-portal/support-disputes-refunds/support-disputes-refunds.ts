@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 type StatusKey =
@@ -103,21 +103,52 @@ interface SupportMockData {
   imports: [NgClass],
   templateUrl: './support-disputes-refunds.html',
   styleUrl: './support-disputes-refunds.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-})
+    encapsulation: ViewEncapsulation.None })
 export class SupportDisputesRefundsComponent {
-  // === PAGE METADATA (data-driven) ===
   readonly pageTitle = 'PAGE 3.13 — Support, Disputes & Refunds Center';
-  readonly pageSubtitle = 'Manage customer tickets, chargebacks, refunds and SLA compliance from a single operations hub.';
-  readonly breadcrumbStrong = 'Support, Disputes & Refunds';
-
-  readonly quickActions = [
-    { icon: 'ticket-detailed', label: 'New Ticket', modal: 'ticketDetailModal', color: 'primary' },
-    { icon: 'exclamation-triangle', label: 'Chargeback', modal: 'chargebackModal', color: 'danger' },
-    { icon: 'cash-stack', label: 'Refund', modal: 'refundModal', color: 'accent' },
-    { icon: 'cloud-upload', label: 'Bulk Refund', modal: 'bulkRefundModal', color: 'info' },
+  readonly pageSubtitle = 'Manage customer tickets, chargebacks, refunds, evidence packages, SLA health, and bulk resolution workflows from a single command center.';
+  readonly breadcrumbStrong = 'Support & Disputes';
+  readonly breadcrumbs: string[] = ['Home', 'Business Portal'];
+  readonly headerActions: Array<{label:string;icon:string;modalId:string;primary?:boolean}> = [
+    { label: 'SLA Health', icon: 'bi bi-heart-pulse', modalId: 'slaHealthModal', primary: false },
+    { label: 'Bulk Refund', icon: 'bi bi-arrow-counterclockwise', modalId: 'bulkRefundModal', primary: false },
+    { label: 'New Ticket', icon: 'bi bi-plus-lg', modalId: 'newTicketModal', primary: true },
   ];
+  readonly hero = {
+    liveLabel: 'Support desk live',
+    primaryValue: '142 open tickets',
+    primaryNote: 'Chargebacks, refunds, and general support with SLA tracking and evidence workflows.',
+    primaryActions: [
+      { label: 'New Ticket', modalId: 'newTicketModal' },
+      { label: 'Refund', modalId: 'refundModal' },
+      { label: 'Chargeback', modalId: 'chargebackModal' },
+    ],
+    stats: [
+      { label: 'OPEN TICKETS', value: '142', badge: '18 urgent', badgeClass: 'B B-d', icon: 'bi bi-inbox', note: 'Avg first response: 14m', color: 'var(--pm-accent)', border: false },
+      { label: 'CHARGEBACKS', value: '23', badge: 'KES 1.8M at risk', badgeClass: 'B B-w', icon: 'bi bi-exclamation-diamond', note: 'Evidence due: 6', color: 'var(--pm-info)', border: false },
+      { label: 'SLA HEALTH', value: '94%', badge: '2 breaches', badgeClass: 'B B-w', icon: 'bi bi-speedometer2', note: 'Target: 95%', color: 'var(--pm-warning)', border: true },
+    ] };
+  readonly attentionItems: Array<{icon:string;bg:string;color:string;title:string;subtitle:string;button:string;modalId:string}> = [
+    { icon: 'bi bi-exclamation-triangle', bg: 'var(--pm-danger-soft)', color: 'var(--pm-danger)', title: 'Chargeback evidence due today', subtitle: 'CB-8821 · KES 42,000', button: 'Upload', modalId: 'evidenceUploadModal' },
+    { icon: 'bi bi-clock', bg: 'var(--pm-warning-soft)', color: 'var(--pm-warning)', title: 'SLA breach risk — 4 tickets', subtitle: 'Customer response overdue', button: 'Assign', modalId: 'bulkAssignModal' },
+    { icon: 'bi bi-arrow-counterclockwise', bg: 'var(--pm-info-soft)', color: 'var(--pm-info)', title: '14 refunds pending finance', subtitle: 'Total KES 286K', button: 'Process', modalId: 'bulkRefundModal' },
+  ];
+  readonly suggestionItems: Array<{icon:string;bg:string;color:string;title:string;subtitle:string;button:string;modalId:string}> = [
+    { icon: 'bi bi-magic', bg: 'var(--pm-accent-soft)', color: 'var(--pm-accent)', title: 'Auto-detect duplicate tickets', subtitle: '12 likely duplicates this week', button: 'Scan', modalId: 'duplicateCheckModal' },
+    { icon: 'bi bi-file-earmark', bg: 'var(--pm-purple-soft)', color: 'var(--pm-purple)', title: 'Bulk evidence pack ready', subtitle: '6 chargebacks share same merchant', button: 'Build', modalId: 'bulkEvidenceModal' },
+    { icon: 'bi bi-graph-up', bg: 'var(--pm-warning-soft)', color: 'var(--pm-warning)', title: 'SLA report for leadership', subtitle: 'Weekly pack not sent', button: 'Generate', modalId: 'slaReportModal' },
+  ];
+  readonly quickActions: Array<{icon:string;label:string;modalId:string;style?:string}> = [
+    { icon: 'bi bi-plus-lg text-primary me-1', label: 'New Ticket', modalId: 'newTicketModal' },
+    { icon: 'bi bi-arrow-counterclockwise text-success me-1', label: 'Refund', modalId: 'refundModal' },
+    { icon: 'bi bi-exclamation-diamond text-danger me-1', label: 'Chargeback', modalId: 'chargebackModal' },
+    { icon: 'bi bi-person-plus text-info me-1', label: 'Assign', modalId: 'assignModal' },
+    { icon: 'bi bi-upload me-1', label: 'Evidence', modalId: 'evidenceUploadModal' },
+    { icon: 'bi bi-lightning text-warning me-1', label: 'Escalate', modalId: 'escalateModal' },
+    { icon: 'bi bi-collection me-1', label: 'Bulk Refund', modalId: 'bulkRefundModal' },
+    { icon: 'bi bi-activity me-1', label: 'Activity Log', modalId: 'activityLogModal' },
+  ];
+  loadingModal: string | null = null;
 
   readonly mockData: SupportMockData = {
     tickets: [
@@ -129,8 +160,7 @@ export class SupportDisputesRefundsComponent {
         priority: 'Critical',
         status: 'Open',
         age: '4h',
-        modal: 'ticketDetailModal',
-      },
+        modal: 'ticketDetailModal' },
       {
         id: 'T-8803',
         type: 'Merchant',
@@ -139,8 +169,7 @@ export class SupportDisputesRefundsComponent {
         priority: 'High',
         status: 'Open',
         age: '12h',
-        modal: 'ticketDetailModal',
-      },
+        modal: 'ticketDetailModal' },
       {
         id: 'T-8799',
         type: 'Technical',
@@ -149,8 +178,7 @@ export class SupportDisputesRefundsComponent {
         priority: 'Medium',
         status: 'Open',
         age: '18h',
-        modal: 'ticketDetailModal',
-      },
+        modal: 'ticketDetailModal' },
       {
         id: 'CB-9912',
         type: 'Chargeback',
@@ -159,8 +187,7 @@ export class SupportDisputesRefundsComponent {
         priority: 'Critical',
         status: 'Evidence',
         age: '8h',
-        modal: 'chargebackModal',
-      },
+        modal: 'chargebackModal' },
       {
         id: 'CB-9908',
         type: 'Chargeback',
@@ -169,8 +196,7 @@ export class SupportDisputesRefundsComponent {
         priority: 'High',
         status: 'Network',
         age: '2d',
-        modal: 'chargebackModal',
-      },
+        modal: 'chargebackModal' },
       {
         id: 'RF-4421',
         type: 'Refund',
@@ -179,8 +205,7 @@ export class SupportDisputesRefundsComponent {
         priority: 'High',
         status: 'Pending',
         age: '6h',
-        modal: 'refundModal',
-      },
+        modal: 'refundModal' },
       {
         id: 'RF-4408',
         type: 'Refund',
@@ -189,8 +214,7 @@ export class SupportDisputesRefundsComponent {
         priority: 'Medium',
         status: 'Pending',
         age: '1d',
-        modal: 'duplicateCheckModal',
-      },
+        modal: 'duplicateCheckModal' },
     ],
     chargebackCases: [
       {
@@ -201,8 +225,7 @@ export class SupportDisputesRefundsComponent {
         stage: 'Evidence',
         due: '8h',
         actionLabel: 'Respond',
-        actionModal: 'chargebackModal',
-      },
+        actionModal: 'chargebackModal' },
       {
         id: 'CB-9908',
         card: 'Mastercard ****2214',
@@ -211,8 +234,7 @@ export class SupportDisputesRefundsComponent {
         stage: 'Network',
         due: '2d',
         actionLabel: 'View',
-        actionModal: 'chargebackModal',
-      },
+        actionModal: 'chargebackModal' },
       {
         id: 'CB-9901',
         card: 'Visa ****8821',
@@ -221,8 +243,7 @@ export class SupportDisputesRefundsComponent {
         stage: 'Pre-arb',
         due: '4d',
         actionLabel: 'Evidence',
-        actionModal: 'evidenceUploadModal',
-      },
+        actionModal: 'evidenceUploadModal' },
       {
         id: 'CB-9894',
         card: 'Visa ****1108',
@@ -231,8 +252,7 @@ export class SupportDisputesRefundsComponent {
         stage: 'Won',
         due: 'Closed',
         actionLabel: 'View',
-        actionModal: 'ticketDetailModal',
-      },
+        actionModal: 'ticketDetailModal' },
     ],
     refunds: [
       {
@@ -243,8 +263,7 @@ export class SupportDisputesRefundsComponent {
         status: 'pending',
         statusLabel: 'Pending approval',
         actionLabel: 'Approve',
-        actionModal: 'refundModal',
-      },
+        actionModal: 'refundModal' },
       {
         id: 'RF-4419',
         customer: 'David Kimani',
@@ -253,8 +272,7 @@ export class SupportDisputesRefundsComponent {
         status: 'warning',
         statusLabel: 'Duplicate check',
         actionLabel: 'Check',
-        actionModal: 'duplicateCheckModal',
-      },
+        actionModal: 'duplicateCheckModal' },
       {
         id: 'RF-4408',
         customer: 'Mary Achieng',
@@ -263,8 +281,7 @@ export class SupportDisputesRefundsComponent {
         status: 'success',
         statusLabel: 'Processed',
         actionLabel: 'View',
-        actionModal: 'refundModal',
-      },
+        actionModal: 'refundModal' },
       {
         id: 'RF-4401',
         customer: 'John Mwangi',
@@ -273,8 +290,7 @@ export class SupportDisputesRefundsComponent {
         status: 'pending',
         statusLabel: 'Pending review',
         actionLabel: 'Review',
-        actionModal: 'refundModal',
-      },
+        actionModal: 'refundModal' },
     ],
     recentActivity: [
       {
@@ -283,40 +299,35 @@ export class SupportDisputesRefundsComponent {
         caseId: 'RF-4421',
         user: 'Finance — Grace',
         result: 'success',
-        resultLabel: 'Success',
-      },
+        resultLabel: 'Success' },
       {
         time: '13:48',
         action: 'Evidence uploaded',
         caseId: 'CB-9912',
         user: 'Disputes — Alan',
         result: 'success',
-        resultLabel: 'Success',
-      },
+        resultLabel: 'Success' },
       {
         time: '12:20',
         action: 'Ticket escalated',
         caseId: 'T-8821',
         user: 'Support — Jane',
         result: 'warning',
-        resultLabel: 'Escalated',
-      },
+        resultLabel: 'Escalated' },
       {
         time: '11:12',
         action: 'Customer contacted',
         caseId: 'RF-4419',
         user: 'Support — Kevin',
         result: 'success',
-        resultLabel: 'Sent',
-      },
+        resultLabel: 'Sent' },
       {
         time: '10:05',
         action: 'SLA breach risk',
         caseId: 'CB-9908',
         user: 'System',
         result: 'warning',
-        resultLabel: 'Warning',
-      },
+        resultLabel: 'Warning' },
     ],
     bulkRefundResults: [
       {
@@ -324,15 +335,13 @@ export class SupportDisputesRefundsComponent {
         customer: 'Grace Wanjiku',
         amount: 'KES 47,800',
         status: 'success',
-        statusLabel: 'Success',
-      },
+        statusLabel: 'Success' },
       {
         id: 'RF-4419',
         customer: 'David Kimani',
         amount: 'KES 12,400',
         status: 'success',
-        statusLabel: 'Success',
-      },
+        statusLabel: 'Success' },
     ],
     slaHealthRows: [
       {
@@ -340,15 +349,13 @@ export class SupportDisputesRefundsComponent {
         target: '98%',
         actual: '97.2%',
         breaches: 11,
-        trend: '↑ 1.2%',
-      },
+        trend: '↑ 1.2%' },
       {
         category: 'Merchant Tickets',
         target: '96%',
         actual: '95.1%',
         breaches: 8,
-        trend: '↓ 0.4%',
-      },
+        trend: '↓ 0.4%' },
       { category: 'Chargebacks', target: '99%', actual: '98.4%', breaches: 4, trend: '↑ 0.8%' },
       { category: 'Refunds', target: '97%', actual: '98.1%', breaches: 2, trend: '↑ 2.1%' },
     ],
@@ -360,8 +367,7 @@ export class SupportDisputesRefundsComponent {
         caseId: 'RF-4421',
         details: 'KES 47,800 to Grace Wanjiku',
         result: 'success',
-        resultLabel: 'Success',
-      },
+        resultLabel: 'Success' },
       {
         time: '14:10',
         user: 'Disputes — Alan',
@@ -369,8 +375,7 @@ export class SupportDisputesRefundsComponent {
         caseId: 'CB-9912',
         details: 'Invoice, delivery proof, AVS match',
         result: 'success',
-        resultLabel: 'Success',
-      },
+        resultLabel: 'Success' },
       {
         time: '13:20',
         user: 'Support — Jane',
@@ -378,8 +383,7 @@ export class SupportDisputesRefundsComponent {
         caseId: 'T-8821',
         details: 'VIP customer unresolved after 4h',
         result: 'warning',
-        resultLabel: 'Escalated',
-      },
+        resultLabel: 'Escalated' },
       {
         time: '12:40',
         user: 'System',
@@ -387,8 +391,7 @@ export class SupportDisputesRefundsComponent {
         caseId: 'RF-4419',
         details: 'Linked to RF-4408',
         result: 'warning',
-        resultLabel: 'Review',
-      },
+        resultLabel: 'Review' },
       {
         time: '11:55',
         user: 'Support — Kevin',
@@ -396,34 +399,28 @@ export class SupportDisputesRefundsComponent {
         caseId: 'T-8803',
         details: 'WhatsApp message sent',
         result: 'success',
-        resultLabel: 'Success',
-      },
+        resultLabel: 'Success' },
     ],
     notificationSettings: [
       { alertType: 'SLA breach risk', push: true, email: true, sms: true, slack: true },
       { alertType: 'Chargeback evidence due', push: true, email: true, sms: false, slack: true },
       { alertType: 'High-value refund approval', push: true, email: true, sms: true, slack: false },
       { alertType: 'Emergency escalation', push: true, email: true, sms: true, slack: true },
-    ],
-  };
+    ] };
   ticketFilter = 'all';
   readonly flows: Record<string, FlowConfig> = {
     cb: {
       labels: ['Case', 'Evidence', 'Submit', 'Done'],
       closeOnDone: true,
-      doneMessage: 'Chargeback response submitted to network.',
-    },
+      doneMessage: 'Chargeback response submitted to network.' },
     rf: {
       labels: ['Review', 'Approve', 'Done'],
       closeOnDone: true,
-      doneMessage: 'Refund executed successfully.',
-    },
+      doneMessage: 'Refund executed successfully.' },
     brf: {
       labels: ['Upload', 'Review', 'Done'],
       closeOnDone: true,
-      doneMessage: 'Bulk refund batch executed.',
-    },
-  };
+      doneMessage: 'Bulk refund batch executed.' } };
   readonly steps: Record<string, number> = { cb: 1, rf: 1, brf: 1 };
   readonly tabs: Record<string, string> = { tkt: 'details' };
   openModals = new Set<string>();
@@ -434,8 +431,7 @@ export class SupportDisputesRefundsComponent {
       customer: 'Customer',
       merchant: 'Merchant',
       chargeback: 'Chargeback',
-      refund: 'Refund',
-    };
+      refund: 'Refund' };
     return this.mockData.tickets.filter((t) => t.type === map[this.ticketFilter]);
   }
   setTicketFilter(filter: string, event?: Event): void {
@@ -443,17 +439,18 @@ export class SupportDisputesRefundsComponent {
     this.activatePill(event);
   }
   openModal(id: string): void {
-    this.openModals.clear();
-    this.openModals.add(id);
+    this.openModals = new Set([id]);
+    this.loadingModal = null;
     this.resetFlowsForModal(id);
   }
   closeModal(id: string): void {
-    this.openModals.delete(id);
+    const next = new Set(this.openModals);
+    next.delete(id);
+    this.openModals = next;
+    this.loadingModal = null;
     this.resetFlowsForModal(id);
   }
-  closeAllModals(): void {
-    this.openModals.clear();
-  }
+  closeAllModals(): void { this.openModals = new Set(); this.loadingModal = null; }
   isModalOpen(id: string): boolean {
     return this.openModals.has(id);
   }
@@ -474,9 +471,14 @@ export class SupportDisputesRefundsComponent {
     const next = Math.min((this.steps[flow] ?? 1) + 1, total);
     this.steps[flow] = next;
     if (next >= total) {
-      this.notify(this.flows[flow]?.doneMessage || 'Flow completed.');
-      const modal = { cb: 'chargebackModal', rf: 'refundModal', brf: 'bulkRefundModal' }[flow];
-      if (modal) window.setTimeout(() => this.closeModal(modal), 650);
+      const modalMap: Record<string, string> = { cb: 'chargebackModal', rf: 'refundModal', brf: 'bulkRefundModal' };
+      const modal = modalMap[flow];
+      this.loadingModal = modal || null;
+      window.setTimeout(() => {
+        this.loadingModal = null;
+        this.notify(this.flows[flow]?.doneMessage || 'Flow completed.');
+        if (modal) window.setTimeout(() => this.closeModal(modal), 650);
+      }, 500);
     }
   }
   activeTab(prefix: string): string {
@@ -515,9 +517,7 @@ export class SupportDisputesRefundsComponent {
     const input = event.target as HTMLInputElement | null;
     if (input?.value?.length === 1) (input.nextElementSibling as HTMLElement | null)?.focus();
   }
-  notify(message: string): void {
-    this.toastMessage = message || 'Action completed.';
-  }
+  notify(message: string): void { this.toastMessage = message || 'Action completed.'; window.setTimeout(() => this.clearToast(), 3200); }
   clearToast(): void {
     this.toastMessage = '';
   }
@@ -525,8 +525,7 @@ export class SupportDisputesRefundsComponent {
     const map: Record<string, string[]> = {
       chargebackModal: ['cb'],
       refundModal: ['rf'],
-      bulkRefundModal: ['brf'],
-    };
+      bulkRefundModal: ['brf'] };
     for (const flow of map[id] ?? []) this.steps[flow] = 1;
   }
 }

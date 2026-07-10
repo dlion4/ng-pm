@@ -1,20 +1,19 @@
 <div class="paymo-angular-page">
-  <div class="pm-toast" role="status" [style.display]="toastMessage ? 'flex' : 'none'">
-      <i class="bi bi-check-circle-fill"></i>
-      <span>{{ toastMessage }}</span>
-      <button type="button" class="pm-toast-close" (click)="clearToast()">×</button>
-    </div>
+  @if (toastMessage) {
+  <div class="pm-toast" role="status">
+    <i class="bi bi-check-circle-fill"></i>
+    <span>{{ toastMessage }}</span>
+    <button type="button" class="pm-toast-close" (click)="clearToast()">×</button>
+  </div>
+}
 <div class="paymo-businessOnboardingKyb-body"><section class="paymo-page-source" id="businessOnboardingKybPage">
 
 <div class="pm-page-bar">
 <div>
 <div class="pm-breadcrumb"><a (click)="notify('Link action handled')" role="button" tabindex="0">Home</a> / <a (click)="notify('Link action handled')" role="button" tabindex="0">Business Portal</a> /
-                        <strong>Onboarding &amp; KYB/KYC</strong></div>
-<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE
-                        3.12 — Business Onboarding &amp; KYB/KYC Center</h2>
-<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Onboard sole proprietors, partnerships,
-                        LLCs, SACCOs and NGOs. Manage KYB/KYC intake, beneficial ownership declarations, director
-                        verification, compliance scoring and full audit trails.</p>
+                        <strong>{{ breadcrumbStrong }}</strong></div>
+<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">{{ pageTitle }}</h2>
+<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">{{ pageSubtitle }}</p>
 </div>
 <div class="d-flex flex-wrap" style="gap:8px"><button (click)="openModal('complianceCheckModal')" class="btn-pm" type="button"><i class="bi bi-shield-check"></i> Compliance
                         Check</button><button (click)="openModal('pendingQueueModal')" class="btn-pm" type="button"><i class="bi bi-list-task"></i> Pending Queue</button><button (click)="openModal('onboardNewModal')" class="btn-pm" type="button"><i class="bi bi-plus-lg"></i> Onboard
@@ -25,9 +24,9 @@
 <div class="row g-3">
 <div class="col-lg-4">
 <div class="C C-accent" style="min-height:170px">
-<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Onboarding pipeline live
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">{{ hero.liveLabel }}
                                 <span style="color:#86efac">●</span></p>
-<div class="SV" style="margin:8px 0;color:#fff">84 businesses onboarded</div>
+<div class="SV" style="margin:8px 0;color:#fff">{{ hero.primaryValue }}</div>
 <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Sole props, partnerships,
                                 LLCs, SACCOs, NGOs &amp; corporate groups with complete KYB/KYC records and audit trails.
                             </p>
@@ -67,97 +66,56 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
 <h3 class="st">Attention Required</h3><button (click)="openModal('attentionFullModal')" class="btn-pm btn-sm" type="button">View all</button>
 </div>
+@for (item of attentionItems; track item.title) {
 <div class="sr">
 <div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-danger-soft);color:var(--pm-danger);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-building"></i></div>
+<div [style.background]="item.bg" [style.color]="item.color" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i [class]="item.icon"></i>
+</div>
 <div>
-<div style="font-weight:600;font-size:13px">Nairobi SACCO — TCC expires in 4
-                                            days</div>
-<div style="font-size:11px;color:var(--pm-muted)">KRA-TCC-88291 · Renewal
-                                            required</div>
+<div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+<div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
 </div>
-</div><button (click)="openModal('renewTCCModal')" class="btn-pm btn-sm" type="button">Renew</button>
+</div><button (click)="openModal(item.modalId)" class="btn-pm btn-sm" type="button">{{ item.button }}</button>
 </div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-person-badge"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">Director KYC pending — 7 days</div>
-<div style="font-size:11px;color:var(--pm-muted)">Peter Ochieng · Huduma ID
-                                            upload</div>
-</div>
-</div><button (click)="openModal('directorKYCModal')" class="btn-pm btn-sm" type="button">Verify</button>
-</div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-purple-soft);color:var(--pm-purple);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-exclamation-triangle"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">Beneficial ownership declaration
-                                            overdue</div>
-<div style="font-size:11px;color:var(--pm-muted)">Greenfield Logistics · 5
-                                            shareholders</div>
-</div>
-</div><button (click)="openModal('beneficialOwnerModal')" class="btn-pm btn-sm" type="button">Complete</button>
-</div>
+}
 </div>
 </div>
 <div class="col-lg-4">
 <div class="C">
 <div class="d-flex justify-content-between align-items-center mb-3">
-<h3 class="st">Smart Suggestions</h3><span class="B B-p"><i class="bi bi-stars"></i>
-                                    AI</span>
+<h3 class="st">Smart Suggestions</h3><span class="B B-p"><i class="bi bi-stars"></i> AI</span>
 </div>
+@for (item of suggestionItems; track item.title) {
 <div class="sr">
 <div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-accent-soft);color:var(--pm-accent);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-lightning"></i></div>
+<div [style.background]="item.bg" [style.color]="item.color" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i [class]="item.icon"></i>
+</div>
 <div>
-<div style="font-weight:600;font-size:13px">Auto-renew 4 expiring TCCs</div>
-<div style="font-size:11px;color:var(--pm-muted)">Prevent compliance gaps</div>
+<div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+<div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
 </div>
-</div><button (click)="openModal('bulkRenewalModal')" class="btn-pm btn-sm" type="button">Auto-Renew</button>
+</div><button (click)="openModal(item.modalId)" class="btn-pm btn-sm" type="button">{{ item.button }}</button>
 </div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-info-soft);color:var(--pm-info);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-file-earmark-check"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">Pre-fill 3 new applications from BRS
-                                            data</div>
-<div style="font-size:11px;color:var(--pm-muted)">CR12 records available</div>
-</div>
-</div><button (click)="openModal('preFillModal')" class="btn-pm btn-sm" type="button">Pre-fill</button>
-</div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-graph-up"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">High-risk business flagged</div>
-<div style="font-size:11px;color:var(--pm-muted)">Unusual ownership structure
-                                        </div>
-</div>
-</div><button (click)="openModal('riskAssessmentModal')" class="btn-pm btn-sm" type="button">Review</button>
-</div>
+}
 </div>
 </div>
 <div class="col-lg-4">
 <div class="C">
 <div class="mb-3">
 <h3 class="st">Quick Actions</h3>
-<p class="ss">Frequent KYB/KYC workflows</p>
+<p class="ss">Frequent operational workflows</p>
 </div>
-<div class="quick-grid"><button (click)="openModal('onboardNewModal')" class="quick-btn" type="button"><i class="bi bi-plus-circle text-primary me-1"></i> New Business</button><button (click)="openModal('directorKYCModal')" class="quick-btn" type="button"><i class="bi bi-person-badge text-info me-1"></i> Director KYC</button><button (click)="openModal('beneficialOwnerModal')" class="quick-btn" type="button"><i class="bi bi-people text-purple me-1"></i> Beneficial Owner</button><button (click)="openModal('uploadDocumentModal')" class="quick-btn" type="button"><i class="bi bi-upload text-success me-1"></i> Upload Docs</button><button (click)="openModal('riskAssessmentModal')" class="quick-btn" type="button"><i class="bi bi-shield-exclamation text-warning me-1"></i> Risk
-                                    Assessment</button><button (click)="openModal('complianceCheckModal')" class="quick-btn" type="button"><i class="bi bi-check2-circle text-success me-1"></i> Compliance
-                                    Check</button><button (click)="openModal('renewTCCModal')" class="quick-btn" type="button"><i class="bi bi-file-earmark-text me-1" style="color:var(--pm-primary)"></i> Renew
-                                    TCC</button><button (click)="openModal('auditTrailModal')" class="quick-btn" type="button"><i class="bi bi-clock-history me-1" style="color:var(--pm-accent)"></i> Audit
-                                    Trail</button></div>
-</div>
+<div class="quick-grid">
+@for (action of quickActions; track action.label) {
+<button (click)="openModal(action.modalId)" class="quick-btn" type="button"><i [class]="action.icon" [attr.style]="action.style || null"></i> {{ action.label }}</button>
+}
 </div>
 </div>
+</div>
+</div>
+
 <!-- SECTION 3.12.1 -->
 <div class="C">
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">

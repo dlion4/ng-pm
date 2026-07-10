@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 type StatusKey = 'live' | 'valid' | 'success' | 'instant' | 'matched' | 'healthy' | 'expiring' | 'expired' | 'warning' | 'danger' | 'issue' | 'unmatched' | 'paused' | 'pending';
@@ -147,45 +147,54 @@ interface OpenBankingMockData {
   imports: [NgClass],
   templateUrl: './open-banking.html',
   styleUrl: './open-banking.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None,
 })
 export class OpenBankingComponent {
-  // === PAGE METADATA (data-driven) ===
-  readonly pageTitle = 'PAGE 3.10 — Open Banking';
-  readonly pageSubtitle = 'Connect, manage and reconcile multiple bank accounts with real-time consent, transfers and fraud protection.';
+  readonly pageTitle = 'PAGE 3.10 — Open Banking & Account Aggregation';
+  readonly pageSubtitle = 'Connect bank accounts via PesaLink, view consolidated cash positions, execute instant transfers, reconcile transactions, and analyse multi-bank cash flow — all within a single secure dashboard.';
   readonly breadcrumbStrong = 'Open Banking';
-
-  readonly attentionItems = this.mockData.attentionItems;
-  readonly suggestionItems = this.mockData.suggestions;
-
-  readonly quickActions = [
-    { icon: 'link-45deg', label: 'Connect Bank', modal: 'connectBankModal', color: 'primary' },
-    { icon: 'arrow-left-right', label: 'Transfer', modal: 'transferModal', color: 'accent' },
-    { icon: 'list-check', label: 'Reconcile', modal: 'reconcileModal', color: 'warning' },
-    { icon: 'shield-check', label: 'Fraud Settings', modal: 'fraudSettingsModal', color: 'danger' },
-    { icon: 'calendar-check', label: 'Schedule', modal: 'scheduleTransferModal', color: 'info' },
-    { icon: 'graph-up', label: 'Optimize', modal: 'optimizeModal', color: 'purple' },
+  readonly breadcrumbs: string[] = ['Home', 'Business Portal'];
+  readonly headerActions: Array<{label:string;icon:string;modalId:string;primary?:boolean}> = [
+    { label: 'Health Check', icon: 'bi bi-heart-pulse', modalId: 'healthCheckModal', primary: false },
+    { label: 'Reconcile', icon: 'bi bi-list-check', modalId: 'reconcileModal', primary: false },
+    { label: 'Transfer', icon: 'bi bi-arrow-left-right', modalId: 'transferModal', primary: false },
+    { label: 'Connect Bank', icon: 'bi bi-plus-lg', modalId: 'connectBankModal', primary: true },
   ];
-
-  readonly uiConfig = {
-    pageTitle: 'PAGE 3.10 — Open Banking',
-    pageSubtitle: 'Connect, manage and reconcile multiple bank accounts with real-time consent, transfers and fraud protection.',
-    breadcrumbStrong: 'Open Banking',
-    attentionTitle: 'Attention Required',
-    suggestionTitle: 'Smart Suggestions',
-    quickActionsTitle: 'Quick Actions',
-    quickActionsSubtitle: 'Frequent open banking workflows',
-    modals: {
-      connectBank: 'Connect Bank Account',
-      transfer: 'Transfer Funds',
-      reconcile: 'Reconciliation Center',
-      fraudSettings: 'Fraud Settings',
-      schedule: 'Schedule Transfer',
-      optimize: 'Optimize Accounts'
-    }
-  };
-
+  readonly hero = {
+    liveLabel: 'Open banking hub live',
+    primaryValue: '7 bank accounts connected',
+    primaryNote: 'Equity, KCB, Co-op, Stanbic, Family, NCBA, I&M — consolidated view across all business and personal accounts.',
+    primaryActions: [
+      { label: 'Connect', modalId: 'connectBankModal' },
+      { label: 'Transfer', modalId: 'transferModal' },
+      { label: 'Reconcile', modalId: 'reconcileModal' },
+    ],
+    stats: [
+      { label: 'TOTAL CASH POSITION', value: 'KES 18.7M', badge: '+12.4% MoM', badgeClass: 'B B-s', icon: 'bi bi-graph-up', note: 'Available: KES 14.2M', color: 'var(--pm-accent)', border: false },
+      { label: 'PENDING TRANSFERS', value: '5', badge: 'Needs action', badgeClass: 'B B-w', icon: 'bi bi-clock', note: '2 scheduled · 3 awaiting auth', color: 'var(--pm-info)', border: false },
+      { label: 'RECON STATUS', value: '96%', badge: '12 exceptions', badgeClass: 'B B-w', icon: 'bi bi-exclamation-triangle', note: 'Last sync: 4 min ago', color: 'var(--pm-warning)', border: true },
+    ] };
+  readonly attentionItems: Array<{icon:string;bg:string;color:string;title:string;subtitle:string;button:string;modalId:string}> = [
+    { icon: 'bi bi-exclamation-triangle', bg: 'var(--pm-danger-soft)', color: 'var(--pm-danger)', title: 'Consent expiring — Equity Bank', subtitle: 'Re-auth required in 3 days', button: 'Re-auth', modalId: 'reauthModal' },
+    { icon: 'bi bi-arrow-left-right', bg: 'var(--pm-warning-soft)', color: 'var(--pm-warning)', title: '3 transfers awaiting approval', subtitle: 'Total KES 2.4M', button: 'Review', modalId: 'transferModal' },
+    { icon: 'bi bi-list-check', bg: 'var(--pm-info-soft)', color: 'var(--pm-info)', title: '12 recon exceptions', subtitle: 'Unmatched bank lines', button: 'Resolve', modalId: 'exceptionModal' },
+  ];
+  readonly suggestionItems: Array<{icon:string;bg:string;color:string;title:string;subtitle:string;button:string;modalId:string}> = [
+    { icon: 'bi bi-lightning', bg: 'var(--pm-accent-soft)', color: 'var(--pm-accent)', title: 'Optimize idle balances', subtitle: 'Move KES 1.8M from low-yield accounts', button: 'Optimize', modalId: 'optimizeModal' },
+    { icon: 'bi bi-shield-check', bg: 'var(--pm-purple-soft)', color: 'var(--pm-purple)', title: 'Enable fraud rules on new links', subtitle: '2 banks missing velocity caps', button: 'Configure', modalId: 'fraudSettingsModal' },
+    { icon: 'bi bi-graph-up', bg: 'var(--pm-info-soft)', color: 'var(--pm-info)', title: 'Cash-flow forecast ready', subtitle: '7-day projection updated', button: 'View', modalId: 'cashFlowModal' },
+  ];
+  readonly quickActions: Array<{icon:string;label:string;modalId:string;style?:string}> = [
+    { icon: 'bi bi-plus-lg text-primary me-1', label: 'Connect Bank', modalId: 'connectBankModal' },
+    { icon: 'bi bi-arrow-left-right text-info me-1', label: 'Transfer', modalId: 'transferModal' },
+    { icon: 'bi bi-list-check text-warning me-1', label: 'Reconcile', modalId: 'reconcileModal' },
+    { icon: 'bi bi-calendar-check me-1', label: 'Schedule', modalId: 'scheduleTransferModal' },
+    { icon: 'bi bi-download text-secondary me-1', label: 'Export', modalId: 'exportStatementModal' },
+    { icon: 'bi bi-gear me-1', label: 'Settings', modalId: 'obSettingsModal' },
+    { icon: 'bi bi-heart-pulse text-danger me-1', label: 'Health', modalId: 'healthCheckModal' },
+    { icon: 'bi bi-people me-1', label: 'Manage Links', modalId: 'manageLinksModal' },
+  ];
+  loadingModal: string | null = null;
   readonly mockData: OpenBankingMockData = {
     bankAccounts: [
       { id: 'equity-4521', bank: 'Equity Bank', maskedAccount: '***4521', nickname: 'Operating Account', balance: 'KES 6,842,100', lastSync: 'Just now', status: 'live', statusLabel: 'Live', consentScope: 'View + Transfer', consentExpires: '15 Aug 2025' },
@@ -272,17 +281,20 @@ export class OpenBankingComponent {
   toastMessage = '';
 
   openModal(id: string): void {
-    this.openModals.clear();
-    this.openModals.add(id);
+    this.openModals = new Set([id]);
+    this.loadingModal = null;
     this.resetFlowsForModal(id);
   }
 
   closeModal(id: string): void {
-    this.openModals.delete(id);
+    const next = new Set(this.openModals);
+    next.delete(id);
+    this.openModals = next;
+    this.loadingModal = null;
     this.resetFlowsForModal(id);
   }
 
-  closeAllModals(): void { this.openModals.clear(); }
+  closeAllModals(): void { this.openModals = new Set(); this.loadingModal = null; }
   isModalOpen(id: string): boolean { return this.openModals.has(id); }
   hasOpenModal(): boolean { return this.openModals.size > 0; }
 
@@ -299,9 +311,13 @@ export class OpenBankingComponent {
     const next = Math.min((this.steps[flow] ?? 1) + 1, total);
     this.steps[flow] = next;
     if (next >= total) {
-      this.notify(this.flows[flow]?.doneMessage || 'Flow completed.');
       const modalId = this.flowModalMap[flow];
-      if (modalId && this.flows[flow]?.closeOnDone) window.setTimeout(() => this.closeModal(modalId), 650);
+      this.loadingModal = modalId || null;
+      window.setTimeout(() => {
+        this.loadingModal = null;
+        this.notify(this.flows[flow]?.doneMessage || 'Flow completed.');
+        if (modalId && this.flows[flow]?.closeOnDone) window.setTimeout(() => this.closeModal(modalId), 650);
+      }, 500);
     }
   }
 
@@ -343,7 +359,7 @@ export class OpenBankingComponent {
     return 'B-s';
   }
 
-  notify(message: string): void { this.toastMessage = message || 'Action completed.'; }
+  notify(message: string): void { this.toastMessage = message || 'Action completed.'; window.setTimeout(() => this.clearToast(), 3200); }
   clearToast(): void { this.toastMessage = ''; }
 
   private resetFlowsForModal(id: string): void {

@@ -1,20 +1,18 @@
 <div class="paymo-angular-page">
-  <div class="pm-toast" role="status" [style.display]="toastMessage ? 'flex' : 'none'">
-      <i class="bi bi-check-circle-fill"></i>
-      <span>{{ toastMessage }}</span>
-      <button type="button" class="pm-toast-close" (click)="clearToast()">×</button>
-    </div>
+  @if (toastMessage) {
+  <div class="pm-toast" role="status">
+    <i class="bi bi-check-circle-fill"></i>
+    <span>{{ toastMessage }}</span>
+    <button type="button" class="pm-toast-close" (click)="clearToast()">×</button>
+  </div>
+}
 <div class="paymo-open-banking-body"><section class="paymo-page-source" id="openBankingPage">
 
 <div class="pm-page-bar">
 <div>
-<div class="pm-breadcrumb"><a (click)="notify('Link action handled')" role="button" tabindex="0">Home</a> / <a (click)="notify('Link action handled')" role="button" tabindex="0">Business Portal</a> / <strong>Open
-                            Banking</strong></div>
-<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE
-                        3.10 — Open Banking &amp; Account Aggregation</h2>
-<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Connect bank accounts via PesaLink, view
-                        consolidated cash positions, execute instant transfers, reconcile transactions, and analyse
-                        multi-bank cash flow — all within a single secure dashboard.</p>
+<div class="pm-breadcrumb"><a (click)="notify('Link action handled')" role="button" tabindex="0">Home</a> / <a (click)="notify('Link action handled')" role="button" tabindex="0">Business Portal</a> / <strong>{{ breadcrumbStrong }}</strong></div>
+<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">{{ pageTitle }}</h2>
+<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">{{ pageSubtitle }}</p>
 </div>
 <div class="d-flex flex-wrap" style="gap:8px"><button (click)="openModal('healthCheckModal')" class="btn-pm" type="button"><i class="bi bi-heart-pulse"></i> Health
                         Check</button><button (click)="openModal('reconcileModal')" class="btn-pm" type="button"><i class="bi bi-list-check"></i> Reconcile</button><button (click)="openModal('transferModal')" class="btn-pm" type="button"><i class="bi bi-arrow-left-right"></i> Transfer</button><button (click)="openModal('connectBankModal')" class="btn-pm btn-pm-p" type="button"><i class="bi bi-plus-lg"></i>
@@ -25,8 +23,8 @@
 <div class="row g-3">
 <div class="col-lg-4">
 <div class="C C-accent" style="min-height:170px">
-<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Open banking hub live <span style="color:#86efac">●</span></p>
-<div class="SV" style="margin:8px 0;color:#fff">7 bank accounts connected</div>
+<p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">{{ hero.liveLabel }} <span style="color:#86efac">●</span></p>
+<div class="SV" style="margin:8px 0;color:#fff">{{ hero.primaryValue }}</div>
 <p style="margin:0;font-size:12px;color:rgba(255,255,255,.78)">Equity, KCB, Co-op, Stanbic,
                                 Family, NCBA, I&amp;M — consolidated view across all business and personal accounts.</p>
 <div class="d-flex flex-wrap mt-3" style="gap:8px"><button (click)="openModal('connectBankModal')" class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Connect</button><button (click)="openModal('transferModal')" class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Transfer</button><button (click)="openModal('reconcileModal')" class="btn-pm btn-sm" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff" type="button">Reconcile</button></div>
@@ -64,99 +62,56 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
 <h3 class="st">Attention Required</h3><button (click)="openModal('attentionModal')" class="btn-pm btn-sm" type="button">View all</button>
 </div>
+@for (item of attentionItems; track item.title) {
 <div class="sr">
 <div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-danger-soft);color:var(--pm-danger);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-bank"></i></div>
+<div [style.background]="item.bg" [style.color]="item.color" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i [class]="item.icon"></i>
+</div>
 <div>
-<div style="font-weight:600;font-size:13px">KCB account balance below minimum
-                                        </div>
-<div style="font-size:11px;color:var(--pm-muted)">KES 42,100 · minimum KES
-                                            50,000</div>
+<div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+<div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
 </div>
-</div><button (click)="openModal('transferModal')" class="btn-pm btn-sm" type="button">Top-up</button>
+</div><button (click)="openModal(item.modalId)" class="btn-pm btn-sm" type="button">{{ item.button }}</button>
 </div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-list-check"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">14 unreconciled transactions</div>
-<div style="font-size:11px;color:var(--pm-muted)">Equity &amp; Stanbic accounts
-                                        </div>
-</div>
-</div><button (click)="openModal('reconcileModal')" class="btn-pm btn-sm" type="button">Review</button>
-</div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-info-soft);color:var(--pm-info);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-clock"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">Co-op account link expires in 7 days
-                                        </div>
-<div style="font-size:11px;color:var(--pm-muted)">Re-authenticate consent</div>
-</div>
-</div><button (click)="openModal('reauthModal')" class="btn-pm btn-sm" type="button">Re-auth</button>
-</div>
+}
 </div>
 </div>
 <div class="col-lg-4">
 <div class="C">
 <div class="d-flex justify-content-between align-items-center mb-3">
-<h3 class="st">Smart Suggestions</h3><span class="B B-p"><i class="bi bi-stars"></i>
-                                    AI</span>
+<h3 class="st">Smart Suggestions</h3><span class="B B-p"><i class="bi bi-stars"></i> AI</span>
 </div>
+@for (item of suggestionItems; track item.title) {
 <div class="sr">
 <div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-accent-soft);color:var(--pm-accent);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-graph-up"></i></div>
+<div [style.background]="item.bg" [style.color]="item.color" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+<i [class]="item.icon"></i>
+</div>
 <div>
-<div style="font-weight:600;font-size:13px">Consolidate 3 low-activity accounts
-                                        </div>
-<div style="font-size:11px;color:var(--pm-muted)">Potential fee savings: KES
-                                            18,200/year</div>
+<div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+<div style="font-size:11px;color:var(--pm-muted)">{{ item.subtitle }}</div>
 </div>
-</div><button (click)="openModal('optimizeModal')" class="btn-pm btn-sm" type="button">Analyse</button>
+</div><button (click)="openModal(item.modalId)" class="btn-pm btn-sm" type="button">{{ item.button }}</button>
 </div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-clock-history"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">Schedule recurring transfers to
-                                            payroll account</div>
-<div style="font-size:11px;color:var(--pm-muted)">Reduce manual effort by 92%
-                                        </div>
-</div>
-</div><button (click)="openModal('scheduleTransferModal')" class="btn-pm btn-sm" type="button">Setup</button>
-</div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-purple-soft);color:var(--pm-purple);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-shield-check"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">Enable real-time fraud alerts on I&amp;M
-                                        </div>
-<div style="font-size:11px;color:var(--pm-muted)">High-value transfers detected
-                                        </div>
-</div>
-</div><button (click)="openModal('fraudSettingsModal')" class="btn-pm btn-sm" type="button">Enable</button>
-</div>
+}
 </div>
 </div>
 <div class="col-lg-4">
 <div class="C">
 <div class="mb-3">
 <h3 class="st">Quick Actions</h3>
-<p class="ss">Frequent open banking workflows</p>
+<p class="ss">Frequent operational workflows</p>
 </div>
-<div class="quick-grid"><button (click)="openModal('transferModal')" class="quick-btn" type="button"><i class="bi bi-arrow-left-right text-primary me-1"></i> Instant
-                                    Transfer</button><button (click)="openModal('connectBankModal')" class="quick-btn" type="button"><i class="bi bi-plus-circle text-success me-1"></i> Link Account</button><button (click)="openModal('reconcileModal')" class="quick-btn" type="button"><i class="bi bi-list-check text-info me-1"></i> Reconcile</button><button (click)="openModal('cashFlowModal')" class="quick-btn" type="button"><i class="bi bi-graph-up me-1" style="color:var(--pm-purple)"></i> Cash Flow</button><button (click)="openModal('exportStatementModal')" class="quick-btn" type="button"><i class="bi bi-download text-muted me-1"></i> Export</button><button (click)="openModal('scheduleTransferModal')" class="quick-btn" type="button"><i class="bi bi-calendar-event me-1" style="color:var(--pm-accent)"></i>
-                                    Schedule</button><button (click)="openModal('fraudSettingsModal')" class="quick-btn" type="button"><i class="bi bi-shield-exclamation text-danger me-1"></i> Fraud
-                                    Alerts</button><button (click)="openModal('manageLinksModal')" class="quick-btn" type="button"><i class="bi bi-link-45deg text-warning me-1"></i> Manage Links</button></div>
+<div class="quick-grid">
+@for (action of quickActions; track action.label) {
+<button (click)="openModal(action.modalId)" class="quick-btn" type="button"><i [class]="action.icon" [attr.style]="action.style || null"></i> {{ action.label }}</button>
+}
 </div>
 </div>
 </div>
+</div>
+
 <!-- SECTION 3.10.1 -->
 <div class="C">
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 interface FlowConfig { labels: string[]; closeOnDone?: boolean; doneMessage: string; }
@@ -29,149 +29,53 @@ interface VirtualAccountsMockData {
   imports: [NgClass],
   templateUrl: './virtual-accounts.html',
   styleUrl: './virtual-accounts.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-})
+    encapsulation: ViewEncapsulation.None })
 export class VirtualAccountsComponent {
-  // === PAGE METADATA (data-driven) ===
   readonly pageTitle = 'PAGE 3.9 — Virtual Accounts & Sub-Accounts';
-  readonly pageSubtitle = 'Create, manage and reconcile business virtual accounts and sub-accounts with full funding controls, hierarchy, automation rules and audit trails.';
+  readonly pageSubtitle = 'Create virtual accounts and sub-ledgers, automate funding and sweeps, reconcile bank vs book balances, and control multi-entity cash hierarchy.';
   readonly breadcrumbStrong = 'Virtual Accounts';
-
+  readonly breadcrumbs: string[] = ['Home', 'Business Portal'];
+  readonly headerActions: Array<{label:string;icon:string;modalId:string;primary?:boolean}> = [
+    { label: 'Health Check', icon: 'bi bi-heart-pulse', modalId: 'vaHealthModal', primary: false },
+    { label: 'Reconcile', icon: 'bi bi-list-check', modalId: 'reconModal', primary: false },
+    { label: 'Fund VA', icon: 'bi bi-plus-circle', modalId: 'fundVA', primary: false },
+    { label: 'Create VA', icon: 'bi bi-plus-lg', modalId: 'createVA', primary: true },
+  ];
   readonly hero = {
-    liveLabel: 'Virtual accounts live',
-    count: '18 virtual accounts',
-    stats: '12 main VAs + 47 sub-accounts • KES 124.8M total balance • 6 automated rules active',
-  };
-
-  readonly stats = [
-    { label: 'TOTAL BALANCE', value: 'KES 124.8M', change: '+12.4% MoM', detail: 'Main VAs: KES 89.4M<br/>Sub-accounts: KES 35.4M', color: 'accent' },
-    { label: 'THIS MONTH ACTIVITY', value: 'KES 312.6M', change: '4,812 txns', detail: 'Collections: KES 198.2M<br/>Disbursements: KES 114.4M', color: 'info' },
-    { label: 'RECONCILIATION STATUS', value: '4 issues', change: 'Review needed', detail: '2 unmatched credits<br/>1 timing difference<br/>1 bank error', color: 'warning', border: true },
+    liveLabel: 'Virtual account platform live',
+    primaryValue: 'KES 124.8M under management',
+    primaryNote: 'Main VAs and nested sub-accounts with automated sweeps, limits, and reconciliation controls.',
+    primaryActions: [
+      { label: 'Create VA', modalId: 'createVA' },
+      { label: 'Fund', modalId: 'fundVA' },
+      { label: 'Sweep', modalId: 'autoSweepModal' },
+    ],
+    stats: [
+      { label: 'TOTAL VA BALANCE', value: 'KES 124.8M', badge: 'Healthy', badgeClass: 'B B-s', icon: 'bi bi-wallet2', note: 'Main VAs: KES 89.4M · Sub-accounts: KES 35.4M', color: 'var(--pm-accent)', border: false },
+      { label: 'THIS MONTH ACTIVITY', value: 'KES 312.6M', badge: '4,812 txns', badgeClass: 'B B-i', icon: 'bi bi-arrow-left-right', note: 'Collections: KES 198.2M · Disbursements: KES 114.4M', color: 'var(--pm-info)', border: false },
+      { label: 'RECONCILIATION STATUS', value: '4 issues', badge: 'Review needed', badgeClass: 'B B-w', icon: 'bi bi-exclamation-triangle', note: '2 unmatched · 1 timing · 1 bank error', color: 'var(--pm-warning)', border: true },
+    ] };
+  readonly attentionItems: Array<{icon:string;bg:string;color:string;title:string;subtitle:string;button:string;modalId:string}> = [
+    { icon: 'bi bi-exclamation-triangle', bg: 'var(--pm-danger-soft)', color: 'var(--pm-danger)', title: 'Unmatched credit KES 1.2M', subtitle: 'VA-003 · 26 Jun', button: 'Resolve', modalId: 'reconModal' },
+    { icon: 'bi bi-clock', bg: 'var(--pm-warning-soft)', color: 'var(--pm-warning)', title: 'Sub-account limit breach', subtitle: 'Payroll Sub · KES 450K over', button: 'Adjust', modalId: 'subLimitModal' },
+    { icon: 'bi bi-arrow-left-right', bg: 'var(--pm-info-soft)', color: 'var(--pm-info)', title: 'Auto-sweep rule paused', subtitle: 'Collections VA · 3 days', button: 'Resume', modalId: 'autoSweepModal' },
   ];
-
-  readonly attentionItems = [
-    { icon: 'exclamation-triangle', title: 'Unmatched credit KES 1.2M', sub: 'VA-003 • 26 Jun', action: 'Resolve', modal: 'reconModal' },
-    { icon: 'clock', title: 'Sub-account limit breach', sub: 'Payroll Sub • KES 450K over', action: 'Adjust', modal: 'subLimitModal' },
-    { icon: 'arrow-left-right', title: 'Auto-sweep rule paused', sub: 'Collections VA • 3 days', action: 'Resume', modal: 'autoSweepModal' },
+  readonly suggestionItems: Array<{icon:string;bg:string;color:string;title:string;subtitle:string;button:string;modalId:string}> = [
+    { icon: 'bi bi-diagram-3', bg: 'var(--pm-accent-soft)', color: 'var(--pm-accent)', title: 'Consolidate idle sub-accounts', subtitle: 'Free KES 2.1M working capital', button: 'Consolidate', modalId: 'consolidateModal' },
+    { icon: 'bi bi-shield-lock', bg: 'var(--pm-purple-soft)', color: 'var(--pm-purple)', title: 'Tighten approval matrix', subtitle: '3 high-value VAs without dual control', button: 'Configure', modalId: 'approvalRulesModal' },
+    { icon: 'bi bi-speedometer2', bg: 'var(--pm-warning-soft)', color: 'var(--pm-warning)', title: 'Velocity spike on VA-007', subtitle: '+240% vs 7-day average', button: 'Review', modalId: 'velocityModal' },
   ];
-
-  readonly suggestionItems = [
-    { icon: 'diagram-3', title: 'Create 4 new project sub-accounts', sub: 'Based on upcoming contracts', action: 'Create', modal: 'createSub' },
-    { icon: 'shield-check', title: 'Enable dual approval on large subs', sub: 'Reduce fraud risk on 3 accounts', action: 'Enable', modal: 'approvalRulesModal' },
-    { icon: 'graph-up', title: 'Consolidate 5 low-activity VAs', sub: 'Save KES 12,500/month in fees', action: 'Review', modal: 'consolidateModal' },
+  readonly quickActions: Array<{icon:string;label:string;modalId:string;style?:string}> = [
+    { icon: 'bi bi-plus-lg text-primary me-1', label: 'Create VA', modalId: 'createVA' },
+    { icon: 'bi bi-diagram-2 text-success me-1', label: 'Create Sub', modalId: 'createSub' },
+    { icon: 'bi bi-plus-circle text-info me-1', label: 'Fund VA', modalId: 'fundVA' },
+    { icon: 'bi bi-arrow-left-right me-1', label: 'Transfer', modalId: 'transferModal' },
+    { icon: 'bi bi-list-check text-warning me-1', label: 'Reconcile', modalId: 'reconModal' },
+    { icon: 'bi bi-arrow-repeat me-1', label: 'Auto Sweep', modalId: 'autoSweepModal' },
+    { icon: 'bi bi-download me-1', label: 'Export', modalId: 'exportReportModal' },
+    { icon: 'bi bi-collection me-1', label: 'Bulk Fund', modalId: 'bulkFundModal' },
   ];
-
-  readonly quickActions = [
-    { icon: 'plus-circle', label: 'New VA', modal: 'createVA', color: 'primary' },
-    { icon: 'diagram-3', label: 'New Sub', modal: 'createSub', color: 'success' },
-    { icon: 'cash-stack', label: 'Fund Account', modal: 'fundVA', color: 'accent' },
-    { icon: 'arrow-left-right', label: 'Internal Transfer', modal: 'transferModal', color: 'info' },
-    { icon: 'collection', label: 'Bulk Fund', modal: 'bulkFundModal', color: 'purple' },
-    { icon: 'list-check', label: 'Reconcile', modal: 'reconModal', color: 'warning' },
-    { icon: 'arrow-repeat', label: 'Auto Rules', modal: 'autoSweepModal', color: 'primary' },
-    { icon: 'download', label: 'Export', modal: 'exportReportModal', color: 'muted' },
-  ];
-
-  readonly approvalMatrix = [
-    { range: 'Up to KES 100K', approver1: 'Auto-approve', approver2: '—', approver3: '—' },
-    { range: 'KES 100K – 500K', approver1: 'Department Head', approver2: '—', approver3: '—' },
-    { range: 'KES 500K – 2M', approver1: 'Finance Manager', approver2: 'Director', approver3: '—' },
-    { range: 'Above KES 2M', approver1: 'CFO', approver2: 'CEO', approver3: 'Board' },
-  ];
-
-  readonly notificationSettings = [
-    { label: 'Low balance alerts', checked: true },
-    { label: 'Transaction notifications', checked: true },
-    { label: 'Limit breach alerts', checked: true },
-  ];
-
-  readonly quickReports = [
-    { label: 'Daily Summary', modal: 'exportReportModal' },
-    { label: 'Monthly Statement', modal: 'exportReportModal' },
-    { label: 'Sub-Account Report', modal: 'exportReportModal' },
-    { label: 'Audit Trail', modal: 'exportReportModal' },
-  ];
-
-  // Section headers (data-driven)
-  readonly sections = [
-    { id: '3.9.1', icon: 'wallet2', title: 'Virtual Account Creation & Management', desc: 'Create, view, edit and manage all virtual accounts with full details, balances, rules and status.' },
-    { id: '3.9.2', icon: 'diagram-3', title: 'Sub-Account Hierarchy & Structure', desc: 'Manage hierarchical sub-accounts under each virtual account with limits, approvals and visibility controls.' },
-    { id: '3.9.3', icon: 'cash-stack', title: 'Virtual Account Funding & Transfers', desc: 'Fund accounts, perform internal transfers, set up bulk funding and manage liquidity across the portfolio.' },
-    { id: '3.9.4', icon: 'sliders', title: 'Virtual Account Controls & Limits', desc: 'Set spending limits, approval workflows, transaction rules and velocity controls per account and sub-account.' },
-    { id: '3.9.5', icon: 'list-check', title: 'Reconciliation & Reporting', desc: 'Reconcile bank statements, match transactions, resolve discrepancies and generate comprehensive reports.' },
-    { id: '3.9.6', icon: 'cpu', title: 'Virtual Account Settings & Automation', desc: 'Configure auto-sweep rules, notification preferences, access controls and integration settings.' },
-  ];
-
-  readonly fundingOptions = ['M-Pesa', 'Bank Transfer', 'PayMo Wallet', 'Bulk Upload'];
-
-  // === COMPREHENSIVE UI CONFIG (data-driven shell) ===
-  readonly uiConfig = {
-    headerButtons: { health: 'Health', reconcile: 'Reconcile', newVA: 'New VA', newSub: 'New Sub-Account' },
-    heroActions: ['New VA', 'New Sub', 'Bulk Fund'],
-    attention: { title: 'Attention Required', viewAll: 'View all' },
-    suggestions: { title: 'Smart Suggestions', aiLabel: 'AI' },
-    quickActions: { title: 'Quick Actions', subtitle: 'Frequent virtual account workflows' },
-    recentActivity: { title: 'Recent Virtual Account Activity', viewAll: 'View All' },
-    sectionActions: {
-      '3.9.1': ['New VA', 'Health Check'],
-      '3.9.2': ['New Sub', 'View Hierarchy'],
-      '3.9.3': ['Fund VA', 'Transfer', 'Bulk Fund'],
-      '3.9.4': ['Approval Rules', 'Velocity Controls'],
-      '3.9.5': ['Reconcile Now', 'Export Reports'],
-      '3.9.6': ['Auto-Sweep', 'Integrations']
-    },
-    // Modal titles and labels (comprehensive)
-    modals: {
-      createVA: 'Create Virtual Account',
-      createSub: 'Create Sub-Account',
-      fundVA: 'Fund Virtual Account',
-      transfer: 'Internal Transfer',
-      bulkFund: 'Bulk Fund Virtual Accounts',
-      recon: 'Reconciliation Center',
-      match: 'Match Transaction',
-      approvalRules: 'Approval Rules & Workflows',
-      autoSweep: 'Auto-Sweep Configuration',
-      hierarchy: 'Virtual Account Hierarchy',
-      txnDetail: 'Transaction Details',
-      exportReport: 'Export Virtual Account Report',
-      vaHealth: 'Virtual Account Health Check',
-      bankError: 'Bank Error Ticket',
-      attention: 'All Items Requiring Attention',
-      subLimit: 'Adjust Sub-Account Limit',
-      velocity: 'Velocity & Transaction Controls',
-      integration: 'Integrations & Webhooks',
-      activity: 'Full Activity Log',
-      profile: 'Profile',
-      notif: 'Notifications (9)',
-      healthCheck: 'Virtual Account Portfolio Health',
-      consolidate: 'Consolidate Virtual Accounts',
-      notifSettings: 'Notification Settings'
-    },
-    // Form labels and stepper
-    formLabels: {
-      accountName: 'Account Name',
-      accountType: 'Account Type',
-      currency: 'Currency',
-      initialBalance: 'Initial Balance',
-      dailyLimit: 'Daily Limit',
-      monthlyLimit: 'Monthly Limit',
-      approvalAbove: 'Approval Required Above',
-      autoSweepThreshold: 'Auto-Sweep Threshold'
-    },
-    stepperLabels: {
-      va: ['Details', 'Controls', 'Done'],
-      sub: ['Details', 'Limits', 'Done'],
-      bulk: ['Upload', 'Review', 'Done']
-    },
-    tableHeaders: {
-      va: ['VA Number', 'Name', 'Type', 'Balance', 'Sub-Accounts', 'Status', 'Rules', 'Actions'],
-      sub: ['Sub-Account', 'Parent VA', 'Balance', 'Limit', 'Status', 'Actions'],
-      funding: ['Date', 'VA / Sub', 'Amount', 'Source', 'Status'],
-      recon: ['VA / Sub', 'Book Balance', 'Bank Balance', 'Difference', 'Status', 'Action'],
-      activity: ['Date', 'VA / Sub', 'Description', 'Amount', 'Status', 'Ref', 'Action']
-    }
-  };
+  loadingModal: string | null = null;
 
   readonly mockData: VirtualAccountsMockData = {
     virtualAccounts: [
@@ -225,14 +129,12 @@ export class VirtualAccountsComponent {
       { date: '26 Jun', account: 'Operations VA', description: 'Duplicate debit detected', amount: 'KES 125,000', status: 'danger', statusLabel: 'Issue', ref: 'VA-001-2281' },
       { date: '25 Jun', account: 'Marketing Sub', description: 'Campaign top-up', amount: 'KES 450,000', status: 'success', statusLabel: 'Success', ref: 'SUB-0121-7719' },
       { date: '24 Jun', account: 'Treasury VA', description: 'Auto-sweep executed', amount: 'KES 2,000,000', status: 'success', statusLabel: 'Success', ref: 'SWP-20250624' },
-    ],
-  };
+    ] };
 
   readonly flows: Record<string, FlowConfig> = {
     va: { labels: ['Details', 'Controls', 'Done'], closeOnDone: true, doneMessage: 'Virtual account created successfully.' },
     sub: { labels: ['Details', 'Limits', 'Done'], closeOnDone: true, doneMessage: 'Sub-account created successfully.' },
-    bulk: { labels: ['Upload', 'Review', 'Done'], closeOnDone: true, doneMessage: 'Bulk funding batch executed successfully.' },
-  };
+    bulk: { labels: ['Upload', 'Review', 'Done'], closeOnDone: true, doneMessage: 'Bulk funding batch executed successfully.' } };
   readonly steps: Record<string, number> = { va: 1, sub: 1, bulk: 1 };
   private readonly flowModalMap: Record<string, string> = { va: 'createVA', sub: 'createSub', bulk: 'bulkFundModal' };
   private readonly defaultTabs: Record<string, string> = { recon: 'unmatched', apr: 'matrix', swp: 'rules', int: 'api' };
@@ -241,17 +143,20 @@ export class VirtualAccountsComponent {
   toastMessage = '';
 
   openModal(id: string): void {
-    this.openModals.clear();
-    this.openModals.add(id);
+    this.openModals = new Set([id]);
+    this.loadingModal = null;
     this.resetFlowsForModal(id);
   }
 
   closeModal(id: string): void {
-    this.openModals.delete(id);
+    const next = new Set(this.openModals);
+    next.delete(id);
+    this.openModals = next;
+    this.loadingModal = null;
     this.resetFlowsForModal(id);
   }
 
-  closeAllModals(): void { this.openModals.clear(); }
+  closeAllModals(): void { this.openModals = new Set(); this.loadingModal = null; }
   isModalOpen(id: string): boolean { return this.openModals.has(id); }
   hasOpenModal(): boolean { return this.openModals.size > 0; }
 
@@ -262,16 +167,20 @@ export class VirtualAccountsComponent {
     return labels.map((label, i) => ({ index: i + 1, label, last: i === labels.length - 1 }));
   }
 
-  nextFlow(flow: string, total = 3): void {
+  nextFlow(flow: string, total = this.flows[flow]?.labels.length ?? 1): void {
     const next = Math.min((this.steps[flow] ?? 1) + 1, total);
     this.steps[flow] = next;
     if (next >= total) {
-      this.notify(this.flows[flow]?.doneMessage || 'Flow completed.');
-      const modalId = this.flowModalMap[flow];
-      if (modalId && this.flows[flow]?.closeOnDone) window.setTimeout(() => this.closeModal(modalId), 650);
+      const modalMap: Record<string, string> = { va: 'createVA', sub: 'createSub', bulk: 'bulkFundModal' };
+      const modal = modalMap[flow];
+      this.loadingModal = modal || null;
+      window.setTimeout(() => {
+        this.loadingModal = null;
+        this.notify(this.flows[flow]?.doneMessage || 'Flow completed.');
+        if (modal) window.setTimeout(() => this.closeModal(modal), 650);
+      }, 500);
     }
   }
-
   activeTab(prefix: string): string { return this.tabs[prefix] ?? this.defaultTabs[prefix] ?? ''; }
   switchTab(prefix: string, key: string, event?: Event): void {
     this.tabs[prefix] = key;
@@ -298,7 +207,7 @@ export class VirtualAccountsComponent {
     return 'B-s';
   }
 
-  notify(message: string): void { this.toastMessage = message || 'Action completed.'; }
+  notify(message: string): void { this.toastMessage = message || 'Action completed.'; window.setTimeout(() => this.clearToast(), 3200); }
   clearToast(): void { this.toastMessage = ''; }
 
   private resetFlowsForModal(id: string): void {
