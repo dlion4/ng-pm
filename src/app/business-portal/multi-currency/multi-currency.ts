@@ -110,6 +110,40 @@ interface TreasuryMockData {
   encapsulation: ViewEncapsulation.None,
 })
 export class MultiCurrencyComponent {
+  // === PAGE METADATA (data-driven) ===
+  readonly pageTitle = 'PAGE 3.11 — Multi-Currency Treasury & Forex Operations';
+  readonly pageSubtitle = 'Manage multi-currency accounts, FX contracts, nostro reconciliation and cross-border liquidity in one dashboard.';
+  readonly breadcrumbStrong = 'Multi-Currency Treasury';
+
+  readonly attentionItems = this.mockData.fxHealthRows.filter(r => r.actionModal);
+  readonly suggestionItems = [
+    { title: 'Roll expiring forward contract', description: 'FX-8821 expires today', actionLabel: 'Roll', modalId: 'rollContractModal' },
+    { title: 'Reconcile GBP Nostro', description: 'KES 80 difference detected', actionLabel: 'Resolve', modalId: 'reconcileModal' },
+  ];
+
+  readonly quickActions = [
+    { icon: 'currency-exchange', label: 'FX Trade', modal: 'tradeModal', color: 'primary' },
+    { icon: 'arrow-left-right', label: 'Cross-Currency Transfer', modal: 'transferModal', color: 'accent' },
+    { icon: 'file-contract', label: 'New Forward', modal: 'fxContractModal', color: 'info' },
+    { icon: 'list-check', label: 'Reconcile', modal: 'reconcileModal', color: 'warning' },
+  ];
+
+  readonly uiConfig = {
+    pageTitle: 'PAGE 3.11 — Multi-Currency Treasury & Forex Operations',
+    pageSubtitle: 'Manage multi-currency accounts, FX contracts, nostro reconciliation and cross-border liquidity in one dashboard.',
+    breadcrumbStrong: 'Multi-Currency Treasury',
+    attentionTitle: 'Attention Required',
+    suggestionTitle: 'Smart Suggestions',
+    quickActionsTitle: 'Quick Actions',
+    quickActionsSubtitle: 'Frequent FX & treasury workflows',
+    modals: {
+      trade: 'FX Trade',
+      transfer: 'Cross-Currency Transfer',
+      fxContract: 'New Forward Contract',
+      reconcile: 'Nostro Reconciliation'
+    }
+  };
+
   readonly mockData: TreasuryMockData = {
     currencyAccounts: [
       {
@@ -422,7 +456,7 @@ export class MultiCurrencyComponent {
   };
   readonly steps: Record<string, number> = { trade: 1, xfer: 1 };
   readonly tabs: Record<string, string> = { fxc: 'active', rec: 'nostro', cmp: 'cbk' };
-  readonly openModals = new Set<string>();
+  openModals = new Set<string>();
   toastMessage = '';
   openModal(id: string): void {
     this.openModals.clear();

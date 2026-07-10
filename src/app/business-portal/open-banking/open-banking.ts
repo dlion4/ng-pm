@@ -151,6 +151,41 @@ interface OpenBankingMockData {
   encapsulation: ViewEncapsulation.None,
 })
 export class OpenBankingComponent {
+  // === PAGE METADATA (data-driven) ===
+  readonly pageTitle = 'PAGE 3.10 — Open Banking';
+  readonly pageSubtitle = 'Connect, manage and reconcile multiple bank accounts with real-time consent, transfers and fraud protection.';
+  readonly breadcrumbStrong = 'Open Banking';
+
+  readonly attentionItems = this.mockData.attentionItems;
+  readonly suggestionItems = this.mockData.suggestions;
+
+  readonly quickActions = [
+    { icon: 'link-45deg', label: 'Connect Bank', modal: 'connectBankModal', color: 'primary' },
+    { icon: 'arrow-left-right', label: 'Transfer', modal: 'transferModal', color: 'accent' },
+    { icon: 'list-check', label: 'Reconcile', modal: 'reconcileModal', color: 'warning' },
+    { icon: 'shield-check', label: 'Fraud Settings', modal: 'fraudSettingsModal', color: 'danger' },
+    { icon: 'calendar-check', label: 'Schedule', modal: 'scheduleTransferModal', color: 'info' },
+    { icon: 'graph-up', label: 'Optimize', modal: 'optimizeModal', color: 'purple' },
+  ];
+
+  readonly uiConfig = {
+    pageTitle: 'PAGE 3.10 — Open Banking',
+    pageSubtitle: 'Connect, manage and reconcile multiple bank accounts with real-time consent, transfers and fraud protection.',
+    breadcrumbStrong: 'Open Banking',
+    attentionTitle: 'Attention Required',
+    suggestionTitle: 'Smart Suggestions',
+    quickActionsTitle: 'Quick Actions',
+    quickActionsSubtitle: 'Frequent open banking workflows',
+    modals: {
+      connectBank: 'Connect Bank Account',
+      transfer: 'Transfer Funds',
+      reconcile: 'Reconciliation Center',
+      fraudSettings: 'Fraud Settings',
+      schedule: 'Schedule Transfer',
+      optimize: 'Optimize Accounts'
+    }
+  };
+
   readonly mockData: OpenBankingMockData = {
     bankAccounts: [
       { id: 'equity-4521', bank: 'Equity Bank', maskedAccount: '***4521', nickname: 'Operating Account', balance: 'KES 6,842,100', lastSync: 'Just now', status: 'live', statusLabel: 'Live', consentScope: 'View + Transfer', consentExpires: '15 Aug 2025' },
@@ -233,7 +268,7 @@ export class OpenBankingComponent {
 
   readonly steps: Record<string, number> = { connect: 1, transfer: 1, recon: 1 };
   private readonly flowModalMap: Record<string, string> = { connect: 'connectBankModal', transfer: 'transferModal', recon: 'reconcileModal' };
-  readonly openModals = new Set<string>();
+  openModals = new Set<string>();
   toastMessage = '';
 
   openModal(id: string): void {

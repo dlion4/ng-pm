@@ -1,3 +1,11 @@
+<div class="paymo-angular-page">
+@if (toastMessage) {
+  <div class="pm-toast" role="status">
+    <i class="bi bi-check-circle-fill"></i>
+    <span>{{ toastMessage }}</span>
+    <button type="button" class="pm-toast-close" (click)="clearToast()">×</button>
+  </div>
+}
 <!-- PAGE BAR -->
 <div class="pm-page-bar">
   <div>
@@ -93,7 +101,7 @@
   <div class="pm-card">
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
       <div><h3 class="pm-section-title"><i class="bi bi-cash-stack" style="color:var(--pm-accent)"></i> 3.8.1 — Real-Time Financial Dashboards &amp; Cash Flow</h3><p class="pm-section-sub">Monitor liquidity, inbound vs outbound cash movements, and quick P&amp;L snapshots.</p></div>
-      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-graph-up"></i> Full Forecast</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-file-bar-graph"></i> P&amp;L View</button></div>
+      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-graph-up"></i> Full Forecast</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-file-bar-graph"></i> P&amp;L View</button><div (click)="openModal('cashFlowForecastModal'); openModal('plSnapshotModal')">
     </div>
     <div class="row g-3">
       <div class="col-lg-7">
@@ -138,7 +146,7 @@
   <div class="pm-card">
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
       <div><h3 class="pm-section-title"><i class="bi bi-file-earmark-bar-graph" style="color:var(--pm-info)"></i> 3.8.2 — Standard &amp; Custom Reporting Engine</h3><p class="pm-section-sub">Generate, schedule, and export standard accounting reports and custom operational data extracts.</p></div>
-      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-clock"></i> Scheduled</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-plus-lg"></i> New Report</button></div>
+      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-clock"></i> Scheduled</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-plus-lg"></i> New Report</button><div (click)="openModal('scheduleReportModal'); openModal('generateCustomReportModal')">
     </div>
     <div class="row g-3">
       <div class="col-lg-8">
@@ -178,7 +186,7 @@
   <div class="pm-card">
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
       <div><h3 class="pm-section-title"><i class="bi bi-bank" style="color:var(--pm-warning)"></i> 3.8.3 — Tax, Statutory &amp; Compliance Reporting</h3><p class="pm-section-sub">Prepare KRA iTax reports, e-TIMS reconciliations, and view your business compliance score.</p></div>
-      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-receipt"></i> e-TIMS Check</button><button class="pm-btn pm-btn-sm pm-btn-warning"><i class="bi bi-download"></i> KRA Extract</button></div>
+      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-receipt"></i> e-TIMS Check</button><button class="pm-btn pm-btn-sm pm-btn-warning"><i class="bi bi-download"></i> KRA Extract</button><div (click)="openModal('eTimsReconciliationModal'); openModal('exportKRAVATModal')">
     </div>
     <div class="row g-3">
       <div class="col-lg-4">
@@ -220,7 +228,7 @@
   <div class="pm-card">
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
       <div><h3 class="pm-section-title"><i class="bi bi-shield-lock" style="color:var(--pm-purple)"></i> 3.8.4 — Audit Trails, Logs &amp; Access Control</h3><p class="pm-section-sub">Immutable transaction logs, user activity tracking, and external auditor portal access.</p></div>
-      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-person-plus"></i> Invite Auditor</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-search"></i> Search Logs</button></div>
+      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-person-plus"></i> Invite Auditor</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-search"></i> Search Logs</button><div (click)="openModal('inviteAuditorModal'); openModal('viewAuditLogModal')">
     </div>
     <div class="row g-3">
       <div class="col-lg-8">
@@ -252,7 +260,7 @@
   <div class="pm-card">
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
       <div><h3 class="pm-section-title"><i class="bi bi-pie-chart" style="color:var(--pm-primary)"></i> 3.8.5 — Business Intelligence &amp; Advanced Analytics</h3><p class="pm-section-sub">Deep dive into customer spending, vendor expenses, branch performance, and financial health.</p></div>
-      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-shop"></i> Branches</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-heart-pulse"></i> Health Score</button></div>
+      <div class="d-flex" style="gap:8px"><button class="pm-btn pm-btn-sm"><i class="bi bi-shop"></i> Branches</button><button class="pm-btn pm-btn-sm pm-btn-primary"><i class="bi bi-heart-pulse"></i> Health Score</button><div (click)="openModal('branchPerformanceModal'); openModal('financialHealthScoreModal')">
     </div>
     <div class="row g-3">
       <div class="col-lg-6">
@@ -279,25 +287,1165 @@
 </div>
 
 <!-- ============================================================ -->
-<!-- MODALS -->
-<!-- ============================================================ -->
 
-<!-- MODAL BACKDROP + CONTAINER -->
-<!-- Compile-safe generic modal host replacing corrupted generated modal blocks -->
-<div class="modal-backdrop fade show" [style.display]="activeModal ? 'block' : 'none'" (click)="closeModal()"></div>
-<div class="modal d-block" tabindex="-1" [style.display]="activeModal ? 'block' : 'none'" (click)="closeModal()">
+<!-- ===== MODALS (generated, fully wired) ===== -->
+@if (activeModal === 'generateCustomReportModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
   <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Financial Reporting Action</h5>
+        <h5 class="modal-title"><i class="bi bi-file-earmark-plus text-primary me-2"></i>Generate Custom Report</h5>
         <button type="button" class="btn-close" (click)="closeModal()"></button>
       </div>
       <div class="modal-body">
-        <p style="font-size:13px;color:var(--pm-muted);margin:0">{{ activeModal }} is ready. Continue from this modal action.</p>
+        @if (loadingModal === 'generateCustomReportModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['generateCustomReportModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['generateCustomReportModal'].message }}</h5>
+            @if (savedModals['generateCustomReportModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['generateCustomReportModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <div class="pm-stepper">
+            @for (label of stepperLabels['gcr']; track $index) {
+              <div class="pm-step" [class.active]="isStepActive('gcr', $index)" [class.completed]="isStepCompleted('gcr', $index)">
+                <div class="pm-step-num">
+                  @if (isStepCompleted('gcr', $index)) { <i class="bi bi-check"></i> } @else { {{ $index + 1 }} }
+                </div>
+                <div class="pm-step-label">{{ label }}</div>
+              </div>
+              @if ($index < stepperLabels['gcr'].length - 1) { <div class="pm-step-line"></div> }
+            }
+          </div>
+          @if (stepState['gcr'] === 1) {
+            <h6 style="font-weight:700;margin-bottom:12px">Step 1: Report Type</h6>
+            <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Choose statutory, management, or custom analytics pack.</p>
+            <div class="row g-3">
+              <div class="col-md-6"><label class="pm-form-label">Report type</label><input class="pm-form-control" placeholder="Management P&L"></div>
+              <div class="col-md-6"><label class="pm-form-label">Period</label><input class="pm-form-control" placeholder="June 2025"></div>
+            </div>
+          }
+          @if (stepState['gcr'] === 2) {
+            <h6 style="font-weight:700;margin-bottom:12px">Step 2: Filters</h6>
+            <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Filter by branch, cost center, currency, and entity.</p>
+            <div class="row g-3">
+              <div class="col-md-6"><label class="pm-form-label">Branch</label><input class="pm-form-control" placeholder="All"></div>
+              <div class="col-md-6"><label class="pm-form-label">Currency</label><input class="pm-form-control" placeholder="KES"></div>
+            </div>
+          }
+          @if (stepState['gcr'] === 3) {
+            <h6 style="font-weight:700;margin-bottom:12px">Step 3: Delivery</h6>
+            <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Pick format and delivery channel.</p>
+            <div class="row g-3">
+              <div class="col-md-6"><label class="pm-form-label">Format</label><input class="pm-form-control" placeholder="PDF + Excel"></div>
+              <div class="col-md-6"><label class="pm-form-label">Email to</label><input class="pm-form-control" placeholder="cfo@company.com"></div>
+            </div>
+          }
+        }
       </div>
       <div class="modal-footer">
-        <button type="button" class="pm-btn btn-pm" (click)="closeModal()">Close</button>
+        @if (savedModals['generateCustomReportModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="nextFlow('gcr', 3, 'generateCustomReportModal', 'Report generated and scheduled for delivery.', 'REP-19028')">
+            {{ getFlowButtonLabel('gcr', 3) }} <i class="bi bi-arrow-right"></i>
+          </button>
+        }
       </div>
     </div>
   </div>
+</div>
+}
+@if (activeModal === 'runMonthEndModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-lock text-warning me-2"></i>Run Month-End Close</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'runMonthEndModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['runMonthEndModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['runMonthEndModal'].message }}</h5>
+            @if (savedModals['runMonthEndModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['runMonthEndModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <div class="pm-stepper">
+            @for (label of stepperLabels['mec']; track $index) {
+              <div class="pm-step" [class.active]="isStepActive('mec', $index)" [class.completed]="isStepCompleted('mec', $index)">
+                <div class="pm-step-num">
+                  @if (isStepCompleted('mec', $index)) { <i class="bi bi-check"></i> } @else { {{ $index + 1 }} }
+                </div>
+                <div class="pm-step-label">{{ label }}</div>
+              </div>
+              @if ($index < stepperLabels['mec'].length - 1) { <div class="pm-step-line"></div> }
+            }
+          </div>
+          @if (stepState['mec'] === 1) {
+            <h6 style="font-weight:700;margin-bottom:12px">Step 1: Pre-close Checks</h6>
+            <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Validate unposted journals, open periods, and exceptions.</p>
+            <div class="row g-3">
+              <div class="col-md-6"><label class="pm-form-label">Period</label><input class="pm-form-control" placeholder="June 2025"></div>
+            </div>
+          }
+          @if (stepState['mec'] === 2) {
+            <h6 style="font-weight:700;margin-bottom:12px">Step 2: Lock Ledgers</h6>
+            <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Confirm dual-control lock of subledgers.</p>
+            <div class="row g-3">
+              <div class="col-md-6"><label class="pm-form-label">Approver PIN</label><input class="pm-form-control" placeholder="••••"></div>
+            </div>
+          }
+          @if (stepState['mec'] === 3) {
+            <h6 style="font-weight:700;margin-bottom:12px">Step 3: Done</h6>
+            <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Month-end close complete; reports frozen.</p>
+            <div class="row g-3">
+            </div>
+          }
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['runMonthEndModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="nextFlow('mec', 3, 'runMonthEndModal', 'Ledgers locked for period.', 'MEC-1')">
+            {{ getFlowButtonLabel('mec', 3) }} <i class="bi bi-arrow-right"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'exportKRAVATModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-earmark-check text-danger me-2"></i>Export KRA VAT Return</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'exportKRAVATModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['exportKRAVATModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['exportKRAVATModal'].message }}</h5>
+            @if (savedModals['exportKRAVATModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['exportKRAVATModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['exportKRAVATModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('exportKRAVATModal', 'VAT return package ready.', 'VAT-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'scheduleReportModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-calendar-event me-2"></i>Schedule Report</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'scheduleReportModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['scheduleReportModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['scheduleReportModal'].message }}</h5>
+            @if (savedModals['scheduleReportModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['scheduleReportModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['scheduleReportModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('scheduleReportModal', 'Report schedule saved.', 'SCH-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'viewAuditLogModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-journal-text me-2"></i>Audit Log</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'viewAuditLogModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['viewAuditLogModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['viewAuditLogModal'].message }}</h5>
+            @if (savedModals['viewAuditLogModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['viewAuditLogModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+          <div class="table-responsive mt-3">
+            <table class="pm-table">
+              <thead><tr>@for (h of modalTableHeaders; track h) { <th>{{ h }}</th> }</tr></thead>
+              <tbody>
+                @for (row of getModalRows('viewAuditLogModal'); track $index) {
+                  <tr>@for (cell of row; track $index) { <td>{{ cell }}</td> }</tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['viewAuditLogModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('viewAuditLogModal', 'Audit log exported.', 'AUD-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'inviteAuditorModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Invite Auditor</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'inviteAuditorModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['inviteAuditorModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['inviteAuditorModal'].message }}</h5>
+            @if (savedModals['inviteAuditorModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['inviteAuditorModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['inviteAuditorModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('inviteAuditorModal', 'Auditor invite sent.', 'AUD-INV')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'cashFlowForecastModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-graph-up me-2"></i>Cash Flow Forecast</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'cashFlowForecastModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['cashFlowForecastModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['cashFlowForecastModal'].message }}</h5>
+            @if (savedModals['cashFlowForecastModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['cashFlowForecastModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['cashFlowForecastModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('cashFlowForecastModal', 'Forecast refreshed.', 'CF-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'plSnapshotModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-pie-chart me-2"></i>P&L Snapshot</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'plSnapshotModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['plSnapshotModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['plSnapshotModal'].message }}</h5>
+            @if (savedModals['plSnapshotModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['plSnapshotModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['plSnapshotModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('plSnapshotModal', 'P&L snapshot ready.', 'PL-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'taxReadinessModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-shield-check me-2"></i>Tax Readiness</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'taxReadinessModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['taxReadinessModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['taxReadinessModal'].message }}</h5>
+            @if (savedModals['taxReadinessModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['taxReadinessModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['taxReadinessModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('taxReadinessModal', 'Tax readiness checked.', 'TAX-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'eTimsReconciliationModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-link-45deg me-2"></i>eTIMS Reconciliation</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'eTimsReconciliationModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['eTimsReconciliationModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['eTimsReconciliationModal'].message }}</h5>
+            @if (savedModals['eTimsReconciliationModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['eTimsReconciliationModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['eTimsReconciliationModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('eTimsReconciliationModal', 'eTIMS reconciliation complete.', 'ETIMS-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'branchPerformanceModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-building me-2"></i>Branch Performance</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'branchPerformanceModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['branchPerformanceModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['branchPerformanceModal'].message }}</h5>
+            @if (savedModals['branchPerformanceModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['branchPerformanceModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+          <div class="table-responsive mt-3">
+            <table class="pm-table">
+              <thead><tr>@for (h of modalTableHeaders; track h) { <th>{{ h }}</th> }</tr></thead>
+              <tbody>
+                @for (row of getModalRows('branchPerformanceModal'); track $index) {
+                  <tr>@for (cell of row; track $index) { <td>{{ cell }}</td> }</tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['branchPerformanceModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('branchPerformanceModal', 'Branch report ready.', 'BR-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'customerSpendAnalyticsModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-people me-2"></i>Customer Spend Analytics</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'customerSpendAnalyticsModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['customerSpendAnalyticsModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['customerSpendAnalyticsModal'].message }}</h5>
+            @if (savedModals['customerSpendAnalyticsModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['customerSpendAnalyticsModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['customerSpendAnalyticsModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('customerSpendAnalyticsModal', 'Analytics ready.', 'CSA-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'vendorExpenseAnalyticsModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-truck me-2"></i>Vendor Expense Analytics</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'vendorExpenseAnalyticsModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['vendorExpenseAnalyticsModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['vendorExpenseAnalyticsModal'].message }}</h5>
+            @if (savedModals['vendorExpenseAnalyticsModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['vendorExpenseAnalyticsModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['vendorExpenseAnalyticsModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('vendorExpenseAnalyticsModal', 'Vendor analytics ready.', 'VEA-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'disputeAuditModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-diamond me-2"></i>Dispute Audit</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'disputeAuditModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['disputeAuditModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['disputeAuditModal'].message }}</h5>
+            @if (savedModals['disputeAuditModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['disputeAuditModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['disputeAuditModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('disputeAuditModal', 'Dispute audit exported.', 'DSP-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'downloadStatementModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-download me-2"></i>Download Statement</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'downloadStatementModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['downloadStatementModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['downloadStatementModal'].message }}</h5>
+            @if (savedModals['downloadStatementModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['downloadStatementModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['downloadStatementModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('downloadStatementModal', 'Statement downloaded.', 'STM-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'configureDashboardsModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-grid-1x2 me-2"></i>Configure Dashboards</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'configureDashboardsModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['configureDashboardsModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['configureDashboardsModal'].message }}</h5>
+            @if (savedModals['configureDashboardsModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['configureDashboardsModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['configureDashboardsModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('configureDashboardsModal', 'Dashboard layout saved.', 'DSH-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'statutoryDeductionsModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-bank me-2"></i>Statutory Deductions</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'statutoryDeductionsModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['statutoryDeductionsModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['statutoryDeductionsModal'].message }}</h5>
+            @if (savedModals['statutoryDeductionsModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['statutoryDeductionsModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['statutoryDeductionsModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('statutoryDeductionsModal', 'Statutory pack generated.', 'STD-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'exportTrialBalanceModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-file-earmark-spreadsheet me-2"></i>Export Trial Balance</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'exportTrialBalanceModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['exportTrialBalanceModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['exportTrialBalanceModal'].message }}</h5>
+            @if (savedModals['exportTrialBalanceModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['exportTrialBalanceModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['exportTrialBalanceModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('exportTrialBalanceModal', 'Trial balance exported.', 'TB-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'financialHealthScoreModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-heart-pulse me-2"></i>Financial Health Score</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'financialHealthScoreModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['financialHealthScoreModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['financialHealthScoreModal'].message }}</h5>
+            @if (savedModals['financialHealthScoreModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['financialHealthScoreModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['financialHealthScoreModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('financialHealthScoreModal', 'Health score updated.', 'FHS-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'reconciliationExceptionsModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Reconciliation Exceptions</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'reconciliationExceptionsModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['reconciliationExceptionsModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['reconciliationExceptionsModal'].message }}</h5>
+            @if (savedModals['reconciliationExceptionsModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['reconciliationExceptionsModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+          <div class="table-responsive mt-3">
+            <table class="pm-table">
+              <thead><tr>@for (h of modalTableHeaders; track h) { <th>{{ h }}</th> }</tr></thead>
+              <tbody>
+                @for (row of getModalRows('reconciliationExceptionsModal'); track $index) {
+                  <tr>@for (cell of row; track $index) { <td>{{ cell }}</td> }</tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['reconciliationExceptionsModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('reconciliationExceptionsModal', 'Exceptions resolved.', 'REC-X')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'userActivityLogModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-activity me-2"></i>User Activity Log</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'userActivityLogModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['userActivityLogModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['userActivityLogModal'].message }}</h5>
+            @if (savedModals['userActivityLogModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['userActivityLogModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+          <div class="table-responsive mt-3">
+            <table class="pm-table">
+              <thead><tr>@for (h of modalTableHeaders; track h) { <th>{{ h }}</th> }</tr></thead>
+              <tbody>
+                @for (row of getModalRows('userActivityLogModal'); track $index) {
+                  <tr>@for (cell of row; track $index) { <td>{{ cell }}</td> }</tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['userActivityLogModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('userActivityLogModal', 'Activity log exported.', 'UAL-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if (activeModal === 'reportDeliverySettingsModal') {
+<div class="modal-backdrop show" (click)="closeModal()"></div>
+<div class="modal d-block" tabindex="-1" (click)="closeModal()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-envelope me-2"></i>Report Delivery Settings</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModal === 'reportDeliverySettingsModal') {
+          <div class="pm-loading-overlay">
+            <div class="pm-spinner"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--pm-ink-soft)">Processing…</div>
+          </div>
+        }
+        @if (savedModals['reportDeliverySettingsModal']) {
+          <div class="pm-receipt">
+            <div class="receipt-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-weight:700;color:var(--pm-accent)">{{ savedModals['reportDeliverySettingsModal'].message }}</h5>
+            @if (savedModals['reportDeliverySettingsModal'].ref) {
+              <p style="font-size:12px;color:var(--pm-muted)">Ref: {{ savedModals['reportDeliverySettingsModal'].ref }}</p>
+            }
+          </div>
+        } @else {
+          <p style="font-size:13px;color:var(--pm-ink-soft);margin-bottom:16px">Review details and confirm this action.</p>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="pm-form-label">Reference / Name</label><input class="pm-form-control" placeholder="Enter value"></div>
+            <div class="col-md-6"><label class="pm-form-label">Amount (KES)</label><input class="pm-form-control" placeholder="0.00"></div>
+            <div class="col-md-6"><label class="pm-form-label">Notes</label><input class="pm-form-control" placeholder="Optional"></div>
+            <div class="col-md-6"><label class="pm-form-label">Owner / Approver</label><input class="pm-form-control" placeholder="Select"></div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (savedModals['reportDeliverySettingsModal']) {
+          <button type="button" class="pm-btn pm-btn-primary" (click)="closeModal()">Done</button>
+        } @else {
+          <button type="button" class="pm-btn" (click)="closeModal()">Cancel</button>
+          <button type="button" class="pm-btn pm-btn-primary" (click)="processAction('reportDeliverySettingsModal', 'Delivery settings saved.', 'DEL-1')">
+            Confirm <i class="bi bi-check2"></i>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>

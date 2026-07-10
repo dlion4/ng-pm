@@ -152,6 +152,17 @@ interface WorkflowTier {
 })
 export class BulkPaymentsComponent {
   activeModal: string | null = null;
+  loadingModal: string | null = null;
+  toastMessage = '';
+  savedModals: Record<string, { message: string; ref: string }> = {};
+  stepState: Record<string, number> = { nd: 1, approve: 1, fund: 1 };
+  stepperLabels: Record<string, string[]> = {
+    nd: ['Upload', 'Map', 'Setup', 'Submit'],
+    approve: ['Review', 'Authorize', 'Done'],
+    fund: ['Source', 'Amount', 'Confirm'],
+  };
+  modalTableHeaders: string[] = ['Item', 'Detail', 'Amount', 'Status'];
+
   ndStep: number = 1;
   uploadVisible: boolean = false;
   uploadPct: number = 0;
@@ -427,129 +438,112 @@ export class BulkPaymentsComponent {
 
   // ─── MODAL OPEN / CLOSE ──────────────────────────────────────────
 
+
   openModal(id: string): void {
     this.activeModal = id;
+    this.loadingModal = null;
+    // reset relevant flow
+    if (id === 'newDisbursementModal') { this.stepState['nd'] = 1; this.ndStep = 1; this.newDisbursementSaved = false; this.uploadVisible = false; this.uploadPct = 0; }
+    if (id === 'approveBatchModal') this.stepState['approve'] = 1;
+    if (id === 'fundWalletModal') this.stepState['fund'] = 1;
   }
 
   closeModal(): void {
     this.activeModal = null;
+    this.loadingModal = null;
   }
 
   @HostListener('document:keydown.escape')
-  onEsc(): void {
-    this.closeModal();
+  onEsc(): void { this.closeModal(); }
+
+  isStepActive(flow: string, index: number): boolean { return (this.stepState[flow] ?? 1) === index + 1; }
+  isStepCompleted(flow: string, index: number): boolean { return (this.stepState[flow] ?? 1) > index + 1; }
+  getFlowButtonLabel(flow: string, total: number): string {
+    const cur = this.stepState[flow] ?? 1;
+    if (cur >= total) return 'Done';
+    if (cur === total - 1) return 'Execute';
+    return 'Continue';
   }
 
-  // ─── MULTI-STEP: NEW DISBURSEMENT ────────────────────────────────
-
-  getStepState(index: number): string {
-    const stepNum = index + 1;
-    if (stepNum < this.ndStep) return 'completed';
-    if (stepNum === this.ndStep) return 'active';
-    return '';
+  nextFlow(flow: string, total: number, modalId: string, message: string, ref: string): void {
+    const cur = this.stepState[flow] ?? 1;
+    if (cur >= total) {
+      this.processAction(modalId, message, ref);
+      return;
+    }
+    if (cur === total - 1) {
+      this.loadingModal = modalId;
+      setTimeout(() => {
+        this.stepState[flow] = total;
+        this.loadingModal = null;
+        this.processAction(modalId, message, ref);
+      }, 900);
+      return;
+    }
+    this.stepState[flow] = cur + 1;
+    if (flow === 'nd') this.ndStep = this.stepState[flow];
   }
 
   nextNdStep(): void {
-    if (this.ndStep === 4) {
-      this.processAction('newDisbursementModal', 'Batch validated and sent to checker for approval.', 'BTH-9924');
-      return;
-    }
-    this.ndStep++;
+    this.nextFlow('nd', 4, 'newDisbursementModal', 'Batch validated and sent to checker for approval.', 'BTH-9924');
   }
 
-  // ─── UPLOAD SIMULATION ───────────────────────────────────────────
+  processAction(modalId: string, msg: string, ref: string): void {
+    this.loadingModal = modalId;
+    setTimeout(() => {
+      this.savedModals[modalId] = { message: msg, ref };
+      const savedVar = modalId.replace('Modal', 'Saved');
+      if (savedVar in this) (this as any)[savedVar] = true;
+      this.loadingModal = null;
+      this.notify(ref ? `${msg} Ref: ${ref}` : msg);
+    }, 700);
+  }
+
+  getModalRows(modalId: string): string[][] {
+    const map: Record<string, string[][]> = {
+      approveBatchModal: [['BTH-9922', 'Emergency Relief', 'KES 2.5M', 'Needs Approval'], ['BTH-9923', 'Mombasa Logistics', 'KES 850K', 'Director Auth']],
+      beneficiaryDirectoryModal: this.beneficiaries?.map(b => [b.name, b.phone, b.group, b.kycBadge]) ?? [],
+      failedTransfersModal: this.failedTransfers?.map(f => [f.beneficiary, f.amount, f.errorBadge, f.actionLabel]) ?? [],
+      batchDetailsModal: [['Created', 'Maker submitted', '—', 'Done'], ['Approved', 'Checker signed', '—', 'Done'], ['Executing', 'Payouts in flight', 'KES 4.5M', 'Live']],
+      auditLogModal: this.auditLogs?.slice(0, 5).map(a => [a.timestamp, a.user, a.action, a.statusBadge]) ?? [],
+      attentionActionModal: this.attentionItems?.map(a => [a.title, a.subtitle, a.buttonLabel, 'Open']) ?? [],
+      healthCheckModal: this.healthChecks?.map(h => [h.name, h.response, h.statusBadge, 'OK']) ?? [],
+    };
+    return map[modalId] ?? [['Sample', 'Detail', '—', 'Ready']];
+  }
 
   simulateUpload(): void {
     this.uploadVisible = true;
     this.uploadPct = 0;
-    const interval = setInterval(() => {
+    const tick = () => {
+      if (this.uploadPct >= 100) return;
       this.uploadPct += 20;
-      if (this.uploadPct >= 100) {
-        clearInterval(interval);
-        setTimeout(() => this.nextNdStep(), 400);
-      }
-    }, 200);
+      setTimeout(tick, 180);
+    };
+    tick();
   }
 
-  // ─── SELECT TEMPLATE ─────────────────────────────────────────────
+  selectTemplate(_event?: Event): void { this.notify('Template selected'); this.ndStep = 2; this.stepState['nd'] = 2; }
 
-  selectTemplate(event: Event): void {
-    const el = (event.target as HTMLElement).closest('.border') as HTMLElement;
-    if (!el || !el.parentElement) return;
-    el.parentElement.querySelectorAll('.border').forEach((b: Element) => {
-      (b as HTMLElement).style.borderColor = '';
-      (b as HTMLElement).style.background = '';
-    });
-    el.style.borderColor = 'var(--pm-primary)';
-    el.style.background = 'rgba(79,70,229,.04)';
-    setTimeout(() => this.nextNdStep(), 400);
+  moveFocus(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input?.value?.length === 1 && input.nextElementSibling) (input.nextElementSibling as HTMLInputElement).focus();
   }
-
-  // ─── TAB SWITCHING ───────────────────────────────────────────────
 
   switchTab(prefix: string, key: string, event: Event): void {
     this.activeTabs[prefix] = key;
     const btn = event.target as HTMLElement;
-    if (btn && btn.parentElement) {
-      btn.parentElement.querySelectorAll('.pm-tab-pill').forEach((b: Element) => b.classList.remove('active'));
-      btn.classList.add('active');
-    }
+    btn?.parentElement?.querySelectorAll('.pm-tab-pill').forEach((b) => b.classList.remove('active'));
+    btn?.classList.add('active');
   }
 
-  // ─── RADIO CARD SELECTION ────────────────────────────────────────
-
-  selectRadioCard(event: Event): void {
-    const card = (event.target as HTMLElement).closest('.border');
-    if (!card || !card.parentElement) return;
-    card.parentElement.querySelectorAll('.border').forEach((b: Element) => {
-      (b as HTMLElement).style.borderColor = '';
-      (b as HTMLElement).style.background = '';
-      const r = b.querySelector('input[type=radio]') as HTMLInputElement;
-      if (r) r.checked = false;
-    });
-    (card as HTMLElement).style.borderColor = 'var(--pm-primary)';
-    (card as HTMLElement).style.background = 'rgba(79,70,229,.04)';
-    const radio = card.querySelector('input[type=radio]') as HTMLInputElement;
-    if (radio) radio.checked = true;
+  getStepState(index: number): string {
+    if (this.ndStep > index + 1) return 'completed';
+    if (this.ndStep === index + 1) return 'active';
+    return '';
   }
 
-  // ─── PIN INPUT FOCUS ─────────────────────────────────────────────
+  notify(message: string): void { this.toastMessage = message || 'Action completed.'; setTimeout(() => this.clearToast(), 3200); }
+  clearToast(): void { this.toastMessage = ''; }
 
-  moveFocus(event: Event): void {
-    const el = event.target as HTMLInputElement;
-    if (el.value.length === 1 && el.nextElementSibling) {
-      (el.nextElementSibling as HTMLInputElement).focus();
-    }
-  }
-
-  // ─── PROCESS ACTION (sets saved state) ───────────────────────────
-
-  processAction(modalId: string, msg: string, ref: string): void {
-    const savedVar = modalId.replace('Modal', 'Saved') as keyof this;
-    (this as any)[savedVar] = true;
-  }
-
-  // ─── RESET ALL ───────────────────────────────────────────────────
-
-  resetAllModals(): void {
-    this.activeModal = null;
-    this.ndStep = 1;
-    this.uploadVisible = false;
-    this.uploadPct = 0;
-    this.activeTabs = { apiTab: 'keys' };
-    this.newDisbursementSaved = false;
-    this.approveBatchSaved = false;
-    this.beneficiaryDirectorySaved = false;
-    this.addBeneficiarySaved = false;
-    this.failedTransfersSaved = false;
-    this.retryTransferSaved = false;
-    this.fundWalletSaved = false;
-    this.scheduleDisbursementSaved = false;
-    this.exportAnalyticsSaved = false;
-    this.ngoProgramSaved = false;
-    this.approvalWorkflowSaved = false;
-    this.disbursementSettingsSaved = false;
-    this.disputeDisbursementSaved = false;
-    this.businessProfileSaved = false;
-  }
 }

@@ -126,6 +126,18 @@ interface OnboardingMockData {
   encapsulation: ViewEncapsulation.None,
 })
 export class BusinessOnboardingComponent {
+  // === PAGE METADATA (data-driven) ===
+  readonly pageTitle = 'PAGE 3.12 — Business Onboarding & KYB/KYC Center';
+  readonly pageSubtitle = 'Streamline business onboarding, KYB/KYC verification, document management and compliance approvals.';
+  readonly breadcrumbStrong = 'Business Onboarding';
+
+  readonly quickActions = [
+    { icon: 'plus-circle', label: 'New Onboarding', modal: 'onboardNewModal', color: 'primary' },
+    { icon: 'person-badge', label: 'Director KYC', modal: 'directorKYCModal', color: 'accent' },
+    { icon: 'cloud-upload', label: 'Bulk Upload', modal: 'bulkOnboardModal', color: 'info' },
+    { icon: 'shield-check', label: 'Risk Assessment', modal: 'riskAssessmentModal', color: 'warning' },
+  ];
+
   readonly mockData: OnboardingMockData = {
     documentQueue: [
       {
@@ -476,7 +488,7 @@ export class BusinessOnboardingComponent {
   };
   readonly steps: Record<string, number> = { onboard: 1, kyc: 1, bulk: 1 };
   readonly tabs: Record<string, string> = { queue: 'all' };
-  readonly openModals = new Set<string>();
+  openModals = new Set<string>();
   toastMessage = '';
   openModal(id: string): void {
     this.openModals.clear();
