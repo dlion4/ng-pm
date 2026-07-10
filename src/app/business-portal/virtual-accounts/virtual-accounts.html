@@ -119,7 +119,10 @@
 <h3 class="st"><i class="bi bi-{{ sections[0].icon }}" style="color:var(--pm-primary)"></i> {{ sections[0].id }} — {{ sections[0].title }}</h3>
 <p class="ss">{{ sections[0].desc }}</p>
 </div>
-<div class="d-flex" style="gap:8px"><button (click)="openModal('createVA')" class="btn-pm btn-sm" type="button"><i class="bi bi-plus-lg"></i> New VA</button><button (click)="openModal('vaHealthModal')" class="btn-pm btn-sm" type="button">Health Check</button></div>
+<div class="d-flex" style="gap:8px">
+  <button (click)="openModal('createVA')" class="btn-pm btn-sm" type="button"><i class="bi bi-plus-lg"></i> {{ uiConfig.sectionActions['3.9.1'][0] }}</button>
+  <button (click)="openModal('vaHealthModal')" class="btn-pm btn-sm" type="button">{{ uiConfig.sectionActions['3.9.1'][1] }}</button>
+</div>
 </div>
 <div class="row g-3">
 <div class="col-12">
