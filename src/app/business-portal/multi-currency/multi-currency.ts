@@ -128,6 +128,22 @@ export class MultiCurrencyComponent {
     { icon: 'list-check', label: 'Reconcile', modal: 'reconcileModal', color: 'warning' },
   ];
 
+  readonly uiConfig = {
+    pageTitle: 'PAGE 3.11 — Multi-Currency Treasury & Forex Operations',
+    pageSubtitle: 'Manage multi-currency accounts, FX contracts, nostro reconciliation and cross-border liquidity in one dashboard.',
+    breadcrumbStrong: 'Multi-Currency Treasury',
+    attentionTitle: 'Attention Required',
+    suggestionTitle: 'Smart Suggestions',
+    quickActionsTitle: 'Quick Actions',
+    quickActionsSubtitle: 'Frequent FX & treasury workflows',
+    modals: {
+      trade: 'FX Trade',
+      transfer: 'Cross-Currency Transfer',
+      fxContract: 'New Forward Contract',
+      reconcile: 'Nostro Reconciliation'
+    }
+  };
+
   readonly mockData: TreasuryMockData = {
     currencyAccounts: [
       {

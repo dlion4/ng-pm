@@ -168,6 +168,24 @@ export class OpenBankingComponent {
     { icon: 'graph-up', label: 'Optimize', modal: 'optimizeModal', color: 'purple' },
   ];
 
+  readonly uiConfig = {
+    pageTitle: 'PAGE 3.10 — Open Banking',
+    pageSubtitle: 'Connect, manage and reconcile multiple bank accounts with real-time consent, transfers and fraud protection.',
+    breadcrumbStrong: 'Open Banking',
+    attentionTitle: 'Attention Required',
+    suggestionTitle: 'Smart Suggestions',
+    quickActionsTitle: 'Quick Actions',
+    quickActionsSubtitle: 'Frequent open banking workflows',
+    modals: {
+      connectBank: 'Connect Bank Account',
+      transfer: 'Transfer Funds',
+      reconcile: 'Reconciliation Center',
+      fraudSettings: 'Fraud Settings',
+      schedule: 'Schedule Transfer',
+      optimize: 'Optimize Accounts'
+    }
+  };
+
   readonly mockData: OpenBankingMockData = {
     bankAccounts: [
       { id: 'equity-4521', bank: 'Equity Bank', maskedAccount: '***4521', nickname: 'Operating Account', balance: 'KES 6,842,100', lastSync: 'Just now', status: 'live', statusLabel: 'Live', consentScope: 'View + Transfer', consentExpires: '15 Aug 2025' },
