@@ -12,8 +12,12 @@
 <h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">{{ pageTitle }}</h2>
 <p style="font-size:13px;color:var(--pm-ink-soft);margin:0">{{ pageSubtitle }}</p>
 </div>
-<div class="d-flex flex-wrap" style="gap:8px"><button (click)="openModal('healthCheckModal')" class="btn-pm" type="button"><i class="bi bi-heart-pulse"></i> Health</button><button (click)="openModal('reconModal')" class="btn-pm" type="button"><i class="bi bi-list-check"></i>
-                        Reconcile</button><button (click)="openModal('createVA')" class="btn-pm" type="button"><i class="bi bi-plus-lg"></i> New VA</button><button (click)="openModal('createSub')" class="btn-pm btn-pm-p" type="button"><i class="bi bi-diagram-3"></i> New Sub-Account</button></div>
+<div class="d-flex flex-wrap" style="gap:8px">
+  <button (click)="openModal('healthCheckModal')" class="btn-pm" type="button"><i class="bi bi-heart-pulse"></i> {{ uiConfig.headerButtons.health }}</button>
+  <button (click)="openModal('reconModal')" class="btn-pm" type="button"><i class="bi bi-list-check"></i> {{ uiConfig.headerButtons.reconcile }}</button>
+  <button (click)="openModal('createVA')" class="btn-pm" type="button"><i class="bi bi-plus-lg"></i> {{ uiConfig.headerButtons.newVA }}</button>
+  <button (click)="openModal('createSub')" class="btn-pm btn-pm-p" type="button"><i class="bi bi-diagram-3"></i> {{ uiConfig.headerButtons.newSub }}</button>
+</div>
 </div>
 <div class="pm-content">
 <!-- HERO STATS -->
@@ -48,8 +52,8 @@
   <div class="col-lg-4">
     <div class="C">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="st">Attention Required</h3>
-        <button (click)="openModal('attentionModal')" class="btn-pm btn-sm" type="button">View all</button>
+        <h3 class="st">{{ uiConfig.attention.title }}</h3>
+        <button (click)="openModal('attentionModal')" class="btn-pm btn-sm" type="button">{{ uiConfig.attention.viewAll }}</button>
       </div>
       @for (item of attentionItems; track item.title) {
         <div class="sr">
@@ -72,7 +76,7 @@
   <div class="col-lg-4">
     <div class="C">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="st">Smart Suggestions</h3><span class="B B-p"><i class="bi bi-stars"></i> AI</span>
+        <h3 class="st">{{ uiConfig.suggestions.title }}</h3><span class="B B-p"><i class="bi bi-stars"></i> {{ uiConfig.suggestions.aiLabel }}</span>
       </div>
       @for (item of suggestionItems; track item.title) {
         <div class="sr">
@@ -95,8 +99,8 @@
   <div class="col-lg-4">
     <div class="C">
       <div class="mb-3">
-        <h3 class="st">Quick Actions</h3>
-        <p class="ss">Frequent virtual account workflows</p>
+        <h3 class="st">{{ uiConfig.quickActions.title }}</h3>
+        <p class="ss">{{ uiConfig.quickActions.subtitle }}</p>
       </div>
       <div class="quick-grid">
         @for (action of quickActions; track action.label) {
@@ -251,10 +255,8 @@
 <div class="C">
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap:8px">
 <div>
-<h3 class="st"><i class="bi bi-sliders" style="color:var(--pm-info)"></i> 3.9.4 — Virtual
-                                Account Controls &amp; Limits</h3>
-<p class="ss">Set spending limits, approval workflows, transaction rules and velocity
-                                controls per account and sub-account.</p>
+<h3 class="st"><i class="bi bi-{{ sections[3].icon }}" style="color:var(--pm-info)"></i> {{ sections[3].id }} — {{ sections[3].title }}</h3>
+<p class="ss">{{ sections[3].desc }}</p>
 </div>
 <div class="d-flex" style="gap:8px"><button (click)="openModal('approvalRulesModal')" class="btn-pm btn-sm" type="button">Approval Rules</button><button (click)="openModal('velocityModal')" class="btn-pm btn-sm" type="button">Velocity Controls</button></div>
 </div>

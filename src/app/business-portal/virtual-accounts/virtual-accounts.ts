@@ -105,6 +105,16 @@ export class VirtualAccountsComponent {
 
   readonly fundingOptions = ['M-Pesa', 'Bank Transfer', 'PayMo Wallet', 'Bulk Upload'];
 
+  // === COMPREHENSIVE UI CONFIG (data-driven shell) ===
+  readonly uiConfig = {
+    headerButtons: { health: 'Health', reconcile: 'Reconcile', newVA: 'New VA', newSub: 'New Sub-Account' },
+    heroActions: ['New VA', 'New Sub', 'Bulk Fund'],
+    attention: { title: 'Attention Required', viewAll: 'View all' },
+    suggestions: { title: 'Smart Suggestions', aiLabel: 'AI' },
+    quickActions: { title: 'Quick Actions', subtitle: 'Frequent virtual account workflows' },
+    recentActivity: { title: 'Recent Virtual Account Activity', viewAll: 'View All' }
+  };
+
   readonly mockData: VirtualAccountsMockData = {
     virtualAccounts: [
       { id: 'VA-003', name: 'Client Collections', type: 'Collections', balance: '12.4M', subAccounts: 8, status: 'active', statusLabel: 'Active', rules: 2 },
