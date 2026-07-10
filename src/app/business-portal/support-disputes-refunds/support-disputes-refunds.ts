@@ -112,6 +112,39 @@ export class SupportDisputesRefundsComponent {
   readonly pageSubtitle = 'Manage customer tickets, chargebacks, refunds and SLA compliance from a single operations hub.';
   readonly breadcrumbStrong = 'Support, Disputes & Refunds';
 
+  readonly uiConfig = {
+    pageTitle: 'PAGE 3.13 — Support, Disputes & Refunds Center',
+    pageSubtitle: 'Manage customer tickets, chargebacks, refunds and SLA compliance from a single operations hub.',
+    breadcrumbStrong: 'Support, Disputes & Refunds',
+    quickActionsTitle: 'Quick Actions',
+    quickActionsSubtitle: 'Frequent support workflows',
+    sectionTitles: {
+      supportTickets: 'Support Tickets',
+      chargebackCases: 'Chargeback Cases',
+      refunds: 'Refunds',
+      recentActivity: 'Recent Activity',
+      slaHealth: 'SLA Health Dashboard',
+      activityLog: 'Activity Log',
+      notificationPreferences: 'Notification Preferences'
+    },
+    modals: {
+      ticketDetail: 'Ticket Detail',
+      chargeback: 'Chargeback Response',
+      refund: 'Refund Approval',
+      bulkRefund: 'Bulk Refund Batch',
+      duplicateCheck: 'Duplicate Check',
+      evidenceUpload: 'Evidence Upload'
+    },
+    formLabels: {
+      fromAccount: 'From Account',
+      amount: 'Amount (KES)',
+      reference: 'Reference',
+      issueType: 'Issue Type',
+      bank: 'Bank',
+      description: 'Description'
+    }
+  };
+
   readonly quickActions = [
     { icon: 'ticket-detailed', label: 'New Ticket', modal: 'ticketDetailModal', color: 'primary' },
     { icon: 'exclamation-triangle', label: 'Chargeback', modal: 'chargebackModal', color: 'danger' },

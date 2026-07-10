@@ -8,17 +8,16 @@
 
 <div class="pm-page-bar">
 <div>
-<div class="pm-breadcrumb"><a (click)="notify('Link action handled')" role="button" tabindex="0">Home</a> / <a (click)="notify('Link action handled')" role="button" tabindex="0">Business Portal</a> / <strong>Open
-                            Banking</strong></div>
-<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">PAGE
-                        3.10 — Open Banking &amp; Account Aggregation</h2>
-<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">Connect bank accounts via PesaLink, view
-                        consolidated cash positions, execute instant transfers, reconcile transactions, and analyse
-                        multi-bank cash flow — all within a single secure dashboard.</p>
+<div class="pm-breadcrumb"><a (click)="notify('Link action handled')" role="button" tabindex="0">Home</a> / <a (click)="notify('Link action handled')" role="button" tabindex="0">Business Portal</a> / <strong>{{ uiConfig.breadcrumbStrong }}</strong></div>
+<h2 style="font-family:var(--pm-font-display);font-size:20px;font-weight:700;margin:8px 0 2px">{{ uiConfig.pageTitle }}</h2>
+<p style="font-size:13px;color:var(--pm-ink-soft);margin:0">{{ uiConfig.pageSubtitle }}</p>
 </div>
-<div class="d-flex flex-wrap" style="gap:8px"><button (click)="openModal('healthCheckModal')" class="btn-pm" type="button"><i class="bi bi-heart-pulse"></i> Health
-                        Check</button><button (click)="openModal('reconcileModal')" class="btn-pm" type="button"><i class="bi bi-list-check"></i> Reconcile</button><button (click)="openModal('transferModal')" class="btn-pm" type="button"><i class="bi bi-arrow-left-right"></i> Transfer</button><button (click)="openModal('connectBankModal')" class="btn-pm btn-pm-p" type="button"><i class="bi bi-plus-lg"></i>
-                        Connect Bank</button></div>
+<div class="d-flex flex-wrap" style="gap:8px">
+  <button (click)="openModal('healthCheckModal')" class="btn-pm" type="button"><i class="bi bi-heart-pulse"></i> Health Check</button>
+  <button (click)="openModal('reconcileModal')" class="btn-pm" type="button"><i class="bi bi-list-check"></i> Reconcile</button>
+  <button (click)="openModal('transferModal')" class="btn-pm" type="button"><i class="bi bi-arrow-left-right"></i> Transfer</button>
+  <button (click)="openModal('connectBankModal')" class="btn-pm btn-pm-p" type="button"><i class="bi bi-plus-lg"></i> Connect Bank</button>
+</div>
 </div>
 <div class="pm-content">
 <!-- HERO STATS -->
@@ -62,93 +61,51 @@
 <div class="col-lg-4">
 <div class="C">
 <div class="d-flex justify-content-between align-items-center mb-3">
-<h3 class="st">Attention Required</h3><button (click)="openModal('attentionModal')" class="btn-pm btn-sm" type="button">View all</button>
+<h3 class="st">{{ uiConfig.attentionTitle }}</h3><button (click)="openModal('attentionModal')" class="btn-pm btn-sm" type="button">{{ uiConfig.attentionViewAll }}</button>
 </div>
-<div class="sr">
+@for (item of attentionItems; track item.title) {
+  <div class="sr">
 <div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-danger-soft);color:var(--pm-danger);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-bank"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">KCB account balance below minimum
-                                        </div>
-<div style="font-size:11px;color:var(--pm-muted)">KES 42,100 · minimum KES
-                                            50,000</div>
-</div>
-</div><button (click)="openModal('transferModal')" class="btn-pm btn-sm" type="button">Top-up</button>
-</div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-list-check"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">14 unreconciled transactions</div>
-<div style="font-size:11px;color:var(--pm-muted)">Equity &amp; Stanbic accounts
-                                        </div>
-</div>
-</div><button (click)="openModal('reconcileModal')" class="btn-pm btn-sm" type="button">Review</button>
-</div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-info-soft);color:var(--pm-info);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-clock"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">Co-op account link expires in 7 days
-                                        </div>
-<div style="font-size:11px;color:var(--pm-muted)">Re-authenticate consent</div>
-</div>
-</div><button (click)="openModal('reauthModal')" class="btn-pm btn-sm" type="button">Re-auth</button>
-</div>
+            <div style="width:36px;height:36px;border-radius:50%;background:var(--pm-danger-soft);color:var(--pm-danger);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+              <i class="bi bi-{{ item.severity === 'warning' ? 'bank' : (item.severity === 'expiring' ? 'clock' : 'list-check') }}"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+              <div style="font-size:11px;color:var(--pm-muted)">{{ item.description }}</div>
+            </div>
+          </div>
+          <button (click)="openModal(item.modalId)" class="btn-pm btn-sm" type="button">{{ item.actionLabel }}</button>
+  </div>
+}
 </div>
 </div>
 <div class="col-lg-4">
 <div class="C">
 <div class="d-flex justify-content-between align-items-center mb-3">
-<h3 class="st">Smart Suggestions</h3><span class="B B-p"><i class="bi bi-stars"></i>
-                                    AI</span>
+<h3 class="st">{{ uiConfig.suggestionTitle }}</h3><span class="B B-p"><i class="bi bi-stars"></i>
+                                    {{ uiConfig.suggestionAI }}</span>
 </div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-accent-soft);color:var(--pm-accent);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-graph-up"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">Consolidate 3 low-activity accounts
-                                        </div>
-<div style="font-size:11px;color:var(--pm-muted)">Potential fee savings: KES
-                                            18,200/year</div>
-</div>
-</div><button (click)="openModal('optimizeModal')" class="btn-pm btn-sm" type="button">Analyse</button>
-</div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-warning-soft);color:var(--pm-warning);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-clock-history"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">Schedule recurring transfers to
-                                            payroll account</div>
-<div style="font-size:11px;color:var(--pm-muted)">Reduce manual effort by 92%
-                                        </div>
-</div>
-</div><button (click)="openModal('scheduleTransferModal')" class="btn-pm btn-sm" type="button">Setup</button>
-</div>
-<div class="sr">
-<div class="d-flex align-items-center gap-3">
-<div style="width:36px;height:36px;border-radius:50%;background:var(--pm-purple-soft);color:var(--pm-purple);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
-<i class="bi bi-shield-check"></i></div>
-<div>
-<div style="font-weight:600;font-size:13px">Enable real-time fraud alerts on I&amp;M
-                                        </div>
-<div style="font-size:11px;color:var(--pm-muted)">High-value transfers detected
-                                        </div>
-</div>
-</div><button (click)="openModal('fraudSettingsModal')" class="btn-pm btn-sm" type="button">Enable</button>
-</div>
+@for (item of suggestionItems; track item.title) {
+  <div class="sr">
+    <div class="d-flex align-items-center gap-3">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--pm-accent-soft);color:var(--pm-accent);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+        <i class="bi bi-graph-up"></i>
+      </div>
+      <div>
+        <div style="font-weight:600;font-size:13px">{{ item.title }}</div>
+        <div style="font-size:11px;color:var(--pm-muted)">{{ item.description }}</div>
+      </div>
+    </div>
+    <button (click)="openModal(item.modalId)" class="btn-pm btn-sm" type="button">{{ item.actionLabel }}</button>
+  </div>
+}
 </div>
 </div>
 <div class="col-lg-4">
 <div class="C">
 <div class="mb-3">
-<h3 class="st">Quick Actions</h3>
-<p class="ss">Frequent open banking workflows</p>
+<h3 class="st">{{ uiConfig.quickActionsTitle }}</h3>
+<p class="ss">{{ uiConfig.quickActionsSubtitle }}</p>
 </div>
 <div class="quick-grid"><button (click)="openModal('transferModal')" class="quick-btn" type="button"><i class="bi bi-arrow-left-right text-primary me-1"></i> Instant
                                     Transfer</button><button (click)="openModal('connectBankModal')" class="quick-btn" type="button"><i class="bi bi-plus-circle text-success me-1"></i> Link Account</button><button (click)="openModal('reconcileModal')" class="quick-btn" type="button"><i class="bi bi-list-check text-info me-1"></i> Reconcile</button><button (click)="openModal('cashFlowModal')" class="quick-btn" type="button"><i class="bi bi-graph-up me-1" style="color:var(--pm-purple)"></i> Cash Flow</button><button (click)="openModal('exportStatementModal')" class="quick-btn" type="button"><i class="bi bi-download text-muted me-1"></i> Export</button><button (click)="openModal('scheduleTransferModal')" class="quick-btn" type="button"><i class="bi bi-calendar-event me-1" style="color:var(--pm-accent)"></i>
@@ -172,7 +129,7 @@
 <div class="row g-3">
 <div class="col-lg-8">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Linked Bank Accounts</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.linkedBankAccounts }}</h4>
 <div class="table-responsive">
 <table class="T">
 <thead>
@@ -201,7 +158,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Consolidated Position</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.consolidatedPosition }}</h4>
 <div class="p-3 rounded mb-3" style="background:var(--pm-accent-soft)">
 <div style="font-size:11px;color:#047857;font-weight:700">TOTAL AVAILABLE CASH</div>
 <div style="font-size:28px;font-weight:700;color:var(--pm-accent)">KES 14.2M</div>
@@ -235,7 +192,7 @@
 <div class="row g-3">
 <div class="col-lg-5">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Recent Transfers</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.recentTransfers }}</h4>
 <div class="table-responsive">
 <table class="T">
 <thead>
@@ -258,7 +215,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Standing Orders</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.standingOrders }}</h4>
 <div class="sr">
 <div><strong>Payroll to KCB</strong>
 <div style="font-size:11px;color:var(--pm-muted)">KES 2.4M • Every 25th</div>
@@ -283,7 +240,7 @@
 </div>
 <div class="col-lg-3">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Quick Transfer</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.quickTransfer }}</h4>
 <div class="mb-3"><label class="FL">From</label><select class="FC">
 <option>Equity ****4521</option>
 <option>Co-op ****3390</option>
@@ -316,8 +273,7 @@
 <div class="row g-3">
 <div class="col-lg-8">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Multi-Bank Transaction Feed
-                                </h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.multiBankTransactionFeed }}</h4>
 <div class="table-responsive">
 <table class="T">
 <thead>
@@ -341,7 +297,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Reconciliation Summary</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.reconciliationSummary }}</h4>
 <div class="p-3 rounded mb-3" style="background:var(--pm-accent-soft)">
 <div style="font-size:11px;color:#047857;font-weight:700">AUTO-MATCHED</div>
 <div style="font-size:24px;font-weight:700;color:var(--pm-accent)">412 txns</div>
@@ -375,8 +331,7 @@
 <div class="row g-3">
 <div class="col-lg-5">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">90-Day Cash Flow Forecast
-                                </h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.ninetyDayCashFlowForecast }}</h4>
 <div class="chart-bars">
 <div class="chart-bar" style="height:55%;background:var(--pm-info)"><span class="bar-label">W1</span></div>
 <div class="chart-bar" style="height:68%;background:var(--pm-info)"><span class="bar-label">W2</span></div>
@@ -397,7 +352,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Bank Performance</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.bankPerformance }}</h4>
 <div class="sr">
 <div><strong>Equity Bank</strong>
 <div style="font-size:11px;color:var(--pm-muted)">Fastest settlement • 8s avg
@@ -424,7 +379,7 @@
 </div>
 <div class="col-lg-3">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Liquidity Risk</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.liquidityRisk }}</h4>
 <div class="p-3 rounded mb-3" style="background:var(--pm-accent-soft)">
 <div style="font-size:11px;color:#047857;font-weight:700">MINIMUM BALANCE ALERT
                                     </div>
@@ -458,7 +413,7 @@
 <div class="row g-3">
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Active Consents</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.activeConsents }}</h4>
 <div class="sr">
 <div><strong>Equity Bank</strong>
 <div style="font-size:11px;color:var(--pm-muted)">View + Transfer • Expires 15
@@ -487,7 +442,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Fraud Controls</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.fraudControls }}</h4>
 <div class="form-check form-switch mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Real-time fraud alerts</label></div>
 <div class="form-check form-switch mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Large transfer verification</label>
 </div>
@@ -500,8 +455,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Security Log (Last 7 Days)
-                                </h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.securityLog }}</h4>
 <div class="sr">
 <div><strong>New device login</strong>
 <div style="font-size:11px;color:var(--pm-muted)">Equity — 24 Jun</div>
@@ -536,7 +490,7 @@
 <div class="row g-3">
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Notification Preferences</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.notificationPreferences }}</h4>
 <div class="sr">
 <div><strong>Transfer completed</strong></div>
 <div class="form-check form-switch"><input checked="" class="form-check-input" type="checkbox"/></div>
@@ -561,7 +515,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Reconciliation Rules</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.reconciliationRules }}</h4>
 <div class="form-check mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Auto-match by
                                         exact amount + reference</label></div>
 <div class="form-check mb-2"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label" style="font-size:13px">Auto-match by
@@ -579,7 +533,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Connection Health</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 16px">{{ uiConfig.sectionTitles.connectionHealth }}</h4>
 <div class="sr">
 <div><strong>Equity Bank</strong>
 <div style="font-size:11px;color:var(--pm-muted)">Uptime 99.9% • Last sync: Now
@@ -608,8 +562,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Connect New Bank Account
-                    </h5><button (click)="closeModal('connectBankModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>{{ uiConfig.modals.connectBank }}</h5><button (click)="closeModal('connectBankModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="stepper" id="connectStepper">

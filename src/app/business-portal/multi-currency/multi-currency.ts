@@ -133,14 +133,36 @@ export class MultiCurrencyComponent {
     pageSubtitle: 'Manage multi-currency accounts, FX contracts, nostro reconciliation and cross-border liquidity in one dashboard.',
     breadcrumbStrong: 'Multi-Currency Treasury',
     attentionTitle: 'Attention Required',
+    attentionViewAll: 'View all',
     suggestionTitle: 'Smart Suggestions',
+    suggestionAI: 'AI',
     quickActionsTitle: 'Quick Actions',
     quickActionsSubtitle: 'Frequent FX & treasury workflows',
+    sectionTitles: {
+      currencyAccounts: 'Currency Accounts',
+      fxTransfers: 'Recent FX Transfers',
+      fxContracts: 'Active FX Contracts',
+      nostroReconciliation: 'Nostro Reconciliation',
+      forwardReconciliation: 'Forward Contract Reconciliation',
+      fxHealth: 'FX Health Dashboard',
+      quickReports: 'Quick Reports'
+    },
+    formLabels: {
+      pair: 'Currency Pair',
+      amount: 'Amount',
+      rate: 'Rate',
+      fromAccount: 'From Account',
+      toAccount: 'To Account',
+      purpose: 'Purpose'
+    },
     modals: {
       trade: 'FX Trade',
       transfer: 'Cross-Currency Transfer',
       fxContract: 'New Forward Contract',
-      reconcile: 'Nostro Reconciliation'
+      reconcile: 'Nostro Reconciliation',
+      rollContract: 'Roll Forward Contract',
+      fxHealth: 'FX Health Check',
+      nostroRecon: 'Nostro Reconciliation'
     }
   };
 

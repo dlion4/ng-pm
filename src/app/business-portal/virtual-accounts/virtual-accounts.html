@@ -130,14 +130,9 @@
 <table class="T">
 <thead>
 <tr>
-<th>VA Number</th>
-<th>Name</th>
-<th>Type</th>
-<th>Balance</th>
-<th>Sub-Accounts</th>
-<th>Status</th>
-<th>Rules</th>
-<th>Actions</th>
+@for (header of uiConfig.tableHeaders.va; track header) {
+  <th>{{ header }}</th>
+}
 </tr>
 </thead>
 <tbody id="vaTableBody">
@@ -167,17 +162,14 @@
 <div class="row g-3">
 <div class="col-lg-7">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Sub-Account Directory</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.subAccountDirectory }}</h4>
 <div class="table-responsive">
 <table class="T">
 <thead>
 <tr>
-<th>Sub-Account</th>
-<th>Parent VA</th>
-<th>Balance</th>
-<th>Limit</th>
-<th>Status</th>
-<th>Actions</th>
+@for (header of uiConfig.tableHeaders.sub; track header) {
+  <th>{{ header }}</th>
+}
 </tr>
 </thead>
 <tbody id="subTableBody">
@@ -195,7 +187,7 @@
 </div>
 <div class="col-lg-5">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Hierarchy Tree</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.hierarchyTree }}</h4>
 <div id="hierarchyTree">
 @for (node of mockData.hierarchy; track node.id) {
   <div class="p-3 rounded mb-2" style="background:var(--pm-surface-2)"><div style="font-weight:700">{{ node.id }} — {{ node.name }}</div><div style="font-size:12px;color:var(--pm-muted)">Balance: KES {{ node.balance }} | {{ node.children.length }} sub-accounts</div></div>
@@ -221,16 +213,14 @@
 <div class="row g-3">
 <div class="col-lg-6">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Recent Funding Activity</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.recentFundingActivity }}</h4>
 <div class="table-responsive">
 <table class="T">
 <thead>
 <tr>
-<th>Date</th>
-<th>VA / Sub</th>
-<th>Amount</th>
-<th>Source</th>
-<th>Status</th>
+@for (header of uiConfig.tableHeaders.funding; track header) {
+  <th>{{ header }}</th>
+}
 </tr>
 </thead>
 <tbody id="fundingTableBody">
@@ -244,7 +234,7 @@
 </div>
 <div class="col-lg-6">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Quick Funding Options</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.quickFundingOptions }}</h4>
 <div class="quick-grid">
   @for (opt of fundingOptions; track opt) {
     <button (click)="openModal('fundVA')" class="quick-btn" type="button">{{ opt }}</button>
@@ -266,7 +256,7 @@
 <div class="row g-3">
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Daily Limits</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.dailyLimits }}</h4>
 <div id="limitsList">
 @for (item of mockData.limitControls; track item.name) {
   <div class="sr"><div><strong>{{ item.name }}</strong></div><span [ngClass]="statusBadgeClass(item.status)" class="B">{{ item.value }}</span></div>
@@ -276,7 +266,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Approval Matrix</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.approvalMatrix }}</h4>
 @for (row of approvalMatrix; track row.range) {
   <div class="sr">
     <div><strong>{{ row.range }}</strong></div>
@@ -289,7 +279,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Active Rules</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.activeRules }}</h4>
 <div id="rulesList">
 @for (item of mockData.automationRules; track item.name) {
   <div class="sr"><div><strong>{{ item.name }}</strong></div><span [ngClass]="statusBadgeClass(item.status)" class="B">{{ item.value }}</span></div>
@@ -313,17 +303,14 @@
 <div class="row g-3">
 <div class="col-lg-7">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Reconciliation Dashboard</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.reconciliationDashboard }}</h4>
 <div class="table-responsive">
 <table class="T">
 <thead>
 <tr>
-<th>VA / Sub</th>
-<th>Book Balance</th>
-<th>Bank Balance</th>
-<th>Difference</th>
-<th>Status</th>
-<th>Action</th>
+@for (header of uiConfig.tableHeaders.recon; track header) {
+  <th>{{ header }}</th>
+}
 </tr>
 </thead>
 <tbody id="reconTableBody">
@@ -337,7 +324,7 @@
 </div>
 <div class="col-lg-5">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Quick Reports</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.quickReports }}</h4>
 <div class="quick-grid">
   @for (report of quickReports; track report.label) {
     <button (click)="openModal(report.modal)" class="quick-btn" type="button">{{ report.label }}</button>
@@ -359,7 +346,7 @@
 <div class="row g-3">
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Auto-Sweep Rules</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.autoSweepRules }}</h4>
 <div id="sweepList">
 @for (item of mockData.sweepRules; track item.name) {
   <div class="sr"><div><strong>{{ item.name }}</strong></div><span [ngClass]="statusBadgeClass(item.status)" class="B">{{ item.value }}</span></div>
@@ -369,7 +356,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Notifications</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.notifications }}</h4>
 @for (notif of notificationSettings; track notif.label) {
   <div class="sr">
     <div><strong>{{ notif.label }}</strong></div>
@@ -380,7 +367,7 @@
 </div>
 <div class="col-lg-4">
 <div class="UB">
-<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">Access &amp; Security</h4>
+<h4 style="font-size:14px;font-weight:700;margin:0 0 12px">{{ uiConfig.sectionTitles.accessSecurity }}</h4>
 <div class="sr">
 <div><strong>Multi-user access</strong></div><span class="B B-s">Enabled</span>
 </div>
@@ -404,13 +391,9 @@
 <table class="T">
 <thead>
 <tr>
-<th>Date</th>
-<th>VA / Sub</th>
-<th>Description</th>
-<th>Amount</th>
-<th>Status</th>
-<th>Ref</th>
-<th>Action</th>
+@for (header of uiConfig.tableHeaders.activity; track header) {
+  <th>{{ header }}</th>
+}
 </tr>
 </thead>
 <tbody>
@@ -442,29 +425,29 @@
 <h6 style="font-weight:700">Step 1: {{ uiConfig.modals.createVA.split(' ')[0] }} Details</h6>
 <div class="row g-3">
 <div class="col-md-6"><label class="FL">{{ uiConfig.formLabels.accountName }}</label><input class="FC" [value]="'Client Collections - Q3'"/></div>
-<div class="col-md-6"><label class="FL">Account Type</label><select class="FC">
+<div class="col-md-6"><label class="FL">{{ uiConfig.formLabels.accountType }}</label><select class="FC">
 <option>Collections</option>
 <option>Disbursements</option>
 <option>Operations</option>
 <option>Payroll</option>
 <option>Project / Campaign</option>
 </select></div>
-<div class="col-md-6"><label class="FL">Currency</label><select class="FC">
+<div class="col-md-6"><label class="FL">{{ uiConfig.formLabels.currency }}</label><select class="FC">
 <option>KES - Kenyan Shilling</option>
 <option>USD - US Dollar</option>
 <option>EUR - Euro</option>
 </select></div>
-<div class="col-md-6"><label class="FL">Initial Balance</label><input class="FC" value="0"/>
+<div class="col-md-6"><label class="FL">{{ uiConfig.formLabels.initialBalance }}</label><input class="FC" value="0"/>
 </div>
 </div>
 </div>
 <div [class.active]="isStep('va', 2)" [style.display]="isStep('va', 2) ? 'block' : 'none'" class="fstep" id="vaS2">
-<h6 style="font-weight:700">Step 2: Controls &amp; Rules</h6>
+<h6 style="font-weight:700">Step 2: {{ uiConfig.stepperLabels.va[1] }}</h6>
 <div class="row g-3">
-<div class="col-md-6"><label class="FL">Daily Limit</label><input class="FC" value="5000000"/></div>
-<div class="col-md-6"><label class="FL">Monthly Limit</label><input class="FC" value="50000000"/></div>
-<div class="col-md-6"><label class="FL">Approval Required Above</label><input class="FC" value="1000000"/></div>
-<div class="col-md-6"><label class="FL">Auto-Sweep Threshold</label><input class="FC" value="2000000"/></div>
+<div class="col-md-6"><label class="FL">{{ uiConfig.formLabels.dailyLimit }}</label><input class="FC" value="5000000"/></div>
+<div class="col-md-6"><label class="FL">{{ uiConfig.formLabels.monthlyLimit }}</label><input class="FC" value="50000000"/></div>
+<div class="col-md-6"><label class="FL">{{ uiConfig.formLabels.approvalAbove }}</label><input class="FC" value="1000000"/></div>
+<div class="col-md-6"><label class="FL">{{ uiConfig.formLabels.autoSweepThreshold }}</label><input class="FC" value="2000000"/></div>
 </div>
 <div class="form-check mt-3"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Enable transaction notifications</label></div>
 <div class="form-check"><input checked="" class="form-check-input" type="checkbox"/><label class="form-check-label">Enable auto-sweep to Treasury</label></div>
@@ -505,9 +488,9 @@
 }
 </div>
 <div [class.active]="isStep('sub', 1)" [style.display]="isStep('sub', 1) ? 'block' : 'none'" class="fstep active" id="subS1">
-<h6 style="font-weight:700">Step 1: Sub-Account Details</h6>
+<h6 style="font-weight:700">Step 1: {{ uiConfig.modals.createSub.split(' ')[0] }} Details</h6>
 <div class="row g-3">
-<div class="col-md-6"><label class="FL">Parent Virtual Account</label><select class="FC">
+<div class="col-md-6"><label class="FL">{{ uiConfig.formLabels.parentVA }}</label><select class="FC">
 <option>VA-003 — Client Collections</option>
 <option>VA-001 — Operations</option>
 <option>VA-007 — Payroll</option>
@@ -700,7 +683,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-xl modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-list-check text-warning me-2"></i>Reconciliation Center</h5>
+<h5 class="modal-title"><i class="bi bi-list-check text-warning me-2"></i>{{ uiConfig.modals.recon }}</h5>
 <button (click)="closeModal('reconModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
@@ -791,7 +774,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-link-45deg me-2"></i>Match Transaction</h5><button (click)="closeModal('matchModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-link-45deg me-2"></i>{{ uiConfig.modals.match }}</h5><button (click)="closeModal('matchModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
@@ -816,8 +799,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-check2-square text-primary me-2"></i>Approval Rules &amp;
-                        Workflows</h5><button (click)="closeModal('approvalRulesModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-check2-square text-primary me-2"></i>{{ uiConfig.modals.approvalRules }}</h5><button (click)="closeModal('approvalRulesModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="pills mb-3"><button (click)="switchTab('apr', 'matrix', $event)" class="pill active" type="button">Matrix</button><button (click)="switchTab('apr', 'workflow', $event)" class="pill" type="button">Workflow</button><button (click)="switchTab('apr', 'delegation', $event)" class="pill" type="button">Delegation</button></div>
@@ -892,8 +874,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-arrow-repeat text-purple me-2"></i>Auto-Sweep Configuration
-                    </h5><button (click)="closeModal('autoSweepModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-arrow-repeat text-purple me-2"></i>{{ uiConfig.modals.autoSweep }}</h5><button (click)="closeModal('autoSweepModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="pills mb-3"><button (click)="switchTab('swp', 'rules', $event)" class="pill active" type="button">Rules</button><button (click)="switchTab('swp', 'schedule', $event)" class="pill" type="button">Schedule</button><button (click)="switchTab('swp', 'exceptions', $event)" class="pill" type="button">Exceptions</button></div>
@@ -946,7 +927,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-diagram-3 me-2"></i>Virtual Account Hierarchy</h5><button (click)="closeModal('hierarchyModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-diagram-3 me-2"></i>{{ uiConfig.modals.hierarchy }}</h5><button (click)="closeModal('hierarchyModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
@@ -966,7 +947,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Transaction Details</h5><button (click)="closeModal('txnDetailModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-receipt me-2"></i>{{ uiConfig.modals.txnDetail }}</h5><button (click)="closeModal('txnDetailModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="p-3 rounded mb-3" style="background:var(--pm-surface-2)">
@@ -993,7 +974,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-download me-2"></i>Export Virtual Account Report</h5><button (click)="closeModal('exportReportModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-download me-2"></i>{{ uiConfig.modals.exportReport }}</h5><button (click)="closeModal('exportReportModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="mb-3"><label class="FL">Report Type</label><select class="FC">
@@ -1022,8 +1003,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>Virtual Account Health
-                        Check</h5><button (click)="closeModal('vaHealthModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>{{ uiConfig.modals.vaHealth }}</h5><button (click)="closeModal('vaHealthModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="row g-3 mb-3">
@@ -1093,8 +1073,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger me-2"></i>Bank Error Ticket
-                    </h5><button (click)="closeModal('bankErrorModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger me-2"></i>{{ uiConfig.modals.bankError }}</h5><button (click)="closeModal('bankErrorModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="p-3 rounded mb-3" style="background:var(--pm-danger-soft)">
@@ -1116,8 +1095,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>All Items
-                        Requiring Attention</h5><button (click)="closeModal('attentionModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-exclamation-circle text-warning me-2"></i>{{ uiConfig.modals.attention }}</h5><button (click)="closeModal('attentionModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="sr">
@@ -1148,7 +1126,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-sliders me-2"></i>Adjust Sub-Account Limit</h5><button (click)="closeModal('subLimitModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-sliders me-2"></i>{{ uiConfig.modals.subLimit }}</h5><button (click)="closeModal('subLimitModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="mb-3"><label class="FL">Sub-Account</label><select class="FC">
@@ -1169,7 +1147,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-speedometer2 me-2"></i>Velocity &amp; Transaction Controls</h5>
+<h5 class="modal-title"><i class="bi bi-speedometer2 me-2"></i>{{ uiConfig.modals.velocity }}</h5>
 <button (click)="closeModal('velocityModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
@@ -1190,7 +1168,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-plug me-2"></i>Integrations &amp; Webhooks</h5><button (click)="closeModal('integrationModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-plug me-2"></i>{{ uiConfig.modals.integration }}</h5><button (click)="closeModal('integrationModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="pills mb-3"><button (click)="switchTab('int', 'api', $event)" class="pill active" type="button">API</button><button (click)="switchTab('int', 'webhook', $event)" class="pill" type="button">Webhooks</button><button (click)="switchTab('int', 'erp', $event)" class="pill" type="button">ERP</button></div>
@@ -1230,7 +1208,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-xl modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Full Activity Log</h5><button (click)="closeModal('activityModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>{{ uiConfig.modals.activity }}</h5><button (click)="closeModal('activityModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="d-flex gap-2 mb-3 flex-wrap"><select class="FC" style="width:auto">
@@ -1312,7 +1290,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>Profile</h5><button (click)="closeModal('profileModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-person-circle me-2"></i>{{ uiConfig.modals.profile }}</h5><button (click)="closeModal('profileModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body text-center">
 <div class="pm-avatar mx-auto mb-3" style="width:64px;height:64px;font-size:24px">BK</div>
@@ -1340,7 +1318,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notifications (9)</h5><button (click)="closeModal('notifModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-bell me-2"></i>{{ uiConfig.modals.notif }}</h5><button (click)="closeModal('notifModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body" style="max-height:500px;overflow-y:auto">
 <div class="p-3 rounded mb-2" style="background:var(--pm-danger-soft);font-size:13px">
@@ -1371,8 +1349,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>Virtual Account Portfolio
-                        Health</h5><button (click)="closeModal('healthCheckModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-heart-pulse text-danger me-2"></i>{{ uiConfig.modals.healthCheck }}</h5><button (click)="closeModal('healthCheckModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="row g-3 mb-3">
@@ -1442,7 +1419,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-compress-arrows me-2"></i>Consolidate Virtual Accounts</h5>
+<h5 class="modal-title"><i class="bi bi-compress-arrows me-2"></i>{{ uiConfig.modals.consolidate }}</h5>
 <button (click)="closeModal('consolidateModal')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
@@ -1464,7 +1441,7 @@
 </div>
 </div>
 <div (click)="closeModal('notifSettingsModal')" [attr.aria-hidden]="isModalOpen('notifSettingsModal') ? null : 'true'" [attr.aria-modal]="isModalOpen('notifSettingsModal') ? 'true' : null" [class.show]="isModalOpen('notifSettingsModal')" [style.display]="isModalOpen('notifSettingsModal') ? 'block' : 'none'" class="modal fade R" id="notifSettingsModal" tabindex="-1">
-<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell me-2"></i>Notification Settings</h5><button (click)="closeModal('notifSettingsModal')" class="btn-close" type="button"></button></div><div class="modal-body"><div class="sr"><div><strong>Reconciliation alerts</strong><div style="font-size:12px;color:var(--pm-muted)">Email + in-app alerts for unmatched items.</div></div><span class="B B-s">On</span></div><div class="sr"><div><strong>Limit warnings</strong><div style="font-size:12px;color:var(--pm-muted)">Notify when sub-accounts exceed limits.</div></div><span class="B B-s">On</span></div></div><div class="modal-footer"><button (click)="closeModal('notifSettingsModal')" class="btn-pm" type="button">Close</button><button (click)="processAction('notifSettingsModal','Notification settings saved.','NTF-20250627-1122')" class="btn-pm btn-pm-p" type="button">Save</button></div></div></div>
+<div (click)="$event.stopPropagation()" class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="bi bi-bell me-2"></i>{{ uiConfig.modals.notifSettings }}</h5><button (click)="closeModal('notifSettingsModal')" class="btn-close" type="button"></button></div><div class="modal-body"><div class="sr"><div><strong>Reconciliation alerts</strong><div style="font-size:12px;color:var(--pm-muted)">Email + in-app alerts for unmatched items.</div></div><span class="B B-s">On</span></div><div class="sr"><div><strong>Limit warnings</strong><div style="font-size:12px;color:var(--pm-muted)">Notify when sub-accounts exceed limits.</div></div><span class="B B-s">On</span></div></div><div class="modal-footer"><button (click)="closeModal('notifSettingsModal')" class="btn-pm" type="button">Close</button><button (click)="processAction('notifSettingsModal','Notification settings saved.','NTF-20250627-1122')" class="btn-pm btn-pm-p" type="button">Save</button></div></div></div>
 </div>
 </section></div>
 

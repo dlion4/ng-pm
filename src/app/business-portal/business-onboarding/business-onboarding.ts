@@ -138,6 +138,46 @@ export class BusinessOnboardingComponent {
     { icon: 'shield-check', label: 'Risk Assessment', modal: 'riskAssessmentModal', color: 'warning' },
   ];
 
+  readonly uiConfig = {
+    pageTitle: 'PAGE 3.12 — Business Onboarding & KYB/KYC Center',
+    pageSubtitle: 'Streamline business onboarding, KYB/KYC verification, document management and compliance approvals.',
+    breadcrumbStrong: 'Business Onboarding',
+    quickActionsTitle: 'Quick Actions',
+    quickActionsSubtitle: 'Frequent onboarding workflows',
+    sectionTitles: {
+      documentQueue: 'Document Queue',
+      recentActivity: 'Recent Activity',
+      bulkOnboardingPreview: 'Bulk Onboarding Preview',
+      complianceChecks: 'Compliance Checks',
+      pendingApplications: 'Pending Applications',
+      pendingDirectorKyc: 'Pending Director KYC',
+      pendingDocuments: 'Pending Documents',
+      approvalQueue: 'Approval Queue',
+      bulkRenewals: 'Bulk Renewals',
+      auditTrail: 'Audit Trail',
+      securityMetrics: 'Security Metrics',
+      notificationSettings: 'Notification Settings'
+    },
+    modals: {
+      onboardNew: 'New Business Onboarding',
+      directorKYC: 'Director KYC',
+      bulkOnboard: 'Bulk Onboarding Upload',
+      riskAssessment: 'Risk Assessment',
+      verifyDocument: 'Verify Document',
+      viewDocument: 'View Document',
+      renewTCC: 'Renew TCC',
+      beneficialOwner: 'Beneficial Owner Declaration',
+      pendingQueue: 'Pending Application Queue'
+    },
+    formLabels: {
+      businessName: 'Business Name',
+      registrationNumber: 'Registration Number',
+      directorName: 'Director Name',
+      documentType: 'Document Type',
+      expiryDate: 'Expiry Date'
+    }
+  };
+
   readonly mockData: OnboardingMockData = {
     documentQueue: [
       {

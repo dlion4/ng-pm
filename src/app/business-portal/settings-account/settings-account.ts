@@ -19,6 +19,31 @@ export class SettingsAccountComponent {
   readonly pageSubtitle = 'Manage team, API keys, compliance, roles, branches and security settings for the business.';
   readonly breadcrumbStrong = 'Settings & Administration';
 
+  readonly uiConfig = {
+    pageTitle: 'PAGE 3.14 — Settings, Account Details & Administration',
+    pageSubtitle: 'Manage team, API keys, compliance, roles, branches and security settings for the business.',
+    breadcrumbStrong: 'Settings & Administration',
+    quickActionsTitle: 'Quick Actions',
+    quickActionsSubtitle: 'Frequent admin workflows',
+    sectionTitles: {
+      teamMembers: 'Team Members',
+      apiKeys: 'API Keys',
+      bankAccounts: 'Bank Accounts',
+      complianceDeadlines: 'Compliance Deadlines',
+      auditLogs: 'Audit Logs',
+      roles: 'Roles & Permissions',
+      branches: 'Branch Management',
+      notificationPreferences: 'Notification Preferences'
+    },
+    modals: {
+      userInvite: 'Invite Team Member',
+      apiKey: 'Create API Key',
+      kyc: 'KYC/KYB Upload',
+      branch: 'Add Branch',
+      role: 'Edit Role'
+    }
+  };
+
   readonly quickActions = [
     { icon: 'person-plus', label: 'Invite User', modal: 'userInviteModal', color: 'primary' },
     { icon: 'key', label: 'New API Key', modal: 'apiKeyModal', color: 'accent' },

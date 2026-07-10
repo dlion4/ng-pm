@@ -148,7 +148,7 @@ export class VirtualAccountsComponent {
       consolidate: 'Consolidate Virtual Accounts',
       notifSettings: 'Notification Settings'
     },
-    // Form labels and stepper
+    // Form labels and stepper (comprehensive)
     formLabels: {
       accountName: 'Account Name',
       accountType: 'Account Type',
@@ -157,8 +157,43 @@ export class VirtualAccountsComponent {
       dailyLimit: 'Daily Limit',
       monthlyLimit: 'Monthly Limit',
       approvalAbove: 'Approval Required Above',
-      autoSweepThreshold: 'Auto-Sweep Threshold'
+      autoSweepThreshold: 'Auto-Sweep Threshold',
+      parentVA: 'Parent Virtual Account',
+      subAccountName: 'Sub-Account Name',
+      purpose: 'Purpose',
+      initialAllocation: 'Initial Allocation',
+      dailySpendLimit: 'Daily Spend Limit',
+      monthlyBudget: 'Monthly Budget',
+      visibility: 'Visibility',
+      fundingSource: 'Funding Source',
+      amount: 'Amount (KES)',
+      reference: 'Reference / Narration',
+      fromAccount: 'From Account',
+      toAccount: 'To Account',
+      purposeLabel: 'Purpose',
+      notes: 'Notes',
+      uploadCSV: 'Upload CSV File',
+      fundingSourceSelect: 'Funding Source',
+      selectAccount: 'Select Account',
+      recipientAccount: 'Recipient Account Number',
+      recipientName: 'Recipient Name',
+      pin: 'Enter PIN to Authorise'
     },
+    sectionTitles: {
+      subAccountDirectory: 'Sub-Account Directory',
+      hierarchyTree: 'Hierarchy Tree',
+      recentFundingActivity: 'Recent Funding Activity',
+      quickFundingOptions: 'Quick Funding Options',
+      dailyLimits: 'Daily Limits',
+      approvalMatrix: 'Approval Matrix',
+      activeRules: 'Active Rules',
+      reconciliationDashboard: 'Reconciliation Dashboard',
+      quickReports: 'Quick Reports',
+      autoSweepRules: 'Auto-Sweep Rules',
+      notifications: 'Notifications',
+      accessSecurity: 'Access & Security',
+      recentVirtualAccountActivity: 'Recent Virtual Account Activity'
+    }
     stepperLabels: {
       va: ['Details', 'Controls', 'Done'],
       sub: ['Details', 'Limits', 'Done'],
@@ -170,6 +205,16 @@ export class VirtualAccountsComponent {
       funding: ['Date', 'VA / Sub', 'Amount', 'Source', 'Status'],
       recon: ['VA / Sub', 'Book Balance', 'Bank Balance', 'Difference', 'Status', 'Action'],
       activity: ['Date', 'VA / Sub', 'Description', 'Amount', 'Status', 'Ref', 'Action']
+    },
+    // Status labels and classes
+    statusLabels: {
+      active: 'Active',
+      success: 'Success',
+      warning: 'Warning',
+      danger: 'Danger',
+      paused: 'Paused',
+      cleared: 'Cleared',
+      'bank-error': 'Bank error'
     }
   };
 

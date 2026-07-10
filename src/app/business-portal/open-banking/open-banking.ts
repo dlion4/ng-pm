@@ -168,21 +168,88 @@ export class OpenBankingComponent {
     { icon: 'graph-up', label: 'Optimize', modal: 'optimizeModal', color: 'purple' },
   ];
 
+  readonly quickActions = [
+    { icon: 'link-45deg', label: 'Connect Bank', modal: 'connectBankModal', color: 'primary' },
+    { icon: 'arrow-left-right', label: 'Transfer', modal: 'transferModal', color: 'accent' },
+    { icon: 'list-check', label: 'Reconcile', modal: 'reconcileModal', color: 'warning' },
+    { icon: 'shield-check', label: 'Fraud Settings', modal: 'fraudSettingsModal', color: 'danger' },
+    { icon: 'calendar-check', label: 'Schedule', modal: 'scheduleTransferModal', color: 'info' },
+    { icon: 'graph-up', label: 'Optimize', modal: 'optimizeModal', color: 'purple' },
+  ];
+
   readonly uiConfig = {
     pageTitle: 'PAGE 3.10 — Open Banking',
     pageSubtitle: 'Connect, manage and reconcile multiple bank accounts with real-time consent, transfers and fraud protection.',
     breadcrumbStrong: 'Open Banking',
     attentionTitle: 'Attention Required',
+    attentionViewAll: 'View all',
     suggestionTitle: 'Smart Suggestions',
+    suggestionAI: 'AI',
     quickActionsTitle: 'Quick Actions',
     quickActionsSubtitle: 'Frequent open banking workflows',
+    sectionTitles: {
+      linkedBankAccounts: 'Linked Bank Accounts',
+      consolidatedPosition: 'Consolidated Position',
+      recentTransfers: 'Recent Transfers',
+      standingOrders: 'Standing Orders',
+      quickTransfer: 'Quick Transfer',
+      multiBankTransactionFeed: 'Multi-Bank Transaction Feed',
+      reconciliationSummary: 'Reconciliation Summary',
+      ninetyDayCashFlowForecast: '90-Day Cash Flow Forecast',
+      bankPerformance: 'Bank Performance',
+      liquidityRisk: 'Liquidity Risk',
+      activeConsents: 'Active Consents',
+      fraudControls: 'Fraud Controls',
+      securityLog: 'Security Log (Last 7 Days)',
+      notificationPreferences: 'Notification Preferences',
+      reconciliationRules: 'Reconciliation Rules',
+      connectionHealth: 'Connection Health',
+      ninetyDayCashFlowForecast: '90-Day Cash Flow Forecast',
+      bankPerformance: 'Bank Performance',
+      liquidityRisk: 'Liquidity Risk'
+    },
+    stepperLabels: {
+      connect: ['Bank', 'Details', 'Consent', 'Done'],
+      transfer: ['Details', 'Authorise', 'Done'],
+      recon: ['Select', 'Match', 'Done']
+    },
+    formLabels: {
+      fromAccount: 'From Account',
+      toBank: 'To Bank',
+      recipientAccountNumber: 'Recipient Account Number',
+      recipientName: 'Recipient Name',
+      amount: 'Amount (KES)',
+      reference: 'Reference',
+      pin: 'Enter PIN to Authorise',
+      fromDate: 'From Date',
+      toDate: 'To Date',
+      banks: 'Banks',
+      issueType: 'Issue Type',
+      bank: 'Bank (if applicable)',
+      description: 'Description'
+    }
     modals: {
       connectBank: 'Connect Bank Account',
       transfer: 'Transfer Funds',
       reconcile: 'Reconciliation Center',
       fraudSettings: 'Fraud Settings',
       schedule: 'Schedule Transfer',
-      optimize: 'Optimize Accounts'
+      optimize: 'Optimize Accounts',
+      healthCheck: 'Open Banking Health Check',
+      accountDetail: 'Account Detail',
+      exception: 'Resolve Exception',
+      cashFlow: '90-Day Cash Flow Forecast',
+      bankBenchmark: 'Bank Performance Benchmark',
+      matchDetail: 'Transaction Match Details',
+      exportStatement: 'Export Multi-Bank Statement',
+      obSettings: 'Open Banking Preferences',
+      obSupport: 'Open Banking Support',
+      attention: 'All Items Requiring Attention',
+      optimize: 'Account Optimisation Analysis',
+      manageLinks: 'Manage Bank Links',
+      reauth: 'Re-authenticate Bank Consent',
+      consent: 'Consent Management',
+      scheduleTransfer: 'Schedule Recurring Transfer'
     }
   };
 
