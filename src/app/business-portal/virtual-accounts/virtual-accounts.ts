@@ -147,6 +147,29 @@ export class VirtualAccountsComponent {
       healthCheck: 'Virtual Account Portfolio Health',
       consolidate: 'Consolidate Virtual Accounts',
       notifSettings: 'Notification Settings'
+    },
+    // Form labels and stepper
+    formLabels: {
+      accountName: 'Account Name',
+      accountType: 'Account Type',
+      currency: 'Currency',
+      initialBalance: 'Initial Balance',
+      dailyLimit: 'Daily Limit',
+      monthlyLimit: 'Monthly Limit',
+      approvalAbove: 'Approval Required Above',
+      autoSweepThreshold: 'Auto-Sweep Threshold'
+    },
+    stepperLabels: {
+      va: ['Details', 'Controls', 'Done'],
+      sub: ['Details', 'Limits', 'Done'],
+      bulk: ['Upload', 'Review', 'Done']
+    },
+    tableHeaders: {
+      va: ['VA Number', 'Name', 'Type', 'Balance', 'Sub-Accounts', 'Status', 'Rules', 'Actions'],
+      sub: ['Sub-Account', 'Parent VA', 'Balance', 'Limit', 'Status', 'Actions'],
+      funding: ['Date', 'VA / Sub', 'Amount', 'Source', 'Status'],
+      recon: ['VA / Sub', 'Book Balance', 'Bank Balance', 'Difference', 'Status', 'Action'],
+      activity: ['Date', 'VA / Sub', 'Description', 'Amount', 'Status', 'Ref', 'Action']
     }
   };
 
