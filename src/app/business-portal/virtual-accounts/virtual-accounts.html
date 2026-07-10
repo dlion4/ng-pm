@@ -426,8 +426,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>Create Virtual Account
-                    </h5><button (click)="closeModal('createVA')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<h5 class="modal-title"><i class="bi bi-plus-circle text-primary me-2"></i>{{ uiConfig.modals.createVA }}</h5><button (click)="closeModal('createVA')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
 <div class="stepper" id="vaStepper">
@@ -492,7 +491,7 @@
 <div (click)="$event.stopPropagation()" class="modal-dialog modal-lg modal-dialog-centered">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title"><i class="bi bi-diagram-3 text-purple me-2"></i>Create Sub-Account</h5>
+<h5 class="modal-title"><i class="bi bi-diagram-3 text-purple me-2"></i>{{ uiConfig.modals.createSub }}</h5>
 <button (click)="closeModal('createSub')" class="btn-close" data-bs-dismiss="modal" type="button"></button>
 </div>
 <div class="modal-body">
