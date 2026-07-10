@@ -112,7 +112,15 @@ export class VirtualAccountsComponent {
     attention: { title: 'Attention Required', viewAll: 'View all' },
     suggestions: { title: 'Smart Suggestions', aiLabel: 'AI' },
     quickActions: { title: 'Quick Actions', subtitle: 'Frequent virtual account workflows' },
-    recentActivity: { title: 'Recent Virtual Account Activity', viewAll: 'View All' }
+    recentActivity: { title: 'Recent Virtual Account Activity', viewAll: 'View All' },
+    sectionActions: {
+      '3.9.1': ['New VA', 'Health Check'],
+      '3.9.2': ['New Sub', 'View Hierarchy'],
+      '3.9.3': ['Fund VA', 'Transfer', 'Bulk Fund'],
+      '3.9.4': ['Approval Rules', 'Velocity Controls'],
+      '3.9.5': ['Reconcile Now', 'Export Reports'],
+      '3.9.6': ['Auto-Sweep', 'Integrations']
+    }
   };
 
   readonly mockData: VirtualAccountsMockData = {
